@@ -1,5 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
-// See LICENSE.txt for license information.
+// Copyright (c) 2019 securCom Ltd. All Rights Reserved.
 
 const childProcess = require('child_process');
 const path = require('path');
@@ -271,10 +270,10 @@ var config = {
         // Generate manifest.json, honouring any configured publicPath. This also handles injecting
         // <link rel="apple-touch-icon" ... /> and <meta name="apple-*" ... /> tags into root.html.
         new WebpackPwaManifest({
-            name: 'Mattermost',
-            short_name: 'Mattermost',
+            name: 'securCom Communication Platform',
+            short_name: 'SCC',
             start_url: '..',
-            description: 'Mattermost is an open source, self-hosted Slack-alternative',
+            description: 'securCom Communication Platform is an open source, self-hosted Slack-alternative',
             background_color: '#ffffff',
             inject: true,
             ios: true,

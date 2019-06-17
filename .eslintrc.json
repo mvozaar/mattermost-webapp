@@ -1,7 +1,7 @@
 {
   "extends": [
-    "./node_modules/eslint-config-mattermost/.eslintrc.json",
-    "./node_modules/eslint-config-mattermost/.eslintrc-react.json",
+    "./node_modules/eslint-config-scc/.eslintrc.json",
+    "./node_modules/eslint-config-scc/.eslintrc-react.json",
     "plugin:cypress/recommended"
   ],
   "plugins": [
@@ -35,6 +35,17 @@
           "sibling",
           "index"
         ]
+      }
+    ],
+    "header/header": [
+      2,
+      "line",
+      " Copyright (c) 2019 securCom Ltd. All Rights Reserved."
+    ],
+    "max-nested-callbacks": [
+      2,
+      {
+        "max": 5
       }
     ],
     "no-magic-numbers": [

@@ -90,7 +90,7 @@
     "enzyme-adapter-react-16": "1.11.2",
     "enzyme-to-json": "3.3.5",
     "eslint": "5.15.3",
-    "eslint-config-mattermost": "github:mattermost/eslint-config-mattermost",
+    "eslint-config-scc": "git+https://git.uxsolutions.sk/scm/scc/eslint-config-scc.git",
     "eslint-import-resolver-webpack": "0.11.0",
     "eslint-plugin-cypress": "2.2.1",
     "eslint-plugin-header": "3.0.0",
