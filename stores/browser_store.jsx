@@ -107,7 +107,10 @@ class BrowserStoreClass {
     }
 
     setLandingPageSeen(landingPageSeen) {
-        localStorage.setItem(StoragePrefixes.LANDING_PAGE_SEEN, landingPageSeen);
+        localStorage.setItem(
+            StoragePrefixes.LANDING_PAGE_SEEN,
+            landingPageSeen,
+        );
     }
 }
 

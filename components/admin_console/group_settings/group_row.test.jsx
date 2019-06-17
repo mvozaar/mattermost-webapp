@@ -21,8 +21,9 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -40,8 +41,9 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -59,8 +61,9 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -78,8 +81,9 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -97,8 +101,9 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -116,8 +121,9 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -136,7 +142,7 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
 
         wrapper.instance().onRowClick();
@@ -158,10 +164,14 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link,
                     unlink: jest.fn(),
                 }}
-            />
+            />,
         );
 
-        await wrapper.instance().linkHandler({stopPropagation: jest.fn(), preventDefault: jest.fn()});
+        await wrapper.instance().linkHandler({
+            stopPropagation: jest.fn(),
+            preventDefault: jest.fn(),
+        });
+
         expect(wrapper.state().loading).toBe(false);
         expect(link).toHaveBeenCalledWith('primary_key');
     });
@@ -181,10 +191,14 @@ describe('components/admin_console/group_settings/GroupRow', () => {
                     link: jest.fn(),
                     unlink,
                 }}
-            />
+            />,
         );
 
-        await wrapper.instance().unlinkHandler({stopPropagation: jest.fn(), preventDefault: jest.fn()});
+        await wrapper.instance().unlinkHandler({
+            stopPropagation: jest.fn(),
+            preventDefault: jest.fn(),
+        });
+
         expect(wrapper.state().loading).toBe(false);
         expect(unlink).toHaveBeenCalledWith('primary_key');
     });

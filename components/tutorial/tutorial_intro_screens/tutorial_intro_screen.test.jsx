@@ -27,7 +27,7 @@ describe('components/tutorial/tutorial_intro_screens/TutorialIntroScreens', () =
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<TutorialIntroScreens {...requiredProps}/>);
+        const wrapper = shallow(<TutorialIntroScreens {...requiredProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -35,7 +35,7 @@ describe('components/tutorial/tutorial_intro_screens/TutorialIntroScreens', () =
         const savePreferences = jest.fn();
 
         const props = {...requiredProps, actions: {savePreferences}};
-        const wrapper = shallow(<TutorialIntroScreens {...props}/>);
+        const wrapper = shallow(<TutorialIntroScreens {...props} />);
 
         wrapper.instance().handleNext();
         expect(savePreferences).toHaveBeenCalledTimes(0);
@@ -48,28 +48,33 @@ describe('components/tutorial/tutorial_intro_screens/TutorialIntroScreens', () =
         const savePreferences = jest.fn();
 
         const props = {...requiredProps, actions: {savePreferences}};
-        const wrapper = shallow(<TutorialIntroScreens {...props}/>);
+        const wrapper = shallow(<TutorialIntroScreens {...props} />);
 
         wrapper.instance().handleNext();
         wrapper.instance().handleNext();
         wrapper.instance().handleNext();
 
-        const expectedPref = [{
-            user_id: currentUserId,
-            category: Preferences.TUTORIAL_STEP,
-            name: currentUserId,
-            value: (requiredProps.step + 1).toString(),
-        }];
+        const expectedPref = [
+            {
+                user_id: currentUserId,
+                category: Preferences.TUTORIAL_STEP,
+                name: currentUserId,
+                value: (requiredProps.step + 1).toString(),
+            },
+        ];
 
         expect(savePreferences).toHaveBeenCalledTimes(1);
-        expect(savePreferences).toHaveBeenCalledWith(currentUserId, expectedPref);
+        expect(savePreferences).toHaveBeenCalledWith(
+            currentUserId,
+            expectedPref,
+        );
     });
 
     test('should have called mockEvent.preventDefault when skipTutorial', () => {
         const mockEvent = {preventDefault: jest.fn()};
 
         const props = {...requiredProps};
-        const wrapper = shallow(<TutorialIntroScreens {...props}/>);
+        const wrapper = shallow(<TutorialIntroScreens {...props} />);
 
         wrapper.instance().skipTutorial(mockEvent);
         expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
@@ -80,18 +85,23 @@ describe('components/tutorial/tutorial_intro_screens/TutorialIntroScreens', () =
         const mockEvent = {preventDefault: jest.fn()};
 
         const props = {...requiredProps, actions: {savePreferences}};
-        const wrapper = shallow(<TutorialIntroScreens {...props}/>);
+        const wrapper = shallow(<TutorialIntroScreens {...props} />);
 
         wrapper.instance().skipTutorial(mockEvent);
 
-        const expectedPref = [{
-            user_id: currentUserId,
-            category: Preferences.TUTORIAL_STEP,
-            name: currentUserId,
-            value: Constants.TutorialSteps.FINISHED.toString(),
-        }];
+        const expectedPref = [
+            {
+                user_id: currentUserId,
+                category: Preferences.TUTORIAL_STEP,
+                name: currentUserId,
+                value: Constants.TutorialSteps.FINISHED.toString(),
+            },
+        ];
 
         expect(savePreferences).toHaveBeenCalledTimes(1);
-        expect(savePreferences).toHaveBeenCalledWith(currentUserId, expectedPref);
+        expect(savePreferences).toHaveBeenCalledWith(
+            currentUserId,
+            expectedPref,
+        );
     });
 });

@@ -10,7 +10,14 @@ import SystemUsersList from './system_users_list.jsx';
 import {getNonBotUsers} from './selectors.jsx';
 
 function mapStateToProps(state, ownProps) {
-    const users = getNonBotUsers(state, ownProps.loading, ownProps.teamId, ownProps.term, ownProps.filter);
+    const users = getNonBotUsers(
+        state,
+        ownProps.loading,
+        ownProps.teamId,
+        ownProps.term,
+        ownProps.filter,
+    );
+
     return {
         users,
     };
@@ -18,10 +25,17 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getUser,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getUser,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SystemUsersList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SystemUsersList);

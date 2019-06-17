@@ -7,15 +7,8 @@ import {FormattedMessage} from 'react-intl';
 
 export default function ErrorLink({url, messageId, defaultMessage}) {
     return (
-        <a
-            href={url}
-            rel='noopener noreferrer'
-            target='_blank'
-        >
-            <FormattedMessage
-                id={messageId}
-                defaultMessage={defaultMessage}
-            />
+        <a href={url} rel='noopener noreferrer' target='_blank'>
+            <FormattedMessage id={messageId} defaultMessage={defaultMessage} />
         </a>
     );
 }

@@ -6,7 +6,11 @@ import {bindActionCreators} from 'redux';
 import {getProfilesInChannel} from 'mattermost-redux/actions/users';
 import {getAllChannelStats} from 'mattermost-redux/selectors/entities/channels';
 import {getCurrentRelativeTeamUrl} from 'mattermost-redux/selectors/entities/teams';
-import {getCurrentUserId, getUserStatuses, makeGetProfilesInChannel} from 'mattermost-redux/selectors/entities/users';
+import {
+    getCurrentUserId,
+    getUserStatuses,
+    makeGetProfilesInChannel,
+} from 'mattermost-redux/selectors/entities/users';
 
 import {openDirectChannelToUserId} from 'actions/channel_actions.jsx';
 import {openModal} from 'actions/views/modals';
@@ -32,12 +36,19 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            openModal,
-            getProfilesInChannel,
-            openDirectChannelToUserId,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                openModal,
+                getProfilesInChannel,
+                openDirectChannelToUserId,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(PopoverListMembers);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(PopoverListMembers);

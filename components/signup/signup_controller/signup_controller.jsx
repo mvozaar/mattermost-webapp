@@ -38,7 +38,7 @@ export default class SignupController extends React.Component {
             getTeamInviteInfo: PropTypes.func.isRequired,
             addUserToTeamFromInvite: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static contextTypes = {
         intl: intlShape.isRequired,
@@ -69,7 +69,11 @@ export default class SignupController extends React.Component {
                 loading = true;
             } else if (!this.props.loggedIn) {
                 usedBefore = props.usedBefore;
-            } else if (!inviteId && !this.props.enableOpenServer && !this.props.noAccounts) {
+            } else if (
+                !inviteId &&
+                !this.props.enableOpenServer &&
+                !this.props.noAccounts
+            ) {
                 noOpenServerError = true;
                 serverError = (
                     <FormattedMessage
@@ -108,16 +112,24 @@ export default class SignupController extends React.Component {
     }
 
     addUserToTeamFromInvite = async (token, inviteId) => {
-        const {data: team, error} = await this.props.actions.addUserToTeamFromInvite(token, inviteId);
+        const {
+            data: team,
+            error,
+        } = await this.props.actions.addUserToTeamFromInvite(token, inviteId);
         if (team) {
-            browserHistory.push('/' + team.name + `/channels/${Constants.DEFAULT_CHANNEL}`);
+            browserHistory.push(
+                '/' + team.name + `/channels/${Constants.DEFAULT_CHANNEL}`,
+            );
         } else if (error) {
             this.handleInvalidInvite(error);
         }
-    }
+    };
 
     getInviteInfo = async (inviteId) => {
-        const {data, error} = await this.props.actions.getTeamInviteInfo(inviteId);
+        const {data, error} = await this.props.actions.getTeamInviteInfo(
+            inviteId,
+        );
+
         if (data) {
             this.setState({
                 serverError: '',
@@ -126,11 +138,13 @@ export default class SignupController extends React.Component {
         } else if (error) {
             this.handleInvalidInvite(error);
         }
-    }
+    };
 
     handleInvalidInvite = (err) => {
         let serverError;
-        if (err.server_error_id === 'store.sql_user.save.max_accounts.app_error') {
+        if (
+            err.server_error_id === 'store.sql_user.save.max_accounts.app_error'
+        ) {
             serverError = err.message;
         } else {
             serverError = (
@@ -146,7 +160,7 @@ export default class SignupController extends React.Component {
             loading: false,
             serverError,
         });
-    }
+    };
 
     renderSignupControls() {
         const {formatMessage} = this.context.intl;
@@ -162,14 +176,18 @@ export default class SignupController extends React.Component {
                     <span>
                         <span
                             className='icon fa fa-envelope'
-                            title={formatMessage({id: 'signup.email.icon', defaultMessage: 'Email Icon'})}
+                            title={formatMessage({
+                                id: 'signup.email.icon',
+                                defaultMessage: 'Email Icon',
+                            })}
                         />
+
                         <FormattedMessage
                             id='signup.email'
                             defaultMessage='Email and Password'
                         />
                     </span>
-                </Link>
+                </Link>,
             );
         }
 
@@ -178,10 +196,14 @@ export default class SignupController extends React.Component {
                 <a
                     className='btn btn-custom-login btn--full gitlab'
                     key='gitlab'
-                    href={Client4.getOAuthRoute() + '/gitlab/signup' + window.location.search}
+                    href={
+                        Client4.getOAuthRoute() +
+                        '/gitlab/signup' +
+                        window.location.search
+                    }
                 >
                     <span>
-                        <span className='icon'/>
+                        <span className='icon' />
                         <span>
                             <FormattedMessage
                                 id='signup.gitlab'
@@ -189,7 +211,7 @@ export default class SignupController extends React.Component {
                             />
                         </span>
                     </span>
-                </a>
+                </a>,
             );
         }
 
@@ -198,10 +220,14 @@ export default class SignupController extends React.Component {
                 <a
                     className='btn btn-custom-login btn--full google'
                     key='google'
-                    href={Client4.getOAuthRoute() + '/google/signup' + window.location.search}
+                    href={
+                        Client4.getOAuthRoute() +
+                        '/google/signup' +
+                        window.location.search
+                    }
                 >
                     <span>
-                        <span className='icon'/>
+                        <span className='icon' />
                         <span>
                             <FormattedMessage
                                 id='signup.google'
@@ -209,7 +235,7 @@ export default class SignupController extends React.Component {
                             />
                         </span>
                     </span>
-                </a>
+                </a>,
             );
         }
 
@@ -218,10 +244,14 @@ export default class SignupController extends React.Component {
                 <a
                     className='btn btn-custom-login btn--full office365'
                     key='office365'
-                    href={Client4.getOAuthRoute() + '/office365/signup' + window.location.search}
+                    href={
+                        Client4.getOAuthRoute() +
+                        '/office365/signup' +
+                        window.location.search
+                    }
                 >
                     <span>
-                        <span className='icon'/>
+                        <span className='icon' />
                         <span>
                             <FormattedMessage
                                 id='signup.office365'
@@ -229,7 +259,7 @@ export default class SignupController extends React.Component {
                             />
                         </span>
                     </span>
-                </a>
+                </a>,
             );
         }
 
@@ -244,6 +274,7 @@ export default class SignupController extends React.Component {
                     defaultMessage='AD/LDAP Credentials'
                 />
             );
+
             if (this.props.ldapLoginFieldName) {
                 LDAPText = this.props.ldapLoginFieldName;
             }
@@ -256,13 +287,15 @@ export default class SignupController extends React.Component {
                     <span>
                         <span
                             className='icon fa fa-folder-open fa--margin-top'
-                            title={formatMessage({id: 'signup.ldap.icon', defaultMessage: 'AD/LDAP Icon'})}
+                            title={formatMessage({
+                                id: 'signup.ldap.icon',
+                                defaultMessage: 'AD/LDAP Icon',
+                            })}
                         />
-                        <span>
-                            {LDAPText}
-                        </span>
+
+                        <span>{LDAPText}</span>
                     </span>
-                </Link>
+                </Link>,
             );
         }
 
@@ -283,13 +316,15 @@ export default class SignupController extends React.Component {
                     <span>
                         <span
                             className='icon fa fa-lock fa--margin-top'
-                            title={formatMessage({id: 'signup.saml.icon', defaultMessage: 'SAML Icon'})}
+                            title={formatMessage({
+                                id: 'signup.saml.icon',
+                                defaultMessage: 'SAML Icon',
+                            })}
                         />
-                        <span>
-                            {this.props.samlLoginButtonText}
-                        </span>
+
+                        <span>{this.props.samlLoginButtonText}</span>
                     </span>
-                </Link>
+                </Link>,
             );
         }
 
@@ -300,15 +335,15 @@ export default class SignupController extends React.Component {
                     defaultMessage='No user creation method has been enabled. Please contact an administrator for access.'
                 />
             );
+
             signupControls = (
-                <FormError
-                    error={signupDisabledError}
-                    margin={true}
-                />
+                <FormError error={signupDisabledError} margin={true} />
             );
         } else if (signupControls.length === 1) {
             if (this.props.enableSignUpWithEmail) {
-                return browserHistory.push('/signup_email' + window.location.search);
+                return browserHistory.push(
+                    '/signup_email' + window.location.search,
+                );
             } else if (this.props.isLicensed && this.props.enableLDAP) {
                 return browserHistory.push('/login' + window.location.search);
             }
@@ -319,7 +354,7 @@ export default class SignupController extends React.Component {
 
     render() {
         if (this.state.loading) {
-            return (<LoadingScreen/>);
+            return <LoadingScreen />;
         }
 
         if (this.state.usedBefore) {
@@ -337,7 +372,9 @@ export default class SignupController extends React.Component {
         if (this.state.serverError) {
             serverError = (
                 <div className={'form-group has-error'}>
-                    <label className='control-label'>{this.state.serverError}</label>
+                    <label className='control-label'>
+                        {this.state.serverError}
+                    </label>
                 </div>
             );
         }
@@ -351,8 +388,8 @@ export default class SignupController extends React.Component {
 
         return (
             <div>
-                <AnnouncementBar/>
-                <BackButton/>
+                <AnnouncementBar />
+                <BackButton />
                 <div className='col-sm-12'>
                     <div className='signup-team__container'>
                         <img
@@ -360,20 +397,21 @@ export default class SignupController extends React.Component {
                             className='signup-team-logo'
                             src={logoImage}
                         />
+
                         <div className='signup__content'>
                             <h1>{this.props.siteName}</h1>
                             <h4 className='color--light'>
-                                <FormattedMessage
-                                    id='web.root.signup_info'
-                                />
+                                <FormattedMessage id='web.root.signup_info' />
                             </h4>
                             <div className='margin--extra'>
-                                <h5><strong>
-                                    <FormattedMessage
-                                        id='signup.title'
-                                        defaultMessage='Create an account with:'
-                                    />
-                                </strong></h5>
+                                <h5>
+                                    <strong>
+                                        <FormattedMessage
+                                            id='signup.title'
+                                            defaultMessage='Create an account with:'
+                                        />
+                                    </strong>
+                                </h5>
                             </div>
                             {signupControls}
                             {serverError}
@@ -382,11 +420,8 @@ export default class SignupController extends React.Component {
                             <FormattedMessage
                                 id='signup_user_completed.haveAccount'
                                 defaultMessage='Already have an account?'
-                            />
-                            {' '}
-                            <Link
-                                to={'/login' + this.props.location.search}
-                            >
+                            />{' '}
+                            <Link to={'/login' + this.props.location.search}>
                                 <FormattedMessage
                                     id='signup_user_completed.signIn'
                                     defaultMessage='Click here to sign in.'

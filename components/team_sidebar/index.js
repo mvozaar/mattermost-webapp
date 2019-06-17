@@ -7,7 +7,12 @@ import {getTeams} from 'mattermost-redux/actions/teams';
 import {withRouter} from 'react-router-dom';
 
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {getMyTeams, getJoinableTeamIds, getTeamMemberships, getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getMyTeams,
+    getJoinableTeamIds,
+    getTeamMemberships,
+    getCurrentTeamId,
+} from 'mattermost-redux/selectors/entities/teams';
 
 import {getCurrentLocale} from 'selectors/i18n';
 import {getIsLhsOpen} from 'selectors/lhs';
@@ -35,11 +40,20 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getTeams,
-            switchTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getTeams,
+                switchTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TeamSidebar));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    )(TeamSidebar),
+);

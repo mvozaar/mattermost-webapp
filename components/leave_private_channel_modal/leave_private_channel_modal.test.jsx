@@ -17,6 +17,7 @@ describe('components/LeavePrivateChannelModal', () => {
             type: 'P',
             team_id: 'team-1',
         },
+
         'channel-2': {
             id: 'channel-2',
             name: 'test-channel-2',
@@ -24,6 +25,7 @@ describe('components/LeavePrivateChannelModal', () => {
             type: 'P',
             team_id: 'team-1',
         },
+
         'town-square': {
             id: 'town-square-id',
             name: 'town-square',
@@ -41,9 +43,7 @@ describe('components/LeavePrivateChannelModal', () => {
 
     test('should match snapshot, init', () => {
         const wrapper = shallowWithIntl(
-            <LeavePrivateChannelModal
-                {...baseProps}
-            />
+            <LeavePrivateChannelModal {...baseProps} />,
         ).dive({disableLifecycleMethods: true});
 
         expect(wrapper).toMatchSnapshot();
@@ -51,9 +51,7 @@ describe('components/LeavePrivateChannelModal', () => {
 
     test('should show and hide the modal dialog', () => {
         const wrapper = shallowWithIntl(
-            <LeavePrivateChannelModal
-                {...baseProps}
-            />
+            <LeavePrivateChannelModal {...baseProps} />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.instance().handleToggle(channels['channel-2']);
@@ -77,10 +75,9 @@ describe('components/LeavePrivateChannelModal', () => {
                 }),
             },
         };
+
         const wrapper = shallowWithIntl(
-            <LeavePrivateChannelModal
-                {...props}
-            />
+            <LeavePrivateChannelModal {...props} />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.setState({
@@ -108,10 +105,9 @@ describe('components/LeavePrivateChannelModal', () => {
                 }),
             },
         };
+
         const wrapper = shallowWithIntl(
-            <LeavePrivateChannelModal
-                {...props}
-            />
+            <LeavePrivateChannelModal {...props} />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.setState({

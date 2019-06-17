@@ -42,34 +42,40 @@ export default class TeamSettingsModal extends React.Component {
         });
 
         if (!Utils.isMobile()) {
-            $('.settings-modal .modal-body').scrollTop(0).perfectScrollbar('update');
+            $('.settings-modal .modal-body')
+                .scrollTop(0)
+                .perfectScrollbar('update');
         }
-    }
+    };
 
     updateSection = (section) => {
         if ($('.section-max').length) {
-            $('.settings-modal .modal-body').scrollTop(0).perfectScrollbar('update');
+            $('.settings-modal .modal-body')
+                .scrollTop(0)
+                .perfectScrollbar('update');
         }
 
         this.setState({activeSection: section});
-    }
+    };
 
     closeModal = () => {
         this.props.onHide();
-    }
+    };
 
     collapseModal = () => {
-        $(ReactDOM.findDOMNode(this.refs.modalBody)).closest('.modal-dialog').removeClass('display--content');
+        $(ReactDOM.findDOMNode(this.refs.modalBody))
+            .closest('.modal-dialog')
+            .removeClass('display--content');
 
         this.setState({
             active_tab: '',
             active_section: '',
         });
-    }
+    };
 
     handleHide = () => {
         this.props.onHide();
-    }
+    };
 
     // called after the dialog is fully hidden and faded out
     handleHidden = () => {
@@ -77,12 +83,37 @@ export default class TeamSettingsModal extends React.Component {
             activeTab: 'general',
             activeSection: '',
         });
-    }
+    };
 
     render() {
         const tabs = [];
-        tabs.push({name: 'general', uiName: Utils.localizeMessage('team_settings_modal.generalTab', 'General'), icon: 'icon fa fa-cog', iconTitle: Utils.localizeMessage('generic_icons.settings', 'Settings Icon')});
-        tabs.push({name: 'import', uiName: Utils.localizeMessage('team_settings_modal.importTab', 'Import'), icon: 'icon fa fa-upload', iconTitle: Utils.localizeMessage('generic_icons.upload', 'Upload Icon')});
+        tabs.push({
+            name: 'general',
+            uiName: Utils.localizeMessage(
+                'team_settings_modal.generalTab',
+                'General',
+            ),
+
+            icon: 'icon fa fa-cog',
+            iconTitle: Utils.localizeMessage(
+                'generic_icons.settings',
+                'Settings Icon',
+            ),
+        });
+
+        tabs.push({
+            name: 'import',
+            uiName: Utils.localizeMessage(
+                'team_settings_modal.importTab',
+                'Import',
+            ),
+
+            icon: 'icon fa fa-upload',
+            iconTitle: Utils.localizeMessage(
+                'generic_icons.upload',
+                'Upload Icon',
+            ),
+        });
 
         return (
             <Modal
@@ -93,10 +124,7 @@ export default class TeamSettingsModal extends React.Component {
                 role='dialog'
                 aria-labelledby='teamSettingsModalLabel'
             >
-                <Modal.Header
-                    id='teamSettingsModalLabel'
-                    closeButton={true}
-                >
+                <Modal.Header id='teamSettingsModalLabel' closeButton={true}>
                     <Modal.Title componentClass='h1'>
                         <FormattedMessage
                             id='team_settings_modal.title'

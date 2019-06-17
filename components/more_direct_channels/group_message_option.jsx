@@ -26,7 +26,9 @@ export default class GroupMessageOption extends React.Component {
     }
 
     displayName() {
-        return this.props.channel.profiles.map((profile) => '@' + profile.username).join(', ');
+        return this.props.channel.profiles
+            .map((profile) => '@' + profile.username)
+            .join(', ');
     }
 
     addValue() {
@@ -44,13 +46,11 @@ export default class GroupMessageOption extends React.Component {
                     {this.props.channel.profiles.length}
                 </div>
                 <div className='more-modal__details'>
-                    <div className='more-modal__name'>
-                        {this.displayName()}
-                    </div>
+                    <div className='more-modal__name'>{this.displayName()}</div>
                 </div>
                 <div className='more-modal__actions'>
                     <div className='more-modal__actions--round'>
-                        <AddIcon/>
+                        <AddIcon />
                     </div>
                 </div>
             </div>

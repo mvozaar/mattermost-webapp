@@ -9,10 +9,7 @@ import {MenuItemActionImpl} from './menu_item_action.jsx';
 describe('components/MenuItemAction', () => {
     test('should match snapshot', () => {
         const wrapper = shallow(
-            <MenuItemActionImpl
-                onClick={jest.fn()}
-                text='Whatever'
-            />
+            <MenuItemActionImpl onClick={jest.fn()} text='Whatever' />,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`
@@ -30,7 +27,7 @@ describe('components/MenuItemAction', () => {
                 onClick={jest.fn()}
                 text='Whatever'
                 extraText='Extra Text'
-            />
+            />,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`

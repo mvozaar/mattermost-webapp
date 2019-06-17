@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 
-import {isChannelReadOnlyById, getChannel} from 'mattermost-redux/selectors/entities/channels';
+import {
+    isChannelReadOnlyById,
+    getChannel,
+} from 'mattermost-redux/selectors/entities/channels';
 import {getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {get} from 'mattermost-redux/selectors/entities/preferences';
@@ -16,7 +19,8 @@ import RhsRootPost from './rhs_root_post.jsx';
 function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
     const enableEmojiPicker = config.EnableEmojiPicker === 'true';
-    const enablePostUsernameOverride = config.EnablePostUsernameOverride === 'true';
+    const enablePostUsernameOverride =
+        config.EnablePostUsernameOverride === 'true';
     const teamId = ownProps.teamId || getCurrentTeamId(state);
     const channel = getChannel(state, ownProps.post.channel_id) || {};
 
@@ -30,8 +34,20 @@ function mapStateToProps(state, ownProps) {
         channelIsArchived: channel.delete_at !== 0,
         channelType: channel.type,
         channelDisplayName: channel.display_name,
-        isFlagged: get(state, Preferences.CATEGORY_FLAGGED_POST, ownProps.post.id, null) != null,
-        compactDisplay: get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.MESSAGE_DISPLAY, Preferences.MESSAGE_DISPLAY_DEFAULT) === Preferences.MESSAGE_DISPLAY_COMPACT,
+        isFlagged:
+            get(
+                state,
+                Preferences.CATEGORY_FLAGGED_POST,
+                ownProps.post.id,
+                null,
+            ) != null,
+        compactDisplay:
+            get(
+                state,
+                Preferences.CATEGORY_DISPLAY_SETTINGS,
+                Preferences.MESSAGE_DISPLAY,
+                Preferences.MESSAGE_DISPLAY_DEFAULT,
+            ) === Preferences.MESSAGE_DISPLAY_COMPACT,
     };
 }
 

@@ -21,11 +21,14 @@ export default class BackstageList extends React.Component {
         helpText: PropTypes.node,
         loading: PropTypes.bool.isRequired,
         searchPlaceholder: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
-        searchPlaceholder: Utils.localizeMessage('backstage_list.search', 'Search'),
-    }
+        searchPlaceholder: Utils.localizeMessage(
+            'backstage_list.search',
+            'Search',
+        ),
+    };
 
     constructor(props) {
         super(props);
@@ -48,7 +51,7 @@ export default class BackstageList extends React.Component {
 
         let children;
         if (this.props.loading) {
-            children = <LoadingScreen/>;
+            children = <LoadingScreen />;
         } else {
             children = this.props.children;
             let hasChildren = true;
@@ -73,7 +76,9 @@ export default class BackstageList extends React.Component {
                             className='backstage-list__item backstage-list__empty'
                             id='emptySearchResultsMessage'
                         >
-                            {React.cloneElement(this.props.emptyTextSearch, {values: {searchTerm: filter}})}
+                            {React.cloneElement(this.props.emptyTextSearch, {
+                                values: {searchTerm: filter},
+                            })}
                         </span>
                     );
                 }
@@ -84,18 +89,13 @@ export default class BackstageList extends React.Component {
 
         if (this.props.addLink && this.props.addText) {
             addLink = (
-                <Link
-                    className='add-link'
-                    to={this.props.addLink}
-                >
+                <Link className='add-link' to={this.props.addLink}>
                     <button
                         type='button'
                         className='btn btn-primary'
                         id={this.props.addButtonId}
                     >
-                        <span>
-                            {this.props.addText}
-                        </span>
+                        <span>{this.props.addText}</span>
                     </button>
                 </Link>
             );
@@ -104,14 +104,12 @@ export default class BackstageList extends React.Component {
         return (
             <div className='backstage-content'>
                 <div className='backstage-header'>
-                    <h1>
-                        {this.props.header}
-                    </h1>
+                    <h1>{this.props.header}</h1>
                     {addLink}
                 </div>
                 <div className='backstage-filters'>
                     <div className='backstage-filter__search'>
-                        <SearchIcon/>
+                        <SearchIcon />
                         <input
                             type='search'
                             className='form-control'
@@ -126,9 +124,7 @@ export default class BackstageList extends React.Component {
                 <span className='backstage-list__help'>
                     {this.props.helpText}
                 </span>
-                <div className='backstage-list'>
-                    {children}
-                </div>
+                <div className='backstage-list'>{children}</div>
             </div>
         );
     }

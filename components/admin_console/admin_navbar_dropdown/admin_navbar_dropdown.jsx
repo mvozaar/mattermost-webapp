@@ -28,12 +28,14 @@ export default class AdminNavbarDropdown extends React.Component {
         actions: PropTypes.shape({
             deferNavigation: PropTypes.func,
         }).isRequired,
-    }
+    };
 
     handleLogout = (e) => {
         if (this.props.navigationBlocked) {
             e.preventDefault();
-            this.props.actions.deferNavigation(GlobalActions.emitUserLoggedOutEvent);
+            this.props.actions.deferNavigation(
+                GlobalActions.emitUserLoggedOutEvent,
+            );
         } else {
             GlobalActions.emitUserLoggedOutEvent();
         }
@@ -52,8 +54,15 @@ export default class AdminNavbarDropdown extends React.Component {
                     <MenuItemBlockableLink
                         key={'team_' + team.name}
                         to={'/' + team.name}
-                        text={Utils.localizeMessage('navbar_dropdown.switchTo', 'Switch to ') + ' ' + team.display_name}
-                    />
+                        text={
+                            Utils.localizeMessage(
+                                'navbar_dropdown.switchTo',
+                                'Switch to ',
+                            ) +
+                            ' ' +
+                            team.display_name
+                        }
+                    />,
                 );
             }
         } else {
@@ -66,47 +75,70 @@ export default class AdminNavbarDropdown extends React.Component {
                             defaultMessage='Select Team Icon'
                         >
                             {(title) => (
-                                <i
-                                    className='fa fa-exchange'
-                                    title={title}
-                                />
+                                <i className='fa fa-exchange' title={title} />
                             )}
                         </FormattedMessage>
                     }
-                    text={Utils.localizeMessage('admin.nav.switch', 'Team Selection')}
+                    text={Utils.localizeMessage(
+                        'admin.nav.switch',
+                        'Team Selection',
+                    )}
                 />
             );
         }
 
         return (
-            <Menu ariaLabel={Utils.localizeMessage('admin.nav.menuAriaLabel', 'Admin Console Menu')}>
+            <Menu
+                ariaLabel={Utils.localizeMessage(
+                    'admin.nav.menuAriaLabel',
+                    'Admin Console Menu',
+                )}
+            >
                 <MenuGroup>
                     {teamToRender}
                     {switchTeams}
                 </MenuGroup>
                 <MenuGroup>
                     <MenuItemExternalLink
-                        url='https://about.mattermost.com/administrators-guide/'
-                        text={Utils.localizeMessage('admin.nav.administratorsGuide', 'Administrator Guide')}
+                        url='https://about.securCom.me/administrators-guide/'
+                        text={Utils.localizeMessage(
+                            'admin.nav.administratorsGuide',
+                            'Administrator Guide',
+                        )}
                     />
+
                     <MenuItemExternalLink
-                        url='https://about.mattermost.com/troubleshooting-forum/'
-                        text={Utils.localizeMessage('admin.nav.troubleshootingForum', 'Troubleshooting Forum')}
+                        url='https://about.securCom.me/troubleshooting-forum/'
+                        text={Utils.localizeMessage(
+                            'admin.nav.troubleshootingForum',
+                            'Troubleshooting Forum',
+                        )}
                     />
+
                     <MenuItemExternalLink
-                        url='https://about.mattermost.com/commercial-support/'
-                        text={Utils.localizeMessage('admin.nav.commercialSupport', 'Commercial Support')}
+                        url='https://about.securCom.me/commercial-support/'
+                        text={Utils.localizeMessage(
+                            'admin.nav.commercialSupport',
+                            'Commercial Support',
+                        )}
                     />
+
                     <MenuItemToggleModalRedux
                         modalId={ModalIdentifiers.ABOUT}
                         dialogType={AboutBuildModal}
-                        text={Utils.localizeMessage('navbar_dropdown.about', 'About Mattermost')}
+                        text={Utils.localizeMessage(
+                            'navbar_dropdown.about',
+                            'About securCom',
+                        )}
                     />
                 </MenuGroup>
                 <MenuGroup>
                     <MenuItemAction
                         onClick={this.handleLogout}
-                        text={Utils.localizeMessage('navbar_dropdown.logout', 'Logout')}
+                        text={Utils.localizeMessage(
+                            'navbar_dropdown.logout',
+                            'Logout',
+                        )}
                     />
                 </MenuGroup>
             </Menu>

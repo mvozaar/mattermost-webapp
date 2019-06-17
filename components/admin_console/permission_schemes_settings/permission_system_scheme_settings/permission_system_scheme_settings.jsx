@@ -58,7 +58,15 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                 channel_admin: true,
             },
         };
-        this.rolesNeeded = ['system_admin', 'system_user', 'team_admin', 'team_user', 'channel_admin', 'channel_user'];
+
+        this.rolesNeeded = [
+            'system_admin',
+            'system_user',
+            'team_admin',
+            'team_user',
+            'channel_admin',
+            'channel_user',
+        ];
     }
 
     componentDidMount() {
@@ -69,13 +77,19 @@ export default class PermissionSystemSchemeSettings extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this.state.loaded && this.rolesNeeded.every((roleName) => nextProps.roles[roleName])) {
+        if (
+            !this.state.loaded &&
+            this.rolesNeeded.every((roleName) => nextProps.roles[roleName])
+        ) {
             this.loadRolesIntoState(nextProps);
         }
     }
 
     goToSelectedRow = () => {
-        const selected = document.querySelector('.permission-row.selected,.permission-group-row.selected');
+        const selected = document.querySelector(
+            '.permission-row.selected,.permission-group-row.selected',
+        );
+
         if (selected) {
             if (this.state.openRoles.all_users) {
                 selected.scrollIntoView({behavior: 'smooth', block: 'center'});
@@ -84,13 +98,16 @@ export default class PermissionSystemSchemeSettings extends React.Component {
 
                 // Give it time to open and show everything
                 setTimeout(() => {
-                    selected.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    selected.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                    });
                 }, 300);
             }
             return true;
         }
         return false;
-    }
+    };
 
     selectRow = (permission) => {
         this.setState({selectedPermission: permission});
@@ -102,10 +119,17 @@ export default class PermissionSystemSchemeSettings extends React.Component {
         setTimeout(() => {
             this.setState({selectedPermission: null});
         }, 3000);
-    }
+    };
 
     loadRolesIntoState(props) {
-        const {system_admin, team_admin, channel_admin, system_user, team_user, channel_user} = props.roles; // eslint-disable-line camelcase
+        const {
+            system_admin,
+            team_admin,
+            channel_admin,
+            system_user,
+            team_user,
+            channel_user,
+        } = props.roles; // eslint-disable-line camelcase
         this.setState({
             selectedPermission: null,
             loaded: true,
@@ -116,7 +140,9 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                 all_users: {
                     name: 'all_users',
                     displayName: 'All members',
-                    permissions: system_user.permissions.concat(team_user.permissions).concat(channel_user.permissions),
+                    permissions: system_user.permissions
+                        .concat(team_user.permissions)
+                        .concat(channel_user.permissions),
                 },
             },
         });
@@ -126,18 +152,26 @@ export default class PermissionSystemSchemeSettings extends React.Component {
         return {
             system_user: {
                 ...this.props.roles.system_user,
-                permissions: role.permissions.filter((p) => PermissionsScope[p] === 'system_scope'),
+                permissions: role.permissions.filter(
+                    (p) => PermissionsScope[p] === 'system_scope',
+                ),
             },
+
             team_user: {
                 ...this.props.roles.team_user,
-                permissions: role.permissions.filter((p) => PermissionsScope[p] === 'team_scope'),
+                permissions: role.permissions.filter(
+                    (p) => PermissionsScope[p] === 'team_scope',
+                ),
             },
+
             channel_user: {
                 ...this.props.roles.channel_user,
-                permissions: role.permissions.filter((p) => PermissionsScope[p] === 'channel_scope'),
+                permissions: role.permissions.filter(
+                    (p) => PermissionsScope[p] === 'channel_scope',
+                ),
             },
         };
-    }
+    };
 
     restoreExcludedPermissions = (roles) => {
         for (const permission of this.props.roles.system_user.permissions) {
@@ -156,18 +190,40 @@ export default class PermissionSystemSchemeSettings extends React.Component {
             }
         }
         return roles;
-    }
+    };
 
     handleSubmit = async () => {
-        const teamAdminPromise = this.props.actions.editRole(this.state.roles.team_admin);
-        const channelAdminPromise = this.props.actions.editRole(this.state.roles.channel_admin);
-        const roles = this.restoreExcludedPermissions(this.deriveRolesFromAllUsers(this.state.roles.all_users));
-        const systemUserPromise = this.props.actions.editRole(roles.system_user);
+        const teamAdminPromise = this.props.actions.editRole(
+            this.state.roles.team_admin,
+        );
+
+        const channelAdminPromise = this.props.actions.editRole(
+            this.state.roles.channel_admin,
+        );
+
+        const roles = this.restoreExcludedPermissions(
+            this.deriveRolesFromAllUsers(this.state.roles.all_users),
+        );
+
+        const systemUserPromise = this.props.actions.editRole(
+            roles.system_user,
+        );
+
         const teamUserPromise = this.props.actions.editRole(roles.team_user);
-        const channelUserPromise = this.props.actions.editRole(roles.channel_user);
+        const channelUserPromise = this.props.actions.editRole(
+            roles.channel_user,
+        );
+
         this.setState({saving: true});
 
-        const results = await Promise.all([teamAdminPromise, channelAdminPromise, systemUserPromise, teamUserPromise, channelUserPromise]);
+        const results = await Promise.all([
+            teamAdminPromise,
+            channelAdminPromise,
+            systemUserPromise,
+            teamUserPromise,
+            channelUserPromise,
+        ]);
+
         let serverError = null;
         let saveNeeded = false;
         for (const result of results) {
@@ -180,13 +236,13 @@ export default class PermissionSystemSchemeSettings extends React.Component {
 
         this.setState({serverError, saving: false, saveNeeded});
         this.props.actions.setNavigationBlocked(saveNeeded);
-    }
+    };
 
     toggleRole = (roleId) => {
         const newOpenRoles = {...this.state.openRoles};
         newOpenRoles[roleId] = !newOpenRoles[roleId];
         this.setState({openRoles: newOpenRoles});
-    }
+    };
 
     togglePermission = (roleId, permissions) => {
         const roles = {...this.state.roles};
@@ -204,22 +260,24 @@ export default class PermissionSystemSchemeSettings extends React.Component {
 
         this.setState({roles, saveNeeded: true});
         this.props.actions.setNavigationBlocked(true);
-    }
+    };
 
     resetDefaults = () => {
         const newRolesState = JSON.parse(JSON.stringify({...this.state.roles}));
 
-        Object.entries(DefaultRolePermissions).forEach(([roleName, permissions]) => {
-            newRolesState[roleName].permissions = permissions;
-        });
+        Object.entries(DefaultRolePermissions).forEach(
+            ([roleName, permissions]) => {
+                newRolesState[roleName].permissions = permissions;
+            },
+        );
 
         this.setState({roles: newRolesState, saveNeeded: true});
         this.props.actions.setNavigationBlocked(true);
-    }
+    };
 
     render = () => {
         if (!this.state.loaded) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
         return (
             <div className='wrapper--fixed'>
@@ -228,6 +286,7 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                         to='/admin_console/user_management/permissions'
                         className='fa fa-angle-left back'
                     />
+
                     <FormattedMessage
                         id='admin.permissions.systemScheme'
                         defaultMessage='System Scheme'
@@ -239,7 +298,7 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                         <span>
                             <FormattedMarkdownMessage
                                 id='admin.permissions.systemScheme.introBanner'
-                                defaultMessage='Configure the default permissions for Team Admins, Channel Admins and other members. This scheme is inherited by all teams unless a [Team Override Scheme](!https://about.mattermost.com/default-team-override-scheme) is applied in specific teams.'
+                                defaultMessage='Configure the default permissions for Team Admins, Channel Admins and other members. This scheme is inherited by all teams unless a [Team Override Scheme](!https://about.securCom.me/default-team-override-scheme) is applied in specific teams.'
                             />
                         </span>
                     </div>
@@ -250,9 +309,13 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                     open={this.state.openRoles.all_users}
                     id='all_users'
                     onToggle={() => this.toggleRole('all_users')}
-                    titleId={t('admin.permissions.systemScheme.allMembersTitle')}
+                    titleId={t(
+                        'admin.permissions.systemScheme.allMembersTitle',
+                    )}
                     titleDefault='All Members'
-                    subtitleId={t('admin.permissions.systemScheme.allMembersDescription')}
+                    subtitleId={t(
+                        'admin.permissions.systemScheme.allMembersDescription',
+                    )}
                     subtitleDefault='Permissions granted to all members, including administrators and newly created users.'
                 >
                     <PermissionsTree
@@ -268,9 +331,13 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                     className='permissions-block'
                     open={this.state.openRoles.channel_admin}
                     onToggle={() => this.toggleRole('channel_admin')}
-                    titleId={t('admin.permissions.systemScheme.channelAdminsTitle')}
+                    titleId={t(
+                        'admin.permissions.systemScheme.channelAdminsTitle',
+                    )}
                     titleDefault='Channel Administrators'
-                    subtitleId={t('admin.permissions.systemScheme.channelAdminsDescription')}
+                    subtitleId={t(
+                        'admin.permissions.systemScheme.channelAdminsDescription',
+                    )}
                     subtitleDefault='Permissions granted to channel creators and any users promoted to Channel Administrator.'
                 >
                     <PermissionsTree
@@ -286,9 +353,13 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                     className='permissions-block'
                     open={this.state.openRoles.team_admin}
                     onToggle={() => this.toggleRole('team_admin')}
-                    titleId={t('admin.permissions.systemScheme.teamAdminsTitle')}
+                    titleId={t(
+                        'admin.permissions.systemScheme.teamAdminsTitle',
+                    )}
                     titleDefault='Team Administrators'
-                    subtitleId={t('admin.permissions.systemScheme.teamAdminsDescription')}
+                    subtitleId={t(
+                        'admin.permissions.systemScheme.teamAdminsDescription',
+                    )}
                     subtitleDefault='Permissions granted to team creators and any users promoted to Team Administrator.'
                 >
                     <PermissionsTree
@@ -304,9 +375,13 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                     className='permissions-block'
                     open={this.state.openRoles.system_admin}
                     onToggle={() => this.toggleRole('system_admin')}
-                    titleId={t('admin.permissions.systemScheme.systemAdminsTitle')}
+                    titleId={t(
+                        'admin.permissions.systemScheme.systemAdminsTitle',
+                    )}
                     titleDefault='System Administrators'
-                    subtitleId={t('admin.permissions.systemScheme.systemAdminsDescription')}
+                    subtitleId={t(
+                        'admin.permissions.systemScheme.systemAdminsDescription',
+                    )}
                     subtitleDefault='Full permissions granted to System Administrators.'
                 >
                     <PermissionsTree
@@ -321,10 +396,17 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                 <div className='admin-console-save'>
                     <SaveButton
                         saving={this.state.saving}
-                        disabled={!this.state.saveNeeded || (this.canSave && !this.canSave())}
+                        disabled={
+                            !this.state.saveNeeded ||
+                            (this.canSave && !this.canSave())
+                        }
                         onClick={this.handleSubmit}
-                        savingMessage={localizeMessage('admin.saving', 'Saving Config...')}
+                        savingMessage={localizeMessage(
+                            'admin.saving',
+                            'Saving Config...',
+                        )}
                     />
+
                     <BlockableLink
                         className='cancel-button'
                         to='/admin_console/user_management/permissions'
@@ -335,7 +417,9 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                         />
                     </BlockableLink>
                     <a
-                        onClick={() => this.setState({showResetDefaultModal: true})}
+                        onClick={() =>
+                            this.setState({showResetDefaultModal: true})
+                        }
                         className='cancel-button reset-defaults-btn'
                     >
                         <FormattedMessage
@@ -344,7 +428,7 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                         />
                     </a>
                     <div className='error-message'>
-                        <FormError error={this.state.serverError}/>
+                        <FormError error={this.state.serverError} />
                     </div>
                 </div>
 
@@ -372,9 +456,10 @@ export default class PermissionSystemSchemeSettings extends React.Component {
                         this.resetDefaults();
                         this.setState({showResetDefaultModal: false});
                     }}
-                    onCancel={() => this.setState({showResetDefaultModal: false})}
+                    onCancel={() =>
+                        this.setState({showResetDefaultModal: false})
+                    }
                 />
-
             </div>
         );
     };

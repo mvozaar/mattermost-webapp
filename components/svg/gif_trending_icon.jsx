@@ -14,11 +14,7 @@ export default class GifTrendingIcon extends React.PureComponent {
                     viewBox='0 0 11 15'
                     version='1.1'
                 >
-                    <g
-                        id='Finalized-Design'
-                        stroke='none'
-                        fill='inherit'
-                    >
+                    <g id='Finalized-Design' stroke='none' fill='inherit'>
                         <g
                             id='GfyCat---Gycat-Tab'
                             transform='translate(-1212.000000, -619.000000)'

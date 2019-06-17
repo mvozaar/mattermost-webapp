@@ -20,7 +20,7 @@ export default class GroupTeamsAndChannelsRow extends React.PureComponent {
         collapsed: PropTypes.bool,
         onRemoveItem: PropTypes.func.isRequired,
         onToggleCollapse: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -32,11 +32,11 @@ export default class GroupTeamsAndChannelsRow extends React.PureComponent {
     removeItem = () => {
         this.props.onRemoveItem(this.props.id, this.props.type);
         this.setState({showConfirmationModal: false});
-    }
+    };
 
     toggleCollapse = () => {
         this.props.onToggleCollapse(this.props.id);
-    }
+    };
 
     render = () => {
         let extraClasses = '';
@@ -44,10 +44,14 @@ export default class GroupTeamsAndChannelsRow extends React.PureComponent {
         if (this.props.hasChildren) {
             arrowIcon = (
                 <i
-                    className={'fa fa-caret-right' + (this.props.collapsed ? '' : ' open')}
+                    className={
+                        'fa fa-caret-right' +
+                        (this.props.collapsed ? '' : ' open')
+                    }
                     onClick={this.toggleCollapse}
                 />
             );
+
             extraClasses += ' has-clidren';
         }
 
@@ -58,42 +62,46 @@ export default class GroupTeamsAndChannelsRow extends React.PureComponent {
         let teamIcon = null;
         let channelIcon = null;
         switch (this.props.type) {
-        case 'public-team':
-            teamIcon = (
-                <div className='team-icon team-icon-public'>
-                    <i className={'fa fa-circle-o-notch'}/>
-                </div>
-            );
-            break;
-        case 'private-team':
-            teamIcon = (
-                <div className='team-icon team-icon-private'>
-                    <span className='fa-stack fa-2x'>
-                        <i className={'fa fa-circle-thin fa-stack-2x'}/>
-                        <i className={'fa fa-lock fa-stack-1x'}/>
-                    </span>
-                </div>
-            );
-            break;
-        default:
-            teamIcon = (<div className='team-icon'/>);
+            case 'public-team':
+                teamIcon = (
+                    <div className='team-icon team-icon-public'>
+                        <i className={'fa fa-circle-o-notch'} />
+                    </div>
+                );
+
+                break;
+            case 'private-team':
+                teamIcon = (
+                    <div className='team-icon team-icon-private'>
+                        <span className='fa-stack fa-2x'>
+                            <i className={'fa fa-circle-thin fa-stack-2x'} />
+                            <i className={'fa fa-lock fa-stack-1x'} />
+                        </span>
+                    </div>
+                );
+
+                break;
+            default:
+                teamIcon = <div className='team-icon' />;
         }
 
         switch (this.props.type) {
-        case 'public-channel':
-            channelIcon = (
-                <div className='channel-icon'>
-                    <GlobeIcon className='icon icon__globe'/>
-                </div>
-            );
-            break;
-        case 'private-channel':
-            channelIcon = (
-                <div className='channel-icon'>
-                    <LockIcon className='icon icon__lock'/>
-                </div>
-            );
-            break;
+            case 'public-channel':
+                channelIcon = (
+                    <div className='channel-icon'>
+                        <GlobeIcon className='icon icon__globe' />
+                    </div>
+                );
+
+                break;
+            case 'private-channel':
+                channelIcon = (
+                    <div className='channel-icon'>
+                        <LockIcon className='icon icon__lock' />
+                    </div>
+                );
+
+                break;
         }
 
         const displayType = this.props.type.split('-')[1];
@@ -123,29 +131,29 @@ export default class GroupTeamsAndChannelsRow extends React.PureComponent {
                         />
                     }
                     onConfirm={this.removeItem}
-                    onCancel={() => this.setState({showConfirmationModal: false})}
+                    onCancel={() =>
+                        this.setState({showConfirmationModal: false})
+                    }
                 />
 
-                <div className='arrow-icon'>
-                    {arrowIcon}
-                </div>
+                <div className='arrow-icon'>{arrowIcon}</div>
                 {teamIcon}
                 {channelIcon}
-                <div className='name'>
-                    {this.props.name}
-                </div>
+                <div className='name'>{this.props.name}</div>
                 <div className='remove'>
-                    {!this.props.implicit &&
+                    {!this.props.implicit && (
                         <button
                             className='btn btn-link'
-                            onClick={() => this.setState({showConfirmationModal: true})}
+                            onClick={() =>
+                                this.setState({showConfirmationModal: true})
+                            }
                         >
                             <FormattedMessage
                                 id='admin.group_settings.group_details.group_teams_and_channels_row.remove'
                                 defaultMessage='Remove'
                             />
                         </button>
-                    }
+                    )}
                 </div>
             </div>
         );

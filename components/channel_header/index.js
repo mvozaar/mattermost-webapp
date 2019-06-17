@@ -72,21 +72,30 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        favoriteChannel,
-        unfavoriteChannel,
-        showFlaggedPosts,
-        showPinnedPosts,
-        showMentions,
-        closeRightHandSide,
-        updateRhsState,
-        getCustomEmojisInText,
-        updateChannelNotifyProps,
-        goToLastViewedChannel,
-        openModal,
-        closeModal,
-        loadBot,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            favoriteChannel,
+            unfavoriteChannel,
+            showFlaggedPosts,
+            showPinnedPosts,
+            showMentions,
+            closeRightHandSide,
+            updateRhsState,
+            getCustomEmojisInText,
+            updateChannelNotifyProps,
+            goToLastViewedChannel,
+            openModal,
+            closeModal,
+            loadBot,
+        },
+
+        dispatch,
+    ),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChannelHeader));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    )(ChannelHeader),
+);

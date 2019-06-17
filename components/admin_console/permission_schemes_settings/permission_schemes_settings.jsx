@@ -29,6 +29,7 @@ export default class PermissionSchemesSettings extends React.PureComponent {
         license: PropTypes.shape({
             CustomPermissionsSchemes: PropTypes.string,
         }),
+
         actions: PropTypes.shape({
             loadSchemes: PropTypes.func.isRequired,
             loadSchemeTeams: PropTypes.func.isRequired,
@@ -49,19 +50,30 @@ export default class PermissionSchemesSettings extends React.PureComponent {
         schemes: {},
     };
 
-    async UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    async UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         let schemes;
         let phase2MigrationIsComplete = true; // Assume migration is complete unless HTTP status code says otherwise.
         try {
-            schemes = await this.props.actions.loadSchemes('team', 0, PAGE_SIZE);
-            if (schemes.error.status_code === PHASE_2_MIGRATION_IMCOMPLETE_STATUS_CODE) {
+            schemes = await this.props.actions.loadSchemes(
+                'team',
+                0,
+                PAGE_SIZE,
+            );
+
+            if (
+                schemes.error.status_code ===
+                PHASE_2_MIGRATION_IMCOMPLETE_STATUS_CODE
+            ) {
                 phase2MigrationIsComplete = false;
             }
             const promises = [];
             for (const scheme of schemes.data) {
                 promises.push(this.props.actions.loadSchemeTeams(scheme.id));
             }
-            Promise.all(promises).then(() => this.setState({loading: false, phase2MigrationIsComplete}));
+            Promise.all(promises).then(() =>
+                this.setState({loading: false, phase2MigrationIsComplete}),
+            );
         } catch (err) {
             this.setState({loading: false, phase2MigrationIsComplete});
         }
@@ -69,14 +81,23 @@ export default class PermissionSchemesSettings extends React.PureComponent {
 
     loadMoreSchemes = () => {
         this.setState({loadingMore: true});
-        this.props.actions.loadSchemes('team', this.state.page + 1, PAGE_SIZE).then((schemes) => {
-            const promises = [];
-            for (const scheme of schemes.data) {
-                promises.push(this.props.actions.loadSchemeTeams(scheme.id));
-            }
-            Promise.all(promises).then(() => this.setState({loadingMore: false, page: this.state.page + 1}));
-        });
-    }
+        this.props.actions
+            .loadSchemes('team', this.state.page + 1, PAGE_SIZE)
+            .then((schemes) => {
+                const promises = [];
+                for (const scheme of schemes.data) {
+                    promises.push(
+                        this.props.actions.loadSchemeTeams(scheme.id),
+                    );
+                }
+                Promise.all(promises).then(() =>
+                    this.setState({
+                        loadingMore: false,
+                        page: this.state.page + 1,
+                    }),
+                );
+            });
+    };
 
     // |RunJobs && !EnableCluster|(*App).IsPhase2MigrationCompleted|View                                                   |
     // |-------------------------|---------------------------------|-------------------------------------------------------|
@@ -91,7 +112,7 @@ export default class PermissionSchemesSettings extends React.PureComponent {
 
         const docLink = (
             <a
-                href='https://docs.mattermost.com/administration/config-settings.html#jobs'
+                href='https://docs.securCom.me/administration/config-settings.html#jobs'
                 rel='noopener noreferrer'
                 target='_blank'
             >
@@ -106,7 +127,7 @@ export default class PermissionSchemesSettings extends React.PureComponent {
             return this.teamOverrideUnavalableView(
                 t('admin.permissions.teamOverrideSchemesInProgress'),
                 'Migration job in progress: Team Override Schemes are not available until the job server completes the permissions migration. Learn more in the {documentationLink}.',
-                docLink
+                docLink,
             );
         }
 
@@ -115,7 +136,7 @@ export default class PermissionSchemesSettings extends React.PureComponent {
             'Migration job on hold: Team Override Schemes are not available until the job server can execute the permissions migration. The job will be automatically started when the job server is enabled. Learn more in the {documentationLink}.',
             docLink,
         );
-    }
+    };
 
     teamOverrideUnavalableView = (id, defaultMsg, documentationLink) => {
         return (
@@ -139,7 +160,9 @@ export default class PermissionSchemesSettings extends React.PureComponent {
                 key={scheme.id}
             />
         ));
-        const hasCustomSchemes = this.props.license.CustomPermissionsSchemes === 'true';
+
+        const hasCustomSchemes =
+            this.props.license.CustomPermissionsSchemes === 'true';
         const teamOverrideView = this.teamOverrideSchemesMigrationView();
 
         if (hasCustomSchemes) {
@@ -148,23 +171,29 @@ export default class PermissionSchemesSettings extends React.PureComponent {
                     className='permissions-block'
                     titleId={t('admin.permissions.teamOverrideSchemesTitle')}
                     titleDefault='Team Override Schemes'
-                    subtitleId={t('admin.permissions.teamOverrideSchemesBannerText')}
-                    subtitleDefault='Use when specific teams need permission exceptions to the [System Scheme](!https://about.mattermost.com/default-system-scheme).'
+                    subtitleId={t(
+                        'admin.permissions.teamOverrideSchemesBannerText',
+                    )}
+                    subtitleDefault='Use when specific teams need permission exceptions to the [System Scheme](!https://about.securCom.me/default-system-scheme).'
                     url='/admin_console/user_management/permissions/team_override_scheme'
                     disabled={teamOverrideView !== null}
-                    linkTextId={t('admin.permissions.teamOverrideSchemesNewButton')}
+                    linkTextId={t(
+                        'admin.permissions.teamOverrideSchemesNewButton',
+                    )}
                     linkTextDefault='New Team Override Scheme'
                 >
-                    {schemes.length === 0 && teamOverrideView === null &&
+                    {schemes.length === 0 && teamOverrideView === null && (
                         <div className='no-team-schemes'>
                             <FormattedMessage
                                 id='admin.permissions.teamOverrideSchemesNoSchemes'
                                 defaultMessage='No team override schemes created.'
                             />
-                        </div>}
+                        </div>
+                    )}
+
                     {teamOverrideView}
                     {schemes.length > 0 && schemes}
-                    {schemes.length === (PAGE_SIZE * (this.state.page + 1)) &&
+                    {schemes.length === PAGE_SIZE * (this.state.page + 1) && (
                         <button
                             className='more-schemes theme style--none color--link'
                             onClick={this.loadMoreSchemes}
@@ -172,23 +201,27 @@ export default class PermissionSchemesSettings extends React.PureComponent {
                         >
                             <LoadingWrapper
                                 loading={this.state.loadingMore}
-                                text={Utils.localizeMessage('admin.permissions.loadingMoreSchemes', 'Loading...')}
+                                text={Utils.localizeMessage(
+                                    'admin.permissions.loadingMoreSchemes',
+                                    'Loading...',
+                                )}
                             >
                                 <FormattedMessage
                                     id='admin.permissions.loadMoreSchemes'
                                     defaultMessage='Load more schemes'
                                 />
                             </LoadingWrapper>
-                        </button>}
+                        </button>
+                    )}
                 </AdminPanelWithLink>
             );
         }
         return false;
-    }
+    };
 
     render = () => {
         if (this.state.loading) {
-            return (<LoadingScreen/>);
+            return <LoadingScreen />;
         }
 
         const teamOverrideView = this.teamOverrideSchemesMigrationView();
@@ -199,12 +232,13 @@ export default class PermissionSchemesSettings extends React.PureComponent {
                     id='admin.permissions.permissionSchemes'
                     defaultMessage='Permission Schemes'
                 />
+
                 <div className='banner info'>
                     <div className='banner__content'>
                         <span>
                             <FormattedMarkdownMessage
                                 id='admin.permissions.introBanner'
-                                defaultMessage='Permission Schemes set the default permissions for Team Admins, Channel Admins and everyone else. Learn more about permission schemes in our [documentation](!https://about.mattermost.com/default-advanced-permissions).'
+                                defaultMessage='Permission Schemes set the default permissions for Team Admins, Channel Admins and everyone else. Learn more about permission schemes in our [documentation](!https://about.securCom.me/default-advanced-permissions).'
                             />
                         </span>
                     </div>
@@ -214,7 +248,7 @@ export default class PermissionSchemesSettings extends React.PureComponent {
                     titleId={t('admin.permissions.systemSchemeBannerTitle')}
                     titleDefault='System Scheme'
                     subtitleId={t('admin.permissions.systemSchemeBannerText')}
-                    subtitleDefault='Set the default permissions inherited by all teams unless a [Team Override Scheme](!https://about.mattermost.com/default-team-override-scheme) is applied.'
+                    subtitleDefault='Set the default permissions inherited by all teams unless a [Team Override Scheme](!https://about.securCom.me/default-team-override-scheme) is applied.'
                     url='/admin_console/user_management/permissions/system_scheme'
                     disabled={teamOverrideView !== null}
                     linkTextId={t('admin.permissions.systemSchemeBannerButton')}

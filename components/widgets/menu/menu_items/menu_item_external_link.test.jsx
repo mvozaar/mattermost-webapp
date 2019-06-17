@@ -9,10 +9,7 @@ import {MenuItemExternalLinkImpl} from './menu_item_external_link.jsx';
 describe('components/MenuItemExternalLink', () => {
     test('should match snapshot', () => {
         const wrapper = shallow(
-            <MenuItemExternalLinkImpl
-                url='http://test.com'
-                text='Whatever'
-            />
+            <MenuItemExternalLinkImpl url='http://test.com' text='Whatever' />,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`

@@ -15,16 +15,31 @@ import {
 import {logout, loadMe} from 'mattermost-redux/actions/users';
 import {Client4} from 'mattermost-redux/client';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {getCurrentTeamId, getTeam, getMyTeams, getMyTeamMember, getTeamMemberships} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getCurrentTeamId,
+    getTeam,
+    getMyTeams,
+    getMyTeamMember,
+    getTeamMemberships,
+} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
-import {getCurrentChannelStats, getCurrentChannelId, getChannelByName, getMyChannelMember as selectMyChannelMember} from 'mattermost-redux/selectors/entities/channels';
+import {
+    getCurrentChannelStats,
+    getCurrentChannelId,
+    getChannelByName,
+    getMyChannelMember as selectMyChannelMember,
+} from 'mattermost-redux/selectors/entities/channels';
 import {ChannelTypes} from 'mattermost-redux/action_types';
 
 import {browserHistory} from 'utils/browser_history';
 import {handleNewPost} from 'actions/post_actions.jsx';
 import {stopPeriodicStatusUpdates} from 'actions/status_actions.jsx';
 import {loadProfilesForSidebar} from 'actions/user_actions.jsx';
-import {closeRightHandSide, closeMenu as closeRhsMenu, updateRhsState} from 'actions/views/rhs';
+import {
+    closeRightHandSide,
+    closeMenu as closeRhsMenu,
+    updateRhsState,
+} from 'actions/views/rhs';
 import {clearUserCookie} from 'actions/views/root';
 import {close as closeLhs} from 'actions/views/lhs';
 import * as WebsocketActions from 'actions/websocket_actions.jsx';
@@ -36,7 +51,12 @@ import store from 'stores/redux_store.jsx';
 import LocalStorageStore from 'stores/local_storage_store';
 import WebSocketClient from 'client/web_websocket_client.jsx';
 
-import {ActionTypes, Constants, PostTypes, RHSStates} from 'utils/constants.jsx';
+import {
+    ActionTypes,
+    Constants,
+    PostTypes,
+    RHSStates,
+} from 'utils/constants.jsx';
 import {filterAndSortTeamsByDisplayName} from 'utils/team_utils.jsx';
 import * as Utils from 'utils/utils.jsx';
 import {equalServerVersions} from 'utils/server_version';
@@ -49,7 +69,10 @@ export function emitChannelClickEvent(channel) {
         const state = getState();
         const currentUserId = getCurrentUserId(state);
         const otherUserId = Utils.getUserIdFromChannelName(chan);
-        const {data: receivedChannel} = await createDirectChannel(currentUserId, otherUserId)(dispatch, getState);
+        const {data: receivedChannel} = await createDirectChannel(
+            currentUserId,
+            otherUserId,
+        )(dispatch, getState);
         if (receivedChannel) {
             success(receivedChannel);
         } else {
@@ -76,10 +99,21 @@ export function emitChannelClickEvent(channel) {
         });
 
         if (chan.delete_at === 0) {
-            const penultimate = LocalStorageStore.getPreviousChannelName(userId, teamId);
+            const penultimate = LocalStorageStore.getPreviousChannelName(
+                userId,
+                teamId,
+            );
             if (penultimate !== chan.name) {
-                LocalStorageStore.setPenultimateChannelName(userId, teamId, penultimate);
-                LocalStorageStore.setPreviousChannelName(userId, teamId, chan.name);
+                LocalStorageStore.setPenultimateChannelName(
+                    userId,
+                    teamId,
+                    penultimate,
+                );
+                LocalStorageStore.setPreviousChannelName(
+                    userId,
+                    teamId,
+                    chan.name,
+                );
             }
         }
 
@@ -91,15 +125,20 @@ export function emitChannelClickEvent(channel) {
 
         loadProfilesForSidebar();
 
-        dispatch(batchActions([{
-            type: ChannelTypes.SELECT_CHANNEL,
-            data: chan.id,
-        }, {
-            type: ActionTypes.SELECT_CHANNEL_WITH_MEMBER,
-            data: chan.id,
-            channel: chan,
-            member: member || {},
-        }]));
+        dispatch(
+            batchActions([
+                {
+                    type: ChannelTypes.SELECT_CHANNEL,
+                    data: chan.id,
+                },
+                {
+                    type: ActionTypes.SELECT_CHANNEL_WITH_MEMBER,
+                    data: chan.id,
+                    channel: chan,
+                    member: member || {},
+                },
+            ]),
+        );
     }
 
     if (channel.fake) {
@@ -110,7 +149,7 @@ export function emitChannelClickEvent(channel) {
             },
             () => {
                 browserHistory.push('/' + this.state.currentTeam.name);
-            }
+            },
         );
     } else {
         switchToChannel(channel);
@@ -192,7 +231,14 @@ export function sendEphemeralPost(message, channelId, parentId) {
     dispatch(handleNewPost(post));
 }
 
-export function sendAddToChannelEphemeralPost(user, addedUsername, addedUserId, channelId, postRootId = '', timestamp) {
+export function sendAddToChannelEphemeralPost(
+    user,
+    addedUsername,
+    addedUserId,
+    channelId,
+    postRootId = '',
+    timestamp,
+) {
     const post = {
         id: Utils.generateId(),
         user_id: user.id,
@@ -222,8 +268,12 @@ export function emitLocalUserTypingEvent(channelId, parentPostId) {
         const stats = getCurrentChannelStats(state);
         const membersInChannel = stats ? stats.member_count : 0;
 
-        if (((t - lastTimeTypingSent) > config.TimeBetweenUserTypingUpdatesMilliseconds) &&
-            (membersInChannel < config.MaxNotificationsPerChannel) && (config.EnableUserTypingMessages === 'true')) {
+        if (
+            t - lastTimeTypingSent >
+                config.TimeBetweenUserTypingUpdatesMilliseconds &&
+            membersInChannel < config.MaxNotificationsPerChannel &&
+            config.EnableUserTypingMessages === 'true'
+        ) {
             WebSocketClient.userTyping(channelId, parentPostId);
             lastTimeTypingSent = t;
         }
@@ -234,28 +284,34 @@ export function emitLocalUserTypingEvent(channelId, parentPostId) {
     return dispatch(userTyping);
 }
 
-export function emitUserLoggedOutEvent(redirectTo = '/', shouldSignalLogout = true, userAction = true) {
+export function emitUserLoggedOutEvent(
+    redirectTo = '/',
+    shouldSignalLogout = true,
+    userAction = true,
+) {
     // If the logout was intentional, discard knowledge about having previously been logged in.
     // This bit is otherwise used to detect session expirations on the login page.
     if (userAction) {
         LocalStorageStore.setWasLoggedIn(false);
     }
 
-    dispatch(logout()).then(() => {
-        if (shouldSignalLogout) {
-            BrowserStore.signalLogout();
-        }
+    dispatch(logout())
+        .then(() => {
+            if (shouldSignalLogout) {
+                BrowserStore.signalLogout();
+            }
 
-        BrowserStore.clear();
-        stopPeriodicStatusUpdates();
-        WebsocketActions.close();
+            BrowserStore.clear();
+            stopPeriodicStatusUpdates();
+            WebsocketActions.close();
 
-        clearUserCookie();
+            clearUserCookie();
 
-        browserHistory.push(redirectTo);
-    }).catch(() => {
-        browserHistory.push(redirectTo);
-    });
+            browserHistory.push(redirectTo);
+        })
+        .catch(() => {
+            browserHistory.push(redirectTo);
+        });
 }
 
 export function toggleSideBarRightMenuAction() {
@@ -305,13 +361,18 @@ export async function redirectUserToDefaultTeam() {
     }
 
     if (userId && team) {
-        let channelName = LocalStorageStore.getPreviousChannelName(userId, teamId);
+        let channelName = LocalStorageStore.getPreviousChannelName(
+            userId,
+            teamId,
+        );
         const channel = getChannelByName(state, channelName);
         if (channel && channel.team_id === team.id) {
             dispatch(selectChannel(channel.id));
             channelName = channel.name;
         } else {
-            const {data} = await dispatch(getChannelByNameAndTeamName(team.name, channelName));
+            const {data} = await dispatch(
+                getChannelByNameAndTeamName(team.name, channelName),
+            );
             if (data) {
                 dispatch(selectChannel(data.id));
             }
@@ -328,8 +389,13 @@ let serverVersion = '';
 export function reloadIfServerVersionChanged() {
     const newServerVersion = Client4.getServerVersion();
 
-    if (serverVersion && !equalServerVersions(serverVersion, newServerVersion)) {
-        console.log(`Detected version update from ${serverVersion} to ${newServerVersion}; refreshing the page`); //eslint-disable-line no-console
+    if (
+        serverVersion &&
+        !equalServerVersions(serverVersion, newServerVersion)
+    ) {
+        console.log(
+            `Detected version update from ${serverVersion} to ${newServerVersion}; refreshing the page`,
+        ); //eslint-disable-line no-console
         window.location.reload(true);
     }
 

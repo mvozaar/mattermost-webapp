@@ -13,7 +13,10 @@ export default class EmojiPickerCategorySection extends React.PureComponent {
     };
 
     componentDidMount() {
-        this.props.updateCategoryOffset(this.props.categoryName, this.div.offsetTop);
+        this.props.updateCategoryOffset(
+            this.props.categoryName,
+            this.div.offsetTop,
+        );
     }
     divRef = (div) => {
         this.div = div;
@@ -21,15 +24,15 @@ export default class EmojiPickerCategorySection extends React.PureComponent {
 
     render() {
         return (
-            <div
-                ref={this.divRef}
-            >
+            <div ref={this.divRef}>
                 <div className='emoji-picker-items__container'>
                     <div
                         className='emoji-picker__category-header'
                         id={`emojipickercat-${this.props.categoryName}`}
                     >
-                        <FormattedMessage id={'emoji_picker.' + this.props.categoryName}/>
+                        <FormattedMessage
+                            id={'emoji_picker.' + this.props.categoryName}
+                        />
                     </div>
                 </div>
                 <div className='emoji-picker-items__container'>

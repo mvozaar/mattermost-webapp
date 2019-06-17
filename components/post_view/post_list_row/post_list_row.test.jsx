@@ -22,9 +22,9 @@ describe('components/post_view/post_list_row', () => {
         const props = {
             listId,
         };
-        const wrapper = shallowWithIntl(
-            <PostListRow {...props}/>
-        );
+
+        const wrapper = shallowWithIntl(<PostListRow {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -35,9 +35,9 @@ describe('components/post_view/post_list_row', () => {
             listId,
             loadMorePosts,
         };
-        const wrapper = shallowWithIntl(
-            <PostListRow {...props}/>
-        );
+
+        const wrapper = shallowWithIntl(<PostListRow {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         wrapper.prop('onClick')();
         expect(loadMorePosts).toHaveBeenCalledTimes(1);
@@ -49,13 +49,13 @@ describe('components/post_view/post_list_row', () => {
             channel: {
                 id: '123',
             },
+
             fullWidth: true,
             listId,
         };
 
-        const wrapper = shallowWithIntl(
-            <PostListRow {...props}/>
-        );
+        const wrapper = shallowWithIntl(<PostListRow {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(ChannelIntroMessage).exists()).toBe(true);
     });
@@ -65,9 +65,9 @@ describe('components/post_view/post_list_row', () => {
         const props = {
             listId,
         };
-        const wrapper = shallowWithIntl(
-            <PostListRow {...props}/>
-        );
+
+        const wrapper = shallowWithIntl(<PostListRow {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(NewMessageSeparator).exists()).toBe(true);
     });
@@ -77,9 +77,9 @@ describe('components/post_view/post_list_row', () => {
         const props = {
             listId,
         };
-        const wrapper = shallowWithIntl(
-            <PostListRow {...props}/>
-        );
+
+        const wrapper = shallowWithIntl(<PostListRow {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(DateSeparator).exists()).toBe(true);
     });
@@ -90,9 +90,9 @@ describe('components/post_view/post_list_row', () => {
             listId: `${PostListUtils.COMBINED_USER_ACTIVITY}-1234-5678`,
             previousListId: 'abcd',
         };
-        const wrapper = shallowWithIntl(
-            <PostListRow {...props}/>
-        );
+
+        const wrapper = shallowWithIntl(<PostListRow {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(CombinedUserActivityPost).exists()).toBe(true);
     });
@@ -103,9 +103,9 @@ describe('components/post_view/post_list_row', () => {
             listId: '1234',
             previousListId: 'abcd',
         };
-        const wrapper = shallowWithIntl(
-            <PostListRow {...props}/>
-        );
+
+        const wrapper = shallowWithIntl(<PostListRow {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Post).exists()).toBe(true);
     });

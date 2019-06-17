@@ -4,11 +4,7 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import {
-    toggle,
-    open,
-    close,
-} from 'actions/views/lhs';
+import {toggle, open, close} from 'actions/views/lhs';
 import {ActionTypes} from 'utils/constants.jsx';
 
 const mockStore = configureStore([thunk]);

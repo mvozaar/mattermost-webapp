@@ -17,4 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({openModal}, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelMembersModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ChannelMembersModal);

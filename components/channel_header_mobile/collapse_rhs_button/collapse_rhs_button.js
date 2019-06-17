@@ -6,11 +6,7 @@ import PropTypes from 'prop-types';
 
 import MenuIcon from 'components/svg/menu_icon';
 
-const CollapseRhsButton = ({
-    actions: {
-        toggleRhsMenu,
-    },
-}) => (
+const CollapseRhsButton = ({actions: {toggleRhsMenu}}) => (
     <button
         key='navbar-toggle-menu'
         type='button'
@@ -19,7 +15,7 @@ const CollapseRhsButton = ({
         data-target='#sidebar-nav'
         onClick={toggleRhsMenu}
     >
-        <MenuIcon/>
+        <MenuIcon />
     </button>
 );
 

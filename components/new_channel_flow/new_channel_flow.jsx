@@ -17,25 +17,24 @@ export const SHOW_EDIT_URL_THEN_COMPLETE = 3;
 
 export default class NewChannelFlow extends React.Component {
     static propTypes = {
-
         /**
-        * Set whether to show the modal or not
-        */
+         * Set whether to show the modal or not
+         */
         show: PropTypes.bool.isRequired,
 
         /**
-        * Set to Constants.OPEN_CHANNEL or Constants.PRIVATE_CHANNEL depending on which modal we should show first
-        */
+         * Set to Constants.OPEN_CHANNEL or Constants.PRIVATE_CHANNEL depending on which modal we should show first
+         */
         channelType: PropTypes.string.isRequired,
 
         /**
-        * Function to call when modal is dimissed
-        */
+         * Function to call when modal is dimissed
+         */
         onModalDismissed: PropTypes.func.isRequired,
 
         /**
-        * The current team ID
-        */
+         * The current team ID
+         */
         currentTeamId: PropTypes.string.isRequired,
 
         /**
@@ -73,7 +72,8 @@ export default class NewChannelFlow extends React.Component {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         // If we are being shown, grab channel type from props and clear
         if (nextProps.show === true && this.props.show === false) {
             this.setState({
@@ -91,7 +91,13 @@ export default class NewChannelFlow extends React.Component {
 
     onSubmit = () => {
         if (!this.state.channelDisplayName) {
-            this.setState({serverError: Utils.localizeMessage('channel_flow.invalidName', 'Invalid Channel Name')});
+            this.setState({
+                serverError: Utils.localizeMessage(
+                    'channel_flow.invalidName',
+                    'Invalid Channel Name',
+                ),
+            });
+
             return;
         }
 
@@ -133,7 +139,12 @@ export default class NewChannelFlow extends React.Component {
                 ),
             });
         } else if (err.id === 'store.sql_channel.update.exists.app_error') {
-            this.setState({serverError: Utils.localizeMessage('channel_flow.alreadyExist', 'A channel with that URL already exists')});
+            this.setState({
+                serverError: Utils.localizeMessage(
+                    'channel_flow.alreadyExist',
+                    'A channel with that URL already exists',
+                ),
+            });
         } else {
             this.setState({serverError: err.message});
         }
@@ -155,9 +166,17 @@ export default class NewChannelFlow extends React.Component {
 
     urlChangeSubmitted = (newURL) => {
         if (this.state.flowState === SHOW_EDIT_URL_THEN_COMPLETE) {
-            this.setState({channelName: newURL, nameModified: true}, this.onSubmit);
+            this.setState(
+                {channelName: newURL, nameModified: true},
+                this.onSubmit,
+            );
         } else {
-            this.setState({flowState: SHOW_NEW_CHANNEL, serverError: null, channelName: newURL, nameModified: true});
+            this.setState({
+                flowState: SHOW_NEW_CHANNEL,
+                serverError: null,
+                channelName: newURL,
+                nameModified: true,
+            });
         }
     };
 
@@ -171,8 +190,11 @@ export default class NewChannelFlow extends React.Component {
             channelPurpose: data.purpose,
             channelHeader: data.header,
         });
+
         if (!this.state.nameModified) {
-            this.setState({channelName: cleanUpUrlable(data.displayName.trim())});
+            this.setState({
+                channelName: cleanUpUrlable(data.displayName.trim()),
+            });
         }
     };
 
@@ -193,34 +215,37 @@ export default class NewChannelFlow extends React.Component {
         // Only listen to flow state if we are being shown
         if (this.props.show) {
             switch (this.state.flowState) {
-            case SHOW_NEW_CHANNEL:
-                showChannelModal = true;
-                break;
-            case SHOW_EDIT_URL:
-                showChangeURLModal = true;
-                changeURLTitle = (
-                    <FormattedMessage
-                        id='channel_flow.changeUrlTitle'
-                        defaultMessage='Change Channel URL'
-                    />
-                );
-                changeURLSubmitButtonText = changeURLTitle;
-                break;
-            case SHOW_EDIT_URL_THEN_COMPLETE:
-                showChangeURLModal = true;
-                changeURLTitle = (
-                    <FormattedMessage
-                        id='channel_flow.set_url_title'
-                        defaultMessage='Set Channel URL'
-                    />
-                );
-                changeURLSubmitButtonText = (
-                    <FormattedMessage
-                        id='channel_flow.create'
-                        defaultMessage='Create Channel'
-                    />
-                );
-                break;
+                case SHOW_NEW_CHANNEL:
+                    showChannelModal = true;
+                    break;
+                case SHOW_EDIT_URL:
+                    showChangeURLModal = true;
+                    changeURLTitle = (
+                        <FormattedMessage
+                            id='channel_flow.changeUrlTitle'
+                            defaultMessage='Change Channel URL'
+                        />
+                    );
+
+                    changeURLSubmitButtonText = changeURLTitle;
+                    break;
+                case SHOW_EDIT_URL_THEN_COMPLETE:
+                    showChangeURLModal = true;
+                    changeURLTitle = (
+                        <FormattedMessage
+                            id='channel_flow.set_url_title'
+                            defaultMessage='Set Channel URL'
+                        />
+                    );
+
+                    changeURLSubmitButtonText = (
+                        <FormattedMessage
+                            id='channel_flow.create'
+                            defaultMessage='Create Channel'
+                        />
+                    );
+
+                    break;
             }
         }
         return (
@@ -238,6 +263,7 @@ export default class NewChannelFlow extends React.Component {
                     onChangeURLPressed={this.urlChangeRequested}
                     onDataChanged={this.channelDataChanged}
                 />
+
                 <ChangeURLModal
                     show={showChangeURLModal}
                     title={changeURLTitle}

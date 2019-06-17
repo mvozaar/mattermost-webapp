@@ -34,13 +34,16 @@ describe('components/admin_console/system_users/system_users_dropdown/system_use
     };
 
     test('handleMakeActive() should have called updateUserActive', async () => {
-        const wrapper = shallow(<SystemUsersDropdown {...requiredProps}/>);
+        const wrapper = shallow(<SystemUsersDropdown {...requiredProps} />);
 
         const event = {preventDefault: jest.fn()};
         await wrapper.instance().handleMakeActive(event);
 
         expect(requiredProps.actions.updateUserActive).toHaveBeenCalledTimes(1);
-        expect(requiredProps.actions.updateUserActive).toHaveBeenCalledWith(requiredProps.user.id, true);
+        expect(requiredProps.actions.updateUserActive).toHaveBeenCalledWith(
+            requiredProps.user.id,
+            true,
+        );
     });
 
     test('handleMakeActive() should have called onError', async () => {
@@ -48,23 +51,33 @@ describe('components/admin_console/system_users/system_users_dropdown/system_use
         const updateUserActive = jest.fn(() => {
             return Promise.resolve(retVal);
         });
-        const props = {...requiredProps, actions: {...requiredProps.actions, updateUserActive}};
-        const wrapper = shallow(<SystemUsersDropdown {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {...requiredProps.actions, updateUserActive},
+        };
+
+        const wrapper = shallow(<SystemUsersDropdown {...props} />);
 
         const event = {preventDefault: jest.fn()};
         await wrapper.instance().handleMakeActive(event);
 
         expect(requiredProps.onError).toHaveBeenCalledTimes(1);
-        expect(requiredProps.onError).toHaveBeenCalledWith({id: retVal.error.server_error_id, ...retVal.error});
+        expect(requiredProps.onError).toHaveBeenCalledWith({
+            id: retVal.error.server_error_id,
+            ...retVal.error,
+        });
     });
 
     test('handleDeactivateMember() should have called updateUserActive', async () => {
-        const wrapper = shallow(<SystemUsersDropdown {...requiredProps}/>);
+        const wrapper = shallow(<SystemUsersDropdown {...requiredProps} />);
 
         await wrapper.instance().handleDeactivateMember();
 
         expect(requiredProps.actions.updateUserActive).toHaveBeenCalledTimes(1);
-        expect(requiredProps.actions.updateUserActive).toHaveBeenCalledWith(requiredProps.user.id, false);
+        expect(requiredProps.actions.updateUserActive).toHaveBeenCalledWith(
+            requiredProps.user.id,
+            false,
+        );
     });
 
     test('handleDeactivateMember() should have called onError', async () => {
@@ -72,29 +85,43 @@ describe('components/admin_console/system_users/system_users_dropdown/system_use
         const updateUserActive = jest.fn(() => {
             return Promise.resolve(retVal);
         });
-        const props = {...requiredProps, actions: {...requiredProps.actions, updateUserActive}};
-        const wrapper = shallow(<SystemUsersDropdown {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {...requiredProps.actions, updateUserActive},
+        };
+
+        const wrapper = shallow(<SystemUsersDropdown {...props} />);
 
         await wrapper.instance().handleDeactivateMember();
 
         expect(requiredProps.onError).toHaveBeenCalledTimes(1);
-        expect(requiredProps.onError).toHaveBeenCalledWith({id: retVal.error.server_error_id, ...retVal.error});
+        expect(requiredProps.onError).toHaveBeenCalledWith({
+            id: retVal.error.server_error_id,
+            ...retVal.error,
+        });
     });
 
     test('handleRevokeSessions() should have called revokeAllSessions', async () => {
-        const wrapper = shallow(<SystemUsersDropdown {...requiredProps}/>);
+        const wrapper = shallow(<SystemUsersDropdown {...requiredProps} />);
 
         await wrapper.instance().handleRevokeSessions();
 
         expect(requiredProps.actions.revokeAllSessions).toHaveBeenCalled();
-        expect(requiredProps.actions.revokeAllSessions).toHaveBeenCalledWith(requiredProps.user.id);
+        expect(requiredProps.actions.revokeAllSessions).toHaveBeenCalledWith(
+            requiredProps.user.id,
+        );
     });
 
     test('handleRevokeSessions() should have called onError', async () => {
         const revokeAllSessions = jest.fn().mockResolvedValue({error: {}});
         const onError = jest.fn();
-        const props = {...requiredProps, onError, actions: {...requiredProps.actions, revokeAllSessions}};
-        const wrapper = shallow(<SystemUsersDropdown {...props}/>);
+        const props = {
+            ...requiredProps,
+            onError,
+            actions: {...requiredProps.actions, revokeAllSessions},
+        };
+
+        const wrapper = shallow(<SystemUsersDropdown {...props} />);
 
         await wrapper.instance().handleRevokeSessions();
 

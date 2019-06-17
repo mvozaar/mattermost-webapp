@@ -26,7 +26,8 @@ export default class NewMessagesBelow extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.newMessages > 0 && !nextProps.atBottom) {
             this.setState({rendered: true}, () => {
                 this.setState({visible: true});
@@ -56,7 +57,8 @@ export default class NewMessagesBelow extends React.PureComponent {
                         defaultMessage='New {count, plural, one {message} other {messages}}'
                         values={{count: this.props.newMessages}}
                     />
-                    <UnreadBelowIcon className='icon icon__unread'/>
+
+                    <UnreadBelowIcon className='icon icon__unread' />
                 </div>
             </div>
         );

@@ -4,7 +4,10 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {
+    getConfig,
+    getLicense,
+} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import {getTeamInviteInfo} from 'mattermost-redux/actions/teams';
 
@@ -24,7 +27,8 @@ function mapStateToProps(state, ownProps) {
     const enableSignUpWithEmail = config.EnableSignUpWithEmail === 'true';
     const enableSignUpWithGitLab = config.EnableSignUpWithGitLab === 'true';
     const enableSignUpWithGoogle = config.EnableSignUpWithGoogle === 'true';
-    const enableSignUpWithOffice365 = config.EnableSignUpWithOffice365 === 'true';
+    const enableSignUpWithOffice365 =
+        config.EnableSignUpWithOffice365 === 'true';
     const enableLDAP = config.EnableLdap === 'true';
     const enableSAML = config.EnableSaml === 'true';
     const samlLoginButtonText = config.SamlLoginButtonText;
@@ -61,12 +65,19 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            removeGlobalItem,
-            getTeamInviteInfo,
-            addUserToTeamFromInvite,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                removeGlobalItem,
+                getTeamInviteInfo,
+                addUserToTeamFromInvite,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupController);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SignupController);

@@ -18,10 +18,12 @@ describe('components/admin_console/permission_schemes_settings/permission_tree',
             EnableCommands: 'true',
             EnableCustomEmoji: 'true',
         },
+
         role: {
             name: 'test',
             permissions: [],
         },
+
         onToggle: jest.fn(),
         selectRow: jest.fn(),
         parentRole: null,
@@ -29,39 +31,32 @@ describe('components/admin_console/permission_schemes_settings/permission_tree',
     };
 
     test('should match snapshot on default data', () => {
-        const wrapper = shallow(
-            <PermissionsTree {...defaultProps}/>
-        );
+        const wrapper = shallow(<PermissionsTree {...defaultProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot on read only', () => {
         const wrapper = shallow(
-            <PermissionsTree
-                {...defaultProps}
-                readOnly={true}
-            />
+            <PermissionsTree {...defaultProps} readOnly={true} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot on team scope', () => {
         const wrapper = shallow(
-            <PermissionsTree
-                {...defaultProps}
-                scope={'team_scope'}
-            />
+            <PermissionsTree {...defaultProps} scope={'team_scope'} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot on system scope', () => {
         const wrapper = shallow(
-            <PermissionsTree
-                {...defaultProps}
-                scope={'system_scope'}
-            />
+            <PermissionsTree {...defaultProps} scope={'system_scope'} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -71,21 +66,26 @@ describe('components/admin_console/permission_schemes_settings/permission_tree',
                 {...defaultProps}
                 parentRole={{permissions: 'invite_user'}}
                 scope={'system_scope'}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should ask to toggle on row toggle', () => {
         const onToggle = jest.fn();
         const wrapper = shallow(
-            <PermissionsTree
-                {...defaultProps}
-                onToggle={onToggle}
-            />
+            <PermissionsTree {...defaultProps} onToggle={onToggle} />,
         );
-        wrapper.find(PermissionGroup).first().prop('onChange')(['test_permission', 'test_permission2']);
-        expect(onToggle).toBeCalledWith('test', ['test_permission', 'test_permission2']);
+
+        wrapper
+            .find(PermissionGroup)
+            .first()
+            .prop('onChange')(['test_permission', 'test_permission2']);
+        expect(onToggle).toBeCalledWith('test', [
+            'test_permission',
+            'test_permission2',
+        ]);
     });
 
     test('should hide disabbled integration options', () => {
@@ -99,8 +99,9 @@ describe('components/admin_console/permission_schemes_settings/permission_tree',
                     EnableCommands: 'false',
                     EnableCustomEmoji: 'false',
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

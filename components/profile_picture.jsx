@@ -30,7 +30,7 @@ export default class ProfilePicture extends React.PureComponent {
 
     hideProfilePopover = () => {
         this.refs.overlay.hide();
-    }
+    };
 
     render() {
         if (this.props.userId) {
@@ -54,12 +54,14 @@ export default class ProfilePicture extends React.PureComponent {
                     <span className='status-wrapper'>
                         <img
                             className='more-modal__image'
-                            alt={`${this.props.username || 'user'} profile image`}
+                            alt={`${this.props.username ||
+                                'user'} profile image`}
                             width={this.props.width}
                             height={this.props.width}
                             src={this.props.src}
                         />
-                        <StatusIcon status={this.props.status}/>
+
+                        <StatusIcon status={this.props.status} />
                     </span>
                 </OverlayTrigger>
             );
@@ -73,7 +75,8 @@ export default class ProfilePicture extends React.PureComponent {
                     height={this.props.width}
                     src={this.props.src}
                 />
-                <StatusIcon status={this.props.status}/>
+
+                <StatusIcon status={this.props.status} />
             </span>
         );
     }

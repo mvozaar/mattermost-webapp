@@ -4,8 +4,15 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createSelector} from 'reselect';
-import {searchProfilesInCurrentChannel, getProfilesInCurrentChannel} from 'mattermost-redux/selectors/entities/users';
-import {getMembersInCurrentChannel, getCurrentChannelStats, getCurrentChannel} from 'mattermost-redux/selectors/entities/channels';
+import {
+    searchProfilesInCurrentChannel,
+    getProfilesInCurrentChannel,
+} from 'mattermost-redux/selectors/entities/users';
+import {
+    getMembersInCurrentChannel,
+    getCurrentChannelStats,
+    getCurrentChannel,
+} from 'mattermost-redux/selectors/entities/channels';
 import {getMembersInCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getChannelStats} from 'mattermost-redux/actions/channels';
 import {searchProfiles} from 'mattermost-redux/actions/users';
@@ -32,7 +39,11 @@ const getUsersAndActionsToDisplay = createSelector(
         for (let i = 0; i < users.length; i++) {
             const user = users[i];
 
-            if (teamMembers[user.id] && channelMembers[user.id] && user.delete_at === 0) {
+            if (
+                teamMembers[user.id] &&
+                channelMembers[user.id] &&
+                user.delete_at === 0
+            ) {
                 usersToDisplay.push(user);
 
                 actionUserProps[user.id] = {
@@ -47,7 +58,7 @@ const getUsersAndActionsToDisplay = createSelector(
             usersToDisplay: usersToDisplay.sort(sortByUsername),
             actionUserProps,
         };
-    }
+    },
 );
 
 function mapStateToProps(state) {
@@ -73,15 +84,22 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            searchProfiles,
-            getChannelStats,
-            setModalSearchTerm,
-            loadProfilesAndTeamMembersAndChannelMembers,
-            loadStatusesForProfilesList,
-            loadTeamMembersAndChannelMembersForProfilesList,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                searchProfiles,
+                getChannelStats,
+                setModalSearchTerm,
+                loadProfilesAndTeamMembersAndChannelMembers,
+                loadStatusesForProfilesList,
+                loadTeamMembersAndChannelMembersForProfilesList,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MemberListChannel);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MemberListChannel);

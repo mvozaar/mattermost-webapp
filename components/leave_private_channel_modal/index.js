@@ -10,10 +10,17 @@ import LeavePrivateChannelModal from './leave_private_channel_modal.jsx';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            leaveChannel,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                leaveChannel,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(LeavePrivateChannelModal);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(LeavePrivateChannelModal);

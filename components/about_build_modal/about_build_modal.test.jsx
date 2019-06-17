@@ -40,9 +40,10 @@ describe('components/AboutBuildModal', () => {
             BuildHash: 'abcdef1234567890',
             BuildHashEnterprise: '0123456789abcdef',
             BuildDate: '21 January 2017',
-            TermsOfServiceLink: 'https://about.mattermost.com/default-terms/',
-            PrivacyPolicyLink: 'https://mattermost.com/privacy-policy/',
+            TermsOfServiceLink: 'https://about.securCom.me/default-terms/',
+            PrivacyPolicyLink: 'https://securCom.me/privacy-policy/',
         };
+
         license = {
             IsLicensed: 'true',
             Company: 'Mattermost Inc',
@@ -63,7 +64,11 @@ describe('components/AboutBuildModal', () => {
             BuildHashEnterprise: '',
         };
 
-        const wrapper = shallowAboutBuildModal({config: teamConfig, license: {}});
+        const wrapper = shallowAboutBuildModal({
+            config: teamConfig,
+            license: {},
+        });
+
         expect(wrapper.find('#versionString').text()).toBe('\u00a03.6.2');
         expect(wrapper.find('#dbversionString').text()).toBe('\u00a03.6.0');
         expect(wrapper).toMatchSnapshot();
@@ -78,7 +83,11 @@ describe('components/AboutBuildModal', () => {
             BuildNumber: 'dev',
         };
 
-        const wrapper = shallowAboutBuildModal({config: sameBuildConfig, license: {}});
+        const wrapper = shallowAboutBuildModal({
+            config: sameBuildConfig,
+            license: {},
+        });
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find('#versionString').text()).toBe('\u00a0dev');
         expect(wrapper.find('#dbversionString').text()).toBe('\u00a03.6.0');
@@ -93,7 +102,11 @@ describe('components/AboutBuildModal', () => {
             BuildNumber: '123',
         };
 
-        const wrapper = shallowAboutBuildModal({config: differentBuildConfig, license: {}});
+        const wrapper = shallowAboutBuildModal({
+            config: differentBuildConfig,
+            license: {},
+        });
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find('#versionString').text()).toBe('\u00a0ci');
         expect(wrapper.find('#dbversionString').text()).toBe('\u00a03.6.0');
@@ -112,10 +125,14 @@ describe('components/AboutBuildModal', () => {
                 webappBuildHash='0a1b2c3d4f'
                 show={true}
                 onHide={onHide}
-            />
+            />,
         );
 
-        wrapper.find(Modal).first().props().onHide();
+        wrapper
+            .find(Modal)
+            .first()
+            .props()
+            .onHide();
     });
 
     function shallowAboutBuildModal(props = {}) {
@@ -129,6 +146,6 @@ describe('components/AboutBuildModal', () => {
             ...props,
         };
 
-        return shallow(<AboutBuildModal {...allProps}/>);
+        return shallow(<AboutBuildModal {...allProps} />);
     }
 });

@@ -44,14 +44,12 @@ export default class BackstageSection extends React.Component {
         if (children.length > 0) {
             clonedChildren = (
                 <ul className='subsections'>
-                    {
-                        React.Children.map(children, (child) => {
-                            return React.cloneElement(child, {
-                                parentLink: link,
-                                subsection: true,
-                            });
-                        })
-                    }
+                    {React.Children.map(children, (child) => {
+                        return React.cloneElement(child, {
+                            parentLink: link,
+                            subsection: true,
+                        });
+                    })}
                 </ul>
             );
         }
@@ -62,18 +60,13 @@ export default class BackstageSection extends React.Component {
         }
 
         return (
-            <li
-                className={className}
-                id={this.props.id}
-            >
+            <li className={className} id={this.props.id}>
                 <NavLink
                     className={`${className}-title`}
                     activeClassName={`${className}-title--active`}
                     to={link}
                 >
-                    <span className={`${className}-title__text`}>
-                        {title}
-                    </span>
+                    <span className={`${className}-title__text`}>{title}</span>
                 </NavLink>
                 {clonedChildren}
             </li>

@@ -7,9 +7,17 @@ import {bindActionCreators} from 'redux';
 import {loadRolesIfNeeded, editRole} from 'mattermost-redux/actions/roles';
 
 import {getRoles} from 'mattermost-redux/selectors/entities/roles';
-import {getScheme, makeGetSchemeTeams} from 'mattermost-redux/selectors/entities/schemes';
+import {
+    getScheme,
+    makeGetSchemeTeams,
+} from 'mattermost-redux/selectors/entities/schemes';
 
-import {getScheme as loadScheme, patchScheme, createScheme, getSchemeTeams as loadSchemeTeams} from 'mattermost-redux/actions/schemes';
+import {
+    getScheme as loadScheme,
+    patchScheme,
+    createScheme,
+    getSchemeTeams as loadSchemeTeams,
+} from 'mattermost-redux/actions/schemes';
 
 import {updateTeamScheme} from 'mattermost-redux/actions/teams';
 
@@ -34,17 +42,24 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadRolesIfNeeded,
-            loadScheme,
-            loadSchemeTeams,
-            editRole,
-            patchScheme,
-            updateTeamScheme,
-            createScheme,
-            setNavigationBlocked,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadRolesIfNeeded,
+                loadScheme,
+                loadSchemeTeams,
+                editRole,
+                patchScheme,
+                updateTeamScheme,
+                createScheme,
+                setNavigationBlocked,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(PermissionTeamSchemeSettings);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(PermissionTeamSchemeSettings);

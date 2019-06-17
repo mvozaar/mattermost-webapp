@@ -17,15 +17,22 @@ import RhsHeaderPost from './rhs_header_post.jsx';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            showSearchResults,
-            showMentions,
-            showFlaggedPosts,
-            showPinnedPosts,
-            closeRightHandSide,
-            toggleRhsExpanded,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                showSearchResults,
+                showMentions,
+                showFlaggedPosts,
+                showPinnedPosts,
+                closeRightHandSide,
+                toggleRhsExpanded,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(RhsHeaderPost);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(RhsHeaderPost);

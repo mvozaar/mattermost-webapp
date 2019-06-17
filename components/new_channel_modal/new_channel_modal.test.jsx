@@ -14,7 +14,13 @@ import NewChannelModal from 'components/new_channel_modal/new_channel_modal.jsx'
 
 describe('components/NewChannelModal', () => {
     const mockStore = configureStore();
-    const channelData = {name: 'testchannel', displayName: 'testchannel', header: '', purpose: ''};
+    const channelData = {
+        name: 'testchannel',
+        displayName: 'testchannel',
+        header: '',
+        purpose: '',
+    };
+
     const baseProps = {
         show: true,
         channelType: Constants.OPEN_CHANNEL,
@@ -31,62 +37,65 @@ describe('components/NewChannelModal', () => {
 
     test('should match snapshot, modal not showing', () => {
         const props = {...baseProps, show: false};
-        const wrapper = shallow(
-            <NewChannelModal {...props}/>
-        );
+        const wrapper = shallow(<NewChannelModal {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Modal).props().show).toEqual(false);
     });
 
     test('should match snapshot, modal showing', () => {
-        const wrapper = shallow(
-            <NewChannelModal {...baseProps}/>
-        );
+        const wrapper = shallow(<NewChannelModal {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Modal).props().show).toEqual(true);
     });
 
     test('should match snapshot, display only public channel option', () => {
         const props = {...baseProps, canCreatePrivateChannel: false};
-        const wrapper = shallow(
-            <NewChannelModal {...props}/>
-        );
+        const wrapper = shallow(<NewChannelModal {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Modal).props().show).toEqual(true);
     });
 
     test('should match snapshot, display only private channel option', () => {
         const props = {...baseProps, canCreatePublicChannel: false};
-        const wrapper = shallow(
-            <NewChannelModal {...props}/>
-        );
+        const wrapper = shallow(<NewChannelModal {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Modal).props().show).toEqual(true);
     });
 
     test('should match snapshot, private channel filled in header and purpose', () => {
-        const newChannelData = {name: 'testchannel', displayName: 'testchannel', header: 'some header', purpose: 'some purpose'};
-        const props = {...baseProps, channelData: newChannelData, channelType: Constants.PRIVATE_CHANNEL};
+        const newChannelData = {
+            name: 'testchannel',
+            displayName: 'testchannel',
+            header: 'some header',
+            purpose: 'some purpose',
+        };
 
-        const wrapper = shallow(
-            <NewChannelModal {...props}/>
-        );
+        const props = {
+            ...baseProps,
+            channelData: newChannelData,
+            channelType: Constants.PRIVATE_CHANNEL,
+        };
+
+        const wrapper = shallow(<NewChannelModal {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on displayNameError', () => {
-        const wrapper = shallow(
-            <NewChannelModal {...baseProps}/>
-        );
+        const wrapper = shallow(<NewChannelModal {...baseProps} />);
+
         wrapper.setState({displayNameError: true});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on serverError', () => {
         const props = {...baseProps, serverError: 'server error'};
-        const wrapper = shallow(
-            <NewChannelModal {...props}/>
-        );
+        const wrapper = shallow(<NewChannelModal {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -99,9 +108,11 @@ describe('components/NewChannelModal', () => {
                 channels: {
                     myMembers: [],
                 },
+
                 teams: {
                     myMembers: [],
                 },
+
                 users: {
                     currentUserId: 'user_id',
                     profiles: {
@@ -111,6 +122,7 @@ describe('components/NewChannelModal', () => {
                         },
                     },
                 },
+
                 roles: {
                     roles: {
                         system_admin: {
@@ -123,13 +135,15 @@ describe('components/NewChannelModal', () => {
                 },
             },
         };
+
         const store = mockStore(state);
 
         const wrapper = mountWithIntl(
             <Provider store={store}>
-                <NewChannelModal {...props}/>
-            </Provider>
+                <NewChannelModal {...props} />
+            </Provider>,
         );
+
         const modal = wrapper.find(NewChannelModal).instance();
 
         const refDisplayName = modal.refs.display_name;
@@ -144,7 +158,11 @@ describe('components/NewChannelModal', () => {
         modal.handleChange();
 
         expect(newOnDataChanged).toHaveBeenCalledTimes(1);
-        expect(newOnDataChanged).toHaveBeenCalledWith({displayName: 'new display_name', header: 'new channel_header', purpose: 'new channel_purpose'});
+        expect(newOnDataChanged).toHaveBeenCalledWith({
+            displayName: 'new display_name',
+            header: 'new channel_header',
+            purpose: 'new channel_purpose',
+        });
     });
 
     test('should match when handleSubmit is called', () => {
@@ -156,9 +174,11 @@ describe('components/NewChannelModal', () => {
                 channels: {
                     myMembers: [],
                 },
+
                 teams: {
                     myMembers: [],
                 },
+
                 users: {
                     currentUserId: 'user_id',
                     profiles: {
@@ -168,19 +188,21 @@ describe('components/NewChannelModal', () => {
                         },
                     },
                 },
+
                 roles: {
-                    roles: {
-                    },
+                    roles: {},
                 },
             },
         };
+
         const store = mockStore(state);
 
         const wrapper = mountWithIntl(
             <Provider store={store}>
-                <NewChannelModal {...props}/>
-            </Provider>
+                <NewChannelModal {...props} />
+            </Provider>,
         );
+
         const modal = wrapper.find(NewChannelModal).instance();
         modal.handleSubmit({preventDefault: jest.fn()});
 
@@ -189,17 +211,27 @@ describe('components/NewChannelModal', () => {
     });
 
     test('should have called handleSubmit on onEnterKeyDown', () => {
-        const wrapper = shallow(
-            <NewChannelModal {...baseProps}/>
-        );
+        const wrapper = shallow(<NewChannelModal {...baseProps} />);
+
         wrapper.instance().handleSubmit = jest.fn();
 
-        let evt = {ctrlSend: true, key: Constants.KeyCodes.ENTER[0], ctrlKey: true};
+        let evt = {
+            ctrlSend: true,
+            key: Constants.KeyCodes.ENTER[0],
+            ctrlKey: true,
+        };
+
         wrapper.instance().onEnterKeyDown(evt);
         expect(wrapper.instance().handleSubmit).toHaveBeenCalledTimes(1);
         expect(wrapper.instance().handleSubmit).toHaveBeenCalledWith(evt);
 
-        evt = {ctrlSend: false, key: Constants.KeyCodes.ENTER[0], shiftKey: false, altKey: false};
+        evt = {
+            ctrlSend: false,
+            key: Constants.KeyCodes.ENTER[0],
+            shiftKey: false,
+            altKey: false,
+        };
+
         wrapper.instance().onEnterKeyDown(evt);
         expect(wrapper.instance().handleSubmit).toHaveBeenCalledTimes(2);
         expect(wrapper.instance().handleSubmit).toHaveBeenCalledWith(evt);

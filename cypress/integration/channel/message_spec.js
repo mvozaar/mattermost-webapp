@@ -17,20 +17,24 @@ function shouldHavePostProfileImageVisible(isVisible = true) {
     cy.getLastPostId().then((postID) => {
         const target = `#post_${postID}`;
         if (isVisible) {
-            cy.get(target).invoke('attr', 'class').
-                should('contain', 'current--user').
-                and('contain', 'other--root');
+            cy.get(target)
+                .invoke('attr', 'class')
+                .should('contain', 'current--user')
+                .and('contain', 'other--root');
 
-            cy.get(`${target} > #postContent > .post__img`).should('be.visible');
+            cy.get(`${target} > #postContent > .post__img`).should(
+                'be.visible',
+            );
         } else {
-            cy.get(target).invoke('attr', 'class').
-                should('contain', 'current--user').
-                and('contain', 'same--user').
-                and('contain', 'same--root');
+            cy.get(target)
+                .invoke('attr', 'class')
+                .should('contain', 'current--user')
+                .and('contain', 'same--user')
+                .and('contain', 'same--root');
 
-            cy.get(`${target} > #postContent > .post__img`).
-                should('be.visible').
-                and('be.empty');
+            cy.get(`${target} > #postContent > .post__img`)
+                .should('be.visible')
+                .and('be.empty');
         }
     });
 }
@@ -55,7 +59,11 @@ describe('Message', () => {
     it('M13701 Consecutive message does not repeat profile info', () => {
         // # Post a message to force next user message to display a message
         cy.getCurrentChannelId().then((channelId) => {
-            cy.task('postMessageAs', {sender: sysadmin, message: 'Hello', channelId});
+            cy.task('postMessageAs', {
+                sender: sysadmin,
+                message: 'Hello',
+                channelId,
+            });
         });
 
         // # Post message "One"
@@ -119,13 +127,22 @@ describe('Message', () => {
             const divPostId = `#postMessageText_${postId}`;
 
             // * Check that the message contains the whole content sent ie. mentions with dots.
-            cy.get(divPostId).find('p').should('have.text', '@here. @all. @channel.');
+            cy.get(divPostId)
+                .find('p')
+                .should('have.text', '@here. @all. @channel.');
 
             // * Check that only the at-mention are inside span.mention--highlight
-            cy.get(divPostId).find('.mention--highlight').
-                first().should('have.text', '@here').should('not.have.text', '.').
-                next().should('have.text', '@all').should('not.have.text', '.').
-                next().should('have.text', '@channel').should('not.have.text', '.');
+            cy.get(divPostId)
+                .find('.mention--highlight')
+                .first()
+                .should('have.text', '@here')
+                .should('not.have.text', '.')
+                .next()
+                .should('have.text', '@all')
+                .should('not.have.text', '.')
+                .next()
+                .should('have.text', '@channel')
+                .should('not.have.text', '.');
         });
     });
 });

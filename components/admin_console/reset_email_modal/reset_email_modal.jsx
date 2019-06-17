@@ -43,6 +43,7 @@ export default class ResetEmailModal extends React.Component {
                         defaultMessage='Please enter a valid email address.'
                     />
                 );
+
                 this.setState({error: errMsg});
                 return;
             }
@@ -62,25 +63,29 @@ export default class ResetEmailModal extends React.Component {
             (err) => {
                 const serverError = err.message ? err.message : err;
                 this.setState({error: serverError});
-            }
+            },
         );
-    }
+    };
 
     doCancel = () => {
         this.setState({error: null});
         this.props.onModalDismissed();
-    }
+    };
 
     render() {
         if (!this.props.user) {
-            return <div/>;
+            return <div />;
         }
 
         let urlClass = 'input-group input-group--limit';
         let errorMsg = null;
         if (this.state.error) {
             urlClass += ' has-error';
-            errorMsg = <div className='has-error'><p className='input__help error'>{this.state.error}</p></div>;
+            errorMsg = (
+                <div className='has-error'>
+                    <p className='input__help error'>{this.state.error}</p>
+                </div>
+            );
         }
 
         const title = (
@@ -98,17 +103,11 @@ export default class ResetEmailModal extends React.Component {
                 aria-labelledby='resetEmailModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='resetEmailModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='resetEmailModalLabel'>
                         {title}
                     </Modal.Title>
                 </Modal.Header>
-                <form
-                    role='form'
-                    className='form-horizontal'
-                >
+                <form role='form' className='form-horizontal'>
                     <Modal.Body>
                         <div className='form-group'>
                             <div className='col-sm-10'>

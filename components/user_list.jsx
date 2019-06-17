@@ -29,7 +29,7 @@ export default class UserList extends React.Component {
 
         let content;
         if (users == null) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         } else if (users.length > 0) {
             content = users.map((user, index) => {
                 return (
@@ -42,7 +42,11 @@ export default class UserList extends React.Component {
                         actionUserProps={this.props.actionUserProps[user.id]}
                         index={index}
                         totalUsers={users.length}
-                        userCount={(index >= 0 && index < Constants.TEST_ID_COUNT) ? index : -1}
+                        userCount={
+                            index >= 0 && index < Constants.TEST_ID_COUNT
+                                ? index
+                                : -1
+                        }
                     />
                 );
             });
@@ -62,11 +66,7 @@ export default class UserList extends React.Component {
             );
         }
 
-        return (
-            <div ref='container'>
-                {content}
-            </div>
-        );
+        return <div ref='container'>{content}</div>;
     }
 }
 

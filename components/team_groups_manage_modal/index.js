@@ -3,7 +3,10 @@
 
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {getGroupsAssociatedToTeam, unlinkGroupSyncable} from 'mattermost-redux/actions/groups';
+import {
+    getGroupsAssociatedToTeam,
+    unlinkGroupSyncable,
+} from 'mattermost-redux/actions/groups';
 
 import {closeModal, openModal} from 'actions/views/modals';
 
@@ -16,12 +19,19 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        getGroupsAssociatedToTeam,
-        closeModal,
-        openModal,
-        unlinkGroupSyncable,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            getGroupsAssociatedToTeam,
+            closeModal,
+            openModal,
+            unlinkGroupSyncable,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamGroupsManageModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TeamGroupsManageModal);

@@ -24,7 +24,7 @@ const getDeactivatedChannel = createSelector(
     (users, channelId) => {
         const teammate = getDirectTeammate(channelId);
         return Boolean(teammate && teammate.delete_at);
-    }
+    },
 );
 
 function mapStateToProps(state) {
@@ -32,13 +32,23 @@ function mapStateToProps(state) {
 
     const config = getConfig(state);
     const enableTutorial = config.EnableTutorial === 'true';
-    const tutorialStep = getInt(state, Preferences.TUTORIAL_STEP, getCurrentUserId(state), TutorialSteps.FINISHED);
-    const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+    const tutorialStep = getInt(
+        state,
+        Preferences.TUTORIAL_STEP,
+        getCurrentUserId(state),
+        TutorialSteps.FINISHED,
+    );
+
+    const viewArchivedChannels =
+        config.ExperimentalViewArchivedChannels === 'true';
 
     return {
         channelId: channel ? channel.id : '',
-        deactivatedChannel: channel ? getDeactivatedChannel(state, channel.id) : false,
-        showTutorial: enableTutorial && tutorialStep <= TutorialSteps.INTRO_SCREENS,
+        deactivatedChannel: channel
+            ? getDeactivatedChannel(state, channel.id)
+            : false,
+        showTutorial:
+            enableTutorial && tutorialStep <= TutorialSteps.INTRO_SCREENS,
         channelIsArchived: channel ? channel.delete_at !== 0 : false,
         viewArchivedChannels,
     };
@@ -46,10 +56,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            goToLastViewedChannel,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                goToLastViewedChannel,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChannelView));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    )(ChannelView),
+);

@@ -1,7 +1,10 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import {getClientConfig, getLicenseConfig} from 'mattermost-redux/actions/general';
+import {
+    getClientConfig,
+    getLicenseConfig,
+} from 'mattermost-redux/actions/general';
 import * as UserActions from 'mattermost-redux/actions/users';
 import {Client4} from 'mattermost-redux/client';
 
@@ -53,18 +56,21 @@ export function loadTranslations(locale, url) {
                     translations,
                 },
             });
+
             return;
         }
-        Client4.getTranslations(url).then((serverTranslations) => {
-            Object.assign(translations, serverTranslations);
-            dispatch({
-                type: ActionTypes.RECEIVED_TRANSLATIONS,
-                data: {
-                    locale,
-                    translations,
-                },
-            });
-        }).catch(() => {}); // eslint-disable-line no-empty-function
+        Client4.getTranslations(url)
+            .then((serverTranslations) => {
+                Object.assign(translations, serverTranslations);
+                dispatch({
+                    type: ActionTypes.RECEIVED_TRANSLATIONS,
+                    data: {
+                        locale,
+                        translations,
+                    },
+                });
+            })
+            .catch(() => {}); // eslint-disable-line no-empty-function
     };
 }
 

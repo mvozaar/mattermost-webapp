@@ -4,7 +4,10 @@
 import {connect} from 'react-redux';
 
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {getUser, getStatusForUserId} from 'mattermost-redux/selectors/entities/users';
+import {
+    getUser,
+    getStatusForUserId,
+} from 'mattermost-redux/selectors/entities/users';
 
 import PostProfilePicture from './post_profile_picture';
 

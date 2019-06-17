@@ -24,10 +24,12 @@ describe('components/integrations/EditIncomingWebhook', () => {
             id: 'testteamid',
             name: 'test',
         },
+
         updateIncomingHookRequest: {
             status: 'not_started',
             error: null,
         },
+
         enableIncomingWebhooks: true,
         enablePostUsernameOverride: true,
         enablePostIconOverride: true,
@@ -50,7 +52,7 @@ describe('components/integrations/EditIncomingWebhook', () => {
 
     test('should show Loading screen when no hook is provided', () => {
         const props = {...requiredProps, actions};
-        const wrapper = shallow(<EditIncomingWebhook {...props}/>);
+        const wrapper = shallow(<EditIncomingWebhook {...props} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(getIncomingHook).toHaveBeenCalledTimes(1);
@@ -59,14 +61,19 @@ describe('components/integrations/EditIncomingWebhook', () => {
 
     test('should show AbstractIncomingWebhook', () => {
         const props = {...requiredProps, actions, hook};
-        const wrapper = shallow(<EditIncomingWebhook {...props}/>);
+        const wrapper = shallow(<EditIncomingWebhook {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should not call getIncomingHook', () => {
-        const props = {...requiredProps, enableIncomingWebhooks: false, actions};
-        const wrapper = shallow(<EditIncomingWebhook {...props}/>);
+        const props = {
+            ...requiredProps,
+            enableIncomingWebhooks: false,
+            actions,
+        };
+
+        const wrapper = shallow(<EditIncomingWebhook {...props} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(getIncomingHook).toHaveBeenCalledTimes(0);
@@ -74,13 +81,18 @@ describe('components/integrations/EditIncomingWebhook', () => {
 
     test('should have called submitHook when editIncomingHook is initiated (no server error)', async () => {
         const newUpdateIncomingHook = jest.fn().mockReturnValue({data: ''});
-        const newActions = {...actions, updateIncomingHook: newUpdateIncomingHook};
+        const newActions = {
+            ...actions,
+            updateIncomingHook: newUpdateIncomingHook,
+        };
+
         const asyncHook = {
             id: 'id',
             token: 'token',
         };
+
         const props = {...requiredProps, actions: newActions, hook};
-        const wrapper = shallow(<EditIncomingWebhook {...props}/>);
+        const wrapper = shallow(<EditIncomingWebhook {...props} />);
 
         const instance = wrapper.instance();
         await instance.editIncomingHook(asyncHook);
@@ -92,17 +104,29 @@ describe('components/integrations/EditIncomingWebhook', () => {
 
     test('should have called submitHook when editIncomingHook is initiated (with server error)', async () => {
         const newUpdateIncomingHook = jest.fn().mockReturnValue({data: ''});
-        const newActions = {...actions, updateIncomingHook: newUpdateIncomingHook};
+        const newActions = {
+            ...actions,
+            updateIncomingHook: newUpdateIncomingHook,
+        };
+
         const asyncHook = {
             id: 'id',
             token: 'token',
         };
+
         const updateIncomingHookRequest = {
             status: 'error',
             error: {message: 'error message'},
         };
-        const props = {...requiredProps, actions: newActions, hook, updateIncomingHookRequest};
-        const wrapper = shallow(<EditIncomingWebhook {...props}/>);
+
+        const props = {
+            ...requiredProps,
+            actions: newActions,
+            hook,
+            updateIncomingHookRequest,
+        };
+
+        const wrapper = shallow(<EditIncomingWebhook {...props} />);
 
         const instance = wrapper.instance();
         await instance.editIncomingHook(asyncHook);
@@ -110,19 +134,26 @@ describe('components/integrations/EditIncomingWebhook', () => {
         expect(wrapper).toMatchSnapshot();
         expect(newActions.updateIncomingHook).toHaveBeenCalledTimes(1);
         expect(newActions.updateIncomingHook).toBeCalledWith(asyncHook);
-        expect(wrapper.state('serverError')).toEqual(updateIncomingHookRequest.error.message);
+        expect(wrapper.state('serverError')).toEqual(
+            updateIncomingHookRequest.error.message,
+        );
     });
 
     test('should have called submitHook when editIncomingHook is initiated (with data)', async () => {
         const newUpdateIncomingHook = jest.fn().mockReturnValue({data: 'data'});
-        const newActions = {...actions, updateIncomingHook: newUpdateIncomingHook};
+        const newActions = {
+            ...actions,
+            updateIncomingHook: newUpdateIncomingHook,
+        };
+
         browserHistory.push = jest.fn();
         const asyncHook = {
             id: 'id',
             token: 'token',
         };
+
         const props = {...requiredProps, actions: newActions, hook};
-        const wrapper = shallow(<EditIncomingWebhook {...props}/>);
+        const wrapper = shallow(<EditIncomingWebhook {...props} />);
 
         const instance = wrapper.instance();
         await instance.editIncomingHook(asyncHook);
@@ -131,6 +162,8 @@ describe('components/integrations/EditIncomingWebhook', () => {
         expect(newUpdateIncomingHook).toHaveBeenCalledTimes(1);
         expect(newUpdateIncomingHook).toBeCalledWith(asyncHook);
         expect(wrapper.state('serverError')).toEqual('');
-        expect(browserHistory.push).toHaveBeenCalledWith(`/${requiredProps.team.name}/integrations/incoming_webhooks`);
+        expect(browserHistory.push).toHaveBeenCalledWith(
+            `/${requiredProps.team.name}/integrations/incoming_webhooks`,
+        );
     });
 });

@@ -3,13 +3,28 @@
 
 import {batchActions} from 'redux-batched-actions';
 
-import {leaveChannel as leaveChannelRedux, joinChannel, unfavoriteChannel} from 'mattermost-redux/actions/channels';
+import {
+    leaveChannel as leaveChannelRedux,
+    joinChannel,
+    unfavoriteChannel,
+} from 'mattermost-redux/actions/channels';
 import * as PostActions from 'mattermost-redux/actions/posts';
 import {autocompleteUsers} from 'mattermost-redux/actions/users';
 import {Posts} from 'mattermost-redux/constants';
-import {getChannel, getChannelByName, getCurrentChannel, getRedirectChannelNameForTeam} from 'mattermost-redux/selectors/entities/channels';
-import {getCurrentRelativeTeamUrl, getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
-import {getCurrentUserId, getUserByUsername} from 'mattermost-redux/selectors/entities/users';
+import {
+    getChannel,
+    getChannelByName,
+    getCurrentChannel,
+    getRedirectChannelNameForTeam,
+} from 'mattermost-redux/selectors/entities/channels';
+import {
+    getCurrentRelativeTeamUrl,
+    getCurrentTeamId,
+} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getCurrentUserId,
+    getUserByUsername,
+} from 'mattermost-redux/selectors/entities/users';
 import {getMyPreferences} from 'mattermost-redux/selectors/entities/preferences';
 import {isFavoriteChannel} from 'mattermost-redux/utils/channel_utils';
 import EventEmitter from 'mattermost-redux/utils/event_emitter';
@@ -35,10 +50,16 @@ export function goToLastViewedChannel() {
     return async (dispatch, getState) => {
         const state = getState();
         const currentChannel = getCurrentChannel(state);
-        let channelToSwitchTo = getChannelByName(state, getLastViewedChannelName(state));
+        let channelToSwitchTo = getChannelByName(
+            state,
+            getLastViewedChannelName(state),
+        );
 
         if (currentChannel.id === channelToSwitchTo.id) {
-            channelToSwitchTo = getChannelByName(state, getRedirectChannelNameForTeam(state, getCurrentTeamId(state)));
+            channelToSwitchTo = getChannelByName(
+                state,
+                getRedirectChannelNameForTeam(state, getCurrentTeamId(state)),
+            );
         }
 
         return dispatch(switchToChannel(channelToSwitchTo));
@@ -59,7 +80,9 @@ export function switchToChannel(channel) {
         const teamUrl = getCurrentRelativeTeamUrl(state);
 
         if (channel.fake || channel.userId) {
-            const username = channel.userId ? channel.name : channel.display_name;
+            const username = channel.userId
+                ? channel.name
+                : channel.display_name;
             const user = getUserByUsername(state, username);
             if (!user) {
                 return {error: true};
@@ -103,7 +126,10 @@ export function leaveChannel(channelId) {
         }
 
         const teamUrl = getCurrentRelativeTeamUrl(state);
-        LocalStorageStore.removePreviousChannelName(currentUserId, currentTeamId);
+        LocalStorageStore.removePreviousChannelName(
+            currentUserId,
+            currentTeamId,
+        );
         browserHistory.push(teamUrl);
 
         const {error} = await dispatch(leaveChannelRedux(channelId));
@@ -133,7 +159,13 @@ export function loadInitialPosts(channelId, focusedPostId) {
         let hasMoreAfter = false;
 
         if (focusedPostId) {
-            const result = await dispatch(PostActions.getPostsAround(channelId, focusedPostId, Posts.POST_CHUNK_SIZE / 2));
+            const result = await dispatch(
+                PostActions.getPostsAround(
+                    channelId,
+                    focusedPostId,
+                    Posts.POST_CHUNK_SIZE / 2,
+                ),
+            );
 
             posts = result.data;
 
@@ -146,12 +178,15 @@ export function loadInitialPosts(channelId, focusedPostId) {
                 hasMoreAfter = numPostsAfter >= Posts.POST_CHUNK_SIZE / 2;
             }
         } else {
-            const result = await dispatch(PostActions.getPosts(channelId, 0, Posts.POST_CHUNK_SIZE / 2));
+            const result = await dispatch(
+                PostActions.getPosts(channelId, 0, Posts.POST_CHUNK_SIZE / 2),
+            );
 
             posts = result.data;
 
             if (posts) {
-                hasMoreBefore = posts && posts.order.length >= Posts.POST_CHUNK_SIZE / 2;
+                hasMoreBefore =
+                    posts && posts.order.length >= Posts.POST_CHUNK_SIZE / 2;
             }
         }
 
@@ -170,7 +205,8 @@ export function increasePostVisibility(channelId, beforePostId) {
             return true;
         }
 
-        const currentPostVisibility = state.views.channel.postVisibility[channelId];
+        const currentPostVisibility =
+            state.views.channel.postVisibility[channelId];
 
         if (currentPostVisibility >= Constants.MAX_POST_VISIBILITY) {
             return true;
@@ -182,14 +218,23 @@ export function increasePostVisibility(channelId, beforePostId) {
             channelId,
         });
 
-        const result = await dispatch(PostActions.getPostsBefore(channelId, beforePostId, 0, Posts.POST_CHUNK_SIZE / 2));
+        const result = await dispatch(
+            PostActions.getPostsBefore(
+                channelId,
+                beforePostId,
+                0,
+                Posts.POST_CHUNK_SIZE / 2,
+            ),
+        );
         const posts = result.data;
 
-        const actions = [{
-            type: ActionTypes.LOADING_POSTS,
-            data: false,
-            channelId,
-        }];
+        const actions = [
+            {
+                type: ActionTypes.LOADING_POSTS,
+                data: false,
+                channelId,
+            },
+        ];
 
         if (posts) {
             actions.push({
@@ -202,7 +247,9 @@ export function increasePostVisibility(channelId, beforePostId) {
         dispatch(batchActions(actions));
 
         return {
-            moreToLoad: posts ? posts.order.length >= Posts.POST_CHUNK_SIZE / 2 : false,
+            moreToLoad: posts
+                ? posts.order.length >= Posts.POST_CHUNK_SIZE / 2
+                : false,
             error: result.error,
         };
     };

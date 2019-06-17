@@ -16,6 +16,7 @@ describe('components/PluginManagement', () => {
                 EnableUploads: true,
             },
         },
+
         pluginStatuses: {
             plugin_0: {
                 id: 'plugin_0',
@@ -33,6 +34,7 @@ describe('components/PluginManagement', () => {
                     },
                 ],
             },
+
             plugin_1: {
                 id: 'plugin_1',
                 version: '0.0.1',
@@ -47,6 +49,7 @@ describe('components/PluginManagement', () => {
                         state: PluginState.PLUGIN_STATE_NOT_RUNNING,
                         version: '0.0.1',
                     },
+
                     {
                         cluster_id: 'cluster_id_2',
                         state: PluginState.PLUGIN_STATE_RUNNING,
@@ -55,6 +58,7 @@ describe('components/PluginManagement', () => {
                 ],
             },
         },
+
         plugins: {
             plugin_0: {
                 active: false,
@@ -67,8 +71,10 @@ describe('components/PluginManagement', () => {
                     header: 'This is a header',
                     settings: [],
                 },
+
                 webapp: {},
             },
+
             plugin_1: {
                 active: true,
                 description: 'The plugin 1.',
@@ -80,9 +86,11 @@ describe('components/PluginManagement', () => {
                     header: 'This is a header',
                     settings: [],
                 },
+
                 webapp: {},
             },
         },
+
         actions: {
             uploadPlugin: jest.fn(),
             removePlugin: jest.fn(),
@@ -95,7 +103,7 @@ describe('components/PluginManagement', () => {
 
     test('should match snapshot', () => {
         const props = {...defaultProps};
-        const wrapper = shallow(<PluginManagement {...props}/>);
+        const wrapper = shallow(<PluginManagement {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -110,7 +118,8 @@ describe('components/PluginManagement', () => {
                 },
             },
         };
-        const wrapper = shallow(<PluginManagement {...props}/>);
+
+        const wrapper = shallow(<PluginManagement {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -125,7 +134,8 @@ describe('components/PluginManagement', () => {
                 },
             },
         };
-        const wrapper = shallow(<PluginManagement {...props}/>);
+
+        const wrapper = shallow(<PluginManagement {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -137,6 +147,7 @@ describe('components/PluginManagement', () => {
                     EnableUploads: true,
                 },
             },
+
             pluginStatuses: {},
             plugins: {},
             actions: {
@@ -148,13 +159,14 @@ describe('components/PluginManagement', () => {
                 disablePlugin: jest.fn(),
             },
         };
-        const wrapper = shallow(<PluginManagement {...props}/>);
+
+        const wrapper = shallow(<PluginManagement {...props} />);
         wrapper.setState({loading: false});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, with installed plugins', () => {
-        const wrapper = shallow(<PluginManagement {...defaultProps}/>);
+        const wrapper = shallow(<PluginManagement {...defaultProps} />);
         wrapper.setState({loading: false});
         expect(wrapper).toMatchSnapshot();
     });
@@ -167,6 +179,7 @@ describe('components/PluginManagement', () => {
                     EnableUploads: true,
                 },
             },
+
             pluginStatuses: {
                 plugin_0: {
                     id: 'plugin_0',
@@ -184,6 +197,7 @@ describe('components/PluginManagement', () => {
                         },
                     ],
                 },
+
                 plugin_1: {
                     id: 'plugin_1',
                     version: '0.0.1',
@@ -198,6 +212,7 @@ describe('components/PluginManagement', () => {
                             state: PluginState.PLUGIN_STATE_NOT_RUNNING,
                             version: '0.0.1',
                         },
+
                         {
                             cluster_id: 'cluster_id_2',
                             state: PluginState.PLUGIN_STATE_RUNNING,
@@ -206,6 +221,7 @@ describe('components/PluginManagement', () => {
                     ],
                 },
             },
+
             plugins: {
                 plugin_0: {
                     active: false,
@@ -216,6 +232,7 @@ describe('components/PluginManagement', () => {
                     settings_schema: {},
                     webapp: {},
                 },
+
                 plugin_1: {
                     active: true,
                     description: 'The plugin 1.',
@@ -226,6 +243,7 @@ describe('components/PluginManagement', () => {
                     webapp: {},
                 },
             },
+
             actions: {
                 uploadPlugin: jest.fn(),
                 removePlugin: jest.fn(),
@@ -235,7 +253,8 @@ describe('components/PluginManagement', () => {
                 disablePlugin: jest.fn(),
             },
         };
-        const wrapper = shallow(<PluginManagement {...props}/>);
+
+        const wrapper = shallow(<PluginManagement {...props} />);
         wrapper.setState({loading: false});
         expect(wrapper).toMatchSnapshot();
     });
@@ -248,6 +267,7 @@ describe('components/PluginManagement', () => {
                     EnableUploads: true,
                 },
             },
+
             pluginStatuses: {
                 plugin_0: {
                     id: 'plugin_0',
@@ -266,6 +286,7 @@ describe('components/PluginManagement', () => {
                     ],
                 },
             },
+
             plugins: {
                 plugin_0: {
                     active: false,
@@ -276,9 +297,11 @@ describe('components/PluginManagement', () => {
                     settings_schema: {
                         header: 'This is a header',
                     },
+
                     webapp: {},
                 },
             },
+
             actions: {
                 uploadPlugin: jest.fn(),
                 removePlugin: jest.fn(),
@@ -288,7 +311,8 @@ describe('components/PluginManagement', () => {
                 disablePlugin: jest.fn(),
             },
         };
-        const wrapper = shallow(<PluginManagement {...props}/>);
+
+        const wrapper = shallow(<PluginManagement {...props} />);
         wrapper.setState({loading: false});
         expect(wrapper).toMatchSnapshot();
     });
@@ -301,6 +325,7 @@ describe('components/PluginManagement', () => {
                     EnableUploads: true,
                 },
             },
+
             pluginStatuses: {
                 plugin_0: {
                     id: 'plugin_0',
@@ -319,6 +344,7 @@ describe('components/PluginManagement', () => {
                     ],
                 },
             },
+
             plugins: {
                 plugin_0: {
                     active: false,
@@ -329,9 +355,11 @@ describe('components/PluginManagement', () => {
                     settings_schema: {
                         footer: 'This is a footer',
                     },
+
                     webapp: {},
                 },
             },
+
             actions: {
                 uploadPlugin: jest.fn(),
                 removePlugin: jest.fn(),
@@ -341,7 +369,8 @@ describe('components/PluginManagement', () => {
                 disablePlugin: jest.fn(),
             },
         };
-        const wrapper = shallow(<PluginManagement {...props}/>);
+
+        const wrapper = shallow(<PluginManagement {...props} />);
         wrapper.setState({loading: false});
         expect(wrapper).toMatchSnapshot();
     });
@@ -354,6 +383,7 @@ describe('components/PluginManagement', () => {
                     EnableUploads: true,
                 },
             },
+
             pluginStatuses: {
                 plugin_0: {
                     id: 'plugin_0',
@@ -372,6 +402,7 @@ describe('components/PluginManagement', () => {
                     ],
                 },
             },
+
             plugins: {
                 plugin_0: {
                     active: false,
@@ -380,13 +411,13 @@ describe('components/PluginManagement', () => {
                     name: 'Plugin 0',
                     version: '0.1.0',
                     settings_schema: {
-                        settings: [
-                            {bla: 'test', xoxo: 'test2'},
-                        ],
+                        settings: [{bla: 'test', xoxo: 'test2'}],
                     },
+
                     webapp: {},
                 },
             },
+
             actions: {
                 uploadPlugin: jest.fn(),
                 removePlugin: jest.fn(),
@@ -396,7 +427,8 @@ describe('components/PluginManagement', () => {
                 disablePlugin: jest.fn(),
             },
         };
-        const wrapper = shallow(<PluginManagement {...props}/>);
+
+        const wrapper = shallow(<PluginManagement {...props} />);
         wrapper.setState({loading: false});
         expect(wrapper).toMatchSnapshot();
     });

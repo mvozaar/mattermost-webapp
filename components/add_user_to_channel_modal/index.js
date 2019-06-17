@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {addChannelMember, getChannelMember} from 'mattermost-redux/actions/channels';
+import {
+    addChannelMember,
+    getChannelMember,
+} from 'mattermost-redux/actions/channels';
 import {getChannelMembersInChannels} from 'mattermost-redux/selectors/entities/channels';
 
 import AddUserToChannelModal from './add_user_to_channel_modal.jsx';
@@ -17,11 +20,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addChannelMember,
-            getChannelMember,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addChannelMember,
+                getChannelMember,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUserToChannelModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddUserToChannelModal);

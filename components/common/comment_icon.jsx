@@ -12,7 +12,8 @@ import ReplyIcon from 'components/svg/reply_icon';
 
 export default class CommentIcon extends React.PureComponent {
     static propTypes = {
-        location: PropTypes.oneOf([Locations.CENTER, Locations.SEARCH]).isRequired,
+        location: PropTypes.oneOf([Locations.CENTER, Locations.SEARCH])
+            .isRequired,
         handleCommentClick: PropTypes.func.isRequired,
         searchStyle: PropTypes.string,
         commentCount: PropTypes.number,
@@ -33,19 +34,14 @@ export default class CommentIcon extends React.PureComponent {
         if (this.props.commentCount > 0) {
             iconStyle += ' icon--show';
             commentCountSpan = (
-                <span className='comment-count'>
-                    {this.props.commentCount}
-                </span>
+                <span className='comment-count'>{this.props.commentCount}</span>
             );
         } else if (this.props.searchStyle !== '') {
             iconStyle = iconStyle + ' ' + this.props.searchStyle;
         }
 
         const tooltip = (
-            <Tooltip
-                id='comment-icon-tooltip'
-                className='hidden-xs'
-            >
+            <Tooltip id='comment-icon-tooltip' className='hidden-xs'>
                 <FormattedMessage
                     id='post_info.comment_icon.tooltip.reply'
                     defaultMessage='Reply'
@@ -62,10 +58,14 @@ export default class CommentIcon extends React.PureComponent {
             >
                 <button
                     id={`${this.props.location}_commentIcon_${this.props.postId}`}
-                    className={iconStyle + ' color--link style--none ' + this.props.extraClass}
+                    className={
+                        iconStyle +
+                        ' color--link style--none ' +
+                        this.props.extraClass
+                    }
                     onClick={this.props.handleCommentClick}
                 >
-                    <ReplyIcon className='comment-icon'/>
+                    <ReplyIcon className='comment-icon' />
                     {commentCountSpan}
                 </button>
             </OverlayTrigger>

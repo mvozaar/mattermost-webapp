@@ -38,24 +38,34 @@ export default class FileUploadSetting extends Setting {
         if (files && files.length > 0) {
             this.setState({fileSelected: true, fileName: files[0].name});
         }
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
 
         $(this.refs.upload_button).button('loading');
-        this.props.onSubmit(this.props.id, this.refs.fileInput.files[0], (error) => {
-            $(this.refs.upload_button).button('reset');
-            if (error) {
-                Utils.clearFileInput(this.refs.fileInput);
-            }
-        });
-    }
+        this.props.onSubmit(
+            this.props.id,
+            this.refs.fileInput.files[0],
+            (error) => {
+                $(this.refs.upload_button).button('reset');
+                if (error) {
+                    Utils.clearFileInput(this.refs.fileInput);
+                }
+            },
+        );
+    };
 
     render() {
         let serverError;
         if (this.state.serverError) {
-            serverError = <div className='form-group has-error'><label className='control-label'>{this.state.serverError}</label></div>;
+            serverError = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>
+                        {this.state.serverError}
+                    </label>
+                </div>
+            );
         }
 
         let btnClass = 'btn';
@@ -112,9 +122,7 @@ export default class FileUploadSetting extends Setting {
                             defaultMessage='Upload'
                         />
                     </button>
-                    <div className='help-text no-margin'>
-                        {fileName}
-                    </div>
+                    <div className='help-text no-margin'>{fileName}</div>
                     {serverError}
                 </div>
             </Setting>

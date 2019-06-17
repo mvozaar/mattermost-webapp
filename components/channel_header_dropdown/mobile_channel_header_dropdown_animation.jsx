@@ -32,4 +32,3 @@ export default class MobileChannelHeaderDropdownAnimation extends React.PureComp
         );
     }
 }
-

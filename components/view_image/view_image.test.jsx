@@ -24,21 +24,21 @@ describe('components/ViewImageModal', () => {
     test('should match snapshot, modal not shown', () => {
         const show = false;
         const props = {...requiredProps, show};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Modal).prop('show')).toBe(false);
     });
 
     test('should match snapshot, loading', () => {
-        const wrapper = shallow(<ViewImageModal {...requiredProps}/>);
+        const wrapper = shallow(<ViewImageModal {...requiredProps} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Modal).prop('show')).toBe(true);
     });
 
     test('should match snapshot, loaded with image', () => {
-        const wrapper = shallow(<ViewImageModal {...requiredProps}/>);
+        const wrapper = shallow(<ViewImageModal {...requiredProps} />);
 
         wrapper.setState({loaded: [true]});
         expect(wrapper).toMatchSnapshot();
@@ -47,7 +47,7 @@ describe('components/ViewImageModal', () => {
     test('should match snapshot, loaded with .mov file', () => {
         const fileInfos = [{id: 'file_id', extension: 'mov'}];
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         wrapper.setState({loaded: [true]});
         expect(wrapper).toMatchSnapshot();
@@ -56,7 +56,7 @@ describe('components/ViewImageModal', () => {
     test('should match snapshot, loaded with .m4a file', () => {
         const fileInfos = [{id: 'file_id', extension: 'm4a'}];
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         wrapper.setState({loaded: [true]});
         expect(wrapper).toMatchSnapshot();
@@ -65,7 +65,7 @@ describe('components/ViewImageModal', () => {
     test('should match snapshot, loaded with .js file', () => {
         const fileInfos = [{id: 'file_id', extension: 'js'}];
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         wrapper.setState({loaded: [true]});
         expect(wrapper).toMatchSnapshot();
@@ -74,7 +74,7 @@ describe('components/ViewImageModal', () => {
     test('should match snapshot, loaded with other file', () => {
         const fileInfos = [{id: 'file_id', extension: 'other'}];
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         wrapper.setState({loaded: [true]});
         expect(wrapper).toMatchSnapshot();
@@ -86,24 +86,33 @@ describe('components/ViewImageModal', () => {
             {id: 'file_id_2', extension: 'wma'},
             {id: 'file_id_3', extension: 'mp4'},
         ];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         wrapper.setState({loaded: [true, true, true], showFooter: false});
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find('#previewArrowLeft').exists()).toBe(true);
         expect(wrapper.find('#previewArrowRight').exists()).toBe(true);
 
-        wrapper.find('#previewArrowRight').simulate('click', {stopPropagation: jest.fn()});
+        wrapper
+            .find('#previewArrowRight')
+            .simulate('click', {stopPropagation: jest.fn()});
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.state('imageIndex')).toBe(1);
-        wrapper.find('#previewArrowRight').simulate('click', {stopPropagation: jest.fn()});
+        wrapper
+            .find('#previewArrowRight')
+            .simulate('click', {stopPropagation: jest.fn()});
         expect(wrapper.state('imageIndex')).toBe(2);
 
-        wrapper.find('#previewArrowLeft').simulate('click', {stopPropagation: jest.fn()});
+        wrapper
+            .find('#previewArrowLeft')
+            .simulate('click', {stopPropagation: jest.fn()});
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.state('imageIndex')).toBe(1);
-        wrapper.find('#previewArrowLeft').simulate('click', {stopPropagation: jest.fn()});
+        wrapper
+            .find('#previewArrowLeft')
+            .simulate('click', {stopPropagation: jest.fn()});
         expect(wrapper.state('imageIndex')).toBe(0);
     });
 
@@ -113,22 +122,23 @@ describe('components/ViewImageModal', () => {
             {id: 'file_id_2', extension: 'wma'},
             {id: 'file_id_3', extension: 'mp4'},
         ];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         wrapper.setState({loaded: [true, true, true], showFooter: true});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, loaded', () => {
-        const wrapper = shallow(<ViewImageModal {...requiredProps}/>);
+        const wrapper = shallow(<ViewImageModal {...requiredProps} />);
 
         wrapper.setState({loaded: [true]});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, loaded and showing footer', () => {
-        const wrapper = shallow(<ViewImageModal {...requiredProps}/>);
+        const wrapper = shallow(<ViewImageModal {...requiredProps} />);
 
         wrapper.setState({loaded: [true], showFooter: true});
         expect(wrapper).toMatchSnapshot();
@@ -140,8 +150,9 @@ describe('components/ViewImageModal', () => {
             {id: 'file_id_2', extension: 'wma'},
             {id: 'file_id_3', extension: 'mp4'},
         ];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         wrapper.setState({loaded: [true, true, true]});
 
@@ -160,7 +171,7 @@ describe('components/ViewImageModal', () => {
     });
 
     test('should handle onMouseEnter and onMouseLeave', () => {
-        const wrapper = shallow(<ViewImageModal {...requiredProps}/>);
+        const wrapper = shallow(<ViewImageModal {...requiredProps} />);
         wrapper.setState({loaded: [true]});
 
         wrapper.instance().onMouseEnterImage();
@@ -173,11 +184,12 @@ describe('components/ViewImageModal', () => {
     test('should have called onModalDismissed', () => {
         const newOnModalDismissed = jest.fn();
         const props = {...requiredProps, onModalDismissed: newOnModalDismissed};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
         wrapper.setState({
             loaded: [true],
             showFooter: true,
         });
+
         wrapper.instance().handleGetPublicLink();
 
         expect(newOnModalDismissed).toHaveBeenCalledTimes(1);
@@ -189,11 +201,13 @@ describe('components/ViewImageModal', () => {
             {id: 'file_id_2', extension: 'wma'},
             {id: 'file_id_3', extension: 'mp4'},
         ];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
         const nextProps = {
             startIndex: 1,
         };
+
         wrapper.setState({loaded: [true]});
 
         wrapper.instance().onModalHidden();
@@ -203,11 +217,10 @@ describe('components/ViewImageModal', () => {
     });
 
     test('should match snapshot for external file', () => {
-        const fileInfos = [
-            {extension: 'png'},
-        ];
+        const fileInfos = [{extension: 'png'}];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -217,8 +230,9 @@ describe('components/ViewImageModal', () => {
             {id: 'file_id_2', extension: 'wma'},
             {id: 'file_id_3', extension: 'mp4'},
         ];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         let index = 1;
         wrapper.setState({loaded: [true, false, false]});
@@ -237,8 +251,9 @@ describe('components/ViewImageModal', () => {
             {id: 'file_id_2', extension: 'wma'},
             {id: 'file_id_3', extension: 'mp4'},
         ];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         let index = 1;
         wrapper.setState({loaded: [true, false, false]});
@@ -257,8 +272,9 @@ describe('components/ViewImageModal', () => {
             {id: 'file_id_2', extension: 'wma'},
             {id: 'file_id_3', extension: 'mp4'},
         ];
+
         const props = {...requiredProps, fileInfos};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         const index = 1;
         let completedPercentage = 30;
@@ -277,7 +293,8 @@ describe('components/ViewImageModal', () => {
         let nextProps = {
             show: false,
         };
-        const wrapper = shallow(<ViewImageModal {...requiredProps}/>);
+
+        const wrapper = shallow(<ViewImageModal {...requiredProps} />);
         expect(wrapper.find(Modal).prop('show')).toBe(true);
         wrapper.setProps(nextProps);
         expect(wrapper.find(Modal).prop('show')).toBe(false);
@@ -291,33 +308,40 @@ describe('components/ViewImageModal', () => {
                 {id: 'file_id_3', extension: 'mp4'},
             ],
         };
+
         wrapper.setProps(nextProps);
         expect(wrapper.state('loaded').length).toBe(3);
         expect(wrapper.state('progress').length).toBe(3);
     });
 
     test('should match snapshot when plugin overrides the preview component', () => {
-        const pluginFilePreviewComponents = [{
-            id: generateId(),
-            pluginId: 'file-preview',
-            override: () => true,
-            component: () => <div>{'Preview'}</div>,
-        }];
+        const pluginFilePreviewComponents = [
+            {
+                id: generateId(),
+                pluginId: 'file-preview',
+                override: () => true,
+                component: () => <div>{'Preview'}</div>,
+            },
+        ];
+
         const props = {...requiredProps, pluginFilePreviewComponents};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should fall back to default preview if plugin does not need to override preview component', () => {
-        const pluginFilePreviewComponents = [{
-            id: generateId(),
-            pluginId: 'file-preview',
-            override: () => false,
-            component: () => <div>{'Preview'}</div>,
-        }];
+        const pluginFilePreviewComponents = [
+            {
+                id: generateId(),
+                pluginId: 'file-preview',
+                override: () => false,
+                component: () => <div>{'Preview'}</div>,
+            },
+        ];
+
         const props = {...requiredProps, pluginFilePreviewComponents};
-        const wrapper = shallow(<ViewImageModal {...props}/>);
+        const wrapper = shallow(<ViewImageModal {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

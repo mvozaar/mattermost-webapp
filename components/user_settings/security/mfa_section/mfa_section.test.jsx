@@ -27,7 +27,8 @@ describe('MfaSection', () => {
                 ...baseProps,
                 mfaAvailable: false,
             };
-            const wrapper = shallowWithIntl(<MfaSection {...props}/>);
+
+            const wrapper = shallowWithIntl(<MfaSection {...props} />);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -38,7 +39,8 @@ describe('MfaSection', () => {
                 active: false,
                 mfaActive: false,
             };
-            const wrapper = shallowWithIntl(<MfaSection {...props}/>);
+
+            const wrapper = shallowWithIntl(<MfaSection {...props} />);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -49,7 +51,8 @@ describe('MfaSection', () => {
                 active: false,
                 mfaActive: true,
             };
-            const wrapper = shallowWithIntl(<MfaSection {...props}/>);
+
+            const wrapper = shallowWithIntl(<MfaSection {...props} />);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -59,7 +62,8 @@ describe('MfaSection', () => {
                 ...baseProps,
                 mfaActive: false,
             };
-            const wrapper = shallowWithIntl(<MfaSection {...props}/>);
+
+            const wrapper = shallowWithIntl(<MfaSection {...props} />);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -69,7 +73,8 @@ describe('MfaSection', () => {
                 ...baseProps,
                 mfaActive: true,
             };
-            const wrapper = shallowWithIntl(<MfaSection {...props}/>);
+
+            const wrapper = shallowWithIntl(<MfaSection {...props} />);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -80,7 +85,8 @@ describe('MfaSection', () => {
                 mfaActive: true,
                 mfaEnforced: true,
             };
-            const wrapper = shallowWithIntl(<MfaSection {...props}/>);
+
+            const wrapper = shallowWithIntl(<MfaSection {...props} />);
 
             expect(wrapper).toMatchSnapshot();
         });
@@ -90,7 +96,8 @@ describe('MfaSection', () => {
                 ...baseProps,
                 serverError: 'An error occurred',
             };
-            const wrapper = shallowWithIntl(<MfaSection {...props}/>);
+
+            const wrapper = shallowWithIntl(<MfaSection {...props} />);
 
             wrapper.setState({serverError: 'An error has occurred'});
 
@@ -100,7 +107,7 @@ describe('MfaSection', () => {
 
     describe('setupMfa', () => {
         it('should send to setup page', () => {
-            const wrapper = mountWithIntl(<MfaSection {...baseProps}/>);
+            const wrapper = mountWithIntl(<MfaSection {...baseProps} />);
 
             wrapper.instance().setupMfa({preventDefault: jest.fn()});
 
@@ -110,7 +117,7 @@ describe('MfaSection', () => {
 
     describe('removeMfa', () => {
         it('on success, should close section and clear state', async () => {
-            const wrapper = mountWithIntl(<MfaSection {...baseProps}/>);
+            const wrapper = mountWithIntl(<MfaSection {...baseProps} />);
 
             wrapper.setState({serverError: 'An error has occurred'});
 
@@ -127,7 +134,7 @@ describe('MfaSection', () => {
                 mfaEnforced: true,
             };
 
-            const wrapper = mountWithIntl(<MfaSection {...props}/>);
+            const wrapper = mountWithIntl(<MfaSection {...props} />);
 
             await wrapper.instance().removeMfa({preventDefault: jest.fn()});
 
@@ -138,9 +145,11 @@ describe('MfaSection', () => {
         it('on error, should show error', async () => {
             const error = {message: 'An error occurred'};
 
-            const wrapper = mountWithIntl(<MfaSection {...baseProps}/>);
+            const wrapper = mountWithIntl(<MfaSection {...baseProps} />);
 
-            baseProps.actions.deactivateMfa.mockImplementation(() => Promise.resolve({error}));
+            baseProps.actions.deactivateMfa.mockImplementation(() =>
+                Promise.resolve({error}),
+            );
 
             await wrapper.instance().removeMfa({preventDefault: jest.fn()});
 

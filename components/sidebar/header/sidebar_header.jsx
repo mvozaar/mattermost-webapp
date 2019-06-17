@@ -27,16 +27,13 @@ export default class SidebarHeader extends React.PureComponent {
     handleResize = () => {
         const isMobile = Utils.isMobile();
         this.setState({isMobile});
-    }
+    };
 
     render() {
         return (
-            <div
-                id='teamHeader'
-                className='SidebarHeader team__header theme'
-            >
-                <SidebarHeaderDropdown/>
-                {!this.state.isMobile && <StatusDropdown/>}
+            <div id='teamHeader' className='SidebarHeader team__header theme'>
+                <SidebarHeaderDropdown />
+                {!this.state.isMobile && <StatusDropdown />}
             </div>
         );
     }

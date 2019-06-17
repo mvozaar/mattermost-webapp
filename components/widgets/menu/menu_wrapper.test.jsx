@@ -12,7 +12,7 @@ describe('components/MenuWrapper', () => {
             <MenuWrapper>
                 <p>{'title'}</p>
                 <p>{'menu'}</p>
-            </MenuWrapper>
+            </MenuWrapper>,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`
@@ -39,8 +39,9 @@ describe('components/MenuWrapper', () => {
             <MenuWrapper>
                 <p>{'title'}</p>
                 <p>{'menu'}</p>
-            </MenuWrapper>
+            </MenuWrapper>,
         );
+
         wrapper.setState({open: true});
         expect(wrapper).toMatchInlineSnapshot(`
 <div
@@ -66,8 +67,9 @@ describe('components/MenuWrapper', () => {
             <MenuWrapper>
                 <p>{'title'}</p>
                 <p>{'menu'}</p>
-            </MenuWrapper>
+            </MenuWrapper>,
         );
+
         expect(wrapper.state().open).toBe(false);
         wrapper.simulate('click');
         expect(wrapper.state().open).toBe(true);
@@ -77,13 +79,13 @@ describe('components/MenuWrapper', () => {
 
     test('should raise an exception on more or less than 2 children', () => {
         expect(() => {
-            shallow(<MenuWrapper/>);
+            shallow(<MenuWrapper />);
         }).toThrow();
         expect(() => {
             shallow(
                 <MenuWrapper>
                     <p>{'title'}</p>
-                </MenuWrapper>
+                </MenuWrapper>,
             );
         }).toThrow();
         expect(() => {
@@ -92,7 +94,7 @@ describe('components/MenuWrapper', () => {
                     <p>{'title1'}</p>
                     <p>{'title2'}</p>
                     <p>{'title3'}</p>
-                </MenuWrapper>
+                </MenuWrapper>,
             );
         }).toThrow();
     });

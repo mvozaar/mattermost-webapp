@@ -12,7 +12,6 @@ import {ModalIdentifiers} from 'utils/constants';
 
 export default class ChannelMembersModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * Bool whether user has permission to manage current channel
          */
@@ -31,7 +30,7 @@ export default class ChannelMembersModal extends React.PureComponent {
         actions: PropTypes.shape({
             openModal: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -45,11 +44,11 @@ export default class ChannelMembersModal extends React.PureComponent {
         this.setState({
             show: false,
         });
-    }
+    };
 
     handleExit = () => {
         this.props.onHide();
-    }
+    };
 
     onAddNewMembersButton = () => {
         const {channel, actions} = this.props;
@@ -61,7 +60,7 @@ export default class ChannelMembersModal extends React.PureComponent {
         });
 
         this.handleExit();
-    }
+    };
 
     render() {
         const channelIsArchived = this.props.channel.delete_at !== 0;
@@ -80,30 +79,31 @@ export default class ChannelMembersModal extends React.PureComponent {
                             componentClass='h1'
                             id='channelMembersModalLabel'
                         >
-                            <span className='name'>{this.props.channel.display_name}</span>
+                            <span className='name'>
+                                {this.props.channel.display_name}
+                            </span>
                             <FormattedMessage
                                 id='channel_members_modal.members'
                                 defaultMessage=' Members'
                             />
                         </Modal.Title>
-                        {this.props.canManageChannelMembers && !channelIsArchived &&
-                            <a
-                                id='showInviteModal'
-                                className='btn btn-md btn-primary'
-                                href='#'
-                                onClick={this.onAddNewMembersButton}
-                            >
-                                <FormattedMessage
-                                    id='channel_members_modal.addNew'
-                                    defaultMessage=' Add New Members'
-                                />
-                            </a>
-                        }
+                        {this.props.canManageChannelMembers &&
+                            !channelIsArchived && (
+                                <a
+                                    id='showInviteModal'
+                                    className='btn btn-md btn-primary'
+                                    href='#'
+                                    onClick={this.onAddNewMembersButton}
+                                >
+                                    <FormattedMessage
+                                        id='channel_members_modal.addNew'
+                                        defaultMessage=' Add New Members'
+                                    />
+                                </a>
+                            )}
                     </Modal.Header>
                     <Modal.Body>
-                        <MemberListChannel
-                            channel={this.props.channel}
-                        />
+                        <MemberListChannel channel={this.props.channel} />
                     </Modal.Body>
                 </Modal>
             </div>

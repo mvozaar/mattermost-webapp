@@ -13,13 +13,11 @@ import LoadingScreen from 'components/loading_screen.jsx';
 
 export default class AccessHistoryModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * Function that's called when modal is closed
          */
         onHide: PropTypes.func.isRequired,
         actions: PropTypes.shape({
-
             /**
              * Function to fetch the user's audits
              */
@@ -35,7 +33,7 @@ export default class AccessHistoryModal extends React.PureComponent {
          * The current user id
          */
         currentUserId: PropTypes.string.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -50,11 +48,11 @@ export default class AccessHistoryModal extends React.PureComponent {
         if (!isMobile()) {
             $('.modal-body').perfectScrollbar();
         }
-    }
+    };
 
     onHide = () => {
         this.setState({show: false});
-    }
+    };
 
     componentDidMount() {
         this.onShow();
@@ -63,7 +61,7 @@ export default class AccessHistoryModal extends React.PureComponent {
     render() {
         let content;
         if (this.props.userAudits.length === 0) {
-            content = (<LoadingScreen/>);
+            content = <LoadingScreen />;
         } else {
             content = (
                 <AuditTable
@@ -95,9 +93,7 @@ export default class AccessHistoryModal extends React.PureComponent {
                         />
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body ref='modalBody'>
-                    {content}
-                </Modal.Body>
+                <Modal.Body ref='modalBody'>{content}</Modal.Body>
             </Modal>
         );
     }

@@ -41,7 +41,7 @@ export default class AdminConsole extends React.Component {
             loadRolesIfNeeded: PropTypes.func.isRequired,
             editRole: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -53,13 +53,21 @@ export default class AdminConsole extends React.Component {
     componentDidMount() {
         this.props.actions.getConfig();
         this.props.actions.getEnvironmentConfig();
-        this.props.actions.loadRolesIfNeeded(['channel_user', 'team_user', 'system_user', 'channel_admin', 'team_admin', 'system_admin']);
+        this.props.actions.loadRolesIfNeeded([
+            'channel_user',
+            'team_user',
+            'system_user',
+            'channel_admin',
+            'team_admin',
+            'system_admin',
+        ]);
+
         reloadIfServerVersionChanged();
     }
 
     onFilterChange = (filter) => {
         this.setState({filter});
-    }
+    };
 
     mainRolesLoaded(roles) {
         return (
@@ -74,18 +82,30 @@ export default class AdminConsole extends React.Component {
     }
 
     renderRoutes = (extraProps) => {
-        const schemas = Object.values(AdminDefinition).reduce((acc, section) => {
-            const items = Object.values(section).filter((item) => {
-                if (item.isHidden && item.isHidden(this.props.config, {}, this.props.license, this.props.buildEnterpriseReady)) {
-                    return false;
-                }
-                if (!item.schema) {
-                    return false;
-                }
-                return true;
-            });
-            return acc.concat(items);
-        }, []);
+        const schemas = Object.values(AdminDefinition).reduce(
+            (acc, section) => {
+                const items = Object.values(section).filter((item) => {
+                    if (
+                        item.isHidden &&
+                        item.isHidden(
+                            this.props.config,
+                            {},
+                            this.props.license,
+                            this.props.buildEnterpriseReady,
+                        )
+                    ) {
+                        return false;
+                    }
+                    if (!item.schema) {
+                        return false;
+                    }
+                    return true;
+                });
+                return acc.concat(items);
+            },
+            [],
+        );
+
         const schemaRoutes = schemas.map((item) => {
             return (
                 <Route
@@ -106,10 +126,10 @@ export default class AdminConsole extends React.Component {
         return (
             <Switch>
                 {schemaRoutes}
-                {<Redirect to={`${this.props.match.url}/${defaultUrl}`}/>}
+                {<Redirect to={`${this.props.match.url}/${defaultUrl}`} />}
             </Switch>
         );
-    }
+    };
 
     render() {
         const {
@@ -119,12 +139,15 @@ export default class AdminConsole extends React.Component {
             showNavigationPrompt,
             roles,
         } = this.props;
-        const {setNavigationBlocked, cancelNavigation, confirmNavigation, editRole} = this.props.actions;
+        const {
+            setNavigationBlocked,
+            cancelNavigation,
+            confirmNavigation,
+            editRole,
+        } = this.props.actions;
 
         if (!this.props.isCurrentUserSystemAdmin) {
-            return (
-                <Redirect to='/'/>
-            );
+            return <Redirect to='/' />;
         }
 
         if (!this.mainRolesLoaded(this.props.roles)) {
@@ -132,13 +155,17 @@ export default class AdminConsole extends React.Component {
         }
 
         if (Object.keys(config).length === 0) {
-            return <div/>;
+            return <div />;
         }
-        if (config && Object.keys(config).length === 0 && config.constructor === 'Object') {
+        if (
+            config &&
+            Object.keys(config).length === 0 &&
+            config.constructor === 'Object'
+        ) {
             return (
                 <div className='admin-console__wrapper'>
-                    <AnnouncementBar/>
-                    <div className='admin-console'/>
+                    <AnnouncementBar />
+                    <div className='admin-console' />
                 </div>
             );
         }
@@ -160,21 +187,19 @@ export default class AdminConsole extends React.Component {
             roles,
             editRole,
         };
+
         return (
-            <div
-                className='admin-console__wrapper'
-                id='adminConsoleWrapper'
-            >
-                <AnnouncementBar/>
-                <SystemNotice/>
-                <AdminSidebar onFilterChange={this.onFilterChange}/>
+            <div className='admin-console__wrapper' id='adminConsoleWrapper'>
+                <AnnouncementBar />
+                <SystemNotice />
+                <AdminSidebar onFilterChange={this.onFilterChange} />
                 <div className='admin-console'>
                     <Highlight filter={this.state.filter}>
                         {this.renderRoutes(extraProps)}
                     </Highlight>
                 </div>
                 {discardChangesModal}
-                <ModalController/>
+                <ModalController />
             </div>
         );
     }

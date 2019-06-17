@@ -14,7 +14,6 @@ import Badge from 'components/widgets/badges/badge.jsx';
 
 export default class PostHeader extends React.PureComponent {
     static propTypes = {
-
         /*
          * The post to render the header for
          */
@@ -64,25 +63,27 @@ export default class PostHeader extends React.PureComponent {
          * If the user that made the post is a bot.
          */
         isBot: PropTypes.bool.isRequired,
-    }
+    };
 
     render() {
         const {post} = this.props;
         const isSystemMessage = PostUtils.isSystemMessage(post);
         const fromAutoResponder = PostUtils.fromAutoResponder(post);
-        const fromWebhook = post && post.props && post.props.from_webhook === 'true';
+        const fromWebhook =
+            post && post.props && post.props.from_webhook === 'true';
 
         let userProfile = (
-            <UserProfile
-                userId={post.user_id}
-                hasMention={true}
-            />
+            <UserProfile userId={post.user_id} hasMention={true} />
         );
+
         let indicator;
         let colon;
 
         if (fromWebhook && !this.props.isBot) {
-            if (post.props.override_username && this.props.enablePostUsernameOverride) {
+            if (
+                post.props.override_username &&
+                this.props.enablePostUsernameOverride
+            ) {
                 userProfile = (
                     <UserProfile
                         userId={post.user_id}
@@ -92,14 +93,11 @@ export default class PostHeader extends React.PureComponent {
                 );
             } else {
                 userProfile = (
-                    <UserProfile
-                        userId={post.user_id}
-                        hideStatus={true}
-                    />
+                    <UserProfile userId={post.user_id} hideStatus={true} />
                 );
             }
 
-            indicator = (<BotBadge/>);
+            indicator = <BotBadge />;
         } else if (fromAutoResponder) {
             userProfile = (
                 <UserProfile
@@ -119,10 +117,7 @@ export default class PostHeader extends React.PureComponent {
             );
         } else if (isSystemMessage && this.props.isBot) {
             userProfile = (
-                <UserProfile
-                    userId={post.user_id}
-                    hideStatus={true}
-                />
+                <UserProfile userId={post.user_id} hideStatus={true} />
             );
         } else if (isSystemMessage) {
             userProfile = (
@@ -140,12 +135,15 @@ export default class PostHeader extends React.PureComponent {
         }
 
         if (this.props.compactDisplay) {
-            colon = (<strong className='colon'>{':'}</strong>);
+            colon = <strong className='colon'>{':'}</strong>;
         }
 
         return (
             <div className='post__header'>
-                <div className='col col__name'>{userProfile}{colon}</div>
+                <div className='col col__name'>
+                    {userProfile}
+                    {colon}
+                </div>
                 {indicator}
                 <div className='col'>
                     <PostInfo

@@ -48,47 +48,46 @@ export function matchesFilter(outgoingWebhook, channel, filter) {
 
 export default class InstalledOutgoingWebhook extends React.PureComponent {
     static propTypes = {
-
         /**
-        * Data used for showing webhook details
-        */
+         * Data used for showing webhook details
+         */
         outgoingWebhook: PropTypes.object.isRequired,
 
         /**
-        * Function used for webhook token regeneration
-        */
+         * Function used for webhook token regeneration
+         */
         onRegenToken: PropTypes.func.isRequired,
 
         /**
-        * Function to call when webhook delete button is pressed
-        */
+         * Function to call when webhook delete button is pressed
+         */
         onDelete: PropTypes.func.isRequired,
 
         /**
-        * String used for filtering webhook item
-        */
+         * String used for filtering webhook item
+         */
         filter: PropTypes.string,
 
         /**
-        * Data used for showing created by details
-        */
+         * Data used for showing created by details
+         */
         creator: PropTypes.object.isRequired,
 
         /**
-        *  Set to show available actions on webhook
-        */
+         *  Set to show available actions on webhook
+         */
         canChange: PropTypes.bool.isRequired,
 
         /**
-        *  Data used in routing of webhook for modifications
-        */
+         *  Data used in routing of webhook for modifications
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        *  Data used for filtering of webhooks based in filter prop
-        */
+         *  Data used for filtering of webhooks based in filter prop
+         */
         channel: PropTypes.object,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -128,7 +127,10 @@ export default class InstalledOutgoingWebhook extends React.PureComponent {
         const triggerWordsFull = 0;
         const triggerWordsStartsWith = 1;
 
-        if (outgoingWebhook && !matchesFilter(outgoingWebhook, channel, filter)) {
+        if (
+            outgoingWebhook &&
+            !matchesFilter(outgoingWebhook, channel, filter)
+        ) {
             return null;
         }
 
@@ -146,7 +148,10 @@ export default class InstalledOutgoingWebhook extends React.PureComponent {
         }
 
         let triggerWords = null;
-        if (outgoingWebhook.trigger_words && outgoingWebhook.trigger_words.length > 0) {
+        if (
+            outgoingWebhook.trigger_words &&
+            outgoingWebhook.trigger_words.length > 0
+        ) {
             triggerWords = (
                 <div className='item-details__row'>
                     <span className='item-details__trigger-words'>
@@ -154,7 +159,9 @@ export default class InstalledOutgoingWebhook extends React.PureComponent {
                             id='installed_integrations.triggerWords'
                             defaultMessage='Trigger Words: {triggerWords}'
                             values={{
-                                triggerWords: outgoingWebhook.trigger_words.join(', '),
+                                triggerWords: outgoingWebhook.trigger_words.join(
+                                    ', ',
+                                ),
                             }}
                         />
                     </span>
@@ -207,7 +214,9 @@ export default class InstalledOutgoingWebhook extends React.PureComponent {
                         />
                     </button>
                     {' - '}
-                    <Link to={`/${this.props.team.name}/integrations/outgoing_webhooks/edit?id=${outgoingWebhook.id}`}>
+                    <Link
+                        to={`/${this.props.team.name}/integrations/outgoing_webhooks/edit?id=${outgoingWebhook.id}`}
+                    >
                         <FormattedMessage
                             id='installed_integrations.edit'
                             defaultMessage='Edit'
@@ -215,7 +224,9 @@ export default class InstalledOutgoingWebhook extends React.PureComponent {
                     </Link>
                     {' - '}
                     <DeleteIntegration
-                        messageId={t('installed_outgoing_webhooks.delete.confirm')}
+                        messageId={t(
+                            'installed_outgoing_webhooks.delete.confirm',
+                        )}
                         onDelete={this.handleDelete}
                     />
                 </div>
@@ -237,7 +248,9 @@ export default class InstalledOutgoingWebhook extends React.PureComponent {
                                 id='installed_integrations.content_type'
                                 defaultMessage='Content-Type: {contentType}'
                                 values={{
-                                    contentType: outgoingWebhook.content_type || 'application/x-www-form-urlencoded',
+                                    contentType:
+                                        outgoingWebhook.content_type ||
+                                        'application/x-www-form-urlencoded',
                                 }}
                             />
                         </span>
@@ -263,9 +276,8 @@ export default class InstalledOutgoingWebhook extends React.PureComponent {
                                     token: outgoingWebhook.token,
                                 }}
                             />
-                            <CopyText
-                                value={outgoingWebhook.token}
-                            />
+
+                            <CopyText value={outgoingWebhook.token} />
                         </span>
                     </div>
                     <div className='item-details__row'>

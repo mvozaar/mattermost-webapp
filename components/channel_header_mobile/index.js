@@ -33,11 +33,18 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        closeLhs,
-        closeRhs,
-        closeRhsMenu,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            closeLhs,
+            closeRhs,
+            closeRhsMenu,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelHeaderMobile);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ChannelHeaderMobile);

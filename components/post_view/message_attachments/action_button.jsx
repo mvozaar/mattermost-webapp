@@ -10,7 +10,7 @@ export default class ActionButton extends React.PureComponent {
     static propTypes = {
         action: PropTypes.object.isRequired,
         handleAction: PropTypes.func.isRequired,
-    }
+    };
 
     render() {
         const {action, handleAction} = this.props;

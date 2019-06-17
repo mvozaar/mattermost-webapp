@@ -55,6 +55,7 @@ export default class ResetPasswordModal extends React.Component {
                         defaultMessage='Please enter your current password.'
                     />
                 );
+
                 this.setState({serverErrorCurrentPass: errorMsg});
                 return;
             }
@@ -62,7 +63,11 @@ export default class ResetPasswordModal extends React.Component {
 
         const password = this.refs.password.value;
 
-        const {valid, error} = Utils.isValidPassword(password, this.props.passwordConfig);
+        const {valid, error} = Utils.isValidPassword(
+            password,
+            this.props.passwordConfig,
+        );
+
         if (!valid && error) {
             this.setState({serverErrorNewPass: error});
             return;
@@ -79,7 +84,7 @@ export default class ResetPasswordModal extends React.Component {
             },
             (err) => {
                 this.setState({serverErrorCurrentPass: err.message});
-            }
+            },
         );
     }
 
@@ -88,13 +93,14 @@ export default class ResetPasswordModal extends React.Component {
             serverErrorNewPass: null,
             serverErrorCurrentPass: null,
         });
+
         this.props.onModalDismissed();
     }
 
     render() {
         const user = this.props.user;
         if (user == null) {
-            return <div/>;
+            return <div />;
         }
 
         let urlClass = 'input-group input-group--limit';
@@ -102,7 +108,13 @@ export default class ResetPasswordModal extends React.Component {
 
         if (this.state.serverErrorNewPass) {
             urlClass += ' has-error';
-            serverErrorNewPass = <div className='has-error'><p className='input__help error'>{this.state.serverErrorNewPass}</p></div>;
+            serverErrorNewPass = (
+                <div className='has-error'>
+                    <p className='input__help error'>
+                        {this.state.serverErrorNewPass}
+                    </p>
+                </div>
+            );
         }
 
         let title;
@@ -130,7 +142,13 @@ export default class ResetPasswordModal extends React.Component {
             let urlClassCurrentPass = 'input-group input-group--limit';
             if (this.state.serverErrorCurrentPass) {
                 urlClassCurrentPass += ' has-error';
-                serverErrorCurrentPass = <div className='has-error'><p className='input__help error'>{this.state.serverErrorCurrentPass}</p></div>;
+                serverErrorCurrentPass = (
+                    <div className='has-error'>
+                        <p className='input__help error'>
+                            {this.state.serverErrorCurrentPass}
+                        </p>
+                    </div>
+                );
             }
             currentPassword = (
                 <div className='col-sm-10 password__group-addon-space'>
@@ -172,10 +190,7 @@ export default class ResetPasswordModal extends React.Component {
                         {title}
                     </Modal.Title>
                 </Modal.Header>
-                <form
-                    role='form'
-                    className='form-horizontal'
-                >
+                <form role='form' className='form-horizontal'>
                     <Modal.Body>
                         <div className='form-group'>
                             {currentPassword}

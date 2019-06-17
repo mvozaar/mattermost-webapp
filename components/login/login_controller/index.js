@@ -4,8 +4,14 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
-import {getTeamByName, getMyTeamMember} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getConfig,
+    getLicense,
+} from 'mattermost-redux/selectors/entities/general';
+import {
+    getTeamByName,
+    getMyTeamMember,
+} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {RequestStatus} from 'mattermost-redux/constants';
 
@@ -32,11 +38,14 @@ function mapStateToProps(state) {
     const enableSignUpWithEmail = config.EnableSignUpWithEmail === 'true';
     const enableSignUpWithGitLab = config.EnableSignUpWithGitLab === 'true';
     const enableSignUpWithGoogle = config.EnableSignUpWithGoogle === 'true';
-    const enableSignUpWithOffice365 = config.EnableSignUpWithOffice365 === 'true';
+    const enableSignUpWithOffice365 =
+        config.EnableSignUpWithOffice365 === 'true';
     const ldapLoginFieldName = config.LdapLoginFieldName;
     const samlLoginButtonText = config.SamlLoginButtonText;
     const siteName = config.SiteName;
-    const initializing = state.requests.users.logout.status === RequestStatus.SUCCESS || !state.storage.initialized;
+    const initializing =
+        state.requests.users.logout.status === RequestStatus.SUCCESS ||
+        !state.storage.initialized;
 
     // Only set experimental team if user is on that team
     let experimentalPrimaryTeam = config.ExperimentalPrimaryTeam;
@@ -77,11 +86,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            login,
-            addUserToTeamFromInvite,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                login,
+                addUserToTeamFromInvite,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginController);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(LoginController);

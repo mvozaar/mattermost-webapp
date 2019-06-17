@@ -16,11 +16,18 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            joinChannelById,
-            switchToChannel,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                joinChannelById,
+                switchToChannel,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuickSwitchModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(QuickSwitchModal);

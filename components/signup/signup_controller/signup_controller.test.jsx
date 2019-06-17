@@ -27,6 +27,7 @@ describe('components/SignupController', () => {
             pathname: '/signup_user_complete/',
             hash: '',
         },
+
         noAccounts: false,
         loggedIn: true,
         isLicensed: true,
@@ -47,9 +48,8 @@ describe('components/SignupController', () => {
     };
 
     test('should match snapshot for all signup options enabled with isLicensed enabled', () => {
-        const wrapper = shallowWithIntl(
-            <SignupController {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<SignupController {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -59,16 +59,20 @@ describe('components/SignupController', () => {
             isLicensed: false,
         };
 
-        const wrapper = shallowWithIntl(
-            <SignupController {...props}/>
-        );
+        const wrapper = shallowWithIntl(<SignupController {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should call addUserToTeamFromInvite if id exists in url', async () => {
         browserHistory.push = jest.fn();
 
-        const addUserToTeamFromInvite = jest.fn().mockImplementation(() => Promise.resolve({data: {name: 'defaultTeam'}}));
+        const addUserToTeamFromInvite = jest
+            .fn()
+            .mockImplementation(() =>
+                Promise.resolve({data: {name: 'defaultTeam'}}),
+            );
+
         const getInviteInfo = jest.fn();
         const props = {
             ...baseProps,
@@ -76,6 +80,7 @@ describe('components/SignupController', () => {
                 ...baseProps.location,
                 search: '?id=ppni7a9t87fn3j4d56rwocdctc',
             },
+
             actions: {
                 ...baseProps.actions,
                 addUserToTeamFromInvite,
@@ -83,9 +88,7 @@ describe('components/SignupController', () => {
             },
         };
 
-        const wrapper = shallowWithIntl(
-            <SignupController {...props}/>
-        );
+        const wrapper = shallowWithIntl(<SignupController {...props} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(addUserToTeamFromInvite).toHaveBeenCalled();
@@ -93,26 +96,32 @@ describe('components/SignupController', () => {
         expect(GlobalActions.redirectUserToDefaultTeam).not.toHaveBeenCalled();
 
         await addUserToTeamFromInvite();
-        expect(browserHistory.push).toHaveBeenCalledWith(`/defaultTeam/channels/${Constants.DEFAULT_CHANNEL}`);
+        expect(browserHistory.push).toHaveBeenCalledWith(
+            `/defaultTeam/channels/${Constants.DEFAULT_CHANNEL}`,
+        );
     });
 
     test('should match snapshot for addUserToTeamFromInvite error', async () => {
-        const addUserToTeamFromInvite = jest.fn().mockImplementation(() => Promise.resolve({error: {message: 'access denied'}}));
+        const addUserToTeamFromInvite = jest
+            .fn()
+            .mockImplementation(() =>
+                Promise.resolve({error: {message: 'access denied'}}),
+            );
+
         const props = {
             ...baseProps,
             location: {
                 ...baseProps.location,
                 search: '?id=ppni7a9t87fn3j4d56rwocdctc',
             },
+
             actions: {
                 ...baseProps.actions,
                 addUserToTeamFromInvite,
             },
         };
 
-        const wrapper = shallowWithIntl(
-            <SignupController {...props}/>
-        );
+        const wrapper = shallowWithIntl(<SignupController {...props} />);
 
         expect(addUserToTeamFromInvite).toHaveBeenCalled();
 

@@ -11,15 +11,18 @@ import {
     unregisterPluginReconnectHandler,
 } from 'actions/websocket_actions.jsx';
 
-import {
-    registerPluginTranslationsSource,
-} from 'actions/views/root';
+import {registerPluginTranslationsSource} from 'actions/views/root';
 
 import store from 'stores/redux_store.jsx';
 import {ActionTypes} from 'utils/constants.jsx';
 import {generateId} from 'utils/utils.jsx';
 
-function dispatchPluginComponentAction(name, pluginId, component, id = generateId()) {
+function dispatchPluginComponentAction(
+    name,
+    pluginId,
+    component,
+    id = generateId(),
+) {
     store.dispatch({
         type: ActionTypes.RECEIVED_PLUGIN_COMPONENT,
         name,
@@ -56,32 +59,52 @@ export default class PluginRegistry {
     // Register a component in the user attributes section of the profile popover (hovercard), below the default user attributes.
     // Accepts a React component. Returns a unique identifier.
     registerPopoverUserAttributesComponent(component) {
-        return dispatchPluginComponentAction('PopoverUserAttributes', this.id, component);
+        return dispatchPluginComponentAction(
+            'PopoverUserAttributes',
+            this.id,
+            component,
+        );
     }
 
     // Register a component in the user actions of the profile popover (hovercard), below the default actions.
     // Accepts a React component. Returns a unique identifier.
     registerPopoverUserActionsComponent(component) {
-        return dispatchPluginComponentAction('PopoverUserActions', this.id, component);
+        return dispatchPluginComponentAction(
+            'PopoverUserActions',
+            this.id,
+            component,
+        );
     }
 
     // Register a component fixed to the top of the left-hand channel sidebar.
     // Accepts a React component. Returns a unique identifier.
     registerLeftSidebarHeaderComponent(component) {
-        return dispatchPluginComponentAction('LeftSidebarHeader', this.id, component);
+        return dispatchPluginComponentAction(
+            'LeftSidebarHeader',
+            this.id,
+            component,
+        );
     }
 
     // Register a component fixed to the bottom of the team sidebar. Does not render if
     // user is only on one team and the team sidebar is not shown.
     // Accepts a React component. Returns a unique identifier.
     registerBottomTeamSidebarComponent(component) {
-        return dispatchPluginComponentAction('BottomTeamSidebar', this.id, component);
+        return dispatchPluginComponentAction(
+            'BottomTeamSidebar',
+            this.id,
+            component,
+        );
     }
 
     // Register a component fixed to the bottom of the post message.
     // Accepts a React component. Returns a unique identifier.
     registerPostMessageAttachmentComponent(component) {
-        return dispatchPluginComponentAction('PostMessageAttachment', this.id, component);
+        return dispatchPluginComponentAction(
+            'PostMessageAttachment',
+            this.id,
+            component,
+        );
     }
 
     // Register a component to show as a tooltip when a user hovers on a link in a post.
@@ -195,7 +218,11 @@ export default class PluginRegistry {
     // Register a component at the bottom of the post dropdown menu.
     // Accepts a React component. Returns a unique identifier.
     registerPostDropdownMenuComponent(component) {
-        return dispatchPluginComponentAction('PostDropdownMenuItem', this.id, component);
+        return dispatchPluginComponentAction(
+            'PostDropdownMenuItem',
+            this.id,
+            component,
+        );
     }
 
     // Register a file upload method by providing some text, an icon, and an action function.

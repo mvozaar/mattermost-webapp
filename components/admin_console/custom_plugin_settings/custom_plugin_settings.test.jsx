@@ -23,6 +23,7 @@ describe('components/admin_console/CustomPluginSettings', () => {
             webapp: {
                 bundle_path: '/static/testplugin_bundle.js',
             },
+
             settings_schema: {
                 header: '# Header\n*This* is the **header**',
                 footer: '# Footer\n*This* is the **footer**',
@@ -35,6 +36,7 @@ describe('components/admin_console/CustomPluginSettings', () => {
                         help_text: 'This is some help text for the text field.',
                         placeholder: 'e.g. some setting',
                     },
+
                     {
                         key: 'settingb',
                         display_name: 'Setting Two',
@@ -42,6 +44,7 @@ describe('components/admin_console/CustomPluginSettings', () => {
                         default: true,
                         help_text: 'This is some help text for the bool field.',
                     },
+
                     {
                         key: 'settingc',
                         display_name: 'Setting Three',
@@ -52,8 +55,11 @@ describe('components/admin_console/CustomPluginSettings', () => {
                             {display_name: 'Option 2', value: 'option2'},
                             {display_name: 'Option 3', value: 'option3'},
                         ],
-                        help_text: 'This is some help text for the dropdown field.',
+
+                        help_text:
+                            'This is some help text for the dropdown field.',
                     },
+
                     {
                         key: 'settingd',
                         display_name: 'Setting Four',
@@ -64,21 +70,28 @@ describe('components/admin_console/CustomPluginSettings', () => {
                             {display_name: 'Option 2', value: 'option2'},
                             {display_name: 'Option 3', value: 'option3'},
                         ],
-                        help_text: 'This is some help text for the radio field.',
+
+                        help_text:
+                            'This is some help text for the radio field.',
                     },
+
                     {
                         key: 'settinge',
                         display_name: 'Setting Five',
                         type: 'generated',
-                        help_text: 'This is some help text for the generated field.',
-                        regenerate_help_text: 'This is help text for the regenerate button.',
+                        help_text:
+                            'This is some help text for the generated field.',
+                        regenerate_help_text:
+                            'This is help text for the regenerate button.',
                         placeholder: 'e.g. 47KyfOxtk5+ovi1MDHFyzMDHIA6esMWb',
                     },
+
                     {
                         key: 'settingf',
                         display_name: 'Setting Six',
                         type: 'username',
-                        help_text: 'This is some help text for the user autocomplete field.',
+                        help_text:
+                            'This is some help text for the user autocomplete field.',
                         placeholder: 'Type a username here',
                     },
                 ],
@@ -102,15 +115,26 @@ describe('components/admin_console/CustomPluginSettings', () => {
     });
 
     test('should match snapshot with settings and plugin', () => {
-        const settings = plugin && plugin.settings_schema && plugin.settings_schema.settings && plugin.settings_schema.settings.map((setting) => {
-            return {...setting, label: setting.display_name};
-        });
+        const settings =
+            plugin &&
+            plugin.settings_schema &&
+            plugin.settings_schema.settings &&
+            plugin.settings_schema.settings.map((setting) => {
+                return {...setting, label: setting.display_name};
+            });
         const wrapper = shallow(
             <CustomPluginSettings
                 config={config}
-                schema={{...plugin.settings_schema, id: plugin.id, name: plugin.name, translate: false, settings}}
-            />
+                schema={{
+                    ...plugin.settings_schema,
+                    id: plugin.id,
+                    name: plugin.name,
+                    translate: false,
+                    settings,
+                }}
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -123,15 +147,20 @@ describe('components/admin_console/CustomPluginSettings', () => {
                     name: 'testplugin',
                     translate: false,
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with no settings and plugin', () => {
-        const settings = plugin && plugin.settings_schema && plugin.settings_schema.settings && plugin.settings_schema.settings.map((setting) => {
-            return {...setting, label: setting.display_name};
-        });
+        const settings =
+            plugin &&
+            plugin.settings_schema &&
+            plugin.settings_schema.settings &&
+            plugin.settings_schema.settings.map((setting) => {
+                return {...setting, label: setting.display_name};
+            });
         const wrapper = shallow(
             <CustomPluginSettings
                 config={{
@@ -139,9 +168,16 @@ describe('components/admin_console/CustomPluginSettings', () => {
                         Plugins: {},
                     },
                 }}
-                schema={{...plugin.settings_schema, id: plugin.id, name: plugin.name, translate: false, settings}}
-            />
+                schema={{
+                    ...plugin.settings_schema,
+                    id: plugin.id,
+                    name: plugin.name,
+                    translate: false,
+                    settings,
+                }}
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

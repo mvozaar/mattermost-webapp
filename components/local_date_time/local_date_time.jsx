@@ -8,7 +8,6 @@ import moment from 'moment-timezone';
 
 export default class LocalDateTime extends React.PureComponent {
     static propTypes = {
-
         /*
          * The time to display
          */

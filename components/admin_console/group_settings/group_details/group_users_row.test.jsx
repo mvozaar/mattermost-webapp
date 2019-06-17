@@ -15,8 +15,9 @@ describe('components/admin_console/group_settings/group_details/GroupUsersRow', 
                 email='test@test.com'
                 userId='xxxxxxxxxxxxxxxxxxxxxxxxxx'
                 lastPictureUpdate={0}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

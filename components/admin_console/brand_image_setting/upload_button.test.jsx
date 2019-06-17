@@ -16,9 +16,7 @@ describe('components/admin_console/brand_image_setting/UploadButton', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <UploadButton {...baseProps}/>
-        );
+        const wrapper = shallow(<UploadButton {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
 
@@ -35,11 +33,12 @@ describe('components/admin_console/brand_image_setting/UploadButton', () => {
     test('should have called props.onClick on button click', () => {
         const onClick = jest.fn();
         const props = {...baseProps, onClick};
-        const wrapper = shallow(
-            <UploadButton {...props}/>
-        );
+        const wrapper = shallow(<UploadButton {...props} />);
 
-        wrapper.find('button').first().simulate('click');
+        wrapper
+            .find('button')
+            .first()
+            .simulate('click');
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 });

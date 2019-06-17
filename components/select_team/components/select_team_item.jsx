@@ -25,7 +25,7 @@ export default class SelectTeamItem extends React.PureComponent {
     handleTeamClick = (e) => {
         e.preventDefault();
         this.props.onTeamClick(this.props.team);
-    }
+    };
 
     renderDescriptionTooltip = () => {
         const team = this.props.team;
@@ -34,9 +34,7 @@ export default class SelectTeamItem extends React.PureComponent {
         }
 
         const descriptionTooltip = (
-            <Tooltip id='team-description__tooltip'>
-                {team.description}
-            </Tooltip>
+            <Tooltip id='team-description__tooltip'>{team.description}</Tooltip>
         );
 
         return (
@@ -49,32 +47,45 @@ export default class SelectTeamItem extends React.PureComponent {
                 rootClose={true}
                 container={this}
             >
-                <TeamInfoIcon className='icon icon--info'/>
+                <TeamInfoIcon className='icon icon--info' />
             </OverlayTrigger>
         );
-    }
+    };
 
     render() {
         const {formatMessage} = this.context.intl;
-        const {canJoinPublicTeams, canJoinPrivateTeams, loading, team} = this.props;
+        const {
+            canJoinPublicTeams,
+            canJoinPrivateTeams,
+            loading,
+            team,
+        } = this.props;
         let icon;
         if (loading) {
             icon = (
                 <span
                     className='fa fa-refresh fa-spin right signup-team__icon'
-                    title={formatMessage({id: 'generic_icons.loading', defaultMessage: 'Loading Icon'})}
+                    title={formatMessage({
+                        id: 'generic_icons.loading',
+                        defaultMessage: 'Loading Icon',
+                    })}
                 />
             );
         } else {
             icon = (
                 <span
                     className='fa fa-angle-right right signup-team__icon'
-                    title={formatMessage({id: 'select_team.join.icon', defaultMessage: 'Join Team Icon'})}
+                    title={formatMessage({
+                        id: 'select_team.join.icon',
+                        defaultMessage: 'Join Team Icon',
+                    })}
                 />
             );
         }
 
-        const canJoin = (team.allow_open_invite && canJoinPublicTeams) || (!team.allow_open_invite && canJoinPrivateTeams);
+        const canJoin =
+            (team.allow_open_invite && canJoinPublicTeams) ||
+            (!team.allow_open_invite && canJoinPrivateTeams);
 
         return (
             <div className='signup-team-dir'>
@@ -85,12 +96,19 @@ export default class SelectTeamItem extends React.PureComponent {
                     onClick={canJoin ? this.handleTeamClick : null}
                     className={canJoin ? '' : 'disabled'}
                 >
-                    <span className='signup-team-dir__name'>{team.display_name}</span>
-                    {!team.allow_open_invite &&
+                    <span className='signup-team-dir__name'>
+                        {team.display_name}
+                    </span>
+                    {!team.allow_open_invite && (
                         <span
                             className='fa fa-lock light'
-                            title={formatMessage({id: 'select_team.private.icon', defaultMessage: 'Private team'})}
-                        />}
+                            title={formatMessage({
+                                id: 'select_team.private.icon',
+                                defaultMessage: 'Private team',
+                            })}
+                        />
+                    )}
+
                     {canJoin && icon}
                 </a>
             </div>

@@ -11,7 +11,10 @@ import {getEmojiMap, getRecentEmojis} from 'selectors/emojis';
 import {ActionTypes} from 'utils/constants.jsx';
 
 export async function addEmoji(emoji, image, success, error) {
-    const {data, error: err} = await EmojiActions.createCustomEmoji(emoji, image)(store.dispatch, store.getState);
+    const {data, error: err} = await EmojiActions.createCustomEmoji(
+        emoji,
+        image,
+    )(store.dispatch, store.getState);
     if (data && success) {
         success(data);
     } else if (err && error) {
@@ -30,7 +33,9 @@ export function loadRecentlyUsedCustomEmojis() {
 
         const recentEmojis = getRecentEmojis(state);
         const emojiMap = getEmojiMap(state);
-        const missingEmojis = recentEmojis.filter((name) => !emojiMap.has(name));
+        const missingEmojis = recentEmojis.filter(
+            (name) => !emojiMap.has(name),
+        );
 
         missingEmojis.forEach((name) => {
             dispatch(EmojiActions.getCustomEmojiByName(name));

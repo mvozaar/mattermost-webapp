@@ -11,13 +11,11 @@ import FullScreenModal from './full_screen_modal.jsx';
 describe('components/widgets/modals/FullScreenModal', () => {
     test('showing content', () => {
         const wrapper = shallow(
-            <FullScreenModal
-                show={true}
-                onClose={jest.fn()}
-            >
+            <FullScreenModal show={true} onClose={jest.fn()}>
                 {'test'}
-            </FullScreenModal>
+            </FullScreenModal>,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <CSSTransition
   appear={true}
@@ -41,13 +39,11 @@ describe('components/widgets/modals/FullScreenModal', () => {
     });
     test('not showing content', () => {
         const wrapper = shallow(
-            <FullScreenModal
-                show={false}
-                onClose={jest.fn()}
-            >
+            <FullScreenModal show={false} onClose={jest.fn()}>
                 {'test'}
-            </FullScreenModal>
+            </FullScreenModal>,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <CSSTransition
   appear={true}
@@ -72,13 +68,11 @@ describe('components/widgets/modals/FullScreenModal', () => {
     test('close on close icon click', () => {
         const close = jest.fn();
         const wrapper = shallow(
-            <FullScreenModal
-                show={true}
-                onClose={close}
-            >
+            <FullScreenModal show={true} onClose={close}>
                 {'test'}
-            </FullScreenModal>
+            </FullScreenModal>,
         );
+
         expect(close).not.toBeCalled();
         wrapper.find(CloseIcon).simulate('click');
         expect(close).toBeCalled();
@@ -87,13 +81,11 @@ describe('components/widgets/modals/FullScreenModal', () => {
     test('close on esc keypress', () => {
         const close = jest.fn();
         shallow(
-            <FullScreenModal
-                show={true}
-                onClose={close}
-            >
+            <FullScreenModal show={true} onClose={close}>
                 {'test'}
-            </FullScreenModal>
+            </FullScreenModal>,
         );
+
         expect(close).not.toBeCalled();
         const event = new KeyboardEvent('keydown', {key: 'Escape'});
         document.dispatchEvent(event);

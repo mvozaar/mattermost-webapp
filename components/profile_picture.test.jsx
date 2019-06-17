@@ -15,9 +15,7 @@ describe('components/ProfilePicture', () => {
 
     test('should match snapshot, no user specified, default props', () => {
         const props = baseProps;
-        const wrapper = shallow(
-            <ProfilePicture {...props}/>
-        );
+        const wrapper = shallow(<ProfilePicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -30,9 +28,8 @@ describe('components/ProfilePicture', () => {
             isRHS: true,
             hasMention: true,
         };
-        const wrapper = shallow(
-            <ProfilePicture {...props}/>
-        );
+
+        const wrapper = shallow(<ProfilePicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -44,9 +41,8 @@ describe('components/ProfilePicture', () => {
                 username: 'username',
             },
         };
-        const wrapper = shallow(
-            <ProfilePicture {...props}/>
-        );
+
+        const wrapper = shallow(<ProfilePicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -57,14 +53,14 @@ describe('components/ProfilePicture', () => {
             user: {
                 username: 'username',
             },
+
             width: '48',
             height: '48',
             isRHS: true,
             hasMention: true,
         };
-        const wrapper = shallow(
-            <ProfilePicture {...props}/>
-        );
+
+        const wrapper = shallow(<ProfilePicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

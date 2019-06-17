@@ -34,14 +34,17 @@ export default class GeneralTab extends React.Component {
             setTeamIcon: PropTypes.func.isRequired,
         }).isRequired,
         canInviteTeamMembers: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
 
         this.updateSection = this.updateSection.bind(this);
         this.handleNameSubmit = this.handleNameSubmit.bind(this);
-        this.handleAllowedDomainsSubmit = this.handleAllowedDomainsSubmit.bind(this);
+        this.handleAllowedDomainsSubmit = this.handleAllowedDomainsSubmit.bind(
+            this,
+        );
+
         this.handleInviteIdSubmit = this.handleInviteIdSubmit.bind(this);
         this.handleOpenInviteSubmit = this.handleOpenInviteSubmit.bind(this);
         this.handleDescriptionSubmit = this.handleDescriptionSubmit.bind(this);
@@ -59,7 +62,9 @@ export default class GeneralTab extends React.Component {
 
     updateSection(section) {
         if ($('.section-max').length) {
-            $('.settings-modal .modal-body').scrollTop(0).perfectScrollbar('update');
+            $('.settings-modal .modal-body')
+                .scrollTop(0)
+                .perfectScrollbar('update');
         }
         this.setState(this.setupInitialState(this.props));
         this.props.updateSection(section);
@@ -82,7 +87,8 @@ export default class GeneralTab extends React.Component {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         this.setState({
             name: nextProps.team.display_name,
             description: nextProps.team.description,
@@ -110,7 +116,7 @@ export default class GeneralTab extends React.Component {
         } else {
             this.updateSection('');
         }
-    }
+    };
 
     handleOpenInviteSubmit = async () => {
         var state = {serverError: '', clientError: ''};
@@ -126,7 +132,7 @@ export default class GeneralTab extends React.Component {
         } else {
             this.updateSection('');
         }
-    }
+    };
 
     handleNameSubmit = async () => {
         var state = {serverError: '', clientError: ''};
@@ -135,7 +141,11 @@ export default class GeneralTab extends React.Component {
         const name = this.state.name.trim();
 
         if (!name) {
-            state.clientError = Utils.localizeMessage('general_tab.required', 'This field is required');
+            state.clientError = Utils.localizeMessage(
+                'general_tab.required',
+                'This field is required',
+            );
+
             valid = false;
         } else if (name.length < Constants.MIN_TEAMNAME_LENGTH) {
             state.clientError = (
@@ -171,13 +181,15 @@ export default class GeneralTab extends React.Component {
         } else {
             this.updateSection('');
         }
-    }
+    };
 
     handleInviteIdSubmit = async () => {
         const state = {serverError: '', clientError: ''};
         this.setState(state);
 
-        const {error} = await this.props.actions.regenerateTeamInviteId(this.props.team.id);
+        const {error} = await this.props.actions.regenerateTeamInviteId(
+            this.props.team.id,
+        );
 
         if (error) {
             state.serverError = error.message;
@@ -185,7 +197,7 @@ export default class GeneralTab extends React.Component {
         } else {
             this.updateSection('');
         }
-    }
+    };
 
     handleClose() {
         this.updateSection('');
@@ -197,7 +209,11 @@ export default class GeneralTab extends React.Component {
 
         const description = this.state.description.trim();
         if (description === this.props.team.description) {
-            state.clientError = Utils.localizeMessage('general_tab.chooseDescription', 'Please choose a new description for your team');
+            state.clientError = Utils.localizeMessage(
+                'general_tab.chooseDescription',
+                'Please choose a new description for your team',
+            );
+
             valid = false;
         } else {
             state.clientError = '';
@@ -220,7 +236,7 @@ export default class GeneralTab extends React.Component {
         } else {
             this.updateSection('');
         }
-    }
+    };
 
     handleTeamIconSubmit = async () => {
         if (!this.state.teamIconFile) {
@@ -237,7 +253,10 @@ export default class GeneralTab extends React.Component {
             serverError: '',
         });
 
-        const {error} = await this.props.actions.setTeamIcon(this.props.team.id, this.state.teamIconFile);
+        const {error} = await this.props.actions.setTeamIcon(
+            this.props.team.id,
+            this.state.teamIconFile,
+        );
 
         if (error) {
             this.setState({
@@ -249,9 +268,10 @@ export default class GeneralTab extends React.Component {
                 loadingIcon: false,
                 submitActive: false,
             });
+
             this.updateSection('');
         }
-    }
+    };
 
     handleTeamIconRemove = async () => {
         this.setState({
@@ -260,7 +280,9 @@ export default class GeneralTab extends React.Component {
             serverError: '',
         });
 
-        const {error} = await this.props.actions.removeTeamIcon(this.props.team.id);
+        const {error} = await this.props.actions.removeTeamIcon(
+            this.props.team.id,
+        );
 
         if (error) {
             this.setState({
@@ -272,9 +294,10 @@ export default class GeneralTab extends React.Component {
                 loadingIcon: false,
                 submitActive: false,
             });
+
             this.updateSection('');
         }
-    }
+    };
 
     componentDidMount() {
         $('#team_settings').on('hidden.bs.modal', this.handleClose);
@@ -286,7 +309,7 @@ export default class GeneralTab extends React.Component {
 
     handleUpdateSection = (section) => {
         this.updateSection(section);
-    }
+    };
 
     updateName(e) {
         this.setState({name: e.target.value});
@@ -302,11 +325,17 @@ export default class GeneralTab extends React.Component {
 
             if (!ACCEPTED_TEAM_IMAGE_TYPES.includes(file.type)) {
                 this.setState({
-                    clientError: Utils.localizeMessage('general_tab.teamIconInvalidFileType', 'Only BMP, JPG or PNG images may be used for team icons'),
+                    clientError: Utils.localizeMessage(
+                        'general_tab.teamIconInvalidFileType',
+                        'Only BMP, JPG or PNG images may be used for team icons',
+                    ),
                 });
             } else if (file.size > this.props.maxFileSize) {
                 this.setState({
-                    clientError: Utils.localizeMessage('general_tab.teamIconTooLarge', 'Unable to upload team icon. File is too large.'),
+                    clientError: Utils.localizeMessage(
+                        'general_tab.teamIconTooLarge',
+                        'Unable to upload team icon. File is too large.',
+                    ),
                 });
             } else {
                 this.setState({
@@ -318,7 +347,10 @@ export default class GeneralTab extends React.Component {
         } else {
             this.setState({
                 teamIconFile: null,
-                clientError: Utils.localizeMessage('general_tab.teamIconError', 'An error occurred while selecting the image.'),
+                clientError: Utils.localizeMessage(
+                    'general_tab.teamIconError',
+                    'An error occurred while selecting the image.',
+                ),
             });
         }
     }
@@ -351,14 +383,18 @@ export default class GeneralTab extends React.Component {
                                 name='userOpenInviteOptions'
                                 type='radio'
                                 defaultChecked={this.state.allow_open_invite}
-                                onChange={this.handleOpenInviteRadio.bind(this, true)}
+                                onChange={this.handleOpenInviteRadio.bind(
+                                    this,
+                                    true,
+                                )}
                             />
+
                             <FormattedMessage
                                 id='general_tab.yes'
                                 defaultMessage='Yes'
                             />
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     <div className='radio'>
                         <label>
@@ -367,17 +403,21 @@ export default class GeneralTab extends React.Component {
                                 name='userOpenInviteOptions'
                                 type='radio'
                                 defaultChecked={!this.state.allow_open_invite}
-                                onChange={this.handleOpenInviteRadio.bind(this, false)}
+                                onChange={this.handleOpenInviteRadio.bind(
+                                    this,
+                                    false,
+                                )}
                             />
+
                             <FormattedMessage
                                 id='general_tab.no'
                                 defaultMessage='No'
                             />
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     <div>
-                        <br/>
+                        <br />
                         <FormattedMessage
                             id='general_tab.openInviteDesc'
                             defaultMessage='When allowed, a link to this team will be included on the landing page allowing anyone with an account to join this team.'
@@ -388,7 +428,10 @@ export default class GeneralTab extends React.Component {
 
             openInviteSection = (
                 <SettingItemMax
-                    title={Utils.localizeMessage('general_tab.openInviteTitle', 'Allow any user with an account on this server to join this team')}
+                    title={Utils.localizeMessage(
+                        'general_tab.openInviteTitle',
+                        'Allow any user with an account on this server to join this team',
+                    )}
                     inputs={inputs}
                     submit={this.handleOpenInviteSubmit}
                     serverError={serverError}
@@ -405,7 +448,10 @@ export default class GeneralTab extends React.Component {
 
             openInviteSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('general_tab.openInviteTitle', 'Allow any user with an account on this server to join this team')}
+                    title={Utils.localizeMessage(
+                        'general_tab.openInviteTitle',
+                        'Allow any user with an account on this server to join this team',
+                    )}
                     describe={describe}
                     updateSection={this.handleUpdateSection}
                     section={'open_invite'}
@@ -420,7 +466,10 @@ export default class GeneralTab extends React.Component {
                         id='open_inviteTitle'
                         className='col-xs-12 col-sm-9 section-title'
                     >
-                        {Utils.localizeMessage('general_tab.openInviteTitle', 'Allow any user with an account on this server to join this team')}
+                        {Utils.localizeMessage(
+                            'general_tab.openInviteTitle',
+                            'Allow any user with an account on this server to join this team',
+                        )}
                     </li>
                     <li
                         id='open_inviteDesc'
@@ -428,9 +477,7 @@ export default class GeneralTab extends React.Component {
                     >
                         {Utils.localizeMessage('general_tab.no', 'No')}
                     </li>
-                    <li
-                        className='col-xs-12'
-                    >
+                    <li className='col-xs-12'>
                         <div className='disabledMessage'>
                             <FormattedMarkdownMessage
                                 id='general_tab.membersManagedByGroups'
@@ -444,13 +491,16 @@ export default class GeneralTab extends React.Component {
 
         let inviteSection;
 
-        if (this.props.activeSection === 'invite_id' && this.props.canInviteTeamMembers) {
+        if (
+            this.props.activeSection === 'invite_id' &&
+            this.props.canInviteTeamMembers
+        ) {
             const inputs = [];
 
             inputs.push(
                 <div key='teamInviteSetting'>
                     <div className='row'>
-                        <label className='col-sm-5 control-label visible-xs-block'/>
+                        <label className='col-sm-5 control-label visible-xs-block' />
                         <div className='col-sm-12'>
                             <input
                                 id='teamInviteId'
@@ -480,25 +530,37 @@ export default class GeneralTab extends React.Component {
                             }}
                         />
                     </div>
-                </div>
+                </div>,
             );
 
             inviteSection = (
                 <SettingItemMax
-                    title={Utils.localizeMessage('general_tab.codeTitle', 'Invite Code')}
+                    title={Utils.localizeMessage(
+                        'general_tab.codeTitle',
+                        'Invite Code',
+                    )}
                     inputs={inputs}
                     submit={this.handleInviteIdSubmit}
                     serverError={serverError}
                     clientError={clientError}
                     updateSection={this.handleUpdateSection}
-                    saveButtonText={Utils.localizeMessage('general_tab.regenerate', 'Regenerate')}
+                    saveButtonText={Utils.localizeMessage(
+                        'general_tab.regenerate',
+                        'Regenerate',
+                    )}
                 />
             );
         } else if (this.props.canInviteTeamMembers) {
             inviteSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('general_tab.codeTitle', 'Invite Code')}
-                    describe={Utils.localizeMessage('general_tab.codeDesc', "Click 'Edit' to regenerate Invite Code.")}
+                    title={Utils.localizeMessage(
+                        'general_tab.codeTitle',
+                        'Invite Code',
+                    )}
+                    describe={Utils.localizeMessage(
+                        'general_tab.codeDesc',
+                        "Click 'Edit' to regenerate Invite Code.",
+                    )}
                     updateSection={this.handleUpdateSection}
                     section={'invite_id'}
                 />
@@ -516,16 +578,16 @@ export default class GeneralTab extends React.Component {
                     defaultMessage='Team Name'
                 />
             );
+
             if (Utils.isMobile()) {
                 teamNameLabel = '';
             }
 
             inputs.push(
-                <div
-                    key='teamNameSetting'
-                    className='form-group'
-                >
-                    <label className='col-sm-5 control-label'>{teamNameLabel}</label>
+                <div key='teamNameSetting' className='form-group'>
+                    <label className='col-sm-5 control-label'>
+                        {teamNameLabel}
+                    </label>
                     <div className='col-sm-7'>
                         <input
                             id='teamName'
@@ -538,14 +600,24 @@ export default class GeneralTab extends React.Component {
                             onFocus={Utils.moveCursorToEnd}
                         />
                     </div>
-                </div>
+                </div>,
             );
 
-            const nameExtraInfo = <span>{Utils.localizeMessage('general_tab.teamNameInfo', 'Set the name of the team as it appears on your sign-in screen and at the top of the left-hand sidebar.')}</span>;
+            const nameExtraInfo = (
+                <span>
+                    {Utils.localizeMessage(
+                        'general_tab.teamNameInfo',
+                        'Set the name of the team as it appears on your sign-in screen and at the top of the left-hand sidebar.',
+                    )}
+                </span>
+            );
 
             nameSection = (
                 <SettingItemMax
-                    title={Utils.localizeMessage('general_tab.teamName', 'Team Name')}
+                    title={Utils.localizeMessage(
+                        'general_tab.teamName',
+                        'Team Name',
+                    )}
                     inputs={inputs}
                     submit={this.handleNameSubmit}
                     serverError={serverError}
@@ -559,7 +631,10 @@ export default class GeneralTab extends React.Component {
 
             nameSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('general_tab.teamName', 'Team Name')}
+                    title={Utils.localizeMessage(
+                        'general_tab.teamName',
+                        'Team Name',
+                    )}
                     describe={describe}
                     updateSection={this.handleUpdateSection}
                     section={'name'}
@@ -578,16 +653,16 @@ export default class GeneralTab extends React.Component {
                     defaultMessage='Team Description'
                 />
             );
+
             if (Utils.isMobile()) {
                 teamDescriptionLabel = '';
             }
 
             inputs.push(
-                <div
-                    key='teamDescriptionSetting'
-                    className='form-group'
-                >
-                    <label className='col-sm-5 control-label'>{teamDescriptionLabel}</label>
+                <div key='teamDescriptionSetting' className='form-group'>
+                    <label className='col-sm-5 control-label'>
+                        {teamDescriptionLabel}
+                    </label>
                     <div className='col-sm-7'>
                         <input
                             id='teamDescription'
@@ -600,14 +675,24 @@ export default class GeneralTab extends React.Component {
                             onFocus={Utils.moveCursorToEnd}
                         />
                     </div>
-                </div>
+                </div>,
             );
 
-            const descriptionExtraInfo = <span>{Utils.localizeMessage('general_tab.teamDescriptionInfo', 'Team description provides additional information to help users select the right team. Maximum of 50 characters.')}</span>;
+            const descriptionExtraInfo = (
+                <span>
+                    {Utils.localizeMessage(
+                        'general_tab.teamDescriptionInfo',
+                        'Team description provides additional information to help users select the right team. Maximum of 50 characters.',
+                    )}
+                </span>
+            );
 
             descriptionSection = (
                 <SettingItemMax
-                    title={Utils.localizeMessage('general_tab.teamDescription', 'Team Description')}
+                    title={Utils.localizeMessage(
+                        'general_tab.teamDescription',
+                        'Team Description',
+                    )}
                     inputs={inputs}
                     submit={this.handleDescriptionSubmit}
                     serverError={serverError}
@@ -630,7 +715,10 @@ export default class GeneralTab extends React.Component {
             }
             descriptionSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('general_tab.teamDescription', 'Team Description')}
+                    title={Utils.localizeMessage(
+                        'general_tab.teamDescription',
+                        'Team Description',
+                    )}
                     describe={describemsg}
                     updateSection={this.handleUpdateSection}
                     section={'description'}
@@ -643,7 +731,10 @@ export default class GeneralTab extends React.Component {
             teamIconSection = (
                 <SettingPicture
                     imageContext='team'
-                    title={Utils.localizeMessage('general_tab.teamIcon', 'Team Icon')}
+                    title={Utils.localizeMessage(
+                        'general_tab.teamIcon',
+                        'Team Icon',
+                    )}
                     src={Utils.imageURLForTeam(team)}
                     file={this.state.teamIconFile}
                     serverError={this.state.serverError}
@@ -680,14 +771,23 @@ export default class GeneralTab extends React.Component {
                     />
                 );
             } else {
-                minMessage = Utils.isMobile() ?
-                    Utils.localizeMessage('general_tab.teamIconEditHintMobile', 'Click to upload an image.') :
-                    Utils.localizeMessage('general_tab.teamIconEditHint', 'Click \'Edit\' to upload an image.');
+                minMessage = Utils.isMobile()
+                    ? Utils.localizeMessage(
+                          'general_tab.teamIconEditHintMobile',
+                          'Click to upload an image.',
+                      )
+                    : Utils.localizeMessage(
+                          'general_tab.teamIconEditHint',
+                          "Click 'Edit' to upload an image.",
+                      );
             }
 
             teamIconSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('general_tab.teamIcon', 'Team Icon')}
+                    title={Utils.localizeMessage(
+                        'general_tab.teamIcon',
+                        'Team Icon',
+                    )}
                     describe={minMessage}
                     section={'team_icon'}
                     updateSection={this.handleUpdateSection}
@@ -701,10 +801,7 @@ export default class GeneralTab extends React.Component {
             const inputs = [];
 
             inputs.push(
-                <div
-                    key='allowedDomainsSetting'
-                    className='form-group'
-                >
+                <div key='allowedDomainsSetting' className='form-group'>
                     <div className='col-sm-12'>
                         <LocalizedInput
                             id='allowedDomains'
@@ -714,17 +811,30 @@ export default class GeneralTab extends React.Component {
                             onChange={this.updateAllowedDomains}
                             value={this.state.allowed_domains}
                             onFocus={Utils.moveCursorToEnd}
-                            placeholder={{id: t('general_tab.AllowedDomainsExample'), defaultMessage: 'corp.mattermost.com, mattermost.org'}}
+                            placeholder={{
+                                id: t('general_tab.AllowedDomainsExample'),
+                                defaultMessage: 'corp.securCom.me, securCom.me',
+                            }}
                         />
                     </div>
-                </div>
+                </div>,
             );
 
-            const allowedDomainsInfo = <span>{Utils.localizeMessage('general_tab.AllowedDomainsInfo', 'Users can only join the team if their email matches a specific domain (e.g. "mattermost.org") or list of comma-separated domains (e.g. "corp.mattermost.com, mattermost.org").')}</span>;
+            const allowedDomainsInfo = (
+                <span>
+                    {Utils.localizeMessage(
+                        'general_tab.AllowedDomainsInfo',
+                        "Users can only join the team if their email matches a specific domain (e.g. 'securCom.me') or list of comma-separated domains (e.g. 'corp.securCom.me, securCom.me').",
+                    )}
+                </span>
+            );
 
             allowedDomainsSection = (
                 <SettingItemMax
-                    title={Utils.localizeMessage('general_tab.allowedDomains', 'Allow only users with a specific email domain to join this team')}
+                    title={Utils.localizeMessage(
+                        'general_tab.allowedDomains',
+                        'Allow only users with a specific email domain to join this team',
+                    )}
                     inputs={inputs}
                     submit={this.handleAllowedDomainsSubmit}
                     serverError={serverError}
@@ -747,7 +857,10 @@ export default class GeneralTab extends React.Component {
             }
             allowedDomainsSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('general_tab.allowedDomains', 'allowedDomains')}
+                    title={Utils.localizeMessage(
+                        'general_tab.allowedDomains',
+                        'allowedDomains',
+                    )}
                     describe={describemsg}
                     updateSection={this.handleUpdateSection}
                     section={'allowed_domains'}
@@ -768,13 +881,10 @@ export default class GeneralTab extends React.Component {
                     >
                         <span aria-hidden='true'>{'×'}</span>
                     </button>
-                    <h4
-                        className='modal-title'
-                        ref='title'
-                    >
+                    <h4 className='modal-title' ref='title'>
                         <div className='modal-back'>
                             <span onClick={this.props.collapseModal}>
-                                <BackIcon/>
+                                <BackIcon />
                             </span>
                         </div>
                         <FormattedMessage
@@ -783,37 +893,36 @@ export default class GeneralTab extends React.Component {
                         />
                     </h4>
                 </div>
-                <div
-                    ref='wrapper'
-                    className='user-settings'
-                >
+                <div ref='wrapper' className='user-settings'>
                     <h3 className='tab-header'>
                         <FormattedMessage
                             id='general_tab.title'
                             defaultMessage='General Settings'
                         />
                     </h3>
-                    <div className='divider-dark first'/>
+                    <div className='divider-dark first' />
                     {nameSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {descriptionSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {teamIconSection}
-                    {!team.group_constrained &&
+                    {!team.group_constrained && (
                         <>
-                            <div className='divider-light'/>
+                            <div className='divider-light' />
                             {allowedDomainsSection}
                         </>
-                    }
-                    <div className='divider-light'/>
+                    )}
+
+                    <div className='divider-light' />
                     {openInviteSection}
-                    {!team.group_constrained &&
+                    {!team.group_constrained && (
                         <>
-                            <div className='divider-light'/>
+                            <div className='divider-light' />
                             {inviteSection}
                         </>
-                    }
-                    <div className='divider-dark'/>
+                    )}
+
+                    <div className='divider-dark' />
                 </div>
             </div>
         );

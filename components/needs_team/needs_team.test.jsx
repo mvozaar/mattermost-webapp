@@ -34,11 +34,13 @@ describe('components/needs_team', () => {
         push: jest.fn(),
     };
 
-    const teamsList = [{
-        id: 'kemjcpu9bi877yegqjs18ndp4r',
-        invite_id: 'ojsnudhqzbfzpk6e4n6ip1hwae',
-        name: 'test',
-    }];
+    const teamsList = [
+        {
+            id: 'kemjcpu9bi877yegqjs18ndp4r',
+            invite_id: 'ojsnudhqzbfzpk6e4n6ip1hwae',
+            name: 'test',
+        },
+    ];
 
     const match = {
         params: {
@@ -63,19 +65,24 @@ describe('components/needs_team', () => {
         setPreviousTeamId: jest.fn(),
         loadStatusesForChannelAndSidebar: jest.fn(),
     };
+
     const baseProps = {
         actions,
         currentUser: {
             id: 'test',
         },
+
         theme: {},
         mfaRequired: false,
         match,
         teamsList,
         history,
     };
+
     it('should match snapshots for init with existing team', () => {
-        const fetchMyChannelsAndMembers = jest.fn().mockResolvedValue({data: true});
+        const fetchMyChannelsAndMembers = jest
+            .fn()
+            .mockResolvedValue({data: true});
 
         const existingTeamMatch = {
             params: {
@@ -84,11 +91,14 @@ describe('components/needs_team', () => {
         };
 
         const newActions = {...baseProps.actions, fetchMyChannelsAndMembers};
-        const props = {...baseProps, actions: newActions, match: existingTeamMatch};
+        const props = {
+            ...baseProps,
+            actions: newActions,
+            match: existingTeamMatch,
+        };
 
-        const wrapper = shallow(
-            <NeedsTeam {...props}/>
-        );
+        const wrapper = shallow(<NeedsTeam {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         fetchMyChannelsAndMembers().then(() => {
             expect(wrapper.state().finishedFetchingChannels).toEqual(true);
@@ -101,9 +111,8 @@ describe('components/needs_team', () => {
         const newActions = {...baseProps.actions, addUserToTeam};
         const props = {...baseProps, actions: newActions};
 
-        const wrapper = shallow(
-            <NeedsTeam {...props}/>
-        );
+        const wrapper = shallow(<NeedsTeam {...props} />);
+
         expect(wrapper.state().team).toEqual(null);
         await wrapper.instance().joinTeam(props);
         expect(addUserToTeam).toHaveBeenCalledTimes(2); // called twice, first on initial mount and then on instance().joinTeam()
@@ -114,9 +123,7 @@ describe('components/needs_team', () => {
         const newActions = {...baseProps.actions, addUserToTeam};
         const props = {...baseProps, actions: newActions};
 
-        const wrapper = shallow(
-            <NeedsTeam {...props}/>
-        );
+        const wrapper = shallow(<NeedsTeam {...props} />);
 
         expect(wrapper.state().team).toEqual(null);
         await wrapper.instance().joinTeam(props);
@@ -130,12 +137,17 @@ describe('components/needs_team', () => {
         const selectTeam = jest.fn();
         const setPreviousTeamId = jest.fn();
 
-        const newActions = {...baseProps.actions, getMyTeamUnreads, addUserToTeam, selectTeam, setPreviousTeamId};
+        const newActions = {
+            ...baseProps.actions,
+            getMyTeamUnreads,
+            addUserToTeam,
+            selectTeam,
+            setPreviousTeamId,
+        };
+
         const props = {...baseProps, actions: newActions};
 
-        const wrapper = shallow(
-            <NeedsTeam {...props}/>
-        );
+        const wrapper = shallow(<NeedsTeam {...props} />);
 
         expect(wrapper.state().team).toEqual(null);
         await wrapper.instance().joinTeam(props);

@@ -8,7 +8,6 @@ import {FormattedMessage} from 'react-intl';
 
 export default class ConfirmModal extends React.Component {
     static propTypes = {
-
         /*
          * Set to show modal
          */
@@ -73,7 +72,7 @@ export default class ConfirmModal extends React.Component {
          * Set to hide the cancel button
          */
         hideCancel: PropTypes.bool,
-    }
+    };
 
     static defaultProps = {
         title: '',
@@ -81,7 +80,7 @@ export default class ConfirmModal extends React.Component {
         confirmButtonClass: 'btn btn-primary',
         confirmButtonText: '',
         modalClass: '',
-    }
+    };
 
     componentDidMount() {
         if (this.props.show) {
@@ -97,7 +96,8 @@ export default class ConfirmModal extends React.Component {
         return nextProps.show !== this.props.show;
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.show && !nextProps.show) {
             document.removeEventListener('keydown', this.handleKeypress);
         } else if (!this.props.show && nextProps.show) {
@@ -109,17 +109,17 @@ export default class ConfirmModal extends React.Component {
         if (e.key === 'Enter' && this.props.show) {
             this.handleConfirm();
         }
-    }
+    };
 
     handleConfirm = () => {
         const checked = this.refs.checkbox ? this.refs.checkbox.checked : false;
         this.props.onConfirm(checked);
-    }
+    };
 
     handleCancel = () => {
         const checked = this.refs.checkbox ? this.refs.checkbox.checked : false;
         this.props.onCancel(checked);
-    }
+    };
 
     render() {
         let checkbox;
@@ -127,10 +127,8 @@ export default class ConfirmModal extends React.Component {
             checkbox = (
                 <div className='checkbox text-right margin-bottom--none'>
                     <label>
-                        <input
-                            ref='checkbox'
-                            type='checkbox'
-                        />
+                        <input ref='checkbox' type='checkbox' />
+
                         {this.props.checkboxText}
                     </label>
                 </div>
@@ -173,10 +171,7 @@ export default class ConfirmModal extends React.Component {
                 aria-labelledby='confirmModalLabel'
             >
                 <Modal.Header closeButton={false}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='confirmModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='confirmModalLabel'>
                         {this.props.title}
                     </Modal.Title>
                 </Modal.Header>

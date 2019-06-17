@@ -12,6 +12,7 @@ describe('components/ProfilePopover', () => {
             name: 'some name',
             username: 'some_username',
         },
+
         src: 'src',
         currentUserId: '',
         currentTeamId: 'team_id',
@@ -30,9 +31,7 @@ describe('components/ProfilePopover', () => {
     test('should match snapshot', () => {
         const props = {...baseProps};
 
-        const wrapper = shallowWithIntl(
-            <ProfilePopover {...props}/>
-        ).dive();
+        const wrapper = shallowWithIntl(<ProfilePopover {...props} />).dive();
         expect(wrapper).toMatchSnapshot();
     });
 });

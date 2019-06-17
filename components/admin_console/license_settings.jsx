@@ -15,7 +15,7 @@ export default class LicenseSettings extends React.Component {
     static propTypes = {
         license: PropTypes.object.isRequired,
         config: PropTypes.object,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -32,9 +32,12 @@ export default class LicenseSettings extends React.Component {
     handleChange = () => {
         const element = this.refs.fileInput;
         if (element && element.files.length > 0) {
-            this.setState({fileSelected: true, fileName: element.files[0].name});
+            this.setState({
+                fileSelected: true,
+                fileName: element.files[0].name,
+            });
         }
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -50,15 +53,26 @@ export default class LicenseSettings extends React.Component {
         uploadLicenseFile(
             file,
             () => {
-                this.setState({fileSelected: false, fileName: null, serverError: null, uploading: false});
+                this.setState({
+                    fileSelected: false,
+                    fileName: null,
+                    serverError: null,
+                    uploading: false,
+                });
+
                 window.location.reload(true);
             },
             (error) => {
                 Utils.clearFileInput(element[0]);
-                this.setState({fileSelected: false, fileName: null, serverError: error.message, uploading: false});
-            }
+                this.setState({
+                    fileSelected: false,
+                    fileName: null,
+                    serverError: error.message,
+                    uploading: false,
+                });
+            },
         );
-    }
+    };
 
     handleRemove = (e) => {
         e.preventDefault();
@@ -67,19 +81,38 @@ export default class LicenseSettings extends React.Component {
 
         removeLicenseFile(
             () => {
-                this.setState({fileSelected: false, fileName: null, serverError: null, removing: false});
+                this.setState({
+                    fileSelected: false,
+                    fileName: null,
+                    serverError: null,
+                    removing: false,
+                });
+
                 window.location.reload(true);
             },
             (error) => {
-                this.setState({fileSelected: false, fileName: null, serverError: error.message, removing: false});
-            }
+                this.setState({
+                    fileSelected: false,
+                    fileName: null,
+                    serverError: error.message,
+                    removing: false,
+                });
+            },
         );
-    }
+    };
 
     render() {
         var serverError = '';
         if (this.state.serverError) {
-            serverError = <div className='col-sm-12'><div className='form-group has-error'><label className='control-label'>{this.state.serverError}</label></div></div>;
+            serverError = (
+                <div className='col-sm-12'>
+                    <div className='form-group has-error'>
+                        <label className='control-label'>
+                            {this.state.serverError}
+                        </label>
+                    </div>
+                </div>
+            );
         }
 
         var btnClass = 'btn';
@@ -93,28 +126,52 @@ export default class LicenseSettings extends React.Component {
         let licenseType;
         let licenseKey;
 
-        const issued = Utils.displayDate(parseInt(license.IssuedAt, 10)) + ' ' + Utils.displayTime(parseInt(license.IssuedAt, 10), true);
+        const issued =
+            Utils.displayDate(parseInt(license.IssuedAt, 10)) +
+            ' ' +
+            Utils.displayTime(parseInt(license.IssuedAt, 10), true);
         const startsAt = Utils.displayDate(parseInt(license.StartsAt, 10));
         const expiresAt = Utils.displayDate(parseInt(license.ExpiresAt, 10));
 
         if (license.IsLicensed === 'true') {
             // Note: DO NOT LOCALISE THESE STRINGS. Legally we can not since the license is in English.
-            const sku = license.SkuShortName ? <React.Fragment>{`Edition: Mattermost Enterprise Edition ${license.SkuShortName}`}<br/></React.Fragment> : null;
-            edition = 'Mattermost Enterprise Edition. Enterprise features on this server have been unlocked with a license key and a valid subscription.';
+            const sku = license.SkuShortName ? (
+                <React.Fragment>
+                    {`Edition: SCC Enterprise Edition ${license.SkuShortName}`}
+                    <br />
+                </React.Fragment>
+            ) : null;
+            edition =
+                'SCC Enterprise Edition. Enterprise features on this server have been unlocked with a license key and a valid subscription.';
             licenseType = (
                 <div>
                     <p>
-                        {'This software is offered under a commercial license.\n\nSee ENTERPRISE-EDITION-LICENSE.txt in your root install directory for details. See NOTICE.txt for information about open source software used in this system.\n\nYour subscription details are as follows:'}
+                        {
+                            'This software is offered under a commercial license.\n\nSee ENTERPRISE-EDITION-LICENSE.txt in your root install directory for details. See NOTICE.txt for information about open source software used in this system.\n\nYour subscription details are as follows:'
+                        }
                     </p>
-                    {`Name: ${license.Name}`}<br/>
-                    {`Company or organization name: ${license.Company}`}<br/>
+                    {`Name: ${license.Name}`}
+                    <br />
+                    {`Company or organization name: ${license.Company}`}
+                    <br />
                     {sku}
-                    {`Number of users: ${license.Users}`}<br/>
-                    {`License issued: ${issued}`}<br/>
-                    {`Start date of license: ${startsAt}`}<br/>
-                    {`Expiry date of license: ${expiresAt}`}<br/>
-                    <br/>
-                    {'See also '}<a href='https://about.mattermost.com/enterprise-edition-terms/'>{'Enterprise Edition Terms of Service'}</a>{' and '}<a href='https://about.mattermost.com/privacy/'>{'Privacy Policy.'}</a>
+                    {`Number of users: ${license.Users}`}
+                    <br />
+                    {`License issued: ${issued}`}
+                    <br />
+                    {`Start date of license: ${startsAt}`}
+                    <br />
+                    {`Expiry date of license: ${expiresAt}`}
+                    <br />
+                    <br />
+                    {'See also '}
+                    <a href='https://about.securCom.me/enterprise-edition-terms/'>
+                        {'Enterprise Edition Terms of Service'}
+                    </a>
+                    {' and '}
+                    <a href='https://about.securCom.me/privacy/'>
+                        {'Privacy Policy.'}
+                    </a>
                 </div>
             );
 
@@ -124,6 +181,7 @@ export default class LicenseSettings extends React.Component {
                     defaultMessage='Remove Enterprise License and Downgrade Server'
                 />
             );
+
             if (this.state.removing) {
                 removeButtonText = (
                     <FormattedMessage
@@ -142,10 +200,12 @@ export default class LicenseSettings extends React.Component {
                     >
                         {removeButtonText}
                     </button>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <p className='help-text'>
-                        {'If you migrate servers you may need to remove your license key to install it elsewhere. You can remove the key here, which will revert functionality to that of Team Edition.'}
+                        {
+                            'If you migrate servers you may need to remove your license key to install it elsewhere. You can remove the key here, which will revert functionality to that of Team Edition.'
+                        }
                     </p>
                 </div>
             );
@@ -153,18 +213,22 @@ export default class LicenseSettings extends React.Component {
             // Note: DO NOT LOCALISE THESE STRINGS. Legally we can not since the license is in English.
             edition = (
                 <p>
-                    {'Mattermost Enterprise Edition. Unlock enterprise features in this software through the purchase of a subscription from '}
+                    {
+                        'SCC Enterprise Edition. Unlock enterprise features in this software through the purchase of a subscription from '
+                    }
+
                     <a
                         target='_blank'
                         rel='noopener noreferrer'
-                        href='https://mattermost.com/'
+                        href='https://securCom.me/'
                     >
-                        {'https://mattermost.com/'}
+                        {'https://securCom.me/'}
                     </a>
                 </p>
             );
 
-            licenseType = 'This software is offered under a commercial license.\n\nSee ENTERPRISE-EDITION-LICENSE.txt in your root install directory for details. See NOTICE.txt for information about open source software used in this system.';
+            licenseType =
+                'This software is offered under a commercial license.\n\nSee ENTERPRISE-EDITION-LICENSE.txt in your root install directory for details. See NOTICE.txt for information about open source software used in this system.';
 
             let fileName;
             if (this.state.fileName) {
@@ -184,6 +248,7 @@ export default class LicenseSettings extends React.Component {
                     defaultMessage='Upload'
                 />
             );
+
             if (this.state.uploading) {
                 uploadButtonText = (
                     <FormattedMessage
@@ -217,15 +282,13 @@ export default class LicenseSettings extends React.Component {
                     >
                         {uploadButtonText}
                     </button>
-                    <div className='help-text no-margin'>
-                        {fileName}
-                    </div>
-                    <br/>
+                    <div className='help-text no-margin'>{fileName}</div>
+                    <br />
                     {serverError}
                     <p className='help-text no-margin'>
                         <FormattedMarkdownMessage
                             id='admin.license.uploadDesc'
-                            defaultMessage='Upload a license key for Mattermost Enterprise Edition to upgrade this server. [Visit us online](!http://mattermost.com) to learn more about the benefits of Enterprise Edition or to purchase a key.'
+                            defaultMessage='Upload a license key for securCom Enterprise Edition to upgrade this server. [Visit us online](!http://securCom.me) to learn more about the benefits of Enterprise Edition or to purchase a key.'
                         />
                     </p>
                 </div>
@@ -238,40 +301,28 @@ export default class LicenseSettings extends React.Component {
                     id='admin.license.title'
                     defaultMessage='Edition and License'
                 />
-                <form
-                    className='form-horizontal'
-                    role='form'
-                >
+
+                <form className='form-horizontal' role='form'>
                     <div className='form-group'>
-                        <label
-                            className='control-label col-sm-4'
-                        >
+                        <label className='control-label col-sm-4'>
                             <FormattedMessage
                                 id='admin.license.edition'
                                 defaultMessage='Edition: '
                             />
                         </label>
-                        <div className='col-sm-8'>
-                            {edition}
-                        </div>
+                        <div className='col-sm-8'>{edition}</div>
                     </div>
                     <div className='form-group'>
-                        <label
-                            className='control-label col-sm-4'
-                        >
+                        <label className='control-label col-sm-4'>
                             <FormattedMessage
                                 id='admin.license.type'
                                 defaultMessage='License: '
                             />
                         </label>
-                        <div className='col-sm-8'>
-                            {licenseType}
-                        </div>
+                        <div className='col-sm-8'>{licenseType}</div>
                     </div>
                     <div className='form-group'>
-                        <label
-                            className='control-label col-sm-4'
-                        >
+                        <label className='control-label col-sm-4'>
                             <FormattedMessage
                                 id='admin.license.key'
                                 defaultMessage='License Key: '

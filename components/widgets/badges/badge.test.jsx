@@ -9,8 +9,9 @@ import Badge from './badge.jsx';
 describe('components/widgets/badges/Badge', () => {
     test('should match the snapshot on show', () => {
         const wrapper = shallow(
-            <Badge className={'test'}>{'Test text'}</Badge>
+            <Badge className={'test'}>{'Test text'}</Badge>,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <div
   className="Badge test"
@@ -21,9 +22,8 @@ describe('components/widgets/badges/Badge', () => {
     });
 
     test('should match the snapshot on hide', () => {
-        const wrapper = shallow(
-            <Badge show={false}>{'Test text'}</Badge>
-        );
-        expect(wrapper).toMatchInlineSnapshot('""');
+        const wrapper = shallow(<Badge show={false}>{'Test text'}</Badge>);
+
+        expect(wrapper).toMatchInlineSnapshot("''");
     });
 });

@@ -26,39 +26,38 @@ export function matchesFilter(oauthApp, filter) {
 
 export default class InstalledOAuthApp extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The team data
-        */
+         * The team data
+         */
         team: PropTypes.object,
 
         /**
-        * The oauthApp data
-        */
+         * The oauthApp data
+         */
         oauthApp: PropTypes.object.isRequired,
 
         creatorName: PropTypes.string.isRequired,
 
         /**
-        * The request state for regenOAuthAppSecret action. Contains status and error
-        */
+         * The request state for regenOAuthAppSecret action. Contains status and error
+         */
         regenOAuthAppSecretRequest: PropTypes.object.isRequired,
 
         /**
-        * The function to call when Regenerate Secret link is clicked
-        */
+         * The function to call when Regenerate Secret link is clicked
+         */
         onRegenerateSecret: PropTypes.func.isRequired,
 
         /**
-        * The function to call when Delete link is clicked
-        */
+         * The function to call when Delete link is clicked
+         */
         onDelete: PropTypes.func.isRequired,
 
         /**
-        * Set to filter OAuthApp
-        */
+         * Set to filter OAuthApp
+         */
         filter: PropTypes.string,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -73,42 +72,36 @@ export default class InstalledOAuthApp extends React.PureComponent {
             e.preventDefault();
         }
         this.setState({clientSecret: this.props.oauthApp.client_secret});
-    }
+    };
 
     handleHideClientSecret = (e) => {
         e.preventDefault();
         this.setState({clientSecret: FAKE_SECRET});
-    }
+    };
 
     handleRegenerate = (e) => {
         e.preventDefault();
-        this.props.onRegenerateSecret(this.props.oauthApp.id).then(
-            () => {
-                const {error} = this.props.regenOAuthAppSecretRequest;
-                if (error) {
-                    this.setState({error: error.message});
-                } else {
-                    this.setState({error: null});
-                    this.handleShowClientSecret();
-                }
+        this.props.onRegenerateSecret(this.props.oauthApp.id).then(() => {
+            const {error} = this.props.regenOAuthAppSecretRequest;
+            if (error) {
+                this.setState({error: error.message});
+            } else {
+                this.setState({error: null});
+                this.handleShowClientSecret();
             }
-        );
-    }
+        });
+    };
 
     handleDelete = () => {
         this.props.onDelete(this.props.oauthApp);
-    }
+    };
 
     render() {
         const {oauthApp, creatorName} = this.props;
         let error;
 
         if (this.state.error) {
-            error = (
-                <FormError
-                    error={this.state.error}
-                />
-            );
+            error = <FormError error={this.state.error} />;
         }
 
         if (!matchesFilter(oauthApp, this.props.filter)) {
@@ -154,9 +147,15 @@ export default class InstalledOAuthApp extends React.PureComponent {
 
         let isTrusted;
         if (oauthApp.is_trusted) {
-            isTrusted = Utils.localizeMessage('installed_oauth_apps.trusted.yes', 'Yes');
+            isTrusted = Utils.localizeMessage(
+                'installed_oauth_apps.trusted.yes',
+                'Yes',
+            );
         } else {
-            isTrusted = Utils.localizeMessage('installed_oauth_apps.trusted.no', 'No');
+            isTrusted = Utils.localizeMessage(
+                'installed_oauth_apps.trusted.no',
+                'No',
+            );
         }
 
         let showHide;
@@ -174,6 +173,7 @@ export default class InstalledOAuthApp extends React.PureComponent {
                     />
                 </button>
             );
+
             clientSecret = (
                 <span className='item-details__token'>
                     <FormattedMessage
@@ -198,6 +198,7 @@ export default class InstalledOAuthApp extends React.PureComponent {
                     />
                 </button>
             );
+
             clientSecret = (
                 <span className='item-details__token'>
                     <FormattedMarkdownMessage
@@ -207,6 +208,7 @@ export default class InstalledOAuthApp extends React.PureComponent {
                             clientSecret: this.state.clientSecret,
                         }}
                     />
+
                     <CopyText
                         idMessage='integrations.copy_client_secret'
                         defaultMessage='Copy Client Secret'
@@ -233,10 +235,7 @@ export default class InstalledOAuthApp extends React.PureComponent {
         if (oauthApp.icon_url) {
             icon = (
                 <div className='integration__icon integration-list__icon'>
-                    <img
-                        alt={'get app screenshot'}
-                        src={oauthApp.icon_url}
-                    />
+                    <img alt={'get app screenshot'} src={oauthApp.icon_url} />
                 </div>
             );
         }
@@ -246,9 +245,7 @@ export default class InstalledOAuthApp extends React.PureComponent {
                 {icon}
                 <div className='item-details'>
                     <div className='item-details__row'>
-                        <span className='item-details__name'>
-                            {name}
-                        </span>
+                        <span className='item-details__name'>{name}</span>
                     </div>
                     {error}
                     {description}
@@ -272,6 +269,7 @@ export default class InstalledOAuthApp extends React.PureComponent {
                                     clientId: oauthApp.id,
                                 }}
                             />
+
                             <CopyText
                                 idMessage='integrations.copy_client_id'
                                 defaultMessage='Copy Client Id'
@@ -279,9 +277,7 @@ export default class InstalledOAuthApp extends React.PureComponent {
                             />
                         </span>
                     </div>
-                    <div className='item-details__row'>
-                        {clientSecret}
-                    </div>
+                    <div className='item-details__row'>{clientSecret}</div>
                     {urls}
                     <div className='item-details__row'>
                         <span className='item-details__creation'>
@@ -301,7 +297,9 @@ export default class InstalledOAuthApp extends React.PureComponent {
                     {' - '}
                     {regen}
                     {' - '}
-                    <Link to={`/${this.props.team.name}/integrations/oauth2-apps/edit?id=${oauthApp.id}`}>
+                    <Link
+                        to={`/${this.props.team.name}/integrations/oauth2-apps/edit?id=${oauthApp.id}`}
+                    >
                         <FormattedMessage
                             id='installed_integrations.edit'
                             defaultMessage='Edit'

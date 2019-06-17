@@ -15,17 +15,13 @@ describe('components/user_settings/display/CustomThemeChooser', () => {
     };
 
     it('should match, init', () => {
-        const wrapper = shallowWithIntl(
-            <CustomThemeChooser {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CustomThemeChooser {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     it('should create a custom theme when the code theme changes', () => {
-        const wrapper = shallowWithIntl(
-            <CustomThemeChooser {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CustomThemeChooser {...baseProps} />);
 
         const event = {
             target: {

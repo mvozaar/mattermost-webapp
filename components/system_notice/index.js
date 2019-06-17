@@ -5,7 +5,10 @@ import {connect} from 'react-redux';
 import {createSelector} from 'reselect';
 import {bindActionCreators} from 'redux';
 import {makeGetCategory} from 'mattermost-redux/selectors/entities/preferences';
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {
+    getConfig,
+    getLicense,
+} from 'mattermost-redux/selectors/entities/general';
 import {haveISystemPermission} from 'mattermost-redux/selectors/entities/roles';
 import {savePreferences} from 'mattermost-redux/actions/preferences';
 import {Permissions} from 'mattermost-redux/constants';
@@ -28,7 +31,7 @@ function makeMapStateToProps() {
                 nameMap[p.name] = p;
             });
             return nameMap;
-        }
+        },
     );
 
     return function mapStateToProps(state) {
@@ -39,9 +42,16 @@ function makeMapStateToProps() {
 
         return {
             currentUserId: state.entities.users.currentUserId,
-            preferences: getPreferenceNameMap(state, Preferences.CATEGORY_SYSTEM_NOTICE),
+            preferences: getPreferenceNameMap(
+                state,
+                Preferences.CATEGORY_SYSTEM_NOTICE,
+            ),
+
             dismissedNotices: state.views.notice.hasBeenDismissed,
-            isSystemAdmin: haveISystemPermission(state, {permission: Permissions.MANAGE_SYSTEM}),
+            isSystemAdmin: haveISystemPermission(state, {
+                permission: Permissions.MANAGE_SYSTEM,
+            }),
+
             notices: Notices,
             config,
             license,
@@ -53,12 +63,19 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            savePreferences,
-            dismissNotice,
-            getStandardAnalytics,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                savePreferences,
+                dismissNotice,
+                getStandardAnalytics,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(SystemNotice);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(SystemNotice);

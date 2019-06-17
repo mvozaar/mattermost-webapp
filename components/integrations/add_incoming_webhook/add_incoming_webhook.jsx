@@ -10,39 +10,40 @@ import AbstractIncomingWebhook from 'components/integrations/abstract_incoming_w
 
 const HEADER = {id: t('integrations.add'), defaultMessage: 'Add'};
 const FOOTER = {id: t('add_incoming_webhook.save'), defaultMessage: 'Save'};
-const LOADING = {id: t('add_incoming_webhook.saving'), defaultMessage: 'Saving...'};
+const LOADING = {
+    id: t('add_incoming_webhook.saving'),
+    defaultMessage: 'Saving...',
+};
 
 export default class AddIncomingWebhook extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The current team
-        */
+         * The current team
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        * The request state for createIncomingHook action. Contains status and error
-        */
+         * The request state for createIncomingHook action. Contains status and error
+         */
         createIncomingHookRequest: PropTypes.object.isRequired,
 
         /**
-        * Whether to allow configuration of the default post username.
-        */
+         * Whether to allow configuration of the default post username.
+         */
         enablePostUsernameOverride: PropTypes.bool.isRequired,
 
         /**
-        * Whether to allow configuration of the default post icon.
-        */
+         * Whether to allow configuration of the default post icon.
+         */
         enablePostIconOverride: PropTypes.bool.isRequired,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call to add a new incoming webhook
-            */
+             * The function to call to add a new incoming webhook
+             */
             createIncomingHook: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -57,14 +58,19 @@ export default class AddIncomingWebhook extends React.PureComponent {
 
         const {data} = await this.props.actions.createIncomingHook(hook);
         if (data) {
-            browserHistory.push(`/${this.props.team.name}/integrations/confirm?type=incoming_webhooks&id=${data.id}`);
+            browserHistory.push(
+                `/${this.props.team.name}/integrations/confirm?type=incoming_webhooks&id=${data.id}`,
+            );
+
             return;
         }
 
         if (this.props.createIncomingHookRequest.error) {
-            this.setState({serverError: this.props.createIncomingHookRequest.error.message});
+            this.setState({
+                serverError: this.props.createIncomingHookRequest.error.message,
+            });
         }
-    }
+    };
 
     render() {
         return (
@@ -73,7 +79,9 @@ export default class AddIncomingWebhook extends React.PureComponent {
                 header={HEADER}
                 footer={FOOTER}
                 loading={LOADING}
-                enablePostUsernameOverride={this.props.enablePostUsernameOverride}
+                enablePostUsernameOverride={
+                    this.props.enablePostUsernameOverride
+                }
                 enablePostIconOverride={this.props.enablePostIconOverride}
                 action={this.addIncomingHook}
                 serverError={this.state.serverError}

@@ -13,9 +13,15 @@ import store from 'stores/redux_store.jsx';
 
 const DEFAULT_PAGE_SIZE = 100;
 
-export function loadIncomingHooksAndProfilesForTeam(teamId, page = 0, perPage = DEFAULT_PAGE_SIZE) {
+export function loadIncomingHooksAndProfilesForTeam(
+    teamId,
+    page = 0,
+    perPage = DEFAULT_PAGE_SIZE,
+) {
     return async (dispatch) => {
-        const {data} = await dispatch(IntegrationActions.getIncomingHooks(teamId, page, perPage));
+        const {data} = await dispatch(
+            IntegrationActions.getIncomingHooks(teamId, page, perPage),
+        );
         if (data) {
             dispatch(loadProfilesForIncomingHooks(data));
         }
@@ -42,9 +48,15 @@ export function loadProfilesForIncomingHooks(hooks) {
     };
 }
 
-export function loadOutgoingHooksAndProfilesForTeam(teamId, page = 0, perPage = DEFAULT_PAGE_SIZE) {
+export function loadOutgoingHooksAndProfilesForTeam(
+    teamId,
+    page = 0,
+    perPage = DEFAULT_PAGE_SIZE,
+) {
     return async (dispatch) => {
-        const {data} = await dispatch(IntegrationActions.getOutgoingHooks('', teamId, page, perPage));
+        const {data} = await dispatch(
+            IntegrationActions.getOutgoingHooks('', teamId, page, perPage),
+        );
         if (data) {
             dispatch(loadProfilesForOutgoingHooks(data));
         }
@@ -73,7 +85,9 @@ export function loadProfilesForOutgoingHooks(hooks) {
 
 export function loadCommandsAndProfilesForTeam(teamId) {
     return async (dispatch) => {
-        const {data} = await dispatch(IntegrationActions.getCustomTeamCommands(teamId));
+        const {data} = await dispatch(
+            IntegrationActions.getCustomTeamCommands(teamId),
+        );
         if (data) {
             dispatch(loadProfilesForCommands(data));
         }
@@ -100,9 +114,14 @@ export function loadProfilesForCommands(commands) {
     };
 }
 
-export function loadOAuthAppsAndProfiles(page = 0, perPage = DEFAULT_PAGE_SIZE) {
+export function loadOAuthAppsAndProfiles(
+    page = 0,
+    perPage = DEFAULT_PAGE_SIZE,
+) {
     return async (dispatch) => {
-        const {data} = await dispatch(IntegrationActions.getOAuthApps(page, perPage));
+        const {data} = await dispatch(
+            IntegrationActions.getOAuthApps(page, perPage),
+        );
         if (data) {
             dispatch(loadProfilesForOAuthApps(data));
         }
@@ -130,9 +149,10 @@ export function loadProfilesForOAuthApps(apps) {
 }
 
 export function getYoutubeVideoInfo(googleKey, videoId, success, error) {
-    request.get('https://www.googleapis.com/youtube/v3/videos').
-        query({part: 'snippet', id: videoId, key: googleKey}).
-        end((err, res) => {
+    request
+        .get('https://www.googleapis.com/youtube/v3/videos')
+        .query({part: 'snippet', id: videoId, key: googleKey})
+        .end((err, res) => {
             if (err) {
                 return error(err);
             }
@@ -161,5 +181,10 @@ store.subscribe(() => {
         return;
     }
 
-    store.dispatch(openModal({modalId: ModalIdentifiers.INTERACTIVE_DIALOG, dialogType: InteractiveDialog}));
+    store.dispatch(
+        openModal({
+            modalId: ModalIdentifiers.INTERACTIVE_DIALOG,
+            dialogType: InteractiveDialog,
+        }),
+    );
 });

@@ -34,9 +34,16 @@ const isChannelLoading = (params, channel, team, teammate) => {
     }
 
     if (channel && team) {
-        if (channel.type !== Constants.DM_CHANNEL && channel.name !== params.identifier) {
+        if (
+            channel.type !== Constants.DM_CHANNEL &&
+            channel.name !== params.identifier
+        ) {
             return true;
-        } else if (channel.type === Constants.DM_CHANNEL && teammate && params.identifier !== `@${teammate.username}`) {
+        } else if (
+            channel.type === Constants.DM_CHANNEL &&
+            teammate &&
+            params.identifier !== `@${teammate.username}`
+        ) {
             return true;
         }
 
@@ -52,16 +59,26 @@ const isChannelLoading = (params, channel, team, teammate) => {
 
 function makeMapStateToProps() {
     return function mapStateToProps(state, ownProps) {
-        const postVisibility = state.views.channel.postVisibility[ownProps.channelId];
+        const postVisibility =
+            state.views.channel.postVisibility[ownProps.channelId];
 
         const channel = getChannel(state, ownProps.channelId);
         const team = getTeamByName(state, ownProps.match.params.team);
         let teammate;
-        if (channel && channel.type === Constants.DM_CHANNEL && channel.teammate_id) {
+        if (
+            channel &&
+            channel.type === Constants.DM_CHANNEL &&
+            channel.teammate_id
+        ) {
             teammate = getUser(state, channel.teammate_id);
         }
 
-        const channelLoading = isChannelLoading(ownProps.match.params, channel, team, teammate);
+        const channelLoading = isChannelLoading(
+            ownProps.match.params,
+            channel,
+            team,
+            teammate,
+        );
 
         return {
             channel,
@@ -73,12 +90,21 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadInitialPosts,
-            increasePostVisibility,
-            checkAndSetMobileView,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadInitialPosts,
+                increasePostVisibility,
+                checkAndSetMobileView,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default withRouter(connect(makeMapStateToProps, mapDispatchToProps)(PostList));
+export default withRouter(
+    connect(
+        makeMapStateToProps,
+        mapDispatchToProps,
+    )(PostList),
+);

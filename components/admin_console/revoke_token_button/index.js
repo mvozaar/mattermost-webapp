@@ -9,10 +9,17 @@ import RevokeTokenButton from './revoke_token_button.jsx';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            revokeUserAccessToken,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                revokeUserAccessToken,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(RevokeTokenButton);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(RevokeTokenButton);

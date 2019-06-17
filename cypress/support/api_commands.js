@@ -58,23 +58,26 @@ Cypress.Commands.add('apiLogout', () => {
  * @param {String} header - Markdown-formatted text to display in the header of the channel
  * All parameters required except purpose and header
  */
-Cypress.Commands.add('apiCreateChannel', (teamId, name, displayName, type = 'O', purpose = '', header = '') => {
-    const uniqueName = `${name}-${getRandomInt(9999).toString()}`;
+Cypress.Commands.add(
+    'apiCreateChannel',
+    (teamId, name, displayName, type = 'O', purpose = '', header = '') => {
+        const uniqueName = `${name}-${getRandomInt(9999).toString()}`;
 
-    return cy.request({
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
-        url: '/api/v4/channels',
-        method: 'POST',
-        body: {
-            team_id: teamId,
-            name: uniqueName,
-            display_name: displayName,
-            type,
-            purpose,
-            header,
-        },
-    });
-});
+        return cy.request({
+            headers: {'X-Requested-With': 'XMLHttpRequest'},
+            url: '/api/v4/channels',
+            method: 'POST',
+            body: {
+                team_id: teamId,
+                name: uniqueName,
+                display_name: displayName,
+                type,
+                purpose,
+                header,
+            },
+        });
+    },
+);
 
 /**
  * Deletes a channel directly via API
@@ -170,18 +173,21 @@ Cypress.Commands.add('apiSaveUserPreference', (preferences = []) => {
  * This API assume that the user is logged in and has cookie to access
  * @param {String} value - Either "full" (default) or "centered"
  */
-Cypress.Commands.add('apiSaveChannelDisplayModePreference', (value = 'full') => {
-    return cy.getCookie('MMUSERID').then((cookie) => {
-        const preference = {
-            user_id: cookie.value,
-            category: 'display_settings',
-            name: 'channel_display_mode',
-            value,
-        };
+Cypress.Commands.add(
+    'apiSaveChannelDisplayModePreference',
+    (value = 'full') => {
+        return cy.getCookie('MMUSERID').then((cookie) => {
+            const preference = {
+                user_id: cookie.value,
+                category: 'display_settings',
+                name: 'channel_display_mode',
+                value,
+            };
 
-        return cy.apiSaveUserPreference([preference]);
-    });
-});
+            return cy.apiSaveUserPreference([preference]);
+        });
+    },
+);
 
 /**
  * Saves message display preference of a user directly via API
@@ -206,24 +212,27 @@ Cypress.Commands.add('apiSaveMessageDisplayPreference', (value = 'clean') => {
  * This API assume that the user is logged in and has cookie to access
  * @param {Object} value - theme object.  Will pass default value if none is provided.
  */
-Cypress.Commands.add('apiSaveThemePreference', (value = JSON.stringify(theme.default)) => {
-    return cy.getCookie('MMUSERID').then((cookie) => {
-        const preference = {
-            user_id: cookie.value,
-            category: 'theme',
-            name: '',
-            value,
-        };
+Cypress.Commands.add(
+    'apiSaveThemePreference',
+    (value = JSON.stringify(theme.default)) => {
+        return cy.getCookie('MMUSERID').then((cookie) => {
+            const preference = {
+                user_id: cookie.value,
+                category: 'theme',
+                name: '',
+                value,
+            };
 
-        return cy.apiSaveUserPreference([preference]);
-    });
-});
+            return cy.apiSaveUserPreference([preference]);
+        });
+    },
+);
 
 /**
- * Saves Enable Open Server settings config details of a user directly via API
- * This API assume that the sysadmin user is logged in for the changes
- @param {Boolean} enable - flag for EnableOpenServer in config. Passes true for default if none is provided.
- */
+     * Saves Enable Open Server settings config details of a user directly via API
+     * This API assume that the sysadmin user is logged in for the changes
+     @param {Boolean} enable - flag for EnableOpenServer in config. Passes true for default if none is provided.
+     */
 Cypress.Commands.add('apiEnableOpenServer', (enable = true) => {
     config.TeamSettings.EnableOpenServer = enable;
     return cy.request({

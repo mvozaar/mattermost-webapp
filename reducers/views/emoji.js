@@ -8,12 +8,12 @@ import {ActionTypes} from 'utils/constants.jsx';
 
 function emojiPickerCustomPage(state = 0, action) {
     switch (action.type) {
-    case ActionTypes.INCREMENT_EMOJI_PICKER_PAGE:
-        return state + 1;
-    case UserTypes.LOGOUT_SUCCESS:
-        return 0;
-    default:
-        return state;
+        case ActionTypes.INCREMENT_EMOJI_PICKER_PAGE:
+            return state + 1;
+        case UserTypes.LOGOUT_SUCCESS:
+            return 0;
+        default:
+            return state;
     }
 }
 

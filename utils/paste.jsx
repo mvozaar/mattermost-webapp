@@ -14,7 +14,7 @@ export function getTable(clipboardData) {
 
     const html = clipboardData.getData('text/html');
 
-    if (!(/<table/i).test(html)) {
+    if (!/<table/i.test(html)) {
         return false;
     }
 
@@ -28,7 +28,10 @@ export function getTable(clipboardData) {
 
 function columnText(column) {
     const noBreakSpace = '\u00A0';
-    const text = column.textContent.trim().replace(/\|/g, '\\|').replace(/\n/g, ' ');
+    const text = column.textContent
+        .trim()
+        .replace(/\|/g, '\\|')
+        .replace(/\n/g, ' ');
     return text || noBreakSpace;
 }
 
@@ -43,9 +46,13 @@ export function formatMarkdownTableMessage(table, message) {
     const spacers = headers.map(() => '---');
     const header = `|${headers.join(' | ')}|\n|${spacers.join(' | ')}|\n`;
 
-    const body = rows.map((row) => {
-        return `|${Array.from(row.querySelectorAll('td')).map(columnText).join(' | ')}|`;
-    }).join('\n');
+    const body = rows
+        .map((row) => {
+            return `|${Array.from(row.querySelectorAll('td'))
+                .map(columnText)
+                .join(' | ')}|`;
+        })
+        .join('\n');
 
     const formattedTable = `${header}${body}\n`;
 

@@ -12,7 +12,6 @@ import MenuItemAction from 'components/widgets/menu/menu_items/menu_item_action'
 
 export default class MenuItemToggleMuteChannel extends React.PureComponent {
     static propTypes = {
-
         /**
          * Object with info about the current user
          */
@@ -46,22 +45,18 @@ export default class MenuItemToggleMuteChannel extends React.PureComponent {
             user,
             channel,
             isMuted,
-            actions: {
-                updateChannelNotifyProps,
-            },
+            actions: {updateChannelNotifyProps},
         } = this.props;
 
         updateChannelNotifyProps(user.id, channel.id, {
-            mark_unread: isMuted ? NotificationLevels.ALL : NotificationLevels.MENTION,
+            mark_unread: isMuted
+                ? NotificationLevels.ALL
+                : NotificationLevels.MENTION,
         });
-    }
+    };
 
     render() {
-        const {
-            channel,
-            id,
-            isMuted,
-        } = this.props;
+        const {channel, id, isMuted} = this.props;
 
         let text;
         if (isMuted) {

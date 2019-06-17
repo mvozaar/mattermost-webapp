@@ -16,10 +16,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getLogs,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getLogs,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Logs);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Logs);

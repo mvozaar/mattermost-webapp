@@ -26,24 +26,41 @@ function makeMapStateToProps() {
             channel = getChannel(state, selected.channel_id);
         }
 
-        const previewCollapsed = get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.COLLAPSE_DISPLAY, Preferences.COLLAPSE_DISPLAY_DEFAULT);
+        const previewCollapsed = get(
+            state,
+            Preferences.CATEGORY_DISPLAY_SETTINGS,
+            Preferences.COLLAPSE_DISPLAY,
+            Preferences.COLLAPSE_DISPLAY_DEFAULT,
+        );
 
         return {
             selected,
             channel,
             posts,
             previewCollapsed,
-            previewEnabled: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.LINK_PREVIEW_DISPLAY, Preferences.LINK_PREVIEW_DISPLAY_DEFAULT),
+            previewEnabled: getBool(
+                state,
+                Preferences.CATEGORY_DISPLAY_SETTINGS,
+                Preferences.LINK_PREVIEW_DISPLAY,
+                Preferences.LINK_PREVIEW_DISPLAY_DEFAULT,
+            ),
         };
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            removePost,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                removePost,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(RhsThread);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(RhsThread);

@@ -16,17 +16,17 @@ export default class DesktopNotificationSettings extends React.Component {
         this.props.updateSection(section);
 
         this.props.cancel();
-    }
+    };
 
     handleMaxUpdateSection = (section) => {
         this.props.updateSection(section);
-    }
+    };
 
     handleOnChange = (e) => {
         const key = e.currentTarget.getAttribute('data-key');
         const value = e.currentTarget.getAttribute('data-value');
         this.props.setParentState(key, value);
-    }
+    };
 
     buildMaximizedSetting = () => {
         const inputs = [];
@@ -52,14 +52,14 @@ export default class DesktopNotificationSettings extends React.Component {
             if (Utils.hasSoundOptions()) {
                 soundSection = (
                     <div>
-                        <hr/>
+                        <hr />
                         <label>
                             <FormattedMessage
                                 id='user.settings.notifications.desktop.sound'
                                 defaultMessage='Notification sound'
                             />
                         </label>
-                        <br/>
+                        <br />
                         <div className='radio'>
                             <label>
                                 <input
@@ -71,12 +71,13 @@ export default class DesktopNotificationSettings extends React.Component {
                                     data-value={'true'}
                                     onChange={this.handleOnChange}
                                 />
+
                                 <FormattedMessage
                                     id='user.settings.notifications.on'
                                     defaultMessage='On'
                                 />
                             </label>
-                            <br/>
+                            <br />
                         </div>
                         <div className='radio'>
                             <label>
@@ -89,18 +90,19 @@ export default class DesktopNotificationSettings extends React.Component {
                                     data-value={'false'}
                                     onChange={this.handleOnChange}
                                 />
+
                                 <FormattedMessage
                                     id='user.settings.notifications.off'
                                     defaultMessage='Off'
                                 />
                             </label>
-                            <br/>
+                            <br />
                         </div>
-                        <br/>
+                        <br />
                         <span>
                             <FormattedMessage
                                 id='user.settings.notifications.sounds_info'
-                                defaultMessage='Notification sounds are available on IE11, Safari, Chrome and Mattermost Desktop Apps.'
+                                defaultMessage='Notification sounds are available on IE11, Safari, Chrome and SCC Desktop Apps.'
                             />
                         </span>
                     </div>
@@ -108,14 +110,14 @@ export default class DesktopNotificationSettings extends React.Component {
             } else {
                 soundSection = (
                     <div>
-                        <hr/>
+                        <hr />
                         <label>
                             <FormattedMessage
                                 id='user.settings.notifications.desktop.sound'
                                 defaultMessage='Notification sound'
                             />
                         </label>
-                        <br/>
+                        <br />
                         <FormattedMessage
                             id='user.settings.notifications.soundConfig'
                             defaultMessage='Please configure notification sounds in your browser settings'
@@ -133,7 +135,7 @@ export default class DesktopNotificationSettings extends React.Component {
                         defaultMessage='Send desktop notifications'
                     />
                 </label>
-                <br/>
+                <br />
                 <div className='radio'>
                     <label>
                         <input
@@ -145,12 +147,13 @@ export default class DesktopNotificationSettings extends React.Component {
                             data-value={NotificationLevels.ALL}
                             onChange={this.handleOnChange}
                         />
+
                         <FormattedMessage
                             id='user.settings.notifications.allActivity'
                             defaultMessage='For all activity'
                         />
                     </label>
-                    <br/>
+                    <br />
                 </div>
                 <div className='radio'>
                     <label>
@@ -163,12 +166,13 @@ export default class DesktopNotificationSettings extends React.Component {
                             data-value={NotificationLevels.MENTION}
                             onChange={this.handleOnChange}
                         />
+
                         <FormattedMessage
                             id='user.settings.notifications.onlyMentions'
                             defaultMessage='Only for mentions and direct messages'
                         />
                     </label>
-                    <br/>
+                    <br />
                 </div>
                 <div className='radio'>
                     <label>
@@ -181,26 +185,30 @@ export default class DesktopNotificationSettings extends React.Component {
                             data-value={NotificationLevels.NONE}
                             onChange={this.handleOnChange}
                         />
+
                         <FormattedMessage
                             id='user.settings.notifications.never'
                             defaultMessage='Never'
                         />
                     </label>
                 </div>
-                <br/>
+                <br />
                 <span>
                     <FormattedMessage
                         id='user.settings.notifications.info'
-                        defaultMessage='Desktop notifications are available on Edge, Firefox, Safari, Chrome and Mattermost Desktop Apps.'
+                        defaultMessage='Desktop notifications are available on Edge, Firefox, Safari, Chrome and SCC Desktop Apps.'
                     />
                 </span>
                 {soundSection}
-            </div>
+            </div>,
         );
 
         return (
             <SettingItemMax
-                title={Utils.localizeMessage('user.settings.notifications.desktop.title', 'Desktop notifications')}
+                title={Utils.localizeMessage(
+                    'user.settings.notifications.desktop.title',
+                    'Desktop notifications',
+                )}
                 inputs={inputs}
                 submit={this.props.submit}
                 saving={this.props.saving}
@@ -208,7 +216,7 @@ export default class DesktopNotificationSettings extends React.Component {
                 updateSection={this.handleMaxUpdateSection}
             />
         );
-    }
+    };
 
     buildMinimizedSetting = () => {
         let formattedMessageProps;
@@ -217,16 +225,24 @@ export default class DesktopNotificationSettings extends React.Component {
             if (hasSoundOption && this.props.sound !== 'false') {
                 formattedMessageProps = {
                     id: t('user.settings.notifications.desktop.mentionsSound'),
-                    defaultMessage: 'For mentions and direct messages, with sound',
+                    defaultMessage:
+                        'For mentions and direct messages, with sound',
                 };
             } else if (hasSoundOption && this.props.sound === 'false') {
                 formattedMessageProps = {
-                    id: t('user.settings.notifications.desktop.mentionsNoSound'),
-                    defaultMessage: 'For mentions and direct messages, without sound',
+                    id: t(
+                        'user.settings.notifications.desktop.mentionsNoSound',
+                    ),
+
+                    defaultMessage:
+                        'For mentions and direct messages, without sound',
                 };
             } else {
                 formattedMessageProps = {
-                    id: t('user.settings.notifications.desktop.mentionsSoundHidden'),
+                    id: t(
+                        'user.settings.notifications.desktop.mentionsSoundHidden',
+                    ),
+
                     defaultMessage: 'For mentions and direct messages',
                 };
             }
@@ -236,7 +252,8 @@ export default class DesktopNotificationSettings extends React.Component {
                 defaultMessage: 'Off',
             };
         } else {
-            if (hasSoundOption && this.props.sound !== 'false') { //eslint-disable-line no-lonely-if
+            if (hasSoundOption && this.props.sound !== 'false') {
+                //eslint-disable-line no-lonely-if
                 formattedMessageProps = {
                     id: t('user.settings.notifications.desktop.allSound'),
                     defaultMessage: 'For all activity, with sound',
@@ -256,14 +273,17 @@ export default class DesktopNotificationSettings extends React.Component {
 
         return (
             <SettingItemMin
-                title={Utils.localizeMessage('user.settings.notifications.desktop.title', 'Desktop notifications')}
-                describe={<FormattedMessage {...formattedMessageProps}/>}
+                title={Utils.localizeMessage(
+                    'user.settings.notifications.desktop.title',
+                    'Desktop notifications',
+                )}
+                describe={<FormattedMessage {...formattedMessageProps} />}
                 focused={this.props.focused}
                 section={'desktop'}
                 updateSection={this.handleMinUpdateSection}
             />
         );
-    }
+    };
 
     render() {
         if (this.props.active) {

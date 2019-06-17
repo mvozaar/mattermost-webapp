@@ -15,13 +15,13 @@ describe('FileUtils.trimFilename', () => {
         assert.equal(
             trimFilename('abcdefghijklmnopqrstuvwxyz'),
             'abcdefghijklmnopqrstuvwxyz',
-            'should return same filename'
+            'should return same filename',
         );
 
         assert.equal(
             trimFilename('abcdefghijklmnopqrstuvwxyz0123456789'),
             'abcdefghijklmnopqrstuvwxyz012345678...',
-            'should return trimmed filename'
+            'should return trimmed filename',
         );
     });
 });
@@ -34,6 +34,7 @@ describe('FileUtils.canUploadFiles', () => {
             EnableFileAttachments: 'false',
             EnableMobileFileUpload: 'true',
         };
+
         assert.equal(canUploadFiles(config), false);
     });
 
@@ -47,6 +48,7 @@ describe('FileUtils.canUploadFiles', () => {
                 EnableFileAttachments: 'true',
                 EnableMobileFileUpload: 'false',
             };
+
             assert.equal(canUploadFiles(config), true);
         });
 
@@ -57,6 +59,7 @@ describe('FileUtils.canUploadFiles', () => {
                 EnableFileAttachments: 'true',
                 EnableMobileFileUpload: 'true',
             };
+
             assert.equal(canUploadFiles(config), true);
         });
 
@@ -67,6 +70,7 @@ describe('FileUtils.canUploadFiles', () => {
                 EnableFileAttachments: 'true',
                 EnableMobileFileUpload: 'false',
             };
+
             assert.equal(canUploadFiles(config), false);
         });
     });
@@ -89,19 +93,31 @@ describe('FileUtils.canUploadFiles', () => {
         });
 
         it('mime type for spreadsheet', () => {
-            assert.equal(getFileTypeFromMime('application/vnd.ms-excel'), 'spreadsheet');
+            assert.equal(
+                getFileTypeFromMime('application/vnd.ms-excel'),
+                'spreadsheet',
+            );
         });
 
         it('mime type for presentation', () => {
-            assert.equal(getFileTypeFromMime('application/vnd.ms-powerpoint'), 'presentation');
+            assert.equal(
+                getFileTypeFromMime('application/vnd.ms-powerpoint'),
+                'presentation',
+            );
         });
 
         it('mime type for word', () => {
-            assert.equal(getFileTypeFromMime('application/vnd.ms-word'), 'word');
+            assert.equal(
+                getFileTypeFromMime('application/vnd.ms-word'),
+                'word',
+            );
         });
 
         it('mime type for unknown file format', () => {
-            assert.equal(getFileTypeFromMime('application/unknownFormat'), 'other');
+            assert.equal(
+                getFileTypeFromMime('application/unknownFormat'),
+                'other',
+            );
         });
 
         it('mime type for no suffix', () => {

@@ -13,22 +13,20 @@ import FormattedMarkdownMessage from 'components/formatted_markdown_message.jsx'
 
 export default class ConvertChannelModal extends React.PureComponent {
     static propTypes = {
-
         /**
-        * Function called when modal is dismissed
-        */
+         * Function called when modal is dismissed
+         */
         onHide: PropTypes.func.isRequired,
         channelId: PropTypes.string.isRequired,
         channelDisplayName: PropTypes.string.isRequired,
 
         actions: PropTypes.shape({
-
             /**
-            * Function called for converting channel to private,
-            */
+             * Function called for converting channel to private,
+             */
             convertChannelToPrivate: PropTypes.func.isRequired,
         }),
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -43,19 +41,19 @@ export default class ConvertChannelModal extends React.PureComponent {
         }
 
         actions.convertChannelToPrivate(channelId);
-        trackEvent('actions', 'convert_to_private_channel', {channel_id: channelId});
+        trackEvent('actions', 'convert_to_private_channel', {
+            channel_id: channelId,
+        });
+
         this.onHide();
-    }
+    };
 
     onHide = () => {
         this.setState({show: false});
-    }
+    };
 
     render() {
-        const {
-            channelDisplayName,
-            onHide,
-        } = this.props;
+        const {channelDisplayName, onHide} = this.props;
 
         return (
             <Modal

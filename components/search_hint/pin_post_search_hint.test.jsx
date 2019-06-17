@@ -12,15 +12,15 @@ describe('components/PinPostSearchHint', () => {
             <PinPostSearchHint
                 dataRetentionEnableMessageDeletion={true}
                 dataRetentionMessageRetentionDays={'30'}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, without data retention', () => {
-        const wrapper = shallow(
-            <PinPostSearchHint/>
-        );
+        const wrapper = shallow(<PinPostSearchHint />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

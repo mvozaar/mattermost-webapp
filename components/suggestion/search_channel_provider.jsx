@@ -53,7 +53,7 @@ class SearchChannelSuggestion extends Suggestion {
                 className={className}
                 {...Suggestion.baseProps}
             >
-                <SelectIcon/>
+                <SelectIcon />
                 {name}
                 {tag}
             </div>
@@ -63,33 +63,36 @@ class SearchChannelSuggestion extends Suggestion {
 
 export default class SearchChannelProvider extends Provider {
     handlePretextChanged(pretext, resultsCallback) {
-        const captured = (/\b(?:in|channel):\s*(\S*)$/i).exec(pretext.toLowerCase());
+        const captured = /\b(?:in|channel):\s*(\S*)$/i.exec(
+            pretext.toLowerCase(),
+        );
+
         if (captured) {
             const channelPrefix = captured[1];
 
             this.startNewRequest(channelPrefix);
 
-            autocompleteChannelsForSearch(
-                channelPrefix,
-                (data) => {
-                    if (this.shouldCancelDispatch(channelPrefix)) {
-                        return;
-                    }
-
-                    //
-                    // MM-12677 When this is migrated this needs to be fixed to pull the user's locale
-                    //
-                    const channels = data.sort(sortChannelsByTypeAndDisplayName.bind(null, 'en'));
-                    const channelNames = channels.map(itemToName);
-
-                    resultsCallback({
-                        matchedPretext: channelPrefix,
-                        terms: channelNames,
-                        items: channels,
-                        component: SearchChannelSuggestion,
-                    });
+            autocompleteChannelsForSearch(channelPrefix, (data) => {
+                if (this.shouldCancelDispatch(channelPrefix)) {
+                    return;
                 }
-            );
+
+                //
+                // MM-12677 When this is migrated this needs to be fixed to pull the user's locale
+                //
+                const channels = data.sort(
+                    sortChannelsByTypeAndDisplayName.bind(null, 'en'),
+                );
+
+                const channelNames = channels.map(itemToName);
+
+                resultsCallback({
+                    matchedPretext: channelPrefix,
+                    terms: channelNames,
+                    items: channels,
+                    component: SearchChannelSuggestion,
+                });
+            });
         }
 
         return Boolean(captured);

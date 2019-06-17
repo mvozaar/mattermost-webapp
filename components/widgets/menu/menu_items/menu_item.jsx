@@ -6,12 +6,13 @@ import PropTypes from 'prop-types';
 
 export default function menuItem(Component) {
     class MenuItem extends React.PureComponent {
-        static propTypes= {
+        static propTypes = {
             show: PropTypes.bool,
             id: PropTypes.string,
             icon: PropTypes.node,
             text: PropTypes.string,
         };
+
         static defaultProps = {
             show: true,
         };
@@ -33,18 +34,12 @@ export default function menuItem(Component) {
             }
 
             return (
-                <li
-                    className='MenuItem'
-                    role='menuitem'
-                    id={id}
-                >
-                    <Component
-                        text={textProp}
-                        {...props}
-                    />
+                <li className='MenuItem' role='menuitem' id={id}>
+                    <Component text={textProp} {...props} />
                 </li>
             );
         }
     }
+
     return MenuItem;
 }

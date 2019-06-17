@@ -24,18 +24,10 @@ export default class BooleanSetting extends React.Component {
     };
 
     static defaultProps = {
-        trueText: (
-            <FormattedMessage
-                id='admin.true'
-                defaultMessage='true'
-            />
-        ),
-        falseText: (
-            <FormattedMessage
-                id='admin.false'
-                defaultMessage='false'
-            />
-        ),
+        trueText: <FormattedMessage id='admin.true' defaultMessage='true' />,
+
+        falseText: <FormattedMessage id='admin.false' defaultMessage='false' />,
+
         disabled: false,
     };
 
@@ -70,7 +62,7 @@ export default class BooleanSetting extends React.Component {
                 helpText={helpText}
                 setByEnv={this.props.setByEnv}
             >
-                <a name={this.props.id}/>
+                <a name={this.props.id} />
                 <label className='radio-inline'>
                     <input
                         type='radio'
@@ -81,6 +73,7 @@ export default class BooleanSetting extends React.Component {
                         onChange={this.handleChange}
                         disabled={this.props.disabled || this.props.setByEnv}
                     />
+
                     {this.props.trueText}
                 </label>
                 <label className='radio-inline'>
@@ -93,6 +86,7 @@ export default class BooleanSetting extends React.Component {
                         onChange={this.handleChange}
                         disabled={this.props.disabled || this.props.setByEnv}
                     />
+
                     {this.props.falseText}
                 </label>
             </Setting>

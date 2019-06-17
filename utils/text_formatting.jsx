@@ -53,9 +53,13 @@ export function formatText(text, inputOptions) {
     const options = Object.assign({}, inputOptions);
 
     if (options.searchMatches) {
-        options.searchPatterns = options.searchMatches.map(convertSearchTermToRegex);
+        options.searchPatterns = options.searchMatches.map(
+            convertSearchTermToRegex,
+        );
     } else {
-        options.searchPatterns = parseSearchTerms(options.searchTerm).map(convertSearchTermToRegex);
+        options.searchPatterns = parseSearchTerms(options.searchTerm).map(
+            convertSearchTermToRegex,
+        );
     }
 
     if (options.renderer) {
@@ -75,7 +79,7 @@ export function formatText(text, inputOptions) {
     }
 
     if (htmlEmojiPattern.test(output.trim())) {
-        output = '<span class="all-emoji">' + output.trim() + '</span>';
+        output = "<span class='all-emoji'>" + output.trim() + '</span>';
     }
 
     return output;
@@ -93,7 +97,12 @@ export function doFormatText(text, options) {
     }
 
     if (options.channelNamesMap) {
-        output = autolinkChannelMentions(output, tokens, options.channelNamesMap, options.team);
+        output = autolinkChannelMentions(
+            output,
+            tokens,
+            options.channelNamesMap,
+            options.team,
+        );
     }
 
     output = autolinkEmails(output, tokens);
@@ -137,12 +146,25 @@ export function sanitizeHtml(text) {
 
 // Copied from our fork of commonmark.js
 var emailAlphaNumericChars = '\\p{L}\\p{Nd}';
-var emailSpecialCharacters = '!#$%&\'*+\\-\\/=?^_`{|}~';
+var emailSpecialCharacters = "!#$%&'*+\\-\\/=?^_`{|}~";
 var emailRestrictedSpecialCharacters = '\\s(),:;<>@\\[\\]';
 var emailValidCharacters = emailAlphaNumericChars + emailSpecialCharacters;
-var emailValidRestrictedCharacters = emailValidCharacters + emailRestrictedSpecialCharacters;
-var emailStartPattern = '(?:[' + emailValidCharacters + '](?:[' + emailValidCharacters + ']|\\.(?!\\.|@))*|\\"[' + emailValidRestrictedCharacters + '.]+\\")@';
-var reEmail = XRegExp.cache('(^|[^\\pL\\d])(' + emailStartPattern + '[\\pL\\d.\\-]+[.]\\pL{2,4}(?=$|[^\\p{L}]))', 'g');
+var emailValidRestrictedCharacters =
+    emailValidCharacters + emailRestrictedSpecialCharacters;
+var emailStartPattern =
+    '(?:[' +
+    emailValidCharacters +
+    '](?:[' +
+    emailValidCharacters +
+    "]|\\.(?!\\.|@))*|\\'[" +
+    emailValidRestrictedCharacters +
+    ".]+\\')@";
+var reEmail = XRegExp.cache(
+    '(^|[^\\pL\\d])(' +
+        emailStartPattern +
+        '[\\pL\\d.\\-]+[.]\\pL{2,4}(?=$|[^\\p{L}]))',
+    'g',
+);
 
 // Convert emails into tokens
 function autolinkEmails(text, tokens) {
@@ -180,7 +202,10 @@ export function autolinkAtMentions(text, tokens) {
     let output = text;
 
     // handle @channel, @all, @here mentions first (purposely excludes trailing punctuation)
-    output = output.replace(/\B@(channel|all|here)\b/gi, replaceAtMentionWithToken);
+    output = output.replace(
+        /\B@(channel|all|here)\b/gi,
+        replaceAtMentionWithToken,
+    );
 
     // handle all other mentions (supports trailing punctuation)
     let match = output.match(AT_MENTION_PATTERN);
@@ -201,22 +226,37 @@ function autolinkChannelMentions(text, tokens, channelNamesMap, team) {
         const alias = `$MM_CHANNELMENTION${index}$`;
         let href = '#';
         if (team) {
-            href = (window.basename || '') + '/' + team.name + '/channels/' + channelName;
+            href =
+                (window.basename || '') +
+                '/' +
+                team.name +
+                '/channels/' +
+                channelName;
         }
 
         tokens.set(alias, {
             value: `<a class="mention-link" href="${href}" data-channel-mention="${channelName}">~${displayName}</a>`,
             originalText: mention,
         });
+
         return alias;
     }
 
-    function replaceChannelMentionWithToken(fullMatch, spacer, mention, channelName) {
+    function replaceChannelMentionWithToken(
+        fullMatch,
+        spacer,
+        mention,
+        channelName,
+    ) {
         let channelNameLower = channelName.toLowerCase();
 
         if (channelMentionExists(channelNameLower)) {
             // Exact match
-            const alias = addToken(channelNameLower, mention, escapeHtml(channelNamesMap[channelNameLower].display_name));
+            const alias = addToken(
+                channelNameLower,
+                mention,
+                escapeHtml(channelNamesMap[channelNameLower].display_name),
+            );
             return spacer + alias;
         }
 
@@ -229,8 +269,13 @@ function autolinkChannelMentions(text, tokens, channelNamesMap, team) {
 
                 if (channelMentionExists(channelNameLower)) {
                     const suffix = originalChannelName.substr(c - 1);
-                    const alias = addToken(channelNameLower, '~' + channelNameLower,
-                        escapeHtml(channelNamesMap[channelNameLower].display_name));
+                    const alias = addToken(
+                        channelNameLower,
+                        '~' + channelNameLower,
+                        escapeHtml(
+                            channelNamesMap[channelNameLower].display_name,
+                        ),
+                    );
                     return spacer + alias + suffix;
                 }
             } else {
@@ -243,7 +288,10 @@ function autolinkChannelMentions(text, tokens, channelNamesMap, team) {
     }
 
     let output = text;
-    output = output.replace(/(^|\s)(~([a-z0-9.\-_]*))/gi, replaceChannelMentionWithToken);
+    output = output.replace(
+        /(^|\s)(~([a-z0-9.\-_]*))/gi,
+        replaceChannelMentionWithToken,
+    );
 
     return output;
 }
@@ -259,7 +307,7 @@ const htmlEntities = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
-    '"': '&quot;',
+    "'": '&quot;',
     "'": '&#039;',
 };
 
@@ -268,12 +316,12 @@ export function escapeHtml(text) {
 }
 
 export function convertEntityToCharacter(text) {
-    return text.
-        replace(/&lt;/g, '<').
-        replace(/&gt;/g, '>').
-        replace(/&#39;/g, '\'').
-        replace(/&quot;/g, '"').
-        replace(/&amp;/g, '&');
+    return text
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&#39;/g, "'")
+        .replace(/&quot;/g, "'")
+        .replace(/&amp;/g, '&');
 }
 
 function highlightCurrentMentions(text, tokens, mentionKeys = []) {
@@ -284,7 +332,11 @@ function highlightCurrentMentions(text, tokens, mentionKeys = []) {
     for (const [alias, token] of tokens) {
         const tokenTextLower = token.originalText.toLowerCase();
 
-        if (mentionKeys.findIndex((key) => key.key.toLowerCase() === tokenTextLower) !== -1) {
+        if (
+            mentionKeys.findIndex(
+                (key) => key.key.toLowerCase() === tokenTextLower,
+            ) !== -1
+        ) {
             const index = tokens.size + newTokens.size;
             const newAlias = `$MM_SELFMENTION${index}$`;
 
@@ -292,6 +344,7 @@ function highlightCurrentMentions(text, tokens, mentionKeys = []) {
                 value: `<span class="mention--highlight">${alias}</span>`,
                 originalText: token.originalText,
             });
+
             output = output.replace(alias, newAlias);
         }
     }
@@ -302,7 +355,12 @@ function highlightCurrentMentions(text, tokens, mentionKeys = []) {
     }
 
     // look for self mentions in the text
-    function replaceCurrentMentionWithToken(fullMatch, prefix, mention, suffix = '') {
+    function replaceCurrentMentionWithToken(
+        fullMatch,
+        prefix,
+        mention,
+        suffix = '',
+    ) {
         const index = tokens.size;
         const alias = `$MM_SELFMENTION${index}$`;
 
@@ -329,7 +387,10 @@ function highlightCurrentMentions(text, tokens, mentionKeys = []) {
             // In the case of CJK mention key, even if there's no delimiters (such as spaces) at both ends of a word, it is recognized as a mention key
             pattern = new RegExp(`()(${escapeRegex(mention.key)})()`, flags);
         } else {
-            pattern = new RegExp(`(^|\\W)(${escapeRegex(mention.key)})(\\b|_+\\b)`, flags);
+            pattern = new RegExp(
+                `(^|\\W)(${escapeRegex(mention.key)})(\\b|_+\\b)`,
+                flags,
+            );
         }
         output = output.replace(pattern, replaceCurrentMentionWithToken);
     }
@@ -380,7 +441,10 @@ function autolinkHashtags(text, tokens, minimumHashtagLength = 3) {
         return prefix + alias;
     }
 
-    return output.replace(XRegExp.cache('(^|\\W)(#\\pL[\\pL\\d\\-_.]*[\\pL\\d])', 'g'), replaceHashtagWithToken);
+    return output.replace(
+        XRegExp.cache('(^|\\W)(#\\pL[\\pL\\d\\-_.]*[\\pL\\d])', 'g'),
+        replaceHashtagWithToken,
+    );
 }
 
 const puncStart = XRegExp.cache('^[^\\pL\\d\\s#]+');
@@ -395,7 +459,7 @@ function parseSearchTerms(searchTerm) {
         let captured;
 
         // check for a quoted string
-        captured = (/^"([^"]*)"/).exec(termString);
+        captured = /^"([^"]*)"/.exec(termString);
         if (captured) {
             termString = termString.substring(captured[0].length);
 
@@ -406,14 +470,14 @@ function parseSearchTerms(searchTerm) {
         }
 
         // check for a search flag (and don't add it to terms)
-        captured = (/^(?:in|from|channel): ?\S+/).exec(termString);
+        captured = /^(?:in|from|channel): ?\S+/.exec(termString);
         if (captured) {
             termString = termString.substring(captured[0].length);
             continue;
         }
 
         // capture at mentions differently from the server so we can highlight them with the preceeding at sign
-        captured = (/^@[a-z0-9.-_]+\b/).exec(termString);
+        captured = /^@[a-z0-9.-_]+\b/.exec(termString);
         if (captured) {
             termString = termString.substring(captured[0].length);
 
@@ -422,17 +486,23 @@ function parseSearchTerms(searchTerm) {
         }
 
         // capture any plain text up until the next quote or search flag
-        captured = (/^.+?(?=\bin:|\bfrom:|\bchannel:|"|$)/).exec(termString);
+        captured = /^.+?(?=\bin:|\bfrom:|\bchannel:|"|$)/.exec(termString);
         if (captured) {
             termString = termString.substring(captured[0].length);
 
             // break the text up into words based on how the server splits them in SqlPostStore.SearchPosts and then discard empty terms
-            terms.push(...captured[0].split(/[ <>+()~@]/).filter((term) => Boolean(term)));
+            terms.push(
+                ...captured[0]
+                    .split(/[ <>+()~@]/)
+                    .filter((term) => Boolean(term)),
+            );
             continue;
         }
 
         // we should never reach this point since at least one of the regexes should match something in the remaining text
-        throw new Error('Infinite loop in search term parsing: "' + termString + '"');
+        throw new Error(
+            "Infinite loop in search term parsing: '" + termString + "'",
+        );
     }
 
     // remove punctuation from each term
@@ -453,8 +523,9 @@ function convertSearchTermToRegex(term) {
     if (cjkPattern.test(term)) {
         // term contains Chinese, Japanese, or Korean characters so don't mark word boundaries
         pattern = '()(' + escapeRegex(term.replace(/\*/g, '')) + ')';
-    } else if ((/[^\s][*]$/).test(term)) {
-        pattern = '\\b()(' + escapeRegex(term.substring(0, term.length - 1)) + ')';
+    } else if (/[^\s][*]$/.test(term)) {
+        pattern =
+            '\\b()(' + escapeRegex(term.substring(0, term.length - 1)) + ')';
     } else if (term.startsWith('@') || term.startsWith('#')) {
         // needs special handling of the first boundary because a word boundary doesn't work before a symbol
         pattern = '(\\W|^)(' + escapeRegex(term) + ')\\b';
@@ -502,7 +573,11 @@ export function highlightSearchTerms(text, tokens, searchPatterns) {
                     term = term.substr(1);
                 }
 
-                if (alias.startsWith('$MM_HASHTAG') && alias.endsWith('$') && originalText.toLowerCase() !== term.toLowerCase()) {
+                if (
+                    alias.startsWith('$MM_HASHTAG') &&
+                    alias.endsWith('$') &&
+                    originalText.toLowerCase() !== term.toLowerCase()
+                ) {
                     continue;
                 }
 
@@ -563,7 +638,9 @@ export function handleUnicodeEmoji(text, supportedEmoji, searchPattern) {
         // convert emoji to image if supported, or wrap in span to apply appropriate formatting
         if (supportedEmoji.hasUnicode(emojiCode)) {
             // build image tag to replace supported unicode emoji
-            return `<img class="emoticon" draggable="false" alt="${emoji}" src="${getEmojiImageUrl(supportedEmoji.getUnicode(emojiCode))}">`;
+            return `<img class="emoticon" draggable="false" alt="${emoji}" src="${getEmojiImageUrl(
+                supportedEmoji.getUnicode(emojiCode),
+            )}">`;
         }
 
         // wrap unsupported unicode emoji in span to style as needed

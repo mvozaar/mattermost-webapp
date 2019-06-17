@@ -5,7 +5,10 @@ import {connect} from 'react-redux';
 
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {isCurrentChannelReadOnly} from 'mattermost-redux/selectors/entities/channels';
-import {getProfilesInCurrentChannel, getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+import {
+    getProfilesInCurrentChannel,
+    getCurrentUserId,
+} from 'mattermost-redux/selectors/entities/users';
 import {get} from 'mattermost-redux/selectors/entities/preferences';
 
 import {Preferences} from 'utils/constants.jsx';
@@ -24,7 +27,13 @@ function mapStateToProps(state) {
         channelProfiles: getProfilesInCurrentChannel(state),
         enableUserCreation,
         isReadOnly,
-        fullWidth: get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.CHANNEL_DISPLAY_MODE, Preferences.CHANNEL_DISPLAY_MODE_DEFAULT) === Preferences.CHANNEL_DISPLAY_MODE_FULL_SCREEN,
+        fullWidth:
+            get(
+                state,
+                Preferences.CATEGORY_DISPLAY_SETTINGS,
+                Preferences.CHANNEL_DISPLAY_MODE,
+                Preferences.CHANNEL_DISPLAY_MODE_DEFAULT,
+            ) === Preferences.CHANNEL_DISPLAY_MODE_FULL_SCREEN,
     };
 }
 

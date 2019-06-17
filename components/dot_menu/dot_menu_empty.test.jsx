@@ -22,8 +22,8 @@ jest.mock('utils/post_utils', () => {
     };
 });
 
-describe('components/dot_menu/DotMenu returning empty ("")', () => {
-    test('should match snapshot, return empty ("") on Center', () => {
+describe("components/dot_menu/DotMenu returning empty ('')", () => {
+    test("should match snapshot, return empty ('') on Center", () => {
         const baseProps = {
             post: {id: 'post_id_1'},
             isLicensed: false,
@@ -39,9 +39,7 @@ describe('components/dot_menu/DotMenu returning empty ("")', () => {
             },
         };
 
-        const wrapper = shallowWithIntl(
-            <DotMenu {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<DotMenu {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });

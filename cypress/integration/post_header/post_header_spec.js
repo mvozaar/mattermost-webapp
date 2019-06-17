@@ -1,4 +1,3 @@
-
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
@@ -30,7 +29,9 @@ describe('Post Header', () => {
             const divPostId = `#post_${postId}`;
 
             // * Check initial state that the first message posted is not highlighted
-            cy.get(divPostId).should('be.visible').should('not.have.class', 'post--highlight');
+            cy.get(divPostId)
+                .should('be.visible')
+                .should('not.have.class', 'post--highlight');
 
             // 4. Click timestamp of a post
             cy.clickPostTime(postId);
@@ -39,12 +40,14 @@ describe('Post Header', () => {
             cy.url().should('include', `/ad-1/pl/${postId}`);
 
             // * Check that the post is highlighted on permalink view
-            cy.get(divPostId).should('be.visible').should('have.class', 'post--highlight');
+            cy.get(divPostId)
+                .should('be.visible')
+                .should('have.class', 'post--highlight');
 
             // * Check that the "jump to recent messages" is visible
-            cy.get('#archive-link-home').
-                should('be.visible').
-                should('contain', 'Click here to jump to recent messages.');
+            cy.get('#archive-link-home')
+                .should('be.visible')
+                .should('contain', 'Click here to jump to recent messages.');
 
             // 5. Click "jump to recent messages" link
             cy.get('#archive-link-home').click();
@@ -53,7 +56,9 @@ describe('Post Header', () => {
             cy.url().should('include', '/ad-1/channels/town-square');
 
             // * Check the said post not highlighted
-            cy.get(divPostId).should('be.visible').should('not.have.class', 'post--highlight');
+            cy.get(divPostId)
+                .should('be.visible')
+                .should('not.have.class', 'post--highlight');
         });
     });
 
@@ -72,7 +77,13 @@ describe('Post Header', () => {
             cy.clickPostFlagIcon(postId);
 
             // * Check that the center flag icon of a post becomes visible
-            cy.get(`#CENTER_flagIcon_${postId}`).should('be.visible').should('have.attr', 'class', 'style--none flag-icon__container visible');
+            cy.get(`#CENTER_flagIcon_${postId}`)
+                .should('be.visible')
+                .should(
+                    'have.attr',
+                    'class',
+                    'style--none flag-icon__container visible',
+                );
 
             // 5. Click again the center flag icon of a post
             cy.clickPostFlagIcon(postId);
@@ -126,7 +137,13 @@ describe('Post Header', () => {
             cy.clickPostReactionIcon(postId);
 
             // * Check that the center post reaction icon of the post becomes visible
-            cy.get(`#CENTER_reaction_${postId}`).should('be.visible').should('have.attr', 'class', 'reacticon__container color--link style--none');
+            cy.get(`#CENTER_reaction_${postId}`)
+                .should('be.visible')
+                .should(
+                    'have.attr',
+                    'class',
+                    'reacticon__container color--link style--none',
+                );
 
             // * Check that the emoji picker becomes visible as well
             cy.get('#emojiPicker').should('be.visible');
@@ -140,7 +157,7 @@ describe('Post Header', () => {
         });
     });
 
-    it('should open RHS on click of comment icon and close on RHS\' close button', () => {
+    it("should open RHS on click of comment icon and close on RHS' close button", () => {
         // 2. Go to a known team and channel
         cy.visit('/ad-1/channels/town-square');
 
@@ -176,7 +193,9 @@ describe('Post Header', () => {
 
             // 4. Pin the post.
             cy.clickPostDotMenu(postId);
-            cy.get(`#pin_post_${postId}`).should('be.visible').click();
+            cy.get(`#pin_post_${postId}`)
+                .should('be.visible')
+                .click();
 
             // 5. Click the center flag icon of a post
             cy.clickPostFlagIcon(postId);
@@ -185,32 +204,46 @@ describe('Post Header', () => {
             cy.get('#channelHeaderFlagButton').click();
 
             // * Check that message exists in RHS flagged posts list
-            cy.get(`#postMessageText_${postId}`).contains('test for pinning/unpinning a post');
+            cy.get(`#postMessageText_${postId}`).contains(
+                'test for pinning/unpinning a post',
+            );
 
             // * Check that post is be pinned in center
             // * Check that post is be pinned in RHS
             cy.get(`#post_${postId}`).should('have.class', 'post--pinned');
-            cy.get(`#SEARCH_flagIcon_${postId}`).siblings('.post__pinned-badge').should('exist');
+            cy.get(`#SEARCH_flagIcon_${postId}`)
+                .siblings('.post__pinned-badge')
+                .should('exist');
 
             // 7. unpin the post
             cy.clickPostDotMenu(postId);
-            cy.get(`#unpin_post_${postId}`).should('be.visible').click();
+            cy.get(`#unpin_post_${postId}`)
+                .should('be.visible')
+                .click();
 
             // * Check that message exists in RHS flagged posts list
             // * Check that post is not be pinned in center
             // * Check that post is not be pinned in RHS
-            cy.get(`#postMessageText_${postId}`).contains('test for pinning/unpinning a post');
+            cy.get(`#postMessageText_${postId}`).contains(
+                'test for pinning/unpinning a post',
+            );
             cy.get(`#post_${postId}`).should('not.have.class', 'post--pinned');
-            cy.get(`#SEARCH_flagIcon_${postId}`).siblings('.post__pinned-badge').should('not.exist');
+            cy.get(`#SEARCH_flagIcon_${postId}`)
+                .siblings('.post__pinned-badge')
+                .should('not.exist');
 
             // 8. Pin the post again.
             cy.clickPostDotMenu(postId);
-            cy.get(`#pin_post_${postId}`).should('be.visible').click();
+            cy.get(`#pin_post_${postId}`)
+                .should('be.visible')
+                .click();
 
             // * Check that post is be pinned in center
             // * Check that post is be pinned in RHS
             cy.get(`#post_${postId}`).should('have.class', 'post--pinned');
-            cy.get(`#SEARCH_flagIcon_${postId}`).siblings('.post__pinned-badge').should('exist');
+            cy.get(`#SEARCH_flagIcon_${postId}`)
+                .siblings('.post__pinned-badge')
+                .should('exist');
         });
     });
 });

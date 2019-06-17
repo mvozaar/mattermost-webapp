@@ -20,7 +20,9 @@ describe('Edit Message', () => {
         cy.visit('/');
 
         // # Post message "Hello"
-        cy.get('#post_textbox').type('Hello World!').type('{enter}');
+        cy.get('#post_textbox')
+            .type('Hello World!')
+            .type('{enter}');
 
         // # Hit the up arrow to open the "edit modal"
         cy.get('#post_textbox').type('{uparrow}');
@@ -32,7 +34,9 @@ describe('Edit Message', () => {
         cy.get('#suggestionList').should('be.visible');
 
         // # Press the escape key
-        cy.get('#edit_textbox').focus().type('{esc}');
+        cy.get('#edit_textbox')
+            .focus()
+            .type('{esc}');
 
         // * Check if the textbox contains expected text
         cy.get('#edit_textbox').should('contain', 'Hello World! @');
@@ -79,37 +83,46 @@ describe('Edit Message', () => {
             // # Mouseover post to display the timestamp
             cy.get(`#post_${postId}`).trigger('mouseover');
 
-            cy.get(`#CENTER_time_${postId}`).find('#localDateTime').invoke('attr', 'title').then((originalTimeStamp) => {
-                // # Click dot menu
-                cy.clickPostDotMenu(postId);
+            cy.get(`#CENTER_time_${postId}`)
+                .find('#localDateTime')
+                .invoke('attr', 'title')
+                .then((originalTimeStamp) => {
+                    // # Click dot menu
+                    cy.clickPostDotMenu(postId);
 
-                // # Click the edit button
-                cy.get(`#edit_post_${postId}`).click();
+                    // # Click the edit button
+                    cy.get(`#edit_post_${postId}`).click();
 
-                // # Edit modal should appear
-                cy.get('.edit-modal').should('be.visible');
+                    // # Edit modal should appear
+                    cy.get('.edit-modal').should('be.visible');
 
-                // # Edit the post
-                cy.get('#edit_textbox').type('Some text {enter}');
+                    // # Edit the post
+                    cy.get('#edit_textbox').type('Some text {enter}');
 
-                // * Edit modal should disappear
-                cy.get('.edit-modal').should('not.be.visible');
+                    // * Edit modal should disappear
+                    cy.get('.edit-modal').should('not.be.visible');
 
-                // # Mouseover the post again
-                cy.get(`#post_${postId}`).trigger('mouseover');
+                    // # Mouseover the post again
+                    cy.get(`#post_${postId}`).trigger('mouseover');
 
-                // * Current post timestamp should have not been changed by edition
-                cy.get(`#CENTER_time_${postId}`).find('#localDateTime').should('have.attr', 'title').and('equal', originalTimeStamp);
+                    // * Current post timestamp should have not been changed by edition
+                    cy.get(`#CENTER_time_${postId}`)
+                        .find('#localDateTime')
+                        .should('have.attr', 'title')
+                        .and('equal', originalTimeStamp);
 
-                // # Open RHS by clicking the post comment icon
-                cy.clickPostCommentIcon(postId);
+                    // # Open RHS by clicking the post comment icon
+                    cy.clickPostCommentIcon(postId);
 
-                // * Check that the RHS is open
-                cy.get('#rhsContainer').should('be.visible');
+                    // * Check that the RHS is open
+                    cy.get('#rhsContainer').should('be.visible');
 
-                // * Check that the RHS timeStamp equals the original post timeStamp
-                cy.get(`#CENTER_time_${postId}`).find('#localDateTime').invoke('attr', 'title').should('be', originalTimeStamp);
-            });
+                    // * Check that the RHS timeStamp equals the original post timeStamp
+                    cy.get(`#CENTER_time_${postId}`)
+                        .find('#localDateTime')
+                        .invoke('attr', 'title')
+                        .should('be', originalTimeStamp);
+                });
         });
     });
 
@@ -122,20 +135,29 @@ describe('Edit Message', () => {
         });
 
         // # Enter first message
-        cy.get('#post_textbox').clear().type('Hello{enter}');
+        cy.get('#post_textbox')
+            .clear()
+            .type('Hello{enter}');
 
         // Start a server, and stub out the response to ensure we have a pending post
         // Note that this fails the creation of the second post. But we only need it
         // to be pending
         cy.server();
-        cy.route({response: {}, method: 'POST', url: 'api/v4/posts', delay: 5000});
+        cy.route({
+            response: {},
+            method: 'POST',
+            url: 'api/v4/posts',
+            delay: 5000,
+        });
 
         // # Enter second message, submit, and then uparrow to show edit post modal
         cy.get('#post_textbox').type('world!{enter}{uparrow}');
 
         // * Edit post modal should appear, and edit the post
         cy.get('#editPostModal').should('be.visible');
-        cy.get('#edit_textbox').should('have.text', 'Hello').type(' New message{enter}');
+        cy.get('#edit_textbox')
+            .should('have.text', 'Hello')
+            .type(' New message{enter}');
         cy.get('#editPostModal').should('be.not.visible');
 
         // * Verify last post is pending
@@ -168,7 +190,9 @@ describe('Edit Message', () => {
 
             // * Edit post modal should appear, and edit the post
             cy.get('#editPostModal').should('be.visible');
-            cy.get('#edit_textbox').should('have.text', 'World!').type(' Another new message{enter}');
+            cy.get('#edit_textbox')
+                .should('have.text', 'World!')
+                .type(' Another new message{enter}');
             cy.get('#editPostModal').should('be.not.visible');
 
             // * Check the second post and verify that it contains new edited message.
@@ -176,4 +200,3 @@ describe('Edit Message', () => {
         });
     });
 });
-

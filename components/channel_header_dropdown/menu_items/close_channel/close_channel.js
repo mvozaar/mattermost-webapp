@@ -14,18 +14,21 @@ export default class CloseChannel extends React.PureComponent {
         actions: PropTypes.shape({
             goToLastViewedChannel: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     handleClose = () => {
         this.props.actions.goToLastViewedChannel();
-    }
+    };
 
     render() {
         return (
             <MenuItemAction
                 show={this.props.isArchived}
                 onClick={this.handleClose}
-                text={localizeMessage('center_panel.archived.closeChannel', 'Close Channel')}
+                text={localizeMessage(
+                    'center_panel.archived.closeChannel',
+                    'Close Channel',
+                )}
             />
         );
     }

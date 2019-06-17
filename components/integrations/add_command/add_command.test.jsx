@@ -18,8 +18,9 @@ describe('components/integrations/AddCommand', () => {
                     error: null,
                 }}
                 actions={{addCommand: emptyFunction}}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

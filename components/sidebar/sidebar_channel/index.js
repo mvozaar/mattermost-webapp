@@ -15,14 +15,27 @@ import {
 } from 'mattermost-redux/selectors/entities/channels';
 import {getMyChannelMemberships} from 'mattermost-redux/selectors/entities/common';
 import {getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
-import {getUserIdsInChannels, getUser} from 'mattermost-redux/selectors/entities/users';
-import {getInt, getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
+import {
+    getUserIdsInChannels,
+    getUser,
+} from 'mattermost-redux/selectors/entities/users';
+import {
+    getInt,
+    getTeammateNameDisplaySetting,
+} from 'mattermost-redux/selectors/entities/preferences';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {isChannelMuted, isFavoriteChannel} from 'mattermost-redux/utils/channel_utils';
+import {
+    isChannelMuted,
+    isFavoriteChannel,
+} from 'mattermost-redux/utils/channel_utils';
 
 import {displayUsername} from 'mattermost-redux/utils/user_utils';
 
-import {Constants, NotificationLevels, StoragePrefixes} from 'utils/constants.jsx';
+import {
+    Constants,
+    NotificationLevels,
+    StoragePrefixes,
+} from 'utils/constants.jsx';
 
 import {leaveChannel} from 'actions/views/channel';
 import {open as openLhs} from 'actions/views/lhs.js';
@@ -39,10 +52,18 @@ function makeMapStateToProps() {
         const config = getConfig(state);
         const currentChannelId = getCurrentChannelId(state);
         const channel = getChannel(state, {id: channelId}) || {};
-        const draft = channel.id ? getPostDraft(state, StoragePrefixes.DRAFT, channel.id) : false;
+        const draft = channel.id
+            ? getPostDraft(state, StoragePrefixes.DRAFT, channel.id)
+            : false;
 
         const enableTutorial = config.EnableTutorial === 'true';
-        const tutorialStep = getInt(state, Constants.Preferences.TUTORIAL_STEP, ownProps.currentUserId, Constants.TutorialSteps.FINISHED);
+        const tutorialStep = getInt(
+            state,
+            Constants.Preferences.TUTORIAL_STEP,
+            ownProps.currentUserId,
+            Constants.TutorialSteps.FINISHED,
+        );
+
         const channelsByName = getChannelsNameMapInCurrentTeam(state);
         const memberIds = getUserIdsInChannels(state);
 
@@ -63,11 +84,16 @@ function makeMapStateToProps() {
             unreadMentions = member.mention_count;
 
             if (channel) {
-                unreadMsgs = Math.max(channel.total_msg_count - member.msg_count, 0);
+                unreadMsgs = Math.max(
+                    channel.total_msg_count - member.msg_count,
+                    0,
+                );
             }
 
             if (member.notify_props) {
-                showUnreadForMsgs = member.notify_props.mark_unread !== NotificationLevels.MENTION;
+                showUnreadForMsgs =
+                    member.notify_props.mark_unread !==
+                    NotificationLevels.MENTION;
             }
         }
 
@@ -87,7 +113,11 @@ function makeMapStateToProps() {
                 channelTeammateIsBot = teammate.is_bot;
             }
 
-            channelDisplayName = displayUsername(teammate, teammateNameDisplay, false);
+            channelDisplayName = displayUsername(
+                teammate,
+                teammateNameDisplay,
+                false,
+            );
         }
 
         let shouldHideChannel = false;
@@ -95,7 +125,10 @@ function makeMapStateToProps() {
             channel.name === Constants.DEFAULT_CHANNEL &&
             !ownProps.active &&
             shouldHideDefaultChannel(state, channel) &&
-            !isFavoriteChannel(state.entities.preferences.myPreferences, channel.id)
+            !isFavoriteChannel(
+                state.entities.preferences.myPreferences,
+                channel.id,
+            )
         ) {
             shouldHideChannel = true;
         }
@@ -114,29 +147,54 @@ function makeMapStateToProps() {
             channelTeammateUsername,
             channelTeammateDeletedAt,
             channelTeammateIsBot,
-            hasDraft: draft && Boolean(draft.message.trim() || draft.fileInfos.length || draft.uploadsInProgress.length) && currentChannelId !== channel.id,
-            showTutorialTip: enableTutorial && tutorialStep === Constants.TutorialSteps.CHANNEL_POPOVER,
-            townSquareDisplayName: channelsByName[Constants.DEFAULT_CHANNEL] && channelsByName[Constants.DEFAULT_CHANNEL].display_name,
-            offTopicDisplayName: channelsByName[Constants.OFFTOPIC_CHANNEL] && channelsByName[Constants.OFFTOPIC_CHANNEL].display_name,
+            hasDraft:
+                draft &&
+                Boolean(
+                    draft.message.trim() ||
+                        draft.fileInfos.length ||
+                        draft.uploadsInProgress.length,
+                ) &&
+                currentChannelId !== channel.id,
+            showTutorialTip:
+                enableTutorial &&
+                tutorialStep === Constants.TutorialSteps.CHANNEL_POPOVER,
+            townSquareDisplayName:
+                channelsByName[Constants.DEFAULT_CHANNEL] &&
+                channelsByName[Constants.DEFAULT_CHANNEL].display_name,
+            offTopicDisplayName:
+                channelsByName[Constants.OFFTOPIC_CHANNEL] &&
+                channelsByName[Constants.OFFTOPIC_CHANNEL].display_name,
             showUnreadForMsgs,
             unreadMsgs,
             unreadMentions,
             membersCount,
             shouldHideChannel,
             channelIsArchived: channel.delete_at !== 0,
-            redirectChannel: getRedirectChannelNameForTeam(state, getCurrentTeamId(state)),
+            redirectChannel: getRedirectChannelNameForTeam(
+                state,
+                getCurrentTeamId(state),
+            ),
         };
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            savePreferences,
-            leaveChannel,
-            openLhs,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                savePreferences,
+                leaveChannel,
+                openLhs,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps, null, {withRef: true})(SidebarChannel);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+    null,
+    {withRef: true},
+)(SidebarChannel);

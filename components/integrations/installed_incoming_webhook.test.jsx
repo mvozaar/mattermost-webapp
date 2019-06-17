@@ -43,8 +43,9 @@ describe('components/integrations/InstalledIncomingWebhook', () => {
                     id: '1jiw9kphbjrntfyrm7xpdcya4o',
                     name: 'town-square',
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -66,8 +67,9 @@ describe('components/integrations/InstalledIncomingWebhook', () => {
                     id: '1jiw9kphbjrntfyrm7xpdcya4o',
                     name: 'town-square',
                 }}
-            />
+            />,
         );
+
         expect(wrapper.find('.item-actions').length).toBe(0);
     });
 
@@ -89,10 +91,21 @@ describe('components/integrations/InstalledIncomingWebhook', () => {
                     id: '1jiw9kphbjrntfyrm7xpdcya4o',
                     name: 'town-square',
                 }}
-            />
+            />,
         );
-        expect(wrapper.find('.item-actions').find(Link).exists()).toBe(true);
-        expect(wrapper.find('.item-actions').find(DeleteIntegration).exists()).toBe(true);
+
+        expect(
+            wrapper
+                .find('.item-actions')
+                .find(Link)
+                .exists(),
+        ).toBe(true);
+        expect(
+            wrapper
+                .find('.item-actions')
+                .find(DeleteIntegration)
+                .exists(),
+        ).toBe(true);
     });
 
     test('Should have the same name and description on view as it has in incomingWebhook', () => {
@@ -113,10 +126,13 @@ describe('components/integrations/InstalledIncomingWebhook', () => {
                     id: '1jiw9kphbjrntfyrm7xpdcya4o',
                     name: 'town-square',
                 }}
-            />
+            />,
         );
 
-        expect(wrapper.find('.item-details__description').text()).toBe('build status');
+        expect(wrapper.find('.item-details__description').text()).toBe(
+            'build status',
+        );
+
         expect(wrapper.find('.item-details__name').text()).toBe('build');
     });
 
@@ -138,8 +154,9 @@ describe('components/integrations/InstalledIncomingWebhook', () => {
                     id: '1jiw9kphbjrntfyrm7xpdcya4o',
                     name: 'town-square',
                 }}
-            />
+            />,
         );
+
         expect(wrapper.find('.item-details__description').length).toBe(0);
     });
 
@@ -161,8 +178,9 @@ describe('components/integrations/InstalledIncomingWebhook', () => {
                     id: '1jiw9kphbjrntfyrm7xpdcya4o',
                     name: 'town-square',
                 }}
-            />
+            />,
         );
+
         expect(wrapper.getElement()).toBe(null);
     });
 
@@ -184,8 +202,9 @@ describe('components/integrations/InstalledIncomingWebhook', () => {
                     id: '1jiw9kphbjrntfyrm7xpdcya4o',
                     name: 'town-square',
                 }}
-            />
+            />,
         );
+
         expect(wrapper.find('.item-details').exists()).toBe(true);
     });
 });

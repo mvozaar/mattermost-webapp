@@ -17,7 +17,9 @@ export default class SearchSuggestionList extends SuggestionList {
     };
 
     getContent() {
-        return $(ReactDOM.findDOMNode(this.refs.popover)).find('.popover-content');
+        return $(ReactDOM.findDOMNode(this.refs.popover)).find(
+            '.popover-content',
+        );
     }
 
     renderChannelDivider(type) {
@@ -73,11 +75,25 @@ export default class SearchSuggestionList extends SuggestionList {
             if (this.props.renderDividers) {
                 if (i === 0 || item.type !== this.props.items[i - 1].type) {
                     if (item.type === Constants.OPEN_CHANNEL) {
-                        items.push(this.renderChannelDivider(Constants.OPEN_CHANNEL));
+                        items.push(
+                            this.renderChannelDivider(Constants.OPEN_CHANNEL),
+                        );
                     } else if (item.type === Constants.PRIVATE_CHANNEL) {
-                        items.push(this.renderChannelDivider(Constants.PRIVATE_CHANNEL));
-                    } else if (i === 0 || this.props.items[i - 1].type === Constants.OPEN_CHANNEL || this.props.items[i - 1].type === Constants.PRIVATE_CHANNEL) {
-                        items.push(this.renderChannelDivider(Constants.DM_CHANNEL));
+                        items.push(
+                            this.renderChannelDivider(
+                                Constants.PRIVATE_CHANNEL,
+                            ),
+                        );
+                    } else if (
+                        i === 0 ||
+                        this.props.items[i - 1].type ===
+                            Constants.OPEN_CHANNEL ||
+                        this.props.items[i - 1].type ===
+                            Constants.PRIVATE_CHANNEL
+                    ) {
+                        items.push(
+                            this.renderChannelDivider(Constants.DM_CHANNEL),
+                        );
                     }
                 }
             }
@@ -91,7 +107,7 @@ export default class SearchSuggestionList extends SuggestionList {
                     matchedPretext={this.props.matchedPretext[i]}
                     isSelection={isSelection}
                     onClick={this.props.onCompleteWord}
-                />
+                />,
             );
         }
 

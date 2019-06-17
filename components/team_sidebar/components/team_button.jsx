@@ -37,7 +37,10 @@ export default class TeamButton extends React.Component {
         let teamClass = this.props.active ? 'active' : '';
         const btnClass = this.props.btnClass;
         const disabled = this.props.disabled ? 'team-disabled' : '';
-        const handleClick = (this.props.active || this.props.disabled) ? this.handleDisabled : this.handleSwitch;
+        const handleClick =
+            this.props.active || this.props.disabled
+                ? this.handleDisabled
+                : this.handleSwitch;
         let badge;
 
         if (!teamClass) {
@@ -45,7 +48,9 @@ export default class TeamButton extends React.Component {
 
             if (this.props.mentions) {
                 badge = (
-                    <span className={'badge pull-right small'}>{this.props.mentions}</span>
+                    <span className={'badge pull-right small'}>
+                        {this.props.mentions}
+                    </span>
                 );
             }
         }
@@ -64,19 +69,21 @@ export default class TeamButton extends React.Component {
                 );
             } else {
                 let initials = this.props.displayName;
-                initials = initials ? initials.replace(/\s/g, '').substring(0, 2) : '??';
+                initials = initials
+                    ? initials.replace(/\s/g, '').substring(0, 2)
+                    : '??';
 
                 content = (
                     <div className='team-btn__content'>
-                        <div className='team-btn__initials'>
-                            {initials}
-                        </div>
+                        <div className='team-btn__initials'>{initials}</div>
                     </div>
                 );
             }
         }
 
-        const toolTip = this.props.tip || localizeMessage('team.button.name_undefined', 'Name undefined');
+        const toolTip =
+            this.props.tip ||
+            localizeMessage('team.button.name_undefined', 'Name undefined');
         const btn = (
             <OverlayTrigger
                 trigger={['hover', 'focus']}
@@ -107,7 +114,10 @@ export default class TeamButton extends React.Component {
             );
 
             // if this is not a "special" team button, give it a context menu
-            if (!this.props.url.endsWith('create_team') && !this.props.url.endsWith('select_team')) {
+            if (
+                !this.props.url.endsWith('create_team') &&
+                !this.props.url.endsWith('select_team')
+            ) {
                 teamButton = (
                     <CopyUrlContextMenu
                         link={this.props.url}
@@ -131,11 +141,7 @@ export default class TeamButton extends React.Component {
         }
 
         return (
-            <div
-                className={`team-container ${teamClass}`}
-            >
-                {teamButton}
-            </div>
+            <div className={`team-container ${teamClass}`}>{teamButton}</div>
         );
     }
 }

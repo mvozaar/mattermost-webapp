@@ -37,7 +37,11 @@ export default class PermissionsTree extends React.Component {
 
         this.ADDITIONAL_VALUES = {
             edit_post: {
-                editTimeLimitButton: <EditPostTimeLimitButton onClick={this.openPostTimeLimitModal}/>,
+                editTimeLimitButton: (
+                    <EditPostTimeLimitButton
+                        onClick={this.openPostTimeLimitModal}
+                    />
+                ),
             },
         };
 
@@ -54,9 +58,11 @@ export default class PermissionsTree extends React.Component {
                             'add_user_to_team',
                         ],
                     },
+
                     'create_team',
                 ],
             },
+
             {
                 id: 'public_channel',
                 permissions: [
@@ -66,6 +72,7 @@ export default class PermissionsTree extends React.Component {
                     'delete_public_channel',
                 ],
             },
+
             {
                 id: 'private_channel',
                 permissions: [
@@ -75,78 +82,102 @@ export default class PermissionsTree extends React.Component {
                     'delete_private_channel',
                 ],
             },
+
             {
                 id: 'posts',
                 permissions: [
                     {
                         id: 'edit_posts',
-                        permissions: [
-                            'edit_post',
-                            'edit_others_posts',
-                        ],
+                        permissions: ['edit_post', 'edit_others_posts'],
                     },
+
                     {
                         id: 'delete_posts',
-                        permissions: [
-                            'delete_post',
-                            'delete_others_posts',
-                        ],
+                        permissions: ['delete_post', 'delete_others_posts'],
                     },
+
                     {
                         id: 'reactions',
                         combined: true,
-                        permissions: [
-                            'add_reaction',
-                            'remove_reaction',
-                        ],
+                        permissions: ['add_reaction', 'remove_reaction'],
                     },
                 ],
             },
+
             {
                 id: 'integrations',
-                permissions: [
-                ],
+                permissions: [],
             },
         ];
+
         this.updateGroups();
     }
 
     updateGroups = () => {
         const {config, scope} = this.props;
         const integrationsGroup = this.groups[this.groups.length - 1];
-        if (config.EnableIncomingWebhooks === 'true' && integrationsGroup.permissions.indexOf('manage_incoming_webhooks') === -1) {
+        if (
+            config.EnableIncomingWebhooks === 'true' &&
+            integrationsGroup.permissions.indexOf(
+                'manage_incoming_webhooks',
+            ) === -1
+        ) {
             integrationsGroup.permissions.push('manage_incoming_webhooks');
         }
-        if (config.EnableOutgoingWebhooks === 'true' && integrationsGroup.permissions.indexOf('manage_outgoing_webhooks') === -1) {
+        if (
+            config.EnableOutgoingWebhooks === 'true' &&
+            integrationsGroup.permissions.indexOf(
+                'manage_outgoing_webhooks',
+            ) === -1
+        ) {
             integrationsGroup.permissions.push('manage_outgoing_webhooks');
         }
-        if (config.EnableOAuthServiceProvider === 'true' && integrationsGroup.permissions.indexOf('manage_oauth') === -1) {
+        if (
+            config.EnableOAuthServiceProvider === 'true' &&
+            integrationsGroup.permissions.indexOf('manage_oauth') === -1
+        ) {
             integrationsGroup.permissions.push('manage_oauth');
         }
-        if (config.EnableCommands === 'true' && integrationsGroup.permissions.indexOf('manage_slash_commands') === -1) {
+        if (
+            config.EnableCommands === 'true' &&
+            integrationsGroup.permissions.indexOf('manage_slash_commands') ===
+                -1
+        ) {
             integrationsGroup.permissions.push('manage_slash_commands');
         }
-        if (config.EnableCustomEmoji === 'true' && integrationsGroup.permissions.indexOf('create_emojis') === -1) {
+        if (
+            config.EnableCustomEmoji === 'true' &&
+            integrationsGroup.permissions.indexOf('create_emojis') === -1
+        ) {
             integrationsGroup.permissions.push('create_emojis');
         }
-        if (config.EnableCustomEmoji === 'true' && integrationsGroup.permissions.indexOf('delete_emojis') === -1) {
+        if (
+            config.EnableCustomEmoji === 'true' &&
+            integrationsGroup.permissions.indexOf('delete_emojis') === -1
+        ) {
             integrationsGroup.permissions.push('delete_emojis');
         }
-        if (config.EnableCustomEmoji === 'true' && integrationsGroup.permissions.indexOf('delete_others_emojis') === -1) {
+        if (
+            config.EnableCustomEmoji === 'true' &&
+            integrationsGroup.permissions.indexOf('delete_others_emojis') === -1
+        ) {
             integrationsGroup.permissions.push('delete_others_emojis');
         }
-        if (scope === 'team_scope' && this.groups[0].id !== 'teams_team_scope') {
+        if (
+            scope === 'team_scope' &&
+            this.groups[0].id !== 'teams_team_scope'
+        ) {
             this.groups[0].id = 'teams_team_scope';
         }
-    }
+    };
 
     openPostTimeLimitModal = () => {
         this.setState({editTimeLimitModalIsVisible: true});
-    }
+    };
 
     closePostTimeLimitModal = () => {
         this.setState({editTimeLimitModalIsVisible: false});
-    }
+    };
 
     componentDidUpdate(prevProps) {
         if (this.props.config !== prevProps.config) {
@@ -159,7 +190,7 @@ export default class PermissionsTree extends React.Component {
             return;
         }
         this.props.onToggle(this.props.role.name, ids);
-    }
+    };
 
     render = () => {
         return (

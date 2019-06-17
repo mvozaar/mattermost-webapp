@@ -22,9 +22,18 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {actions: bindActionCreators({
-        savePreferences,
-    }, dispatch)};
+    return {
+        actions: bindActionCreators(
+            {
+                savePreferences,
+            },
+
+            dispatch,
+        ),
+    };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TutorialIntroScreens);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TutorialIntroScreens);

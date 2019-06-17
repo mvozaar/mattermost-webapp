@@ -17,6 +17,7 @@ describe('component/FilePreview', () => {
             extension: 'jpg',
         },
     ];
+
     const uploadsInProgress = ['clientID_1'];
     const uploadsProgressPercent = {
         clientID_1: {
@@ -34,16 +35,14 @@ describe('component/FilePreview', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <FilePreview {...baseProps}/>
-        );
+        const wrapper = shallow(<FilePreview {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot when props are changed', () => {
-        const wrapper = shallow(
-            <FilePreview {...baseProps}/>
-        );
+        const wrapper = shallow(<FilePreview {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
         const fileInfo2 = {
             id: 'file_id_2',
@@ -52,20 +51,21 @@ describe('component/FilePreview', () => {
             height: 100,
             extension: 'jpg',
         };
+
         const newFileInfos = [...fileInfos, fileInfo2];
         wrapper.setProps({
             fileInfos: newFileInfos,
             uploadsInProgress: [],
         });
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should call handleRemove when file removed', () => {
         const newOnRemove = jest.fn();
         const props = {...baseProps, onRemove: newOnRemove};
-        const wrapper = shallow(
-            <FilePreview {...props}/>
-        );
+        const wrapper = shallow(<FilePreview {...props} />);
+
         wrapper.instance().handleRemove();
         expect(newOnRemove).toHaveBeenCalled();
     });

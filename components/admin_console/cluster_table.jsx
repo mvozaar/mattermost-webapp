@@ -14,7 +14,7 @@ export default class ClusterTable extends React.Component {
     static propTypes = {
         clusterInfos: PropTypes.array.isRequired,
         reload: PropTypes.func.isRequired,
-    }
+    };
 
     render() {
         var versionMismatch = (
@@ -71,15 +71,24 @@ export default class ClusterTable extends React.Component {
             var status = null;
 
             if (clusterInfo.hostname === '') {
-                clusterInfo.hostname = Utils.localizeMessage('admin.cluster.unknown', 'unknown');
+                clusterInfo.hostname = Utils.localizeMessage(
+                    'admin.cluster.unknown',
+                    'unknown',
+                );
             }
 
             if (clusterInfo.version === '') {
-                clusterInfo.version = Utils.localizeMessage('admin.cluster.unknown', 'unknown');
+                clusterInfo.version = Utils.localizeMessage(
+                    'admin.cluster.unknown',
+                    'unknown',
+                );
             }
 
             if (clusterInfo.config_hash === '') {
-                clusterInfo.config_hash = Utils.localizeMessage('admin.cluster.unknown', 'unknown');
+                clusterInfo.config_hash = Utils.localizeMessage(
+                    'admin.cluster.unknown',
+                    'unknown',
+                );
             }
 
             if (singleItem) {
@@ -104,25 +113,28 @@ export default class ClusterTable extends React.Component {
                 <tr key={clusterInfo.ipaddress}>
                     <td style={style.clusterCell}>{status}</td>
                     <td style={style.clusterCell}>{clusterInfo.hostname}</td>
-                    <td style={style.clusterCell}>{versionMismatch} {clusterInfo.version}</td>
-                    <td style={style.clusterCell}><div className='config-hash'>{configMismatch} {clusterInfo.config_hash}</div></td>
+                    <td style={style.clusterCell}>
+                        {versionMismatch} {clusterInfo.version}
+                    </td>
+                    <td style={style.clusterCell}>
+                        <div className='config-hash'>
+                            {configMismatch} {clusterInfo.config_hash}
+                        </div>
+                    </td>
                     <td style={style.clusterCell}>{clusterInfo.ipaddress}</td>
                 </tr>
             );
         });
 
         return (
-            <div
-                className='cluster-panel__table'
-                style={style.clusterTable}
-            >
+            <div className='cluster-panel__table' style={style.clusterTable}>
                 <div className='text-right'>
                     <button
                         type='submit'
                         className='btn btn-link'
                         onClick={this.props.reload}
                     >
-                        <ReloadIcon/>
+                        <ReloadIcon />
                         <FormattedMessage
                             id='admin.cluster.status_table.reload'
                             defaultMessage=' Reload Cluster Status'
@@ -164,9 +176,7 @@ export default class ClusterTable extends React.Component {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {items}
-                    </tbody>
+                    <tbody>{items}</tbody>
                 </table>
             </div>
         );

@@ -23,24 +23,35 @@ export default class EmojiPage extends React.Component {
         actions: PropTypes.shape({
             loadRolesIfNeeded: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         teamName: '',
         teamDisplayName: '',
         siteName: '',
-    }
+    };
 
     componentDidMount() {
         this.updateTitle();
-        this.props.actions.loadRolesIfNeeded(['system_admin', 'team_admin', 'system_user', 'team_user']);
+        this.props.actions.loadRolesIfNeeded([
+            'system_admin',
+            'team_admin',
+            'system_user',
+            'team_user',
+        ]);
     }
 
     updateTitle = (props = this.props) => {
-        document.title = Utils.localizeMessage('custom_emoji.header', 'Custom Emoji') + ' - ' + props.teamDisplayName + ' ' + props.siteName;
-    }
+        document.title =
+            Utils.localizeMessage('custom_emoji.header', 'Custom Emoji') +
+            ' - ' +
+            props.teamDisplayName +
+            ' ' +
+            props.siteName;
+    };
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.siteName !== nextProps.siteName) {
             this.updateTitle(nextProps);
         }
@@ -56,15 +67,14 @@ export default class EmojiPage extends React.Component {
                             defaultMessage='Custom Emoji'
                         />
                     </h1>
-                    <AnyTeamPermissionGate permissions={[Permissions.CREATE_EMOJIS]}>
+                    <AnyTeamPermissionGate
+                        permissions={[Permissions.CREATE_EMOJIS]}
+                    >
                         <Link
                             className='add-link'
                             to={'/' + this.props.teamName + '/emoji/add'}
                         >
-                            <button
-                                type='button'
-                                className='btn btn-primary'
-                            >
+                            <button type='button' className='btn btn-primary'>
                                 <FormattedMessage
                                     id='emoji_list.add'
                                     defaultMessage='Add Custom Emoji'
@@ -73,7 +83,7 @@ export default class EmojiPage extends React.Component {
                         </Link>
                     </AnyTeamPermissionGate>
                 </div>
-                <EmojiList scrollToTop={this.props.scrollToTop}/>
+                <EmojiList scrollToTop={this.props.scrollToTop} />
             </div>
         );
     }

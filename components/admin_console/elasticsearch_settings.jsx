@@ -4,7 +4,10 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import {elasticsearchPurgeIndexes, elasticsearchTest} from 'actions/admin_actions.jsx';
+import {
+    elasticsearchPurgeIndexes,
+    elasticsearchTest,
+} from 'actions/admin_actions.jsx';
 import {JobStatuses, JobTypes} from 'utils/constants.jsx';
 import * as Utils from 'utils/utils.jsx';
 import {t} from 'utils/i18n';
@@ -71,7 +74,12 @@ export default class ElasticsearchSettings extends AdminSettings {
             }
         }
 
-        if (id === 'connectionUrl' || id === 'username' || id === 'password' || id === 'sniff') {
+        if (
+            id === 'connectionUrl' ||
+            id === 'username' ||
+            id === 'password' ||
+            id === 'sniff'
+        ) {
             this.setState({
                 configTested: false,
                 canSave: false,
@@ -108,6 +116,7 @@ export default class ElasticsearchSettings extends AdminSettings {
                     configTested: true,
                     canSave: true,
                 });
+
                 success();
                 this.doSubmit();
             },
@@ -116,8 +125,9 @@ export default class ElasticsearchSettings extends AdminSettings {
                     configTested: false,
                     canSave: false,
                 });
+
                 error(err);
-            }
+            },
         );
     }
 
@@ -158,11 +168,11 @@ export default class ElasticsearchSettings extends AdminSettings {
                     helpText={
                         <FormattedMessage
                             id='admin.elasticsearch.enableIndexingDescription'
-                            defaultMessage='When true, indexing of new posts occurs automatically. Search queries will use database search until "Enable Elasticsearch for search queries" is enabled. {documentationLink}'
+                            defaultMessage="When true, indexing of new posts occurs automatically. Search queries will use database search until 'Enable Elasticsearch for search queries' is enabled. {documentationLink}"
                             values={{
                                 documentationLink: (
                                     <a
-                                        href='https://about.mattermost.com/default-elasticsearch-documentation/'
+                                        href='https://about.securCom.me/default-elasticsearch-documentation/'
                                         rel='noopener noreferrer'
                                         target='_blank'
                                     >
@@ -177,8 +187,11 @@ export default class ElasticsearchSettings extends AdminSettings {
                     }
                     value={this.state.enableIndexing}
                     onChange={this.handleSettingChanged}
-                    setByEnv={this.isSetByEnv('ElasticsearchSettings.EnableIndexing')}
+                    setByEnv={this.isSetByEnv(
+                        'ElasticsearchSettings.EnableIndexing',
+                    )}
                 />
+
                 <TextSetting
                     id='connectionUrl'
                     label={
@@ -187,7 +200,10 @@ export default class ElasticsearchSettings extends AdminSettings {
                             defaultMessage='Server Connection Address:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.elasticsearch.connectionUrlExample', 'E.g.: "https://elasticsearch.example.org:9200"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.elasticsearch.connectionUrlExample',
+                        "E.g.: 'https://elasticsearch.example.org:9200'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.elasticsearch.connectionUrlDescription'
@@ -195,7 +211,7 @@ export default class ElasticsearchSettings extends AdminSettings {
                             values={{
                                 documentationLink: (
                                     <a
-                                        href='https://about.mattermost.com/default-elasticsearch-server-setup/'
+                                        href='https://about.securCom.me/default-elasticsearch-server-setup/'
                                         rel='noopener noreferrer'
                                         target='_blank'
                                     >
@@ -211,8 +227,11 @@ export default class ElasticsearchSettings extends AdminSettings {
                     value={this.state.connectionUrl}
                     disabled={!this.state.enableIndexing}
                     onChange={this.handleSettingChanged}
-                    setByEnv={this.isSetByEnv('ElasticsearchSettings.ConnectionUrl')}
+                    setByEnv={this.isSetByEnv(
+                        'ElasticsearchSettings.ConnectionUrl',
+                    )}
                 />
+
                 <TextSetting
                     id='username'
                     label={
@@ -221,7 +240,10 @@ export default class ElasticsearchSettings extends AdminSettings {
                             defaultMessage='Server Username:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.elasticsearch.usernameExample', 'E.g.: "elastic"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.elasticsearch.usernameExample',
+                        "E.g.: 'elastic'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.elasticsearch.usernameDescription'
@@ -233,6 +255,7 @@ export default class ElasticsearchSettings extends AdminSettings {
                     onChange={this.handleSettingChanged}
                     setByEnv={this.isSetByEnv('ElasticsearchSettings.Username')}
                 />
+
                 <TextSetting
                     id='password'
                     label={
@@ -241,7 +264,10 @@ export default class ElasticsearchSettings extends AdminSettings {
                             defaultMessage='Server Password:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.elasticsearch.password', 'E.g.: "yourpassword"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.elasticsearch.password',
+                        "E.g.: 'yourpassword'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.elasticsearch.passwordDescription'
@@ -253,6 +279,7 @@ export default class ElasticsearchSettings extends AdminSettings {
                     onChange={this.handleSettingChanged}
                     setByEnv={this.isSetByEnv('ElasticsearchSettings.Password')}
                 />
+
                 <BooleanSetting
                     id='sniff'
                     label={
@@ -272,12 +299,13 @@ export default class ElasticsearchSettings extends AdminSettings {
                     onChange={this.handleSettingChanged}
                     setByEnv={this.isSetByEnv('ElasticsearchSettings.Sniff')}
                 />
+
                 <RequestButton
                     requestAction={this.doTestConfig}
                     helpText={
                         <FormattedMessage
                             id='admin.elasticsearch.testHelpText'
-                            defaultMessage='Tests if the Mattermost server can connect to the Elasticsearch server specified. Testing the connection only saves the configuration if the test is successful. See log file for more detailed error messages.'
+                            defaultMessage='Tests if the SCC server can connect to the Elasticsearch server specified. Testing the connection only saves the configuration if the test is successful. See log file for more detailed error messages.'
                         />
                     }
                     buttonText={
@@ -292,10 +320,9 @@ export default class ElasticsearchSettings extends AdminSettings {
                     }}
                     disabled={!this.state.enableIndexing}
                 />
+
                 <div className='form-group'>
-                    <label
-                        className='control-label col-sm-4'
-                    >
+                    <label className='control-label col-sm-4'>
                         <FormattedMessage
                             id='admin.elasticsearch.bulkIndexingTitle'
                             defaultMessage='Bulk Indexing:'
@@ -346,13 +373,14 @@ export default class ElasticsearchSettings extends AdminSettings {
                         defaultMessage: 'Failed to purge indexes: {error}',
                     }}
                     disabled={!this.state.canPurgeAndIndex}
-                    label={(
+                    label={
                         <FormattedMessage
                             id='admin.elasticsearch.purgeIndexesButton.label'
                             defaultMessage='Purge Indexes:'
                         />
-                    )}
+                    }
                 />
+
                 <BooleanSetting
                     id='enableSearching'
                     label={
@@ -368,10 +396,15 @@ export default class ElasticsearchSettings extends AdminSettings {
                         />
                     }
                     value={this.state.enableSearching}
-                    disabled={!this.state.enableIndexing || !this.state.configTested}
+                    disabled={
+                        !this.state.enableIndexing || !this.state.configTested
+                    }
                     onChange={this.handleSettingChanged}
-                    setByEnv={this.isSetByEnv('ElasticsearchSettings.EnableSearching')}
+                    setByEnv={this.isSetByEnv(
+                        'ElasticsearchSettings.EnableSearching',
+                    )}
                 />
+
                 <BooleanSetting
                     id='enableAutocomplete'
                     label={
@@ -387,9 +420,13 @@ export default class ElasticsearchSettings extends AdminSettings {
                         />
                     }
                     value={this.state.enableAutocomplete}
-                    disabled={!this.state.enableIndexing || !this.state.configTested}
+                    disabled={
+                        !this.state.enableIndexing || !this.state.configTested
+                    }
                     onChange={this.handleSettingChanged}
-                    setByEnv={this.isSetByEnv('ElasticsearchSettings.EnableAutocomplete')}
+                    setByEnv={this.isSetByEnv(
+                        'ElasticsearchSettings.EnableAutocomplete',
+                    )}
                 />
             </SettingsGroup>
         );

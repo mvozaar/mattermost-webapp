@@ -18,13 +18,13 @@ describe('components/TeamMembersModal', () => {
                 onLoad={emptyFunction}
                 isAdmin={false}
                 show={true}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should call onHide on Modal\'s onExited', () => {
+    test("should call onHide on Modal's onExited", () => {
         function emptyFunction() {} //eslint-disable-line no-empty-function
         const onHide = jest.fn();
 
@@ -35,10 +35,14 @@ describe('components/TeamMembersModal', () => {
                 onLoad={emptyFunction}
                 isAdmin={false}
                 show={true}
-            />
+            />,
         );
 
-        wrapper.find(Modal).first().props().onExited();
+        wrapper
+            .find(Modal)
+            .first()
+            .props()
+            .onExited();
         expect(onHide).toHaveBeenCalledTimes(1);
     });
 });

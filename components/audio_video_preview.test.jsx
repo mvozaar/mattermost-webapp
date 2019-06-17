@@ -12,20 +12,19 @@ describe('component/AudioVideoPreview', () => {
             extension: 'mov',
             id: 'file_id',
         },
+
         fileUrl: '/api/v4/files/file_id',
     };
 
     test('should match snapshot without children', () => {
-        const wrapper = shallow(
-            <AudioVideoPreview {...requiredProps}/>
-        );
+        const wrapper = shallow(<AudioVideoPreview {...requiredProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, cannot play', () => {
-        const wrapper = shallow(
-            <AudioVideoPreview {...requiredProps}/>
-        );
+        const wrapper = shallow(<AudioVideoPreview {...requiredProps} />);
+
         wrapper.setState({canPlay: false});
         expect(wrapper).toMatchSnapshot();
     });

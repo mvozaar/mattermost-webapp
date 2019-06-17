@@ -10,7 +10,7 @@ describe('plugins/MobileChannelHeaderPlug', () => {
     const testPlug = {
         id: 'someid',
         pluginId: 'pluginid',
-        icon: <i className='fa fa-anchor'/>,
+        icon: <i className='fa fa-anchor' />,
         action: jest.fn,
         dropdownText: 'some dropdown text',
     };
@@ -23,8 +23,9 @@ describe('plugins/MobileChannelHeaderPlug', () => {
                 channelMember={{}}
                 theme={{}}
                 isDropdown={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         // Render nothing
@@ -39,8 +40,9 @@ describe('plugins/MobileChannelHeaderPlug', () => {
                 channelMember={{}}
                 theme={{}}
                 isDropdown={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         // Render a single list item containing a button
@@ -48,7 +50,10 @@ describe('plugins/MobileChannelHeaderPlug', () => {
         expect(wrapper.find('button')).toHaveLength(1);
 
         wrapper.instance().fireAction = jest.fn();
-        wrapper.find('button').first().simulate('click');
+        wrapper
+            .find('button')
+            .first()
+            .simulate('click');
         expect(wrapper.instance().fireAction).toHaveBeenCalledTimes(1);
         expect(wrapper.instance().fireAction).toBeCalledWith(testPlug);
     });
@@ -61,8 +66,9 @@ describe('plugins/MobileChannelHeaderPlug', () => {
                 channelMember={{}}
                 theme={{}}
                 isDropdown={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         // Render nothing
@@ -77,8 +83,9 @@ describe('plugins/MobileChannelHeaderPlug', () => {
                 channelMember={{}}
                 theme={{}}
                 isDropdown={true}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         // Render nothing
@@ -93,8 +100,9 @@ describe('plugins/MobileChannelHeaderPlug', () => {
                 channelMember={{}}
                 theme={{}}
                 isDropdown={true}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         // Render a single list item containing a button
@@ -110,8 +118,9 @@ describe('plugins/MobileChannelHeaderPlug', () => {
                 channelMember={{}}
                 theme={{}}
                 isDropdown={true}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         // Render a two list items containing anchors
@@ -121,7 +130,10 @@ describe('plugins/MobileChannelHeaderPlug', () => {
 
         wrapper.instance().fireAction = jest.fn();
 
-        wrapper.find('a').first().simulate('click');
+        wrapper
+            .find('a')
+            .first()
+            .simulate('click');
         expect(wrapper.instance().fireAction).toHaveBeenCalledTimes(1);
         expect(wrapper.instance().fireAction).toBeCalledWith(testPlug);
     });
@@ -132,7 +144,7 @@ describe('plugins/MobileChannelHeaderPlug', () => {
         const newTestPlug = {
             id: 'someid',
             pluginId: 'pluginid',
-            icon: <i className='fa fa-anchor'/>,
+            icon: <i className='fa fa-anchor' />,
             action: jest.fn(),
             dropdownText: 'some dropdown text',
         };
@@ -144,7 +156,7 @@ describe('plugins/MobileChannelHeaderPlug', () => {
                 channelMember={channelMember}
                 theme={{}}
                 isDropdown={true}
-            />
+            />,
         );
 
         wrapper.instance().fireAction(newTestPlug);

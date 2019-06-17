@@ -11,13 +11,13 @@ export default class LoadingWrapper extends React.Component {
         loading: PropTypes.bool.isRequired,
         text: PropTypes.node,
         children: PropTypes.node,
-    }
+    };
 
     static defaultProps = {
         loading: true,
         text: null,
         children: null,
-    }
+    };
 
     render() {
         const {text, loading, children} = this.props;
@@ -25,6 +25,6 @@ export default class LoadingWrapper extends React.Component {
             return children;
         }
 
-        return <LoadingSpinner text={text}/>;
+        return <LoadingSpinner text={text} />;
     }
 }

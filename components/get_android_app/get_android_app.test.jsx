@@ -14,32 +14,42 @@ describe('components/GetAndroidApp', () => {
     test('should match snapshot', () => {
         const wrapper = shallow(
             <GetAndroidApp
-                androidAppDownloadLink={'https://about.mattermost.com/mattermost-android-app'}
-            />
+                androidAppDownloadLink={
+                    'https://about.securCom.me/scc-android-app'
+                }
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should contain the download link', () => {
         const wrapper = shallow(
             <GetAndroidApp
-                androidAppDownloadLink={'https://about.mattermost.com/mattermost-android-app'}
-            />
+                androidAppDownloadLink={
+                    'https://about.securCom.me/scc-android-app'
+                }
+            />,
         );
 
         const link = wrapper.find('.get-android-app__app-store-link');
-        expect(link.prop('href')).toEqual('https://about.mattermost.com/mattermost-android-app');
+        expect(link.prop('href')).toEqual(
+            'https://about.securCom.me/scc-android-app',
+        );
     });
 
     test('should redirect if the user chooses to stay in the browser. Redirect url param is present', () => {
         const push = jest.fn();
         const wrapper = mountWithIntl(
             <GetAndroidApp
-                androidAppDownloadLink={'https://about.mattermost.com/mattermost-android-app'}
+                androidAppDownloadLink={
+                    'https://about.securCom.me/scc-android-app'
+                }
                 history={{push}}
                 location={{search: '?redirect_to=last_page'}}
-            />
+            />,
         );
+
         expect(push).not.toHaveBeenCalled();
 
         const link = wrapper.find('.get-android-app__continue');
@@ -51,11 +61,14 @@ describe('components/GetAndroidApp', () => {
         const push = jest.fn();
         const wrapper = mountWithIntl(
             <GetAndroidApp
-                androidAppDownloadLink={'https://about.mattermost.com/mattermost-android-app'}
+                androidAppDownloadLink={
+                    'https://about.securCom.me/scc-android-app'
+                }
                 history={{push}}
                 location={{search: ''}}
-            />
+            />,
         );
+
         expect(push).not.toHaveBeenCalled();
 
         const link = wrapper.find('.get-android-app__continue');

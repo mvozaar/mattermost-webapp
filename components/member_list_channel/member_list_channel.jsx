@@ -25,11 +25,13 @@ export default class MemberListChannel extends React.PureComponent {
             searchProfiles: PropTypes.func.isRequired,
             getChannelStats: PropTypes.func.isRequired,
             setModalSearchTerm: PropTypes.func.isRequired,
-            loadProfilesAndTeamMembersAndChannelMembers: PropTypes.func.isRequired,
+            loadProfilesAndTeamMembersAndChannelMembers:
+                PropTypes.func.isRequired,
             loadStatusesForProfilesList: PropTypes.func.isRequired,
-            loadTeamMembersAndChannelMembersForProfilesList: PropTypes.func.isRequired,
+            loadTeamMembersAndChannelMembersForProfilesList:
+                PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -42,17 +44,20 @@ export default class MemberListChannel extends React.PureComponent {
     }
 
     componentDidMount() {
-        const {
-            actions,
-            currentChannelId,
-            currentTeamId,
-        } = this.props;
+        const {actions, currentChannelId, currentTeamId} = this.props;
 
-        actions.loadProfilesAndTeamMembersAndChannelMembers(0, Constants.PROFILE_CHUNK_SIZE, currentTeamId, currentChannelId).then(({data}) => {
-            if (data) {
-                this.loadComplete();
-            }
-        });
+        actions
+            .loadProfilesAndTeamMembersAndChannelMembers(
+                0,
+                Constants.PROFILE_CHUNK_SIZE,
+                currentTeamId,
+                currentChannelId,
+            )
+            .then(({data}) => {
+                if (data) {
+                    this.loadComplete();
+                }
+            });
 
         actions.getChannelStats(currentChannelId);
     }
@@ -61,7 +66,8 @@ export default class MemberListChannel extends React.PureComponent {
         this.props.actions.setModalSearchTerm('');
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.searchTerm !== nextProps.searchTerm) {
             clearTimeout(this.searchTimeoutId);
             const searchTerm = nextProps.searchTerm;
@@ -72,25 +78,34 @@ export default class MemberListChannel extends React.PureComponent {
                 return;
             }
 
-            const searchTimeoutId = setTimeout(
-                async () => {
-                    const {data} = await this.props.actions.searchProfiles(searchTerm, {team_id: nextProps.currentTeamId, in_channel_id: nextProps.currentChannelId});
+            const searchTimeoutId = setTimeout(async () => {
+                const {data} = await this.props.actions.searchProfiles(
+                    searchTerm,
+                    {
+                        team_id: nextProps.currentTeamId,
+                        in_channel_id: nextProps.currentChannelId,
+                    },
+                );
 
-                    if (searchTimeoutId !== this.searchTimeoutId) {
-                        return;
-                    }
+                if (searchTimeoutId !== this.searchTimeoutId) {
+                    return;
+                }
 
-                    this.setState({loading: true});
+                this.setState({loading: true});
 
-                    nextProps.actions.loadStatusesForProfilesList(data);
-                    nextProps.actions.loadTeamMembersAndChannelMembersForProfilesList(data, nextProps.currentTeamId, nextProps.currentChannelId).then(({data: membersLoaded}) => {
+                nextProps.actions.loadStatusesForProfilesList(data);
+                nextProps.actions
+                    .loadTeamMembersAndChannelMembersForProfilesList(
+                        data,
+                        nextProps.currentTeamId,
+                        nextProps.currentChannelId,
+                    )
+                    .then(({data: membersLoaded}) => {
                         if (membersLoaded) {
                             this.loadComplete();
                         }
                     });
-                },
-                Constants.SEARCH_TIMEOUT_MILLISECONDS
-            );
+            }, Constants.SEARCH_TIMEOUT_MILLISECONDS);
 
             this.searchTimeoutId = searchTimeoutId;
         }
@@ -98,15 +113,18 @@ export default class MemberListChannel extends React.PureComponent {
 
     loadComplete = () => {
         this.setState({loading: false});
-    }
+    };
 
     nextPage = (page) => {
-        this.props.actions.loadProfilesAndTeamMembersAndChannelMembers(page + 1, USERS_PER_PAGE);
-    }
+        this.props.actions.loadProfilesAndTeamMembersAndChannelMembers(
+            page + 1,
+            USERS_PER_PAGE,
+        );
+    };
 
     handleSearch = (term) => {
         this.props.actions.setModalSearchTerm(term);
-    }
+    };
 
     render() {
         const channelIsArchived = this.props.channel.delete_at !== 0;

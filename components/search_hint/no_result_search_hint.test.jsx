@@ -12,15 +12,15 @@ describe('components/NoResultSearchHint', () => {
             <NoResultSearchHint
                 dataRetentionEnableMessageDeletion={true}
                 dataRetentionMessageRetentionDays={'30'}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, without data retention', () => {
-        const wrapper = shallow(
-            <NoResultSearchHint/>
-        );
+        const wrapper = shallow(<NoResultSearchHint />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

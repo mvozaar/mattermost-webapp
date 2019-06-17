@@ -15,7 +15,7 @@ export default class PostImage extends React.PureComponent {
         imageMetadata: PropTypes.object.isRequired,
         link: PropTypes.string.isRequired,
         post: PropTypes.object.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -29,14 +29,17 @@ export default class PostImage extends React.PureComponent {
         e.preventDefault();
 
         this.setState({showModal: true});
-    }
+    };
 
     hideModal = () => {
         this.setState({showModal: false});
-    }
+    };
 
     render() {
-        const link = PostUtils.getImageSrc(this.props.link, this.props.hasImageProxy);
+        const link = PostUtils.getImageSrc(
+            this.props.link,
+            this.props.hasImageProxy,
+        );
 
         return (
             <div className='post__embed-container'>
@@ -47,16 +50,19 @@ export default class PostImage extends React.PureComponent {
                     showLoader={true}
                     onClick={this.showModal}
                 />
+
                 <ViewImageModal
                     show={this.state.showModal}
                     onModalDismissed={this.hideModal}
                     post={this.props.post}
                     startIndex={0}
-                    fileInfos={[{
-                        has_preview_image: false,
-                        link,
-                        extension: this.props.imageMetadata.format,
-                    }]}
+                    fileInfos={[
+                        {
+                            has_preview_image: false,
+                            link,
+                            extension: this.props.imageMetadata.format,
+                        },
+                    ]}
                 />
             </div>
         );

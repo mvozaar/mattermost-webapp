@@ -17,18 +17,19 @@ describe('/components/create_team/components/display_name', () => {
             team: {name: 'test-team', display_name: 'test-team'},
             wizard: 'display_name',
         },
+
         actions: {
             trackEvent: jest.fn(),
         },
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<DisplayName {...defaultProps}/>);
+        const wrapper = shallow(<DisplayName {...defaultProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should run updateParent function', () => {
-        const wrapper = mountWithIntl(<DisplayName {...defaultProps}/>);
+        const wrapper = mountWithIntl(<DisplayName {...defaultProps} />);
 
         wrapper.find('button').simulate('click', {
             preventDefault: () => jest.fn(),
@@ -38,7 +39,7 @@ describe('/components/create_team/components/display_name', () => {
     });
 
     test('should display isRequired error', () => {
-        const wrapper = mountWithIntl(<DisplayName {...defaultProps}/>);
+        const wrapper = mountWithIntl(<DisplayName {...defaultProps} />);
         wrapper.find('.form-control').instance().value = '';
         wrapper.find('button').simulate('click', {
             preventDefault: () => jest.fn(),
@@ -48,14 +49,15 @@ describe('/components/create_team/components/display_name', () => {
             <FormattedMessage
                 id='create_team.display_name.required'
                 defaultMessage='This field is required'
-            />
+            />,
         );
     });
 
     test('should display charLength error', () => {
-        const wrapper = mountWithIntl(<DisplayName {...defaultProps}/>);
+        const wrapper = mountWithIntl(<DisplayName {...defaultProps} />);
         const input = wrapper.find('.form-control').instance();
-        input.value = 'should_trigger_an_error_because_it_exceeds_MAX_TEAMNAME_LENGTH';
+        input.value =
+            'should_trigger_an_error_because_it_exceeds_MAX_TEAMNAME_LENGTH';
 
         wrapper.find('button').simulate('click', {
             preventDefault: () => jest.fn(),
@@ -69,7 +71,7 @@ describe('/components/create_team/components/display_name', () => {
                     min: Constants.MIN_TEAMNAME_LENGTH,
                     max: Constants.MAX_TEAMNAME_LENGTH,
                 }}
-            />
+            />,
         );
     });
 });

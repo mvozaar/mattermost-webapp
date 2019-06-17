@@ -15,15 +15,15 @@ export default class SidebarChannelButtonOrLinkCloseButton extends React.PureCom
         channelType: PropTypes.string.isRequired,
         teammateId: PropTypes.string,
         badge: PropTypes.bool,
-    }
+    };
 
-    overlayTriggerAttr = ['hover', 'focus']
+    overlayTriggerAttr = ['hover', 'focus'];
 
     handleClose = (e) => {
         e.stopPropagation();
         e.preventDefault();
         this.props.handleClose();
-    }
+    };
 
     render() {
         let closeButton = null;
@@ -38,7 +38,10 @@ export default class SidebarChannelButtonOrLinkCloseButton extends React.PureCom
                 </Tooltip>
             );
 
-            if (this.props.channelType === Constants.OPEN_CHANNEL || this.props.channelType === Constants.PRIVATE_CHANNEL) {
+            if (
+                this.props.channelType === Constants.OPEN_CHANNEL ||
+                this.props.channelType === Constants.PRIVATE_CHANNEL
+            ) {
                 removeTooltip = (
                     <Tooltip id='remove-dm-tooltip'>
                         <FormattedMessage
@@ -56,10 +59,7 @@ export default class SidebarChannelButtonOrLinkCloseButton extends React.PureCom
                     placement='top'
                     overlay={removeTooltip}
                 >
-                    <span
-                        onClick={this.handleClose}
-                        className='btn-close'
-                    >
+                    <span onClick={this.handleClose} className='btn-close'>
                         {'×'}
                     </span>
                 </OverlayTrigger>

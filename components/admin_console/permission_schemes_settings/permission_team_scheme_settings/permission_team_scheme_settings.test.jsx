@@ -15,46 +15,60 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
             system_user: {
                 permissions: [],
             },
+
             team_user: {
                 permissions: [],
             },
+
             channel_user: {
                 permissions: [],
             },
+
             system_admin: {
                 permissions: [],
             },
+
             team_admin: {
                 permissions: [],
             },
+
             channel_admin: {
                 permissions: [],
             },
+
             aaa: {
                 permissions: [],
             },
+
             bbb: {
                 permissions: [],
             },
+
             ccc: {
                 permissions: [],
             },
+
             ddd: {
                 permissions: [],
             },
+
             eee: {
                 permissions: [],
             },
+
             fff: {
                 permissions: [],
             },
         },
-        teams: [
-        ],
+
+        teams: [],
+
         actions: {
             loadRolesIfNeeded: jest.fn().mockReturnValue(Promise.resolve()),
             loadRole: jest.fn(),
-            loadScheme: jest.fn().mockReturnValue(Promise.resolve({data: true})),
+            loadScheme: jest
+                .fn()
+                .mockReturnValue(Promise.resolve({data: true})),
             loadSchemeTeams: jest.fn(),
             editRole: jest.fn(),
             patchScheme: jest.fn(),
@@ -62,6 +76,7 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
             updateTeamScheme: jest.fn(),
             setNavigationBlocked: jest.fn(),
         },
+
         history: {
             push: jest.fn(),
         },
@@ -69,8 +84,9 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
 
     test('should match snapshot on new with default roles without permissions', (done) => {
         const wrapper = shallow(
-            <PermissionTeamSchemeSettings {...defaultProps}/>
+            <PermissionTeamSchemeSettings {...defaultProps} />,
         );
+
         defaultProps.actions.loadRolesIfNeeded().then(() => {
             expect(wrapper.instance().getStateRoles()).toMatchSnapshot();
             done();
@@ -82,27 +98,30 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
             system_user: {
                 permissions: ['create_post'],
             },
+
             team_user: {
                 permissions: ['invite_user'],
             },
+
             channel_user: {
                 permissions: ['add_reaction'],
             },
+
             system_admin: {
                 permissions: ['manage_system'],
             },
+
             team_admin: {
                 permissions: ['add_user_to_team'],
             },
+
             channel_admin: {
                 permissions: ['delete_post'],
             },
         };
+
         const wrapper = shallow(
-            <PermissionTeamSchemeSettings
-                {...defaultProps}
-                roles={roles}
-            />
+            <PermissionTeamSchemeSettings {...defaultProps} roles={roles} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -113,22 +132,34 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
     });
 
     test('should save each role on handleSubmit except system_admin role', async () => {
-        const editRole = jest.fn().mockImplementation(() => Promise.resolve({data: {}}));
-        const createScheme = jest.fn().mockImplementation(() => Promise.resolve({
-            data: {
-                id: '123',
-                default_team_user_role: 'aaa',
-                default_team_admin_role: 'bbb',
-                default_channel_user_role: 'ccc',
-                default_channel_admin_role: 'ddd',
-            },
-        }));
-        const updateTeamScheme = jest.fn().mockImplementation(() => Promise.resolve({}));
+        const editRole = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve({data: {}}));
+        const createScheme = jest.fn().mockImplementation(() =>
+            Promise.resolve({
+                data: {
+                    id: '123',
+                    default_team_user_role: 'aaa',
+                    default_team_admin_role: 'bbb',
+                    default_channel_user_role: 'ccc',
+                    default_channel_admin_role: 'ddd',
+                },
+            }),
+        );
+
+        const updateTeamScheme = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve({}));
         const wrapper = shallow(
             <PermissionTeamSchemeSettings
                 {...defaultProps}
-                actions={{...defaultProps.actions, editRole, createScheme, updateTeamScheme}}
-            />
+                actions={{
+                    ...defaultProps.actions,
+                    editRole,
+                    createScheme,
+                    updateTeamScheme,
+                }}
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -137,14 +168,28 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
     });
 
     test('should show error if createScheme fails', async () => {
-        const editRole = jest.fn().mockImplementation(() => Promise.resolve({}));
-        const createScheme = jest.fn().mockImplementation(() => Promise.resolve({error: {message: 'test error'}}));
-        const updateTeamScheme = jest.fn().mockImplementation(() => Promise.resolve({}));
+        const editRole = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve({}));
+        const createScheme = jest
+            .fn()
+            .mockImplementation(() =>
+                Promise.resolve({error: {message: 'test error'}}),
+            );
+
+        const updateTeamScheme = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve({}));
         const wrapper = shallow(
             <PermissionTeamSchemeSettings
                 {...defaultProps}
-                actions={{...defaultProps.actions, editRole, createScheme, updateTeamScheme}}
-            />
+                actions={{
+                    ...defaultProps.actions,
+                    editRole,
+                    createScheme,
+                    updateTeamScheme,
+                }}
+            />,
         );
 
         await wrapper.instance().handleSubmit();
@@ -152,22 +197,37 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
     });
 
     test('should show error if editRole fails', async () => {
-        const editRole = jest.fn().mockImplementation(() => Promise.resolve({error: {message: 'test error'}}));
-        const createScheme = jest.fn().mockImplementation(() => Promise.resolve({
-            data: {
-                id: '123',
-                default_team_user_role: 'aaa',
-                default_team_admin_role: 'bbb',
-                default_channel_user_role: 'ccc',
-                default_channel_admin_role: 'ddd',
-            },
-        }));
-        const updateTeamScheme = jest.fn().mockImplementation(() => Promise.resolve({}));
+        const editRole = jest
+            .fn()
+            .mockImplementation(() =>
+                Promise.resolve({error: {message: 'test error'}}),
+            );
+
+        const createScheme = jest.fn().mockImplementation(() =>
+            Promise.resolve({
+                data: {
+                    id: '123',
+                    default_team_user_role: 'aaa',
+                    default_team_admin_role: 'bbb',
+                    default_channel_user_role: 'ccc',
+                    default_channel_admin_role: 'ddd',
+                },
+            }),
+        );
+
+        const updateTeamScheme = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve({}));
         const wrapper = shallow(
             <PermissionTeamSchemeSettings
                 {...defaultProps}
-                actions={{...defaultProps.actions, editRole, createScheme, updateTeamScheme}}
-            />
+                actions={{
+                    ...defaultProps.actions,
+                    editRole,
+                    createScheme,
+                    updateTeamScheme,
+                }}
+            />,
         );
 
         await wrapper.instance().handleSubmit();
@@ -176,8 +236,9 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
 
     test('should open and close correctly roles blocks', () => {
         const wrapper = shallow(
-            <PermissionTeamSchemeSettings {...defaultProps}/>
+            <PermissionTeamSchemeSettings {...defaultProps} />,
         );
+
         const instance = wrapper.instance();
         expect(wrapper.state().openRoles.all_users).toBe(true);
         instance.toggleRole('all_users');
@@ -214,9 +275,8 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
             },
         };
 
-        const wrapper = shallow(
-            <PermissionTeamSchemeSettings {...props}/>
-        );
+        const wrapper = shallow(<PermissionTeamSchemeSettings {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         defaultProps.actions.loadRolesIfNeeded().then(() => {
             expect(wrapper.instance().getStateRoles()).toMatchSnapshot();
@@ -238,25 +298,28 @@ describe('components/admin_console/permission_schemes_settings/permission_team_s
                 default_channel_user_role: 'ccc',
                 default_channel_admin_role: 'ddd',
             },
+
             roles: {
                 aaa: {
                     permissions: ['invite_user'],
                 },
+
                 bbb: {
                     permissions: ['add_user_to_team'],
                 },
+
                 ccc: {
                     permissions: ['add_reaction'],
                 },
+
                 ddd: {
                     permissions: ['delete_post'],
                 },
             },
         };
 
-        const wrapper = shallow(
-            <PermissionTeamSchemeSettings {...props}/>
-        );
+        const wrapper = shallow(<PermissionTeamSchemeSettings {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         defaultProps.actions.loadRolesIfNeeded().then(() => {
             expect(wrapper.instance().getStateRoles()).toMatchSnapshot();

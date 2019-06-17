@@ -18,11 +18,13 @@ describe('components/post_view/PostFlagIcon', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<PostFlagIcon {...baseProps}/>);
+        const wrapper = shallow(<PostFlagIcon {...baseProps} />);
 
         // for unflagged icon
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find('button').hasClass('style--none flag-icon__container')).toBe(true);
+        expect(
+            wrapper.find('button').hasClass('style--none flag-icon__container'),
+        ).toBe(true);
         wrapper.find('button').simulate('click', {preventDefault: jest.fn});
         expect(baseProps.actions.flagPost).toHaveBeenCalledTimes(1);
         expect(baseProps.actions.flagPost).toBeCalledWith('post_id');
@@ -31,7 +33,11 @@ describe('components/post_view/PostFlagIcon', () => {
         // for flagged icon
         wrapper.setProps({isFlagged: true});
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find('button').hasClass('style--none flag-icon__container visible')).toBe(true);
+        expect(
+            wrapper
+                .find('button')
+                .hasClass('style--none flag-icon__container visible'),
+        ).toBe(true);
         wrapper.find('button').simulate('click', {preventDefault: jest.fn});
         expect(baseProps.actions.flagPost).toHaveBeenCalledTimes(1);
         expect(baseProps.actions.unflagPost).toHaveBeenCalledTimes(1);

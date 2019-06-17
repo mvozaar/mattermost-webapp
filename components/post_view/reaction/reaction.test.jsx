@@ -32,7 +32,7 @@ describe('components/post_view/Reaction', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<Reaction {...baseProps}/>);
+        const wrapper = shallow(<Reaction {...baseProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -45,25 +45,31 @@ describe('components/post_view/Reaction', () => {
             profiles: newProfiles,
             otherUsersCount: 1,
         };
-        const wrapper = shallow(<Reaction {...props}/>);
+
+        const wrapper = shallow(<Reaction {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should return null/empty if no emojiImageUrl', () => {
         const props = {...baseProps, emojiImageUrl: ''};
-        const wrapper = shallow(<Reaction {...props}/>);
+        const wrapper = shallow(<Reaction {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should disable add reaction when you do not have permissions', () => {
         const props = {...baseProps, canAddReaction: false};
-        const wrapper = shallow(<Reaction {...props}/>);
+        const wrapper = shallow(<Reaction {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should disable remove reaction when you do not have permissions', () => {
-        const props = {...baseProps, canRemoveReaction: false, currentUserId: 'user_id_2'};
-        const wrapper = shallow(<Reaction {...props}/>);
+        const props = {
+            ...baseProps,
+            canRemoveReaction: false,
+            currentUserId: 'user_id_2',
+        };
+
+        const wrapper = shallow(<Reaction {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -71,7 +77,7 @@ describe('components/post_view/Reaction', () => {
         const newActions = {...actions, addReaction: jest.fn()};
         const props = {...baseProps, actions: newActions};
 
-        const wrapper = shallow(<Reaction {...props}/>);
+        const wrapper = shallow(<Reaction {...props} />);
         wrapper.instance().handleAddReaction({preventDefault: jest.fn()});
 
         expect(newActions.addReaction).toHaveBeenCalledTimes(1);
@@ -82,21 +88,27 @@ describe('components/post_view/Reaction', () => {
         const newActions = {...actions, removeReaction: jest.fn()};
         const props = {...baseProps, actions: newActions};
 
-        const wrapper = shallow(<Reaction {...props}/>);
+        const wrapper = shallow(<Reaction {...props} />);
         wrapper.instance().handleRemoveReaction({preventDefault: jest.fn()});
 
         expect(newActions.removeReaction).toHaveBeenCalledTimes(1);
-        expect(newActions.removeReaction).toHaveBeenCalledWith(post.id, emojiName);
+        expect(newActions.removeReaction).toHaveBeenCalledWith(
+            post.id,
+            emojiName,
+        );
     });
 
     test('should have called actions.getMissingProfilesByIds when loadMissingProfiles is called', () => {
         const newActions = {...actions, getMissingProfilesByIds: jest.fn()};
         const props = {...baseProps, actions: newActions};
 
-        const wrapper = shallow(<Reaction {...props}/>);
+        const wrapper = shallow(<Reaction {...props} />);
         wrapper.instance().loadMissingProfiles();
 
         expect(newActions.getMissingProfilesByIds).toHaveBeenCalledTimes(1);
-        expect(newActions.getMissingProfilesByIds).toHaveBeenCalledWith([reactions[0].user_id, reactions[1].user_id]);
+        expect(newActions.getMissingProfilesByIds).toHaveBeenCalledWith([
+            reactions[0].user_id,
+            reactions[1].user_id,
+        ]);
     });
 });

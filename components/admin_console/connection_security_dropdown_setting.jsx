@@ -16,9 +16,28 @@ export function ConnectionSecurityDropdownSettingEmail(props) {
         <DropdownSetting
             id='connectionSecurity'
             values={[
-                {value: '', text: Utils.localizeMessage('admin.connectionSecurityNone', 'None')},
-                {value: 'TLS', text: Utils.localizeMessage('admin.connectionSecurityTls', 'TLS (Recommended)')},
-                {value: 'STARTTLS', text: Utils.localizeMessage('admin.connectionSecurityStart')},
+                {
+                    value: '',
+                    text: Utils.localizeMessage(
+                        'admin.connectionSecurityNone',
+                        'None',
+                    ),
+                },
+
+                {
+                    value: 'TLS',
+                    text: Utils.localizeMessage(
+                        'admin.connectionSecurityTls',
+                        'TLS (Recommended)',
+                    ),
+                },
+
+                {
+                    value: 'STARTTLS',
+                    text: Utils.localizeMessage(
+                        'admin.connectionSecurityStart',
+                    ),
+                },
             ]}
             label={
                 <FormattedMessage
@@ -34,8 +53,7 @@ export function ConnectionSecurityDropdownSettingEmail(props) {
         />
     );
 }
-ConnectionSecurityDropdownSettingEmail.defaultProps = {
-};
+ConnectionSecurityDropdownSettingEmail.defaultProps = {};
 
 ConnectionSecurityDropdownSettingEmail.propTypes = {
     value: PropTypes.string.isRequired,

@@ -12,12 +12,7 @@ export default class DropdownIcon extends React.PureComponent {
                 id='generic_icons.dropdown'
                 defaultMessage='Dropdown Icon'
             >
-                {(title) => (
-                    <i
-                        className='fa fa-angle-down'
-                        title={title}
-                    />
-                )}
+                {(title) => <i className='fa fa-angle-down' title={title} />}
             </FormattedMessage>
         );
     }

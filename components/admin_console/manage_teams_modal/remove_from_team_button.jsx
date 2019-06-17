@@ -14,14 +14,11 @@ export default class RemoveFromTeamButton extends React.PureComponent {
     handleClick = (e) => {
         e.preventDefault();
         this.props.handleRemoveUserFromTeam(this.props.teamId);
-    }
+    };
 
     render() {
         return (
-            <button
-                className='btn btn-danger'
-                onClick={this.handleClick}
-            >
+            <button className='btn btn-danger' onClick={this.handleClick}>
                 <FormattedMessage
                     id='team_members_dropdown.leave_team'
                     defaultMessage='Remove from Team'

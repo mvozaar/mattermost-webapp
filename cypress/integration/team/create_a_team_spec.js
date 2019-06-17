@@ -29,16 +29,24 @@ describe('Teams Suite', () => {
         cy.get('#sidebarDropdownMenu li #createTeam').click();
 
         // 4. Input team name as Team Test
-        cy.get('#teamNameInput').should('be.visible').type('Team Test');
+        cy.get('#teamNameInput')
+            .should('be.visible')
+            .type('Team Test');
 
         // 5. Click Next button
-        cy.get('#teamNameNextButton').should('be.visible').click();
+        cy.get('#teamNameNextButton')
+            .should('be.visible')
+            .click();
 
         // 6. Input team URL as variable teamURl
-        cy.get('#teamURLInput').should('be.visible').type(teamURL);
+        cy.get('#teamURLInput')
+            .should('be.visible')
+            .type(teamURL);
 
         // 7. Click finish button
-        cy.get('#teamURLFinishButton').should('be.visible').click();
+        cy.get('#teamURLFinishButton')
+            .should('be.visible')
+            .click();
 
         // * Should redirect ot Town Square channel
         cy.get('#channelHeaderTitle').should('contain', 'Town Square');

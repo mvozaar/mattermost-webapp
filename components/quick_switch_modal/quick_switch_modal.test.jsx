@@ -18,15 +18,14 @@ describe('components/QuickSwitchModal', () => {
                 const error = {
                     message: 'Failed',
                 };
+
                 return Promise.resolve({error});
             }),
         },
     };
 
     it('should match snapshot', () => {
-        const wrapper = shallow(
-            <QuickSwitchModal {...baseProps}/>
-        );
+        const wrapper = shallow(<QuickSwitchModal {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -35,9 +34,7 @@ describe('components/QuickSwitchModal', () => {
         it('should do nothing if nothing selected', () => {
             const props = {...baseProps};
 
-            const wrapper = shallow(
-                <QuickSwitchModal {...props}/>
-            );
+            const wrapper = shallow(<QuickSwitchModal {...props} />);
 
             wrapper.instance().handleSubmit();
             expect(baseProps.onHide).not.toBeCalled();
@@ -45,11 +42,14 @@ describe('components/QuickSwitchModal', () => {
         });
 
         it('should fail to switch to a channel', (done) => {
-            const wrapper = shallow(
-                <QuickSwitchModal {...baseProps}/>
-            );
+            const wrapper = shallow(<QuickSwitchModal {...baseProps} />);
 
-            const channel = {id: 'channel_id', userId: 'user_id', type: Constants.DM_CHANNEL};
+            const channel = {
+                id: 'channel_id',
+                userId: 'user_id',
+                type: Constants.DM_CHANNEL,
+            };
+
             wrapper.instance().handleSubmit({channel});
             expect(baseProps.actions.switchToChannel).toBeCalledWith(channel);
             process.nextTick(() => {
@@ -70,11 +70,14 @@ describe('components/QuickSwitchModal', () => {
                 },
             };
 
-            const wrapper = shallow(
-                <QuickSwitchModal {...props}/>
-            );
+            const wrapper = shallow(<QuickSwitchModal {...props} />);
 
-            const channel = {id: 'channel_id', userId: 'user_id', type: Constants.DM_CHANNEL};
+            const channel = {
+                id: 'channel_id',
+                userId: 'user_id',
+                type: Constants.DM_CHANNEL,
+            };
+
             wrapper.instance().handleSubmit({channel});
             expect(props.actions.switchToChannel).toBeCalledWith(channel);
             process.nextTick(() => {
@@ -95,15 +98,19 @@ describe('components/QuickSwitchModal', () => {
                 },
             };
 
-            const wrapper = shallow(
-                <QuickSwitchModal {...props}/>
-            );
+            const wrapper = shallow(<QuickSwitchModal {...props} />);
 
-            const channel = {id: 'channel_id', name: 'test', type: Constants.OPEN_CHANNEL};
+            const channel = {
+                id: 'channel_id',
+                name: 'test',
+                type: Constants.OPEN_CHANNEL,
+            };
+
             const selected = {
                 type: Constants.MENTION_MORE_CHANNELS,
                 channel,
             };
+
             wrapper.instance().handleSubmit(selected);
             expect(props.actions.joinChannelById).toBeCalledWith(channel.id);
             process.nextTick(() => {
@@ -124,15 +131,19 @@ describe('components/QuickSwitchModal', () => {
                 },
             };
 
-            const wrapper = shallow(
-                <QuickSwitchModal {...props}/>
-            );
+            const wrapper = shallow(<QuickSwitchModal {...props} />);
 
-            const channel = {id: 'channel_id', name: 'test', type: Constants.DM_CHANNEL};
+            const channel = {
+                id: 'channel_id',
+                name: 'test',
+                type: Constants.DM_CHANNEL,
+            };
+
             const selected = {
                 type: Constants.MENTION_MORE_CHANNELS,
                 channel,
             };
+
             wrapper.instance().handleSubmit(selected);
             expect(props.actions.joinChannelById).not.toHaveBeenCalled();
             expect(props.actions.switchToChannel).toBeCalledWith(channel);

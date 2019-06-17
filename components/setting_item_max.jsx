@@ -18,7 +18,6 @@ export default class SettingItemMax extends React.PureComponent {
     };
 
     static propTypes = {
-
         /**
          * Array of inputs selection
          */
@@ -32,10 +31,7 @@ export default class SettingItemMax extends React.PureComponent {
         /**
          * Client error
          */
-        clientError: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.object,
-        ]),
+        clientError: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
         /**
          * Server error
@@ -106,7 +102,7 @@ export default class SettingItemMax extends React.PureComponent {
          * Text of save button
          */
         saveButtonText: PropTypes.string,
-    }
+    };
 
     componentDidMount() {
         document.addEventListener('keydown', this.onKeyDown);
@@ -117,13 +113,17 @@ export default class SettingItemMax extends React.PureComponent {
     }
 
     onKeyDown = (e) => {
-        if (this.props.shiftEnter && e.keyCode === Constants.KeyCodes.ENTER && e.shiftKey) {
+        if (
+            this.props.shiftEnter &&
+            e.keyCode === Constants.KeyCodes.ENTER &&
+            e.shiftKey
+        ) {
             return;
         }
         if (isKeyPressed(e, Constants.KeyCodes.ENTER) && this.props.submit) {
             this.handleSubmit(e);
         }
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -133,22 +133,19 @@ export default class SettingItemMax extends React.PureComponent {
         } else {
             this.props.submit();
         }
-    }
+    };
 
     handleUpdateSection = (e) => {
         this.props.updateSection(this.props.section);
         e.preventDefault();
-    }
+    };
 
     render() {
         let clientError = null;
         if (this.props.clientError) {
             clientError = (
                 <div className='form-group'>
-                    <label
-                        id='clientError'
-                        className='col-sm-12 has-error'
-                    >
+                    <label id='clientError' className='col-sm-12 has-error'>
                         {this.props.clientError}
                     </label>
                 </div>
@@ -159,10 +156,7 @@ export default class SettingItemMax extends React.PureComponent {
         if (this.props.serverError) {
             serverError = (
                 <div className='form-group'>
-                    <label
-                        id='serverError'
-                        className='col-sm-12 has-error'
-                    >
+                    <label id='serverError' className='col-sm-12 has-error'>
                         {this.props.serverError}
                     </label>
                 </div>
@@ -176,7 +170,7 @@ export default class SettingItemMax extends React.PureComponent {
         }
 
         if (this.props.extraInfo) {
-            extraInfo = (<div className={hintClass}>{this.props.extraInfo}</div>);
+            extraInfo = <div className={hintClass}>{this.props.extraInfo}</div>;
         }
 
         let submit = '';
@@ -204,10 +198,7 @@ export default class SettingItemMax extends React.PureComponent {
         let title;
         if (this.props.title) {
             title = (
-                <li
-                    id='settingTitle'
-                    className='col-sm-12 section-title'
-                >
+                <li id='settingTitle' className='col-sm-12 section-title'>
                     {this.props.title}
                 </li>
             );
@@ -250,7 +241,7 @@ export default class SettingItemMax extends React.PureComponent {
                     <ul className='setting-list'>
                         {listContent}
                         <li className='setting-list-item'>
-                            <hr/>
+                            <hr />
                             {this.props.submitExtra}
                             {serverError}
                             {clientError}

@@ -3,7 +3,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FormattedMessage, FormattedHTMLMessage, injectIntl, intlShape} from 'react-intl';
+import {
+    FormattedMessage,
+    FormattedHTMLMessage,
+    injectIntl,
+    intlShape,
+} from 'react-intl';
 import {Overlay, Tooltip} from 'react-bootstrap';
 
 import {generateId} from 'utils/utils.jsx';
@@ -30,23 +35,28 @@ export class PermissionDescription extends React.Component {
 
     closeTooltip = () => {
         this.setState({open: false});
-    }
+    };
 
     openTooltip = (e) => {
         const elm = e.currentTarget.querySelector('span');
         const isElipsis = elm.offsetWidth < elm.scrollWidth;
         this.setState({open: isElipsis});
-    }
+    };
 
     parentPermissionClicked = (e) => {
-        const isInheritLink = e.target.parentElement.parentElement.className === 'inherit-link-wrapper';
-        if (e.target.parentElement.className !== 'permission-description' && !isInheritLink) {
+        const isInheritLink =
+            e.target.parentElement.parentElement.className ===
+            'inherit-link-wrapper';
+        if (
+            e.target.parentElement.className !== 'permission-description' &&
+            !isInheritLink
+        ) {
             e.stopPropagation();
         } else if (isInheritLink) {
             this.props.selectRow(this.props.id);
             e.stopPropagation();
         }
-    }
+    };
 
     render() {
         const {inherited, id, rowType} = this.props;
@@ -59,7 +69,10 @@ export class PermissionDescription extends React.Component {
                         id='admin.permissions.inherited_from'
                         values={{
                             name: this.props.intl.formatMessage({
-                                id: 'admin.permissions.roles.' + inherited.name + '.name',
+                                id:
+                                    'admin.permissions.roles.' +
+                                    inherited.name +
+                                    '.name',
                                 defaultMessage: inherited.display_name,
                             }),
                         }}
@@ -69,7 +82,13 @@ export class PermissionDescription extends React.Component {
         } else {
             content = (
                 <FormattedMessage
-                    id={'admin.permissions.' + rowType + '.' + id + '.description'}
+                    id={
+                        'admin.permissions.' +
+                        rowType +
+                        '.' +
+                        id +
+                        '.description'
+                    }
                     values={this.props.additionalValues}
                 />
             );
@@ -81,12 +100,14 @@ export class PermissionDescription extends React.Component {
                 placement='top'
                 target={this.refs.content}
             >
-                <Tooltip id={this.id}>
-                    {content}
-                </Tooltip>
+                <Tooltip id={this.id}>{content}</Tooltip>
             </Overlay>
         );
-        if (content.props.values && Object.keys(content.props.values).length > 0) {
+
+        if (
+            content.props.values &&
+            Object.keys(content.props.values).length > 0
+        ) {
             tooltip = null;
         }
         content = (

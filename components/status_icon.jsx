@@ -54,6 +54,6 @@ export default class StatusIcon extends React.PureComponent {
             IconComponent = StatusOfflineIcon;
         }
 
-        return <IconComponent className={className}/>;
+        return <IconComponent className={className} />;
     }
 }

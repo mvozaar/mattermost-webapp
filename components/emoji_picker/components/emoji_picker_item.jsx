@@ -33,26 +33,39 @@ export default class EmojiPickerItem extends React.Component {
         this.emojiItem = emojiItem;
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (!this.props.isSelected && nextProps.isSelected) {
             const topOfTheEmojiItem = this.emojiItem.offsetTop;
-            const bottomOfTheEmojiItem = topOfTheEmojiItem + this.emojiItem.offsetHeight;
+            const bottomOfTheEmojiItem =
+                topOfTheEmojiItem + this.emojiItem.offsetHeight;
             const {containerRef, containerTop, containerBottom} = nextProps;
             if (topOfTheEmojiItem < containerTop) {
-                containerRef.scrollTop = topOfTheEmojiItem - SCROLLING_ADDITIONAL_VISUAL_SPACING;
+                containerRef.scrollTop =
+                    topOfTheEmojiItem - SCROLLING_ADDITIONAL_VISUAL_SPACING;
             } else if (bottomOfTheEmojiItem > containerBottom) {
-                containerRef.scrollTop = (bottomOfTheEmojiItem - containerRef.offsetHeight) + SCROLLING_ADDITIONAL_VISUAL_SPACING;
+                containerRef.scrollTop =
+                    bottomOfTheEmojiItem -
+                    containerRef.offsetHeight +
+                    SCROLLING_ADDITIONAL_VISUAL_SPACING;
             }
         }
     }
 
     handleMouseOver = () => {
         if (!this.props.isSelected) {
-            this.props.onItemOver(this.props.categoryIndex, this.props.emojiIndex);
+            this.props.onItemOver(
+                this.props.categoryIndex,
+                this.props.emojiIndex,
+            );
         }
     };
 
-    handleMouseOverThrottle = debounce(this.handleMouseOver, EMOJI_LAZY_LOAD_SCROLL_THROTTLE, {leading: true, trailing: true});
+    handleMouseOverThrottle = debounce(
+        this.handleMouseOver,
+        EMOJI_LAZY_LOAD_SCROLL_THROTTLE,
+        {leading: true, trailing: true},
+    );
 
     handleClick = () => {
         this.props.onItemClick(this.props.emoji);
@@ -67,7 +80,8 @@ export default class EmojiPickerItem extends React.Component {
         }
 
         let spriteClassName = 'emojisprite';
-        spriteClassName += ' emoji-category-' + emoji.category + '-' + emoji.batch;
+        spriteClassName +=
+            ' emoji-category-' + emoji.category + '-' + emoji.batch;
         spriteClassName += ' emoji-' + emoji.filename;
 
         let image;
@@ -95,13 +109,8 @@ export default class EmojiPickerItem extends React.Component {
         }
 
         return (
-            <div
-                className={itemClassName}
-                ref={this.emojiItemRef}
-            >
-                <div>
-                    {image}
-                </div>
+            <div className={itemClassName} ref={this.emojiItemRef}>
+                <div>{image}</div>
             </div>
         );
     }

@@ -19,7 +19,6 @@ import {t} from 'utils/i18n.jsx';
 
 export default class NewChannelModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * Set whether to show the modal or not
          */
@@ -89,7 +88,7 @@ export default class NewChannelModal extends React.PureComponent {
          * Permission to create private channel
          */
         canCreatePrivateChannel: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -99,7 +98,8 @@ export default class NewChannelModal extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.show === true && this.props.show === false) {
             this.setState({
                 displayNameError: '',
@@ -121,22 +121,27 @@ export default class NewChannelModal extends React.PureComponent {
         // Enter pressed alone without required cmd or ctrl key
         if (ctrlSend && enterPressed && !e.ctrlKey) {
             e.preventDefault();
-        } else if ((ctrlSend && enterPressed && e.ctrlKey) || (!ctrlSend && enterPressed && !e.shiftKey && !e.altKey)) {
+        } else if (
+            (ctrlSend && enterPressed && e.ctrlKey) ||
+            (!ctrlSend && enterPressed && !e.shiftKey && !e.altKey)
+        ) {
             this.handleSubmit(e);
         }
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const displayName = ReactDOM.findDOMNode(this.refs.display_name).value.trim();
+        const displayName = ReactDOM.findDOMNode(
+            this.refs.display_name,
+        ).value.trim();
         if (displayName.length < Constants.MIN_CHANNELNAME_LENGTH) {
             this.setState({displayNameError: true});
             return;
         }
 
         this.props.onSubmitChannel();
-    }
+    };
 
     handleChange = () => {
         const newData = {
@@ -144,28 +149,30 @@ export default class NewChannelModal extends React.PureComponent {
             header: this.refs.channel_header.value,
             purpose: this.refs.channel_purpose.value,
         };
+
         this.props.onDataChanged(newData);
-    }
+    };
 
     handleOnURLChange = (e) => {
         e.preventDefault();
         if (this.props.onChangeURLPressed) {
             this.props.onChangeURLPressed();
         }
-    }
+    };
 
     handlePublicTypeSelect = () => {
         this.props.onTypeSwitched('O');
-    }
+    };
 
     handlePrivateTypeSelect = () => {
         this.props.onTypeSwitched('P');
-    }
+    };
 
     render() {
         const {canCreatePublicChannel, canCreatePrivateChannel} = this.props;
 
-        const enableTypeSelection = canCreatePublicChannel && canCreatePrivateChannel;
+        const enableTypeSelection =
+            canCreatePublicChannel && canCreatePrivateChannel;
         var displayNameError = null;
         var serverError = null;
         var displayNameClass = 'form-group';
@@ -177,9 +184,11 @@ export default class NewChannelModal extends React.PureComponent {
                         id='channel_modal.displayNameError'
                         defaultMessage='Channel name must be 2 or more characters'
                     />
+
                     {this.state.displayNameError}
                 </p>
             );
+
             displayNameClass += ' has-error';
         }
 
@@ -200,11 +209,12 @@ export default class NewChannelModal extends React.PureComponent {
 
         const publicChannelDesc = (
             <div className='flex-parent'>
-                <GlobeIcon className='icon icon__globe icon--body type-icon'/>
+                <GlobeIcon className='icon icon__globe icon--body type-icon' />
                 <FormattedMessage
                     id='channel_modal.publicName'
                     defaultMessage='Public'
                 />
+
                 <FormattedMessage
                     id='channel_modal.publicHint'
                     defaultMessage=' - Anyone can join this channel.'
@@ -214,11 +224,12 @@ export default class NewChannelModal extends React.PureComponent {
 
         const privateChannelDesc = (
             <div className='flex-parent'>
-                <LockIcon className='icon icon__lock icon--body type-icon'/>
+                <LockIcon className='icon icon__lock icon--body type-icon' />
                 <FormattedMessage
                     id='channel_modal.privateName'
                     defaultMessage='Private'
                 />
+
                 <FormattedMessage
                     id='channel_modal.privateHint'
                     defaultMessage=' - Only invited members can join this channel.'
@@ -229,10 +240,7 @@ export default class NewChannelModal extends React.PureComponent {
         let typeOptions = null;
         if (enableTypeSelection) {
             typeOptions = (
-                <div
-                    key='channelType'
-                    className='multi-select__radio'
-                >
+                <div key='channelType' className='multi-select__radio'>
                     <div className='radio'>
                         <label>
                             <input
@@ -242,6 +250,7 @@ export default class NewChannelModal extends React.PureComponent {
                                 checked={this.props.channelType === 'O'}
                                 onChange={this.handlePublicTypeSelect}
                             />
+
                             {publicChannelDesc}
                         </label>
                     </div>
@@ -254,6 +263,7 @@ export default class NewChannelModal extends React.PureComponent {
                                 checked={this.props.channelType === 'P'}
                                 onChange={this.handlePrivateTypeSelect}
                             />
+
                             {privateChannelDesc}
                         </label>
                     </div>
@@ -305,10 +315,7 @@ export default class NewChannelModal extends React.PureComponent {
                             />
                         </Modal.Title>
                     </Modal.Header>
-                    <form
-                        role='form'
-                        className='form-horizontal'
-                    >
+                    <form role='form' className='form-horizontal'>
                         <Modal.Body>
                             <div className='form-group'>
                                 <label className='col-sm-3 form__label control-label'>
@@ -317,9 +324,7 @@ export default class NewChannelModal extends React.PureComponent {
                                         defaultMessage='Type'
                                     />
                                 </label>
-                                <div className='col-sm-9'>
-                                    {typeOptions}
-                                </div>
+                                <div className='col-sm-9'>{typeOptions}</div>
                             </div>
                             <div className={displayNameClass}>
                                 <label className='col-sm-3 form__label control-label'>
@@ -335,16 +340,28 @@ export default class NewChannelModal extends React.PureComponent {
                                         type='text'
                                         ref='display_name'
                                         className='form-control'
-                                        placeholder={{id: t('channel_modal.nameEx'), defaultMessage: 'E.g.: "Bugs", "Marketing", "客户支持"'}}
-                                        maxLength={Constants.MAX_CHANNELNAME_LENGTH}
-                                        value={this.props.channelData.displayName}
+                                        placeholder={{
+                                            id: t('channel_modal.nameEx'),
+                                            defaultMessage:
+                                                "E.g.: 'Bugs', 'Marketing', '\u5BA2\u6237\u652F\u6301'",
+                                        }}
+                                        maxLength={
+                                            Constants.MAX_CHANNELNAME_LENGTH
+                                        }
+                                        value={
+                                            this.props.channelData.displayName
+                                        }
                                         autoFocus={true}
                                         tabIndex='1'
                                         onKeyDown={this.onEnterKeyDown}
                                     />
+
                                     {displayNameError}
                                     <p className='input__help dark'>
-                                        {'URL: ' + prettyTeamURL + this.props.channelData.name + ' ('}
+                                        {'URL: ' +
+                                            prettyTeamURL +
+                                            this.props.channelData.name +
+                                            ' ('}
                                         <button
                                             className='color--link style--none'
                                             onClick={this.handleOnURLChange}
@@ -380,12 +397,16 @@ export default class NewChannelModal extends React.PureComponent {
                                         className='form-control no-resize'
                                         ref='channel_purpose'
                                         rows='4'
-                                        placeholder={Utils.localizeMessage('channel_modal.purposeEx', 'E.g.: "A channel to file bugs and improvements"')}
+                                        placeholder={Utils.localizeMessage(
+                                            'channel_modal.purposeEx',
+                                            "E.g.: 'A channel to file bugs and improvements'",
+                                        )}
                                         maxLength='250'
                                         value={this.props.channelData.purpose}
                                         onChange={this.handleChange}
                                         tabIndex='2'
                                     />
+
                                     <p className='input__help'>
                                         <FormattedMessage
                                             id='channel_modal.descriptionHelp'
@@ -415,12 +436,16 @@ export default class NewChannelModal extends React.PureComponent {
                                         className='form-control no-resize'
                                         ref='channel_header'
                                         rows='4'
-                                        placeholder={Utils.localizeMessage('channel_modal.headerEx', 'E.g.: "[Link Title](http://example.com)"')}
+                                        placeholder={Utils.localizeMessage(
+                                            'channel_modal.headerEx',
+                                            "E.g.: '[Link Title](http://example.com)'",
+                                        )}
                                         maxLength='1024'
                                         value={this.props.channelData.header}
                                         onChange={this.handleChange}
                                         tabIndex='3'
                                     />
+
                                     <p className='input__help'>
                                         <FormattedMessage
                                             id='channel_modal.headerHelp'
@@ -438,7 +463,11 @@ export default class NewChannelModal extends React.PureComponent {
                                 className='btn btn-link'
                                 onClick={this.props.onModalDismissed}
                                 tabIndex='8'
-                                onBlur={() => document.getElementById('newChannelName').focus()}
+                                onBlur={() =>
+                                    document
+                                        .getElementById('newChannelName')
+                                        .focus()
+                                }
                             >
                                 <FormattedMessage
                                     id='channel_modal.cancel'

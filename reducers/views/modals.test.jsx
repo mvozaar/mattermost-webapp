@@ -10,11 +10,9 @@ import {ActionTypes, ModalIdentifiers} from 'utils/constants.jsx';
 class TestModal extends React.Component {
     render() {
         return (
-            <Modal
-                show={true}
-            >
-                <Modal.Header closeButton={true}/>
-                <Modal.Body/>
+            <Modal show={true}>
+                <Modal.Header closeButton={true} />
+                <Modal.Body />
             </Modal>
         );
     }
@@ -22,10 +20,7 @@ class TestModal extends React.Component {
 
 describe('Reducers.Modals', () => {
     test('Initial state', () => {
-        const nextState = modalsReducer(
-            {},
-            {}
-        );
+        const nextState = modalsReducer({}, {});
 
         const expectedState = {
             modalState: {},
@@ -47,7 +42,7 @@ describe('Reducers.Modals', () => {
                 modalId: ModalIdentifiers.DELETE_CHANNEL,
                 dialogType,
                 dialogProps,
-            }
+            },
         );
 
         const expectedState = {
@@ -69,7 +64,7 @@ describe('Reducers.Modals', () => {
             {
                 type: ActionTypes.MODAL_CLOSE,
                 modalId: ModalIdentifiers.DELETE_CHANNEL,
-            }
+            },
         );
 
         const expectedState = {

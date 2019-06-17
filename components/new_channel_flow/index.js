@@ -19,11 +19,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            createChannel,
-            switchToChannel,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                createChannel,
+                switchToChannel,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewChannelFlow);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(NewChannelFlow);

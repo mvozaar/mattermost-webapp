@@ -4,23 +4,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import {getFileThumbnailUrl, getFileUrl} from 'mattermost-redux/utils/file_utils';
+import {
+    getFileThumbnailUrl,
+    getFileUrl,
+} from 'mattermost-redux/utils/file_utils';
 
 import Constants, {FileTypes} from 'utils/constants.jsx';
-import {
-    getFileType,
-    getIconClassName,
-    isGIFImage,
-} from 'utils/utils.jsx';
+import {getFileType, getIconClassName, isGIFImage} from 'utils/utils.jsx';
 
 export default class FileThumbnail extends React.PureComponent {
     static propTypes = {
-
         /*
          * File detailed information
          */
         fileInfo: PropTypes.object.isRequired,
-    }
+    };
 
     render() {
         const {fileInfo} = this.props;
@@ -30,7 +28,10 @@ export default class FileThumbnail extends React.PureComponent {
         if (type === FileTypes.IMAGE) {
             let className = 'post-image';
 
-            if (fileInfo.width < Constants.THUMBNAIL_WIDTH && fileInfo.height < Constants.THUMBNAIL_HEIGHT) {
+            if (
+                fileInfo.width < Constants.THUMBNAIL_WIDTH &&
+                fileInfo.height < Constants.THUMBNAIL_HEIGHT
+            ) {
                 className += ' small';
             } else {
                 className += ' normal';
@@ -59,7 +60,9 @@ export default class FileThumbnail extends React.PureComponent {
                 />
             );
         } else {
-            thumbnail = <div className={'file-icon ' + getIconClassName(type)}/>;
+            thumbnail = (
+                <div className={'file-icon ' + getIconClassName(type)} />
+            );
         }
 
         return thumbnail;

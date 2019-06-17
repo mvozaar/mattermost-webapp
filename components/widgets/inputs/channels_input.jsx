@@ -25,7 +25,7 @@ export default class ChannelsInput extends React.Component {
         loadingMessageDefault: PropTypes.string,
         noOptionsMessageId: PropTypes.string,
         noOptionsMessageDefault: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         loadingMessageId: t('widgets.channels_input.loading'),
@@ -42,7 +42,7 @@ export default class ChannelsInput extends React.Component {
         IndicatorsContainer: () => null,
     };
 
-    getOptionValue = (channel) => channel.id
+    getOptionValue = (channel) => channel.id;
 
     loadingMessage = () => {
         if (!this.context.intl) {
@@ -53,7 +53,7 @@ export default class ChannelsInput extends React.Component {
             id: this.props.loadingMessageId,
             defaultMessage: this.props.loadingMessageDefault,
         });
-    }
+    };
 
     noOptionsMessage = () => {
         if (!this.context.intl) {
@@ -64,12 +64,12 @@ export default class ChannelsInput extends React.Component {
             id: this.props.noOptionsMessageId,
             defaultMessage: this.props.noOptionsMessageDefault,
         });
-    }
+    };
 
     formatOptionLabel = (channel) => {
-        let icon = <PublicChannelIcon className='public-channel-icon'/>;
+        let icon = <PublicChannelIcon className='public-channel-icon' />;
         if (channel.type === Constants.PRIVATE_CHANNEL) {
-            icon = <PrivateChannelIcon className='private-channel-icon'/>;
+            icon = <PrivateChannelIcon className='private-channel-icon' />;
         }
         return (
             <React.Fragment>
@@ -77,13 +77,13 @@ export default class ChannelsInput extends React.Component {
                 {channel.display_name}
             </React.Fragment>
         );
-    }
+    };
 
     onChange = (value) => {
         if (this.props.onChange) {
             this.props.onChange(value);
         }
-    }
+    };
 
     render() {
         return (

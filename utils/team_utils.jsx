@@ -4,7 +4,9 @@
 // Use when sorting multiple teams by their `display_name` field
 function compareTeamsByDisplayName(locale, a, b) {
     if (a.display_name !== b.display_name) {
-        return a.display_name.localeCompare(b.display_name, locale, {numeric: true});
+        return a.display_name.localeCompare(b.display_name, locale, {
+            numeric: true,
+        });
     }
 
     return a.name.localeCompare(b.name, locale, {numeric: true});
@@ -16,9 +18,11 @@ export function filterAndSortTeamsByDisplayName(teams, locale) {
         return [];
     }
 
-    return teams.filter((team) => {
-        return team && !team.delete_at > 0 && team.display_name != null;
-    }).sort((a, b) => {
-        return compareTeamsByDisplayName(locale, a, b);
-    });
+    return teams
+        .filter((team) => {
+            return team && !team.delete_at > 0 && team.display_name != null;
+        })
+        .sort((a, b) => {
+            return compareTeamsByDisplayName(locale, a, b);
+        });
 }

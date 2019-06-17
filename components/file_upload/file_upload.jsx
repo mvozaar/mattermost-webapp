@@ -11,10 +11,7 @@ import 'jquery-dragster/jquery.dragster.js';
 import Constants from 'utils/constants.jsx';
 import DelayedAction from 'utils/delayed_action.jsx';
 import {t} from 'utils/i18n';
-import {
-    isIosChrome,
-    isMobileApp,
-} from 'utils/user_agent.jsx';
+import {isIosChrome, isMobileApp} from 'utils/user_agent.jsx';
 import {getTable} from 'utils/paste.jsx';
 import {
     clearFileInput,
@@ -33,28 +30,36 @@ import AttachmentIcon from 'components/svg/attachment_icon';
 const holders = defineMessages({
     limited: {
         id: t('file_upload.limited'),
-        defaultMessage: 'Uploads limited to {count, number} files maximum. Please use additional posts for more files.',
+        defaultMessage:
+            'Uploads limited to {count, number} files maximum. Please use additional posts for more files.',
     },
+
     filesAbove: {
         id: t('file_upload.filesAbove'),
-        defaultMessage: 'Files above {max}MB could not be uploaded: {filenames}',
+        defaultMessage:
+            'Files above {max}MB could not be uploaded: {filenames}',
     },
+
     fileAbove: {
         id: t('file_upload.fileAbove'),
         defaultMessage: 'File above {max}MB could not be uploaded: {filename}',
     },
+
     zeroBytesFiles: {
         id: t('file_upload.zeroBytesFiles'),
         defaultMessage: 'You are uploading empty files: {filenames}',
     },
+
     zeroBytesFile: {
         id: t('file_upload.zeroBytesFile'),
         defaultMessage: 'You are uploading an empty file: {filename}',
     },
+
     pasted: {
         id: t('file_upload.pasted'),
         defaultMessage: 'Image Pasted at ',
     },
+
     uploadFile: {
         id: t('file_upload.upload_files'),
         defaultMessage: 'Upload files',
@@ -72,7 +77,6 @@ const customStyles = {
 
 export default class FileUpload extends PureComponent {
     static propTypes = {
-
         /**
          * Current channel's ID
          */
@@ -146,7 +150,6 @@ export default class FileUpload extends PureComponent {
          */
         onUploadProgress: PropTypes.func.isRequired,
         actions: PropTypes.shape({
-
             /**
              * Function to be called to upload file
              */
@@ -174,6 +177,7 @@ export default class FileUpload extends PureComponent {
             requests: {},
             menuOpen: false,
         };
+
         this.fileInput = React.createRef();
     }
 
@@ -181,7 +185,10 @@ export default class FileUpload extends PureComponent {
         if (this.props.postType === 'post') {
             this.registerDragEvents('.row.main', '.center-file-overlay');
         } else if (this.props.postType === 'comment') {
-            this.registerDragEvents('.post-right__container', '.right-file-overlay');
+            this.registerDragEvents(
+                '.post-right__container',
+                '.right-file-overlay',
+            );
         }
 
         document.addEventListener('paste', this.pasteUpload);
@@ -200,12 +207,19 @@ export default class FileUpload extends PureComponent {
         document.removeEventListener('keydown', this.keyUpload);
 
         // jquery-dragster doesn't provide a function to unregister itself so do it manually
-        target.off('dragenter dragleave dragover drop dragster:enter dragster:leave dragster:over dragster:drop');
+        target.off(
+            'dragenter dragleave dragover drop dragster:enter dragster:leave dragster:over dragster:drop',
+        );
     }
 
     fileUploadSuccess = (data, channelId, currentRootId) => {
         if (data) {
-            this.props.onFileUpload(data.file_infos, data.client_ids, channelId, currentRootId);
+            this.props.onFileUpload(
+                data.file_infos,
+                data.client_ids,
+                channelId,
+                currentRootId,
+            );
 
             const requests = Object.assign({}, this.state.requests);
             for (var j = 0; j < data.client_ids.length; j++) {
@@ -213,23 +227,25 @@ export default class FileUpload extends PureComponent {
             }
             this.setState({requests});
         }
-    }
+    };
 
     fileUploadFail = (err, clientId, channelId, currentRootId) => {
         this.props.onUploadError(err, clientId, channelId, currentRootId);
-    }
+    };
 
     pluginUploadFiles = (files) => {
         // clear any existing errors
         this.props.onUploadError(null);
         this.uploadFiles(files);
-    }
+    };
 
     checkPluginHooksAndUploadFiles = (files) => {
         // clear any existing errors
         this.props.onUploadError(null);
 
-        let sortedFiles = Array.from(files).sort((a, b) => a.name.localeCompare(b.name, this.props.locale, {numeric: true}));
+        let sortedFiles = Array.from(files).sort((a, b) =>
+            a.name.localeCompare(b.name, this.props.locale, {numeric: true}),
+        );
 
         const willUploadHooks = this.props.pluginFilesWillUploadHooks;
         for (const h of willUploadHooks) {
@@ -246,12 +262,13 @@ export default class FileUpload extends PureComponent {
         if (sortedFiles) {
             this.uploadFiles(sortedFiles);
         }
-    }
+    };
 
     uploadFiles = (sortedFiles) => {
         const {currentChannelId, rootId} = this.props;
 
-        const uploadsRemaining = Constants.MAX_UPLOAD_FILES - this.props.fileCount;
+        const uploadsRemaining =
+            Constants.MAX_UPLOAD_FILES - this.props.fileCount;
         let numUploads = 0;
 
         // keep track of how many files have been too large
@@ -259,7 +276,11 @@ export default class FileUpload extends PureComponent {
         const zeroFiles = [];
         const clientIds = [];
 
-        for (let i = 0; i < sortedFiles.length && numUploads < uploadsRemaining; i++) {
+        for (
+            let i = 0;
+            i < sortedFiles.length && numUploads < uploadsRemaining;
+            i++
+        ) {
             if (sortedFiles[i].size > this.props.maxFileSize) {
                 tooLargeFiles.push(sortedFiles[i]);
                 continue;
@@ -299,13 +320,21 @@ export default class FileUpload extends PureComponent {
                 );
 
                 if (error) {
-                    this.fileUploadFail(error, clientId, currentChannelId, rootId);
+                    this.fileUploadFail(
+                        error,
+                        clientId,
+                        currentChannelId,
+                        rootId,
+                    );
                 } else if (data) {
                     this.fileUploadSuccess(data, currentChannelId, rootId);
                 }
             });
 
-            this.setState({requests: {...this.state.requests, [clientId]: request}});
+            this.setState({
+                requests: {...this.state.requests, [clientId]: request},
+            });
+
             clientIds.push(clientId);
 
             numUploads += 1;
@@ -316,29 +345,53 @@ export default class FileUpload extends PureComponent {
         const {formatMessage} = this.context.intl;
         const errors = [];
         if (sortedFiles.length > uploadsRemaining) {
-            errors.push(formatMessage(holders.limited, {count: Constants.MAX_UPLOAD_FILES}));
+            errors.push(
+                formatMessage(holders.limited, {
+                    count: Constants.MAX_UPLOAD_FILES,
+                }),
+            );
         }
 
         if (tooLargeFiles.length > 1) {
-            var tooLargeFilenames = tooLargeFiles.map((file) => file.name).join(', ');
+            var tooLargeFilenames = tooLargeFiles
+                .map((file) => file.name)
+                .join(', ');
 
-            errors.push(formatMessage(holders.filesAbove, {max: (this.props.maxFileSize / 1048576), filenames: tooLargeFilenames}));
+            errors.push(
+                formatMessage(holders.filesAbove, {
+                    max: this.props.maxFileSize / 1048576,
+                    filenames: tooLargeFilenames,
+                }),
+            );
         } else if (tooLargeFiles.length > 0) {
-            errors.push(formatMessage(holders.fileAbove, {max: (this.props.maxFileSize / 1048576), filename: tooLargeFiles[0].name}));
+            errors.push(
+                formatMessage(holders.fileAbove, {
+                    max: this.props.maxFileSize / 1048576,
+                    filename: tooLargeFiles[0].name,
+                }),
+            );
         }
 
         if (zeroFiles.length > 1) {
             var zeroFilenames = zeroFiles.map((file) => file.name).join(', ');
 
-            errors.push(formatMessage(holders.zeroBytesFiles, {filenames: zeroFilenames}));
+            errors.push(
+                formatMessage(holders.zeroBytesFiles, {
+                    filenames: zeroFilenames,
+                }),
+            );
         } else if (zeroFiles.length > 0) {
-            errors.push(formatMessage(holders.zeroBytesFile, {filename: zeroFiles[0].name}));
+            errors.push(
+                formatMessage(holders.zeroBytesFile, {
+                    filename: zeroFiles[0].name,
+                }),
+            );
         }
 
         if (errors.length > 0) {
             this.props.onUploadError(errors.join(', '));
         }
-    }
+    };
 
     handleChange = (e) => {
         if (e.target.files.length > 0) {
@@ -348,11 +401,17 @@ export default class FileUpload extends PureComponent {
         }
 
         this.props.onFileUploadChange();
-    }
+    };
 
     handleDrop = (e) => {
         if (!this.props.canUploadFiles) {
-            this.props.onUploadError(localizeMessage('file_upload.disabled', 'File attachments are disabled.'));
+            this.props.onUploadError(
+                localizeMessage(
+                    'file_upload.disabled',
+                    'File attachments are disabled.',
+                ),
+            );
+
             return;
         }
 
@@ -363,7 +422,11 @@ export default class FileUpload extends PureComponent {
         const files = [];
         Array.from(droppedFiles).forEach((file, index) => {
             const item = items[index];
-            if (item && item.webkitGetAsEntry && item.webkitGetAsEntry().isDirectory) {
+            if (
+                item &&
+                item.webkitGetAsEntry &&
+                item.webkitGetAsEntry().isDirectory
+            ) {
                 return;
             }
             files.push(file);
@@ -383,7 +446,13 @@ export default class FileUpload extends PureComponent {
         }
 
         if (files.length === 0) {
-            this.props.onUploadError(localizeMessage('file_upload.drag_folder', 'Folders cannot be uploaded. Please drag all files separately.'));
+            this.props.onUploadError(
+                localizeMessage(
+                    'file_upload.drag_folder',
+                    'Folders cannot be uploaded. Please drag all files separately.',
+                ),
+            );
+
             return;
         }
 
@@ -392,7 +461,7 @@ export default class FileUpload extends PureComponent {
         }
 
         this.props.onFileUploadChange();
-    }
+    };
 
     registerDragEvents = (containerSelector, overlaySelector) => {
         const self = this;
@@ -446,12 +515,16 @@ export default class FileUpload extends PureComponent {
         }
 
         $(containerSelector).dragster(dragsterActions);
-    }
+    };
 
     pasteUpload = (e) => {
         const {formatMessage} = this.context.intl;
 
-        if (!e.clipboardData || !e.clipboardData.items || getTable(e.clipboardData)) {
+        if (
+            !e.clipboardData ||
+            !e.clipboardData.items ||
+            getTable(e.clipboardData)
+        ) {
             return;
         }
 
@@ -475,7 +548,13 @@ export default class FileUpload extends PureComponent {
 
         if (items && items.length > 0) {
             if (!this.props.canUploadFiles) {
-                this.props.onUploadError(localizeMessage('file_upload.disabled', 'File attachments are disabled.'));
+                this.props.onUploadError(
+                    localizeMessage(
+                        'file_upload.disabled',
+                        'File attachments are disabled.',
+                    ),
+                );
+
                 return;
             }
 
@@ -503,7 +582,18 @@ export default class FileUpload extends PureComponent {
                     ext = '.' + items[i].type.split('/')[1].toLowerCase();
                 }
 
-                const name = formatMessage(holders.pasted) + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + hour + '-' + minute + ext;
+                const name =
+                    formatMessage(holders.pasted) +
+                    d.getFullYear() +
+                    '-' +
+                    (d.getMonth() + 1) +
+                    '-' +
+                    d.getDate() +
+                    ' ' +
+                    hour +
+                    '-' +
+                    minute +
+                    ext;
 
                 files.push(new File([file], name));
             }
@@ -513,24 +603,34 @@ export default class FileUpload extends PureComponent {
                 this.props.onFileUploadChange();
             }
         }
-    }
+    };
 
     keyUpload = (e) => {
         if (cmdOrCtrlPressed(e) && isKeyPressed(e, Constants.KeyCodes.U)) {
             e.preventDefault();
 
             if (!this.props.canUploadFiles) {
-                this.props.onUploadError(localizeMessage('file_upload.disabled', 'File attachments are disabled.'));
+                this.props.onUploadError(
+                    localizeMessage(
+                        'file_upload.disabled',
+                        'File attachments are disabled.',
+                    ),
+                );
+
                 return;
             }
-            const postTextbox = this.props.postType === 'post' && document.activeElement.id === 'post_textbox';
-            const commentTextbox = this.props.postType === 'comment' && document.activeElement.id === 'reply_textbox';
+            const postTextbox =
+                this.props.postType === 'post' &&
+                document.activeElement.id === 'post_textbox';
+            const commentTextbox =
+                this.props.postType === 'comment' &&
+                document.activeElement.id === 'reply_textbox';
             if (postTextbox || commentTextbox) {
                 this.fileInput.current.focus();
                 this.fileInput.current.click();
             }
         }
-    }
+    };
 
     cancelUpload = (clientId) => {
         const requests = Object.assign({}, this.state.requests);
@@ -542,7 +642,7 @@ export default class FileUpload extends PureComponent {
             Reflect.deleteProperty(requests, clientId);
             this.setState({requests});
         }
-    }
+    };
 
     handleMaxUploadReached = (e) => {
         if (e) {
@@ -552,15 +652,18 @@ export default class FileUpload extends PureComponent {
         const {onUploadError} = this.props;
         const {formatMessage} = this.context.intl;
 
-        onUploadError(formatMessage(holders.limited, {count: Constants.MAX_UPLOAD_FILES}));
-    }
+        onUploadError(
+            formatMessage(holders.limited, {count: Constants.MAX_UPLOAD_FILES}),
+        );
+    };
 
     toggleMenu = (open) => {
         this.setState({menuOpen: open});
-    }
+    };
 
     handleLocalFileUploaded = (e) => {
-        const uploadsRemaining = Constants.MAX_UPLOAD_FILES - this.props.fileCount;
+        const uploadsRemaining =
+            Constants.MAX_UPLOAD_FILES - this.props.fileCount;
         if (uploadsRemaining > 0) {
             if (this.props.onClick) {
                 this.props.onClick();
@@ -569,11 +672,11 @@ export default class FileUpload extends PureComponent {
             this.handleMaxUploadReached(e);
         }
         this.setState({menuOpen: false});
-    }
+    };
 
     simulateInputClick = () => {
         this.fileInput.current.click();
-    }
+    };
 
     render() {
         const {formatMessage} = this.context.intl;
@@ -589,16 +692,14 @@ export default class FileUpload extends PureComponent {
             accept = 'image/*';
         }
 
-        const uploadsRemaining = Constants.MAX_UPLOAD_FILES - this.props.fileCount;
+        const uploadsRemaining =
+            Constants.MAX_UPLOAD_FILES - this.props.fileCount;
 
         let bodyAction;
         if (this.props.pluginFileUploadMethods.length === 0) {
             bodyAction = (
-                <div
-                    id='fileUploadButton'
-                    className='icon icon--attachment'
-                >
-                    <AttachmentIcon/>
+                <div id='fileUploadButton' className='icon icon--attachment'>
+                    <AttachmentIcon />
                     <input
                         aria-label={formatMessage(holders.uploadFile)}
                         ref={this.fileInput}
@@ -611,24 +712,31 @@ export default class FileUpload extends PureComponent {
                 </div>
             );
         } else {
-            const pluginFileUploadMethods = this.props.pluginFileUploadMethods.map((item) => {
-                return (
-                    <li
-                        key={item.pluginId + '_fileuploadpluginmenuitem'}
-                        onClick={() => {
-                            if (item.action) {
-                                item.action(this.checkPluginHooksAndUploadFiles);
-                            }
-                            this.setState({menuOpen: false});
-                        }}
-                    >
-                        <a>
-                            <span className='margin-right'>{item.icon}</span>
-                            {item.text}
-                        </a>
-                    </li>
-                );
-            });
+            const pluginFileUploadMethods = this.props.pluginFileUploadMethods.map(
+                (item) => {
+                    return (
+                        <li
+                            key={item.pluginId + '_fileuploadpluginmenuitem'}
+                            onClick={() => {
+                                if (item.action) {
+                                    item.action(
+                                        this.checkPluginHooksAndUploadFiles,
+                                    );
+                                }
+                                this.setState({menuOpen: false});
+                            }}
+                        >
+                            <a>
+                                <span className='margin-right'>
+                                    {item.icon}
+                                </span>
+                                {item.text}
+                            </a>
+                        </li>
+                    );
+                },
+            );
+
             bodyAction = (
                 <React.Fragment>
                     <input
@@ -641,27 +749,30 @@ export default class FileUpload extends PureComponent {
                         multiple={multiple}
                         accept={accept}
                     />
+
                     <MenuWrapper>
-                        <button
-                            type='button'
-                            className='style--none'
-                        >
+                        <button type='button' className='style--none'>
                             <div
                                 id='fileUploadButton'
                                 className='icon icon--attachment'
                             >
-                                <AttachmentIcon/>
+                                <AttachmentIcon />
                             </div>
                         </button>
                         <Menu
                             openLeft={true}
                             openUp={true}
-                            ariaLabel={formatMessage({id: 'file_upload.menuAriaLabel', defaultMessage: 'Upload type selector'})}
+                            ariaLabel={formatMessage({
+                                id: 'file_upload.menuAriaLabel',
+                                defaultMessage: 'Upload type selector',
+                            })}
                             customStyles={customStyles}
                         >
                             <li>
                                 <a onClick={this.simulateInputClick}>
-                                    <span className='margin-right'><i className='fa fa-laptop'/></span>
+                                    <span className='margin-right'>
+                                        <i className='fa fa-laptop' />
+                                    </span>
                                     <FormattedMessage
                                         id='yourcomputer'
                                         defaultMessage='Your computer'

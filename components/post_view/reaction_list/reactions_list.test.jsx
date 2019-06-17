@@ -14,7 +14,9 @@ describe('components/ReactionList', () => {
         create_at: 1542994995740,
     };
 
-    const reactions = {[reaction.user_id + '-' + reaction.emoji_name]: reaction};
+    const reactions = {
+        [reaction.user_id + '-' + reaction.emoji_name]: reaction,
+    };
 
     const post = {
         id: 'post_id',
@@ -37,9 +39,7 @@ describe('components/ReactionList', () => {
     };
 
     test('Should match snapshot for reactions', () => {
-        const wrapper = shallow(
-            <ReactionList {...baseProps}/>
-        );
+        const wrapper = shallow(<ReactionList {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });

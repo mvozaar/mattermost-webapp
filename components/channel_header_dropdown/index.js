@@ -47,7 +47,7 @@ const getTeammateStatus = createSelector(
         }
 
         return userStatuses[teammateId];
-    }
+    },
 );
 
 const mapStateToProps = (state) => ({
@@ -58,7 +58,9 @@ const mapStateToProps = (state) => ({
     isMuted: isCurrentChannelMuted(state),
     isReadonly: isCurrentChannelReadOnly(state),
     isArchived: isCurrentChannelArchived(state),
-    penultimateViewedChannelName: getPenultimateViewedChannelName(state) || getRedirectChannelNameForTeam(state, getCurrentTeamId(state)),
+    penultimateViewedChannelName:
+        getPenultimateViewedChannelName(state) ||
+        getRedirectChannelNameForTeam(state, getCurrentTeamId(state)),
 });
 
 const mobileMapStateToProps = (state) => ({
@@ -70,4 +72,6 @@ const mobileMapStateToProps = (state) => ({
 
 export const ChannelHeaderDropdown = Desktop;
 export const ChannelHeaderDropdownItems = connect(mapStateToProps)(Items);
-export const MobileChannelHeaderDropdown = connect(mobileMapStateToProps)(Mobile);
+export const MobileChannelHeaderDropdown = connect(mobileMapStateToProps)(
+    Mobile,
+);

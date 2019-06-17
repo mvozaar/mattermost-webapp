@@ -8,7 +8,6 @@ import MessageAttachment from './message_attachment';
 
 export default class MessageAttachmentList extends React.PureComponent {
     static propTypes = {
-
         /**
          * The post id
          */
@@ -28,11 +27,11 @@ export default class MessageAttachmentList extends React.PureComponent {
          * Images object used for creating placeholders to prevent scroll popup
          */
         imagesMetadata: PropTypes.object,
-    }
+    };
 
     static defaultProps = {
         imagesMetadata: {},
-    }
+    };
 
     render() {
         const content = [];
@@ -44,14 +43,10 @@ export default class MessageAttachmentList extends React.PureComponent {
                     key={'att_' + i}
                     options={this.props.options}
                     imagesMetadata={this.props.imagesMetadata}
-                />
+                />,
             );
         });
 
-        return (
-            <div className='attachment__list'>
-                {content}
-            </div>
-        );
+        return <div className='attachment__list'>{content}</div>;
     }
 }

@@ -21,10 +21,12 @@ describe('components/user_settings/display/manage_languages/manage_languages', (
     };
 
     test('submitUser() should have called updateMe', () => {
-        const wrapper = shallow(<ManageLanguages {...requiredProps}/>);
+        const wrapper = shallow(<ManageLanguages {...requiredProps} />);
 
         wrapper.instance().submitUser(requiredProps.user);
         expect(requiredProps.actions.updateMe).toHaveBeenCalledTimes(1);
-        expect(requiredProps.actions.updateMe).toHaveBeenCalledWith(requiredProps.user);
+        expect(requiredProps.actions.updateMe).toHaveBeenCalledWith(
+            requiredProps.user,
+        );
     });
 });

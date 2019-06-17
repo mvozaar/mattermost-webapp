@@ -22,25 +22,25 @@ describe('components/DeleteModalTrigger', () => {
         function emptyFunction() {} //eslint-disable-line no-empty-function
 
         class ChildModal extends DeleteModalTrigger {
-            get triggerTitle() { //eslint-disable-line class-methods-use-this
+            get triggerTitle() {
+                //eslint-disable-line class-methods-use-this
                 return <div>{'trigger title'}</div>;
             }
-            get modalTitle() { //eslint-disable-line class-methods-use-this
+            get modalTitle() {
+                //eslint-disable-line class-methods-use-this
                 return <div>{'modal title'}</div>;
             }
-            get modalMessage() { //eslint-disable-line class-methods-use-this
+            get modalMessage() {
+                //eslint-disable-line class-methods-use-this
                 return <div>{'modal message'}</div>;
             }
-            get modalConfirmButton() { //eslint-disable-line class-methods-use-this
+            get modalConfirmButton() {
+                //eslint-disable-line class-methods-use-this
                 return <button>{'modal confirmation button'}</button>;
             }
         }
 
-        const wrapper = shallow(
-            <ChildModal
-                onDelete={emptyFunction}
-            />
-        );
+        const wrapper = shallow(<ChildModal onDelete={emptyFunction} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -50,11 +50,7 @@ describe('components/DeleteModalTrigger', () => {
 
         class ChildModal extends DeleteModalTrigger {}
 
-        const wrapper = shallow(
-            <ChildModal
-                onDelete={emptyFunction}
-            />
-        );
+        const wrapper = shallow(<ChildModal onDelete={emptyFunction} />);
 
         wrapper.setState({showDeleteModal: true});
         expect(wrapper).toMatchSnapshot();
@@ -65,13 +61,13 @@ describe('components/DeleteModalTrigger', () => {
 
         class ChildModal extends DeleteModalTrigger {}
 
-        const wrapper = shallow(
-            <ChildModal
-                onDelete={onDelete}
-            />
-        );
+        const wrapper = shallow(<ChildModal onDelete={onDelete} />);
 
-        wrapper.find(ConfirmModal).first().props().onConfirm();
+        wrapper
+            .find(ConfirmModal)
+            .first()
+            .props()
+            .onConfirm();
         expect(onDelete).toHaveBeenCalledTimes(1);
     });
 
@@ -80,13 +76,13 @@ describe('components/DeleteModalTrigger', () => {
 
         class ChildModal extends DeleteModalTrigger {}
 
-        const wrapper = shallow(
-            <ChildModal
-                onDelete={onDelete}
-            />
-        );
+        const wrapper = shallow(<ChildModal onDelete={onDelete} />);
 
-        wrapper.find(ConfirmModal).first().props().onKeyDown({key: Constants.KeyCodes.ENTER[0]});
+        wrapper
+            .find(ConfirmModal)
+            .first()
+            .props()
+            .onKeyDown({key: Constants.KeyCodes.ENTER[0]});
         expect(onDelete).toHaveBeenCalledTimes(1);
     });
 
@@ -95,22 +91,20 @@ describe('components/DeleteModalTrigger', () => {
 
         class ChildModal extends DeleteModalTrigger {}
 
-        const wrapper = shallow(
-            <ChildModal
-                onDelete={onDelete}
-            />
-        );
+        const wrapper = shallow(<ChildModal onDelete={onDelete} />);
 
-        wrapper.find(ConfirmModal).first().props().onKeyDown({key: Constants.KeyCodes.TAB[0]});
+        wrapper
+            .find(ConfirmModal)
+            .first()
+            .props()
+            .onKeyDown({key: Constants.KeyCodes.TAB[0]});
         expect(onDelete).not.toHaveBeenCalled();
     });
 
     test('should match state when handleOpenModal is called', () => {
         class ChildModal extends DeleteModalTrigger {}
 
-        const wrapper = shallow(
-            <ChildModal onDelete={jest.fn()}/>
-        );
+        const wrapper = shallow(<ChildModal onDelete={jest.fn()} />);
 
         const preventDefault = jest.fn();
         wrapper.setState({showDeleteModal: false});
@@ -122,9 +116,7 @@ describe('components/DeleteModalTrigger', () => {
     test('should have called onDelete when handleConfirm is called', () => {
         class ChildModal extends DeleteModalTrigger {}
         const onDelete = jest.fn();
-        const wrapper = shallow(
-            <ChildModal onDelete={onDelete}/>
-        );
+        const wrapper = shallow(<ChildModal onDelete={onDelete} />);
 
         wrapper.instance().handleConfirm();
         expect(onDelete).toHaveBeenCalledTimes(1);
@@ -133,9 +125,7 @@ describe('components/DeleteModalTrigger', () => {
     test('should match state when handleCancel is called', () => {
         class ChildModal extends DeleteModalTrigger {}
 
-        const wrapper = shallow(
-            <ChildModal onDelete={jest.fn()}/>
-        );
+        const wrapper = shallow(<ChildModal onDelete={jest.fn()} />);
 
         wrapper.setState({showDeleteModal: true});
         wrapper.instance().handleCancel();
@@ -145,9 +135,8 @@ describe('components/DeleteModalTrigger', () => {
     test('should have called handleConfirm when on handleKeyDown ENTER', () => {
         class ChildModal extends DeleteModalTrigger {}
         const onDelete = jest.fn();
-        const wrapper = shallow(
-            <ChildModal onDelete={onDelete}/>
-        );
+        const wrapper = shallow(<ChildModal onDelete={onDelete} />);
+
         const evt = {key: Constants.KeyCodes.ENTER[0]};
         const instance = wrapper.instance();
         instance.handleConfirm = jest.fn();

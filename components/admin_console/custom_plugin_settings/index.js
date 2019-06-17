@@ -34,7 +34,7 @@ function makeGetPluginSchema() {
                 settings,
                 translate: Boolean(plugin.translate),
             };
-        }
+        },
     );
 }
 

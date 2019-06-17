@@ -13,17 +13,25 @@ function mapStateToProps(state) {
     const config = getConfig(state);
 
     return {
-        canViewArchivedChannels: config.ExperimentalViewArchivedChannels === 'true',
+        canViewArchivedChannels:
+            config.ExperimentalViewArchivedChannels === 'true',
         currentTeamDetails: getCurrentTeam(state),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            deleteChannel,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                deleteChannel,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeleteChannelModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DeleteChannelModal);

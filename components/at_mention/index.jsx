@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 import {getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
-import {getCurrentUserId, getUsersByUsername} from 'mattermost-redux/selectors/entities/users';
+import {
+    getCurrentUserId,
+    getUsersByUsername,
+} from 'mattermost-redux/selectors/entities/users';
 
 import AtMention from './at_mention.jsx';
 

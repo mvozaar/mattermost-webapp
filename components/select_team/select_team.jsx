@@ -59,11 +59,9 @@ export default class SelectTeam extends React.Component {
         this.props.actions.getTeams(0, TEAMS_PER_PAGE);
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
-        const {
-            actions,
-            currentUserRoles,
-        } = this.props;
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
+        const {actions, currentUserRoles} = this.props;
 
         actions.loadRolesIfNeeded(currentUserRoles.split(' '));
     }
@@ -71,9 +69,15 @@ export default class SelectTeam extends React.Component {
     handleTeamClick = async (team) => {
         this.setState({loadingTeamId: team.id});
 
-        const {data, error} = await this.props.actions.addUserToTeam(team.id, this.props.currentUserId);
+        const {data, error} = await this.props.actions.addUserToTeam(
+            team.id,
+            this.props.currentUserId,
+        );
+
         if (data) {
-            this.props.history.push(`/${team.name}/channels/${Constants.DEFAULT_CHANNEL}`);
+            this.props.history.push(
+                `/${team.name}/channels/${Constants.DEFAULT_CHANNEL}`,
+            );
         } else if (error) {
             this.setState({
                 error,
@@ -109,33 +113,43 @@ export default class SelectTeam extends React.Component {
 
         let openContent;
         if (this.state.loadingTeamId) {
-            openContent = <LoadingScreen/>;
+            openContent = <LoadingScreen />;
         } else if (this.state.error) {
             openContent = (
                 <div className='signup__content'>
                     <div className={'form-group has-error'}>
-                        <label className='control-label'>{this.state.error.message}</label>
+                        <label className='control-label'>
+                            {this.state.error.message}
+                        </label>
                     </div>
                 </div>
             );
         } else {
             let joinableTeamContents = [];
             listableTeams.forEach((listableTeam) => {
-                if ((listableTeam.allow_open_invite && canJoinPublicTeams) || (!listableTeam.allow_open_invite && canJoinPrivateTeams)) {
+                if (
+                    (listableTeam.allow_open_invite && canJoinPublicTeams) ||
+                    (!listableTeam.allow_open_invite && canJoinPrivateTeams)
+                ) {
                     joinableTeamContents.push(
                         <SelectTeamItem
                             key={'team_' + listableTeam.name}
                             team={listableTeam}
                             onTeamClick={this.handleTeamClick}
-                            loading={this.state.loadingTeamId === listableTeam.id}
+                            loading={
+                                this.state.loadingTeamId === listableTeam.id
+                            }
                             canJoinPublicTeams={canJoinPublicTeams}
                             canJoinPrivateTeams={canJoinPrivateTeams}
-                        />
+                        />,
                     );
                 }
             });
 
-            if (joinableTeamContents.length === 0 && (canCreateTeams || canManageSystem)) {
+            if (
+                joinableTeamContents.length === 0 &&
+                (canCreateTeams || canManageSystem)
+            ) {
                 joinableTeamContents = (
                     <div className='signup-team-dir-err'>
                         <div>
@@ -150,7 +164,9 @@ export default class SelectTeam extends React.Component {
                 joinableTeamContents = (
                     <div className='signup-team-dir-err'>
                         <div>
-                            <SystemPermissionGate permissions={[Permissions.CREATE_TEAM]}>
+                            <SystemPermissionGate
+                                permissions={[Permissions.CREATE_TEAM]}
+                            >
                                 <FormattedMessage
                                     id='signup_team.no_open_teams_canCreate'
                                     defaultMessage='No teams are available to join. Please create a new team or ask your administrator for an invite.'
@@ -171,10 +187,7 @@ export default class SelectTeam extends React.Component {
             }
 
             openContent = (
-                <div
-                    id='teamsYouCanJoinContent'
-                    className='signup__content'
-                >
+                <div id='teamsYouCanJoinContent' className='signup__content'>
                     <h4>
                         <FormattedMessage
                             id='signup_team.join_open'
@@ -210,10 +223,7 @@ export default class SelectTeam extends React.Component {
             adminConsoleLink = (
                 <SystemPermissionGate permissions={[Permissions.MANAGE_SYSTEM]}>
                     <div className='margin--extra hidden-xs'>
-                        <Link
-                            to='/admin_console'
-                            className='signup-team-login'
-                        >
+                        <Link to='/admin_console' className='signup-team-login'>
                             <FormattedMessage
                                 id='signup_team_system_console'
                                 defaultMessage='Go to System Console'
@@ -226,18 +236,14 @@ export default class SelectTeam extends React.Component {
 
         let headerButton;
         if (this.state.error) {
-            headerButton = <BackButton onClick={this.clearError}/>;
+            headerButton = <BackButton onClick={this.clearError} />;
         } else if (isMemberOfTeam) {
-            headerButton = <BackButton/>;
+            headerButton = <BackButton />;
         } else {
             headerButton = (
                 <div className='signup-header'>
-                    <a
-                        href='#'
-                        id='logout'
-                        onClick={this.handleLogoutClick}
-                    >
-                        <LogoutIcon/>
+                    <a href='#' id='logout' onClick={this.handleLogoutClick}>
+                        <LogoutIcon />
                         <FormattedMessage
                             id='web.header.logout'
                             defaultMessage='Logout'
@@ -248,7 +254,7 @@ export default class SelectTeam extends React.Component {
         }
         return (
             <div>
-                <AnnouncementBar/>
+                <AnnouncementBar />
                 {headerButton}
                 <div className='col-sm-12'>
                     <div className={'signup-team__container'}>
@@ -257,10 +263,12 @@ export default class SelectTeam extends React.Component {
                             className='signup-team-logo'
                             src={logoImage}
                         />
+
                         <SiteNameAndDescription
                             customDescriptionText={customDescriptionText}
                             siteName={siteName}
                         />
+
                         {openContent}
                         {teamSignUp}
                         {adminConsoleLink}

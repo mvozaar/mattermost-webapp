@@ -17,7 +17,6 @@ const MAX_POST_HEIGHT = 600;
 
 export default class PostMessageView extends React.PureComponent {
     static propTypes = {
-
         /*
          * The post to render the message for
          */
@@ -143,7 +142,8 @@ export default class PostMessageView extends React.PureComponent {
             return <span>{post.message}</span>;
         }
 
-        const postType = post.props && post.props.type ? post.props.type : post.type;
+        const postType =
+            post.props && post.props.type ? post.props.type : post.type;
 
         if (pluginPostTypes.hasOwnProperty(postType)) {
             const PluginComponent = pluginPostTypes[postType].component;
@@ -160,7 +160,11 @@ export default class PostMessageView extends React.PureComponent {
         let message = post.message;
         const isEphemeral = Utils.isPostEphemeral(post);
         if (compactDisplay && isEphemeral) {
-            const visibleMessage = Utils.localizeMessage('post_info.message.visible.compact', ' (Only visible to you)');
+            const visibleMessage = Utils.localizeMessage(
+                'post_info.message.visible.compact',
+                ' (Only visible to you)',
+            );
+
             message = message.concat(visibleMessage);
         }
 

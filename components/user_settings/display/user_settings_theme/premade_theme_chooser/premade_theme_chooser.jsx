@@ -14,7 +14,9 @@ export default class PremadeThemeChooser extends React.Component {
 
         const premadeThemes = [];
         const allowedThemes = this.props.allowedThemes;
-        const hasAllowedThemes = allowedThemes.length > 1 || (allowedThemes[0] && allowedThemes[0].trim().length > 0);
+        const hasAllowedThemes =
+            allowedThemes.length > 1 ||
+            (allowedThemes[0] && allowedThemes[0].trim().length > 0);
 
         for (const k in Constants.THEMES) {
             if (Constants.THEMES.hasOwnProperty(k)) {
@@ -35,7 +37,10 @@ export default class PremadeThemeChooser extends React.Component {
                         key={'premade-theme-key' + k}
                     >
                         <div
-                            id={`premadeTheme${premadeTheme.type.replace(' ', '')}`}
+                            id={`premadeTheme${premadeTheme.type.replace(
+                                ' ',
+                                '',
+                            )}`}
                             className={activeClass}
                             onClick={() => this.props.updateTheme(premadeTheme)}
                         >
@@ -45,19 +50,20 @@ export default class PremadeThemeChooser extends React.Component {
                                     className='img-responsive'
                                     src={premadeTheme.image}
                                 />
-                                <div className='theme-label'>{Utils.toTitleCase(premadeTheme.type)}</div>
+
+                                <div className='theme-label'>
+                                    {Utils.toTitleCase(premadeTheme.type)}
+                                </div>
                             </label>
                         </div>
-                    </div>
+                    </div>,
                 );
             }
         }
 
         return (
             <div className='row appearance-section'>
-                <div className='clearfix'>
-                    {premadeThemes}
-                </div>
+                <div className='clearfix'>{premadeThemes}</div>
             </div>
         );
     }

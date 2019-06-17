@@ -6,12 +6,11 @@ import {PropTypes} from 'prop-types';
 
 export class AsyncComponent extends React.Component {
     static propTypes = {
-
         /**
          * Function that loads the component asyncronously
          */
         doLoad: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -21,11 +20,13 @@ export class AsyncComponent extends React.Component {
         };
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         this.load(this.props);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.doLoad !== this.props.doLoad) {
             this.load(nextProps);
         }
@@ -33,20 +34,21 @@ export class AsyncComponent extends React.Component {
 
     load(props) {
         props.doLoad((loadedModule) => {
-            this.setState({loadedModule: loadedModule.default ? loadedModule.default : loadedModule});
+            this.setState({
+                loadedModule: loadedModule.default
+                    ? loadedModule.default
+                    : loadedModule,
+            });
         });
     }
 
     render() {
-        return this.state.loadedModule ? <this.state.loadedModule {...this.props}/> : null;
+        return this.state.loadedModule ? (
+            <this.state.loadedModule {...this.props} />
+        ) : null;
     }
 }
 
 export function makeAsyncComponent(loadComponent) {
-    return (props) => (
-        <AsyncComponent
-            doLoad={loadComponent}
-            {...props}
-        />
-    );
+    return (props) => <AsyncComponent doLoad={loadComponent} {...props} />;
 }

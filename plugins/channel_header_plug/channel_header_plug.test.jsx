@@ -10,7 +10,7 @@ describe('plugins/ChannelHeaderPlug', () => {
     const testPlug = {
         id: 'someid',
         pluginId: 'pluginid',
-        icon: <i className='fa fa-anchor'/>,
+        icon: <i className='fa fa-anchor' />,
         action: jest.fn,
         dropdownText: 'some dropdown text',
         tooltipText: 'some tooltip text',
@@ -23,8 +23,9 @@ describe('plugins/ChannelHeaderPlug', () => {
                 channel={{}}
                 channelMember={{}}
                 theme={{}}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -35,8 +36,9 @@ describe('plugins/ChannelHeaderPlug', () => {
                 channel={{}}
                 channelMember={{}}
                 theme={{}}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -47,8 +49,9 @@ describe('plugins/ChannelHeaderPlug', () => {
                 channel={{}}
                 channelMember={{}}
                 theme={{}}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

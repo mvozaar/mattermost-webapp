@@ -17,11 +17,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            updateConfig,
-            getConfig,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                updateConfig,
+                getConfig,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPostTimeLimitModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(EditPostTimeLimitModal);

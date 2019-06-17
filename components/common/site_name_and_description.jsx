@@ -12,14 +12,11 @@ export default class SiteNameAndDescription extends React.PureComponent {
     };
 
     static defaultProps = {
-        siteName: 'Mattermost',
+        siteName: 'securCom',
     };
 
     render() {
-        const {
-            customDescriptionText,
-            siteName,
-        } = this.props;
+        const {customDescriptionText, siteName} = this.props;
         let description = null;
         if (customDescriptionText) {
             description = customDescriptionText;
@@ -35,10 +32,7 @@ export default class SiteNameAndDescription extends React.PureComponent {
         return (
             <React.Fragment>
                 <h1 id='site_name'>{siteName}</h1>
-                <h4
-                    id='site_description'
-                    className='color--light'
-                >
+                <h4 id='site_description' className='color--light'>
                     {description}
                 </h4>
             </React.Fragment>

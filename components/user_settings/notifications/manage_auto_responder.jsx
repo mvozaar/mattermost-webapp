@@ -31,14 +31,13 @@ export default class ManageAutoResponder extends React.PureComponent {
     };
 
     render() {
-        const {
-            autoResponderActive,
-            autoResponderMessage,
-        } = this.props;
+        const {autoResponderActive, autoResponderMessage} = this.props;
 
         let serverError;
         if (this.props.error) {
-            serverError = <label className='has-error'>{this.props.error}</label>;
+            serverError = (
+                <label className='has-error'>{this.props.error}</label>
+            );
         }
 
         const inputs = [];
@@ -56,6 +55,7 @@ export default class ManageAutoResponder extends React.PureComponent {
                         checked={autoResponderActive}
                         onChange={this.handleAutoResponderChecked}
                     />
+
                     <FormattedMessage
                         id='user.settings.notifications.autoResponderEnabled'
                         defaultMessage='Enabled'
@@ -65,21 +65,22 @@ export default class ManageAutoResponder extends React.PureComponent {
         );
 
         const message = (
-            <div
-                id='autoResponderMessage'
-                key='autoResponderMessage'
-            >
+            <div id='autoResponderMessage' key='autoResponderMessage'>
                 <div className='padding-top'>
                     <AutosizeTextarea
                         style={{resize: 'none'}}
                         id='autoResponderMessageInput'
                         className='form-control'
                         rows='5'
-                        placeholder={localizeMessage('user.settings.notifications.autoResponderPlaceholder', 'Message')}
+                        placeholder={localizeMessage(
+                            'user.settings.notifications.autoResponderPlaceholder',
+                            'Message',
+                        )}
                         value={autoResponderMessage}
                         maxLength={MESSAGE_MAX_LENGTH}
                         onChange={this.onMessageChanged}
                     />
+
                     {serverError}
                 </div>
             </div>
@@ -89,15 +90,15 @@ export default class ManageAutoResponder extends React.PureComponent {
         if (autoResponderActive) {
             inputs.push(message);
         }
-        inputs.push((
+        inputs.push(
             <div key='autoResponderHint'>
-                <br/>
+                <br />
                 <FormattedHTMLMessage
                     id='user.settings.notifications.autoResponderHint'
                     defaultMessage='Set a custom message that will be automatically sent in response to Direct Messages. Mentions in Public and Private Channels will not trigger the automated reply. Enabling Automatic Replies sets your status to Out of Office and disables email and push notifications.'
                 />
-            </div>
-        ));
+            </div>,
+        );
 
         return (
             <SettingItemMax

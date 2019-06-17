@@ -15,11 +15,21 @@ describe('components/widgets/inputs/ChannelsInput', () => {
                 onChange={jest.fn()}
                 channelsLoader={jest.fn()}
                 value={[
-                    {id: 'test-channel-1', type: 'O', display_name: 'test channel 1'},
-                    {id: 'test-channel-2', type: 'P', display_name: 'test channel 2'},
+                    {
+                        id: 'test-channel-1',
+                        type: 'O',
+                        display_name: 'test channel 1',
+                    },
+
+                    {
+                        id: 'test-channel-2',
+                        type: 'P',
+                        display_name: 'test channel 2',
+                    },
                 ]}
-            />
+            />,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <Async
   cacheOptions={false}

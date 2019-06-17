@@ -23,7 +23,7 @@ export default class PostListRow extends React.PureComponent {
         shouldHighlight: PropTypes.bool,
         loadMorePosts: PropTypes.func,
         togglePostMenu: PropTypes.func,
-    }
+    };
 
     render() {
         const {listId, previousListId} = this.props;
@@ -31,26 +31,15 @@ export default class PostListRow extends React.PureComponent {
         if (PostListUtils.isDateLine(listId)) {
             const date = PostListUtils.getDateForDateLine(listId);
 
-            return (
-                <DateSeparator
-                    key={date}
-                    date={date}
-                />
-            );
+            return <DateSeparator key={date} date={date} />;
         }
 
         if (PostListUtils.isStartOfNewMessages(listId)) {
-            return (
-                <NewMessageSeparator separatorId={listId}/>
-            );
+            return <NewMessageSeparator separatorId={listId} />;
         }
 
         if (listId === PostListRowListIds.CHANNEL_INTRO_MESSAGE) {
-            return (
-                <ChannelIntroMessage
-                    channel={this.props.channel}
-                />
-            );
+            return <ChannelIntroMessage channel={this.props.channel} />;
         }
 
         if (listId === PostListRowListIds.MANUAL_TRIGGER_LOAD_MESSAGES) {
@@ -69,13 +58,11 @@ export default class PostListRow extends React.PureComponent {
 
         if (listId === PostListRowListIds.MORE_MESSAGES_LOADER) {
             return (
-                <div
-                    className='loading-screen'
-                >
+                <div className='loading-screen'>
                     <div className='loading__content'>
-                        <div className='round round-1'/>
-                        <div className='round round-2'/>
-                        <div className='round round-3'/>
+                        <div className='round round-1' />
+                        <div className='round round-2' />
+                        <div className='round round-3' />
                     </div>
                 </div>
             );
@@ -89,18 +76,10 @@ export default class PostListRow extends React.PureComponent {
 
         if (PostListUtils.isCombinedUserActivityPost(listId)) {
             return (
-                <CombinedUserActivityPost
-                    combinedId={listId}
-                    {...postProps}
-                />
+                <CombinedUserActivityPost combinedId={listId} {...postProps} />
             );
         }
 
-        return (
-            <Post
-                postId={listId}
-                {...postProps}
-            />
-        );
+        return <Post postId={listId} {...postProps} />;
     }
 }

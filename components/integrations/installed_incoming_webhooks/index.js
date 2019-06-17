@@ -19,11 +19,15 @@ import InstalledIncomingWebhooks from './installed_incoming_webhooks.jsx';
 function mapStateToProps(state) {
     const config = getConfig(state);
     const teamId = getCurrentTeamId(state);
-    const canManageOthersWebhooks = haveITeamPermission(state, {team: teamId, permission: Permissions.MANAGE_OTHERS_INCOMING_WEBHOOKS});
+    const canManageOthersWebhooks = haveITeamPermission(state, {
+        team: teamId,
+        permission: Permissions.MANAGE_OTHERS_INCOMING_WEBHOOKS,
+    });
+
     const incomingHooks = getIncomingHooks(state);
-    const incomingWebhooks = Object.keys(incomingHooks).
-        map((key) => incomingHooks[key]).
-        filter((incomingWebhook) => incomingWebhook.team_id === teamId);
+    const incomingWebhooks = Object.keys(incomingHooks)
+        .map((key) => incomingHooks[key])
+        .filter((incomingWebhook) => incomingWebhook.team_id === teamId);
     const enableIncomingWebhooks = config.EnableIncomingWebhooks === 'true';
 
     return {
@@ -38,11 +42,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadIncomingHooksAndProfilesForTeam,
-            removeIncomingHook: Actions.removeIncomingHook,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadIncomingHooksAndProfilesForTeam,
+                removeIncomingHook: Actions.removeIncomingHook,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InstalledIncomingWebhooks);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(InstalledIncomingWebhooks);

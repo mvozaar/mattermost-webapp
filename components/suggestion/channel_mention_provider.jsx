@@ -3,7 +3,11 @@
 
 import React from 'react';
 
-import {getMyChannels, getChannel, getMyChannelMemberships} from 'mattermost-redux/selectors/entities/channels';
+import {
+    getMyChannels,
+    getChannel,
+    getMyChannelMemberships,
+} from 'mattermost-redux/selectors/entities/channels';
 
 import {sortChannelsByTypeAndDisplayName} from 'mattermost-redux/utils/channel_utils';
 
@@ -39,17 +43,10 @@ class ChannelMentionSuggestion extends Suggestion {
                 {...Suggestion.baseProps}
             >
                 <div className='mention__align'>
-                    <span>
-                        {channelName}
-                    </span>
-                    <span className='mention__channelname'>
-                        {' '}
-                        {description}
-                    </span>
+                    <span>{channelName}</span>
+                    <span className='mention__channelname'> {description}</span>
                 </div>
-                <div className='mention__purpose'>
-                    {purpose}
-                </div>
+                <div className='mention__purpose'>{purpose}</div>
             </div>
         );
     }
@@ -67,7 +64,7 @@ export default class ChannelMentionProvider extends Provider {
     handlePretextChanged(pretext, resultCallback) {
         this.resetRequest();
 
-        const captured = (/\B(~([^~\r\n]*))$/i).exec(pretext.toLowerCase());
+        const captured = /\B(~([^~\r\n]*))$/i.exec(pretext.toLowerCase());
 
         if (!captured) {
             // Not a channel mention
@@ -81,19 +78,28 @@ export default class ChannelMentionProvider extends Provider {
 
         const prefix = captured[2];
 
-        if (this.lastPrefixTrimmed && prefix.trim() === this.lastPrefixTrimmed) {
+        if (
+            this.lastPrefixTrimmed &&
+            prefix.trim() === this.lastPrefixTrimmed
+        ) {
             // Don't keep searching if the user keeps typing spaces
             return true;
         }
 
         this.lastPrefixTrimmed = prefix.trim();
 
-        if (this.lastPrefixWithNoResults && prefix.startsWith(this.lastPrefixWithNoResults)) {
+        if (
+            this.lastPrefixWithNoResults &&
+            prefix.startsWith(this.lastPrefixWithNoResults)
+        ) {
             // Just give up since we know it won't return any results
             return false;
         }
 
-        if (this.lastCompletedWord && captured[0].startsWith(this.lastCompletedWord)) {
+        if (
+            this.lastCompletedWord &&
+            captured[0].startsWith(this.lastCompletedWord)
+        ) {
             // It appears we're still matching a channel handle that we already completed
             return false;
         }
@@ -110,7 +116,10 @@ export default class ChannelMentionProvider extends Provider {
             if (item.type !== 'O' || item.delete_at > 0) {
                 return;
             }
-            const nameWords = item.name.toLowerCase().split(/\s+/).concat(item.display_name.toLowerCase().split(/\s+/));
+            const nameWords = item.name
+                .toLowerCase()
+                .split(/\s+/)
+                .concat(item.display_name.toLowerCase().split(/\s+/));
             var matched = true;
             for (var j = 0; matched && j < words.length; j++) {
                 if (!words[j]) {
@@ -143,77 +152,84 @@ export default class ChannelMentionProvider extends Provider {
             //
             return sortChannelsByTypeAndDisplayName('en', a.channel, b.channel);
         });
-        const channelMentions = wrappedChannels.map((item) => '~' + item.channel.name);
+        const channelMentions = wrappedChannels.map(
+            (item) => '~' + item.channel.name,
+        );
+
         resultCallback({
             terms: channelMentions.concat([' ']),
-            items: wrappedChannels.concat([{
-                type: Constants.MENTION_MORE_CHANNELS,
-                loading: true,
-            }]),
+            items: wrappedChannels.concat([
+                {
+                    type: Constants.MENTION_MORE_CHANNELS,
+                    loading: true,
+                },
+            ]),
+
             component: ChannelMentionSuggestion,
             matchedPretext: captured[1],
         });
 
-        autocompleteChannels(
-            prefix,
-            (channels) => {
-                const myMembers = getMyChannelMemberships(store.getState());
-                if (this.shouldCancelDispatch(prefix)) {
+        autocompleteChannels(prefix, (channels) => {
+            const myMembers = getMyChannelMemberships(store.getState());
+            if (this.shouldCancelDispatch(prefix)) {
+                return;
+            }
+
+            if (channels.length === 0) {
+                this.lastPrefixWithNoResults = prefix;
+            }
+
+            // Wrap channels in an outer object to avoid overwriting the 'type' property.
+            const wrappedMoreChannels = [];
+            const moreChannels = [];
+            channels.forEach((item) => {
+                if (item.delete_at > 0 && !myMembers[item.id]) {
+                    return;
+                }
+                if (getChannel(store.getState(), item.id)) {
+                    if (!wrappedChannelIds[item.id]) {
+                        wrappedChannelIds[item.id] = true;
+                        wrappedChannels.push({
+                            type: Constants.MENTION_CHANNELS,
+                            channel: item,
+                        });
+                    }
                     return;
                 }
 
-                if (channels.length === 0) {
-                    this.lastPrefixWithNoResults = prefix;
-                }
-
-                // Wrap channels in an outer object to avoid overwriting the 'type' property.
-                const wrappedMoreChannels = [];
-                const moreChannels = [];
-                channels.forEach((item) => {
-                    if (item.delete_at > 0 && !myMembers[item.id]) {
-                        return;
-                    }
-                    if (getChannel(store.getState(), item.id)) {
-                        if (!wrappedChannelIds[item.id]) {
-                            wrappedChannelIds[item.id] = true;
-                            wrappedChannels.push({
-                                type: Constants.MENTION_CHANNELS,
-                                channel: item,
-                            });
-                        }
-                        return;
-                    }
-
-                    wrappedMoreChannels.push({
-                        type: Constants.MENTION_MORE_CHANNELS,
-                        channel: item,
-                    });
-
-                    moreChannels.push(item);
+                wrappedMoreChannels.push({
+                    type: Constants.MENTION_MORE_CHANNELS,
+                    channel: item,
                 });
 
-                wrappedChannels = wrappedChannels.sort((a, b) => {
-                    //
-                    // MM-12677 When this is migrated this needs to be fixed to pull the user's locale
-                    //
-                    return sortChannelsByTypeAndDisplayName('en', a.channel, b.channel);
-                });
-                const wrapped = wrappedChannels.concat(wrappedMoreChannels);
-                const mentions = wrapped.map((item) => '~' + item.channel.name);
+                moreChannels.push(item);
+            });
 
-                store.dispatch({
-                    type: ChannelTypes.RECEIVED_CHANNELS,
-                    data: moreChannels,
-                });
+            wrappedChannels = wrappedChannels.sort((a, b) => {
+                //
+                // MM-12677 When this is migrated this needs to be fixed to pull the user's locale
+                //
+                return sortChannelsByTypeAndDisplayName(
+                    'en',
+                    a.channel,
+                    b.channel,
+                );
+            });
+            const wrapped = wrappedChannels.concat(wrappedMoreChannels);
+            const mentions = wrapped.map((item) => '~' + item.channel.name);
 
-                resultCallback({
-                    matchedPretext: captured[1],
-                    terms: mentions,
-                    items: wrapped,
-                    component: ChannelMentionSuggestion,
-                });
-            }
-        );
+            store.dispatch({
+                type: ChannelTypes.RECEIVED_CHANNELS,
+                data: moreChannels,
+            });
+
+            resultCallback({
+                matchedPretext: captured[1],
+                terms: mentions,
+                items: wrapped,
+                component: ChannelMentionSuggestion,
+            });
+        });
 
         return true;
     }

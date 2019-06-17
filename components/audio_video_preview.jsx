@@ -13,17 +13,16 @@ import FileInfoPreview from 'components/file_info_preview';
 
 export default class AudioVideoPreview extends React.PureComponent {
     static propTypes = {
-
         /**
-        * Compare file types
-        */
+         * Compare file types
+         */
         fileInfo: PropTypes.object.isRequired,
 
         /**
-        *  URL of pdf file to output and compare to update props url
-        */
+         *  URL of pdf file to output and compare to update props url
+         */
         fileUrl: PropTypes.string.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -38,17 +37,22 @@ export default class AudioVideoPreview extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         this.handleFileInfoChanged(this.props.fileInfo);
     }
 
     componentDidMount() {
         if (this.refs.source) {
-            $(ReactDOM.findDOMNode(this.refs.source)).one('error', this.handleLoadError);
+            $(ReactDOM.findDOMNode(this.refs.source)).one(
+                'error',
+                this.handleLoadError,
+            );
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.fileUrl !== nextProps.fileUrl) {
             this.handleFileInfoChanged(nextProps.fileInfo);
         }
@@ -69,7 +73,10 @@ export default class AudioVideoPreview extends React.PureComponent {
 
     componentDidUpdate() {
         if (this.refs.source) {
-            $(ReactDOM.findDOMNode(this.refs.source)).one('error', this.handleLoadError);
+            $(ReactDOM.findDOMNode(this.refs.source)).one(
+                'error',
+                this.handleLoadError,
+            );
         }
     }
 
@@ -114,10 +121,7 @@ export default class AudioVideoPreview extends React.PureComponent {
                 width={width}
                 height={height}
             >
-                <source
-                    ref='source'
-                    src={this.props.fileUrl}
-                />
+                <source ref='source' src={this.props.fileUrl} />
             </video>
         );
     }

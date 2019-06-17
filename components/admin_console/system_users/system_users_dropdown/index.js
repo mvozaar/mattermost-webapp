@@ -19,11 +19,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            updateUserActive,
-            revokeAllSessions,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                updateUserActive,
+                revokeAllSessions,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SystemUsersDropdown);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SystemUsersDropdown);

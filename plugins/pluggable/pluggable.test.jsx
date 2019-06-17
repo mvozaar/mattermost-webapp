@@ -22,11 +22,19 @@ describe('plugins/Pluggable', () => {
 
     const membersInTeam = {};
     membersInTeam.someTeamId = {};
-    membersInTeam.someTeamId.someUserId = {team_id: 'someTeamId', user_id: 'someUserId', roles: 'team_user'};
+    membersInTeam.someTeamId.someUserId = {
+        team_id: 'someTeamId',
+        user_id: 'someUserId',
+        roles: 'team_user',
+    };
 
     const membersInChannel = {};
     membersInChannel.someChannelId = {};
-    membersInChannel.someChannelId.someUserId = {channel_id: 'someChannelId', user_id: 'someUserId', roles: 'channel_user'};
+    membersInChannel.someChannelId.someUserId = {
+        channel_id: 'someChannelId',
+        user_id: 'someUserId',
+        roles: 'channel_user',
+    };
 
     const store = mockStore({
         entities: {
@@ -35,14 +43,16 @@ describe('plugins/Pluggable', () => {
                 channels: {
                     someChannelId: {team_id: 'someTeamId', id: 'someChannelId'},
                 },
+
                 membersInChannel,
                 myMembers: {},
             },
+
             general: {
                 license: {IsLicensed: 'false'},
-                config: {
-                },
+                config: {},
             },
+
             teams: {
                 membersInTeam,
                 currentTeamId: 'someTeamId',
@@ -53,12 +63,15 @@ describe('plugins/Pluggable', () => {
                     },
                 },
             },
+
             preferences: {
                 myPreferences: {},
             },
+
             posts: {
                 posts: {},
             },
+
             users: {
                 currentUserId: 'someUserId',
                 users: {someUserId: {id: 'someUserId', name: 'some_user_name'}},
@@ -67,21 +80,25 @@ describe('plugins/Pluggable', () => {
                     someUserId: 'online',
                 },
             },
+
             roles: {
                 roles: {},
             },
+
             bots: {
                 accounts: {},
             },
         },
+
         plugins: {
             components: {},
         },
+
         views: {
-            posts: {
-            },
-            channel: {
-            },
+            posts: {},
+
+            channel: {},
+
             rhs: {},
         },
     });
@@ -89,12 +106,10 @@ describe('plugins/Pluggable', () => {
     test('should match snapshot with no extended component', () => {
         const wrapper = mountWithIntl(
             <Provider store={store}>
-                <Pluggable
-                    components={{}}
-                    theme={{}}
-                />
-            </Provider>
+                <Pluggable components={{}} theme={{}} />
+            </Provider>,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -103,10 +118,12 @@ describe('plugins/Pluggable', () => {
             <Provider store={store}>
                 <Pluggable
                     pluggableName='PopoverSection1'
-                    components={{PopoverSection1: [{component: ProfilePopoverPlugin}]}}
+                    components={{
+                        PopoverSection1: [{component: ProfilePopoverPlugin}],
+                    }}
                     theme={{id: 'theme_id'}}
                 />
-            </Provider>
+            </Provider>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -117,9 +134,11 @@ describe('plugins/Pluggable', () => {
         const wrapper = mountWithIntl(
             <Pluggable
                 pluggableName='PopoverSection1'
-                components={{PopoverSection1: [{component: ProfilePopoverPlugin}]}}
+                components={{
+                    PopoverSection1: [{component: ProfilePopoverPlugin}],
+                }}
                 theme={{id: 'theme_id'}}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -129,9 +148,11 @@ describe('plugins/Pluggable', () => {
     test('should return null if neither pluggableName nor children is is defined in props', () => {
         const wrapper = shallow(
             <Pluggable
-                components={{PopoverSection1: [{component: ProfilePopoverPlugin}]}}
+                components={{
+                    PopoverSection1: [{component: ProfilePopoverPlugin}],
+                }}
                 theme={{id: 'theme_id'}}
-            />
+            />,
         );
 
         expect(wrapper.type()).toBe(null);
@@ -143,7 +164,7 @@ describe('plugins/Pluggable', () => {
                 pluggableName='PopoverSection1'
                 components={{}}
                 theme={{id: 'theme_id'}}
-            />
+            />,
         );
 
         expect(wrapper.type()).toBe(null);

@@ -18,7 +18,9 @@ describe('Message Draft and Switch Channels', () => {
         // # In a test channel, type some text in the message input box
         // # Do not send the post
         cy.get('#sidebarItem_town-square').scrollIntoView();
-        cy.get('#sidebarItem_town-square').should('be.visible').click();
+        cy.get('#sidebarItem_town-square')
+            .should('be.visible')
+            .click();
 
         // * Validate if the channel has been opened
         cy.url().should('include', '/channels/town-square');
@@ -32,7 +34,9 @@ describe('Message Draft and Switch Channels', () => {
 
         // # Switch to another channel
         cy.get('#sidebarItem_autem-2').scrollIntoView();
-        cy.get('#sidebarItem_autem-2').should('be.visible').click();
+        cy.get('#sidebarItem_autem-2')
+            .should('be.visible')
+            .click();
 
         // * Validate if the newly navigated channel is open
         cy.url().should('include', '/channels/autem-2');
@@ -45,7 +49,7 @@ describe('Message Draft and Switch Channels', () => {
 
         // # Type the first few letters of the channel name you typed the message draft in
         cy.get('#quickSwitchInput').type('tow');
-        cy.wait(500);  // eslint-disable-line
+        cy.wait(500); // eslint-disable-line
 
         // * Suggestion list should be visible
         cy.get('#suggestionList').should('be.visible');
@@ -58,4 +62,3 @@ describe('Message Draft and Switch Channels', () => {
         cy.clearPostTextbox('town-square');
     });
 });
-

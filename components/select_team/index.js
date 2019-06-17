@@ -10,7 +10,10 @@ import {loadRolesIfNeeded} from 'mattermost-redux/actions/roles';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {Permissions} from 'mattermost-redux/constants';
 import {haveISystemPermission} from 'mattermost-redux/selectors/entities/roles';
-import {getSortedListableTeams, getTeamMemberships} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getSortedListableTeams,
+    getTeamMemberships,
+} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 
 import {addUserToTeam} from 'actions/team_actions';
@@ -29,21 +32,41 @@ function mapStateToProps(state) {
         isMemberOfTeam: myTeamMemberships && myTeamMemberships.length > 0,
         listableTeams: getSortedListableTeams(state, currentUser.locale),
         siteName: config.SiteName,
-        canCreateTeams: haveISystemPermission(state, {permission: Permissions.CREATE_TEAM}),
-        canManageSystem: haveISystemPermission(state, {permission: Permissions.MANAGE_SYSTEM}),
-        canJoinPublicTeams: haveISystemPermission(state, {permission: Permissions.JOIN_PUBLIC_TEAMS}),
-        canJoinPrivateTeams: haveISystemPermission(state, {permission: Permissions.JOIN_PRIVATE_TEAMS}),
+        canCreateTeams: haveISystemPermission(state, {
+            permission: Permissions.CREATE_TEAM,
+        }),
+
+        canManageSystem: haveISystemPermission(state, {
+            permission: Permissions.MANAGE_SYSTEM,
+        }),
+
+        canJoinPublicTeams: haveISystemPermission(state, {
+            permission: Permissions.JOIN_PUBLIC_TEAMS,
+        }),
+
+        canJoinPrivateTeams: haveISystemPermission(state, {
+            permission: Permissions.JOIN_PRIVATE_TEAMS,
+        }),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getTeams,
-            loadRolesIfNeeded,
-            addUserToTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getTeams,
+                loadRolesIfNeeded,
+                addUserToTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SelectTeam));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    )(SelectTeam),
+);

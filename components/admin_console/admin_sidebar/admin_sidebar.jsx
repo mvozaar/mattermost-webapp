@@ -35,17 +35,16 @@ export default class AdminSidebar extends React.Component {
         onFilterChange: PropTypes.func.isRequired,
         navigationBlocked: PropTypes.bool.isRequired,
         actions: PropTypes.shape({
-
             /*
              * Function to get installed plugins
              */
             getPlugins: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         plugins: {},
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -53,6 +52,7 @@ export default class AdminSidebar extends React.Component {
             sections: null,
             filter: '',
         };
+
         this.idx = null;
     }
 
@@ -105,7 +105,10 @@ export default class AdminSidebar extends React.Component {
             return;
         }
 
-        const validSection = sections.indexOf(browserHistory.location.pathname.replace('/admin_console/', '')) !== -1;
+        const validSection =
+            sections.indexOf(
+                browserHistory.location.pathname.replace('/admin_console/', ''),
+            ) !== -1;
         if (!validSection) {
             const visibleSections = this.visibleSections();
             for (const section of sections) {
@@ -115,7 +118,7 @@ export default class AdminSidebar extends React.Component {
                 }
             }
         }
-    }
+    };
 
     updateTitle = () => {
         let currentSiteName = '';
@@ -123,8 +126,12 @@ export default class AdminSidebar extends React.Component {
             currentSiteName = ' - ' + this.props.siteName;
         }
 
-        document.title = Utils.localizeMessage('sidebar_right_menu.console', 'System Console') + currentSiteName;
-    }
+        document.title =
+            Utils.localizeMessage(
+                'sidebar_right_menu.console',
+                'System Console',
+            ) + currentSiteName;
+    };
 
     visibleSections = () => {
         const isVisible = (item) => {
@@ -136,7 +143,15 @@ export default class AdminSidebar extends React.Component {
                 return false;
             }
 
-            if (item.isHidden && item.isHidden(this.props.config, {}, this.props.license, this.props.buildEnterpriseReady)) {
+            if (
+                item.isHidden &&
+                item.isHidden(
+                    this.props.config,
+                    {},
+                    this.props.license,
+                    this.props.buildEnterpriseReady,
+                )
+            ) {
                 return false;
             }
             return true;
@@ -150,7 +165,7 @@ export default class AdminSidebar extends React.Component {
             }
         }
         return result;
-    }
+    };
 
     renderRootMenu = (definition) => {
         const sidebarSections = [];
@@ -161,7 +176,15 @@ export default class AdminSidebar extends React.Component {
                     return;
                 }
 
-                if (item.isHidden && item.isHidden(this.props.config, {}, this.props.license, this.props.buildEnterpriseReady)) {
+                if (
+                    item.isHidden &&
+                    item.isHidden(
+                        this.props.config,
+                        {},
+                        this.props.license,
+                        this.props.buildEnterpriseReady,
+                    )
+                ) {
                     return;
                 }
 
@@ -177,7 +200,7 @@ export default class AdminSidebar extends React.Component {
                     }
                 }
 
-                sidebarItems.push((
+                sidebarItems.push(
                     <AdminSidebarSection
                         key={itemIndex}
                         name={item.url}
@@ -187,8 +210,8 @@ export default class AdminSidebar extends React.Component {
                                 defaultMessage={item.title_default}
                             />
                         }
-                    />
-                ));
+                    />,
+                );
             });
 
             // If no visible items, don't display this section
@@ -203,7 +226,7 @@ export default class AdminSidebar extends React.Component {
             }
 
             if (sidebarItems.length) {
-                sidebarSections.push((
+                sidebarSections.push(
                     <AdminSidebarCategory
                         key={sectionIndex}
                         parentLink='/admin_console'
@@ -218,54 +241,66 @@ export default class AdminSidebar extends React.Component {
                     >
                         {sidebarItems}
                         {moreSidebarItems}
-                    </AdminSidebarCategory>
-                ));
+                    </AdminSidebarCategory>,
+                );
             }
             return null;
         });
         return sidebarSections;
-    }
+    };
 
     renderPluginsMenu = () => {
         const customPlugins = [];
         if (this.props.config.PluginSettings.Enable) {
-            Object.values(this.props.plugins).sort((a, b) => {
-                const nameCompare = a.name.localeCompare(b.name);
-                if (nameCompare !== 0) {
-                    return nameCompare;
-                }
+            Object.values(this.props.plugins)
+                .sort((a, b) => {
+                    const nameCompare = a.name.localeCompare(b.name);
+                    if (nameCompare !== 0) {
+                        return nameCompare;
+                    }
 
-                return a.id.localeCompare(b.id);
-            }).forEach((p) => {
-                const hasSettings = p.settings_schema && (p.settings_schema.header || p.settings_schema.footer || p.settings_schema.settings);
-                if (!hasSettings) {
-                    return;
-                }
+                    return a.id.localeCompare(b.id);
+                })
+                .forEach((p) => {
+                    const hasSettings =
+                        p.settings_schema &&
+                        (p.settings_schema.header ||
+                            p.settings_schema.footer ||
+                            p.settings_schema.settings);
+                    if (!hasSettings) {
+                        return;
+                    }
 
-                if (p.settings_schema.settings && (!p.settings_schema.header && !p.settings_schema.footer)) {
-                    if (p.settings_schema.settings.hasOwnProperty('length')) {
-                        if (p.settings_schema.settings.length === 0) {
-                            return;
+                    if (
+                        p.settings_schema.settings &&
+                        !p.settings_schema.header &&
+                        !p.settings_schema.footer
+                    ) {
+                        if (
+                            p.settings_schema.settings.hasOwnProperty('length')
+                        ) {
+                            if (p.settings_schema.settings.length === 0) {
+                                return;
+                            }
                         }
                     }
-                }
 
-                customPlugins.push(
-                    <AdminSidebarSection
-                        key={'customplugin' + p.id}
-                        name={'integrations/plugin_' + p.id}
-                        title={p.name}
-                    />
-                );
-            });
+                    customPlugins.push(
+                        <AdminSidebarSection
+                            key={'customplugin' + p.id}
+                            name={'integrations/plugin_' + p.id}
+                            title={p.name}
+                        />,
+                    );
+                });
         }
         return customPlugins;
-    }
+    };
 
     handleClearFilter = () => {
         this.setState({sections: null, filter: ''});
         this.props.onFilterChange('');
-    }
+    };
 
     render() {
         const filterClearTooltip = (
@@ -276,9 +311,10 @@ export default class AdminSidebar extends React.Component {
                 />
             </Tooltip>
         );
+
         return (
             <div className='admin-sidebar'>
-                <AdminSidebarHeader/>
+                <AdminSidebarHeader />
                 <div className='nav-pills__container'>
                     <Highlight filter={this.state.filter}>
                         <ul className='nav nav-pills nav-stacked'>
@@ -288,21 +324,31 @@ export default class AdminSidebar extends React.Component {
                                     className='search__icon'
                                     aria-hidden='true'
                                 />
+
                                 <input
-                                    className={'filter ' + (this.state.filter ? 'active' : '')}
+                                    className={
+                                        'filter ' +
+                                        (this.state.filter ? 'active' : '')
+                                    }
                                     type='text'
                                     onChange={this.onFilterChange}
                                     value={this.state.filter}
-                                    placeholder={Utils.localizeMessage('admin.sidebar.filter', 'Find settings')}
+                                    placeholder={Utils.localizeMessage(
+                                        'admin.sidebar.filter',
+                                        'Find settings',
+                                    )}
                                 />
-                                {this.state.filter &&
+
+                                {this.state.filter && (
                                     <div
                                         className='sidebar__search-clear visible'
                                         onClick={this.handleClearFilter}
                                     >
                                         <OverlayTrigger
                                             trigger={['hover', 'focus']}
-                                            delayShow={Constants.OVERLAY_TIME_DELAY}
+                                            delayShow={
+                                                Constants.OVERLAY_TIME_DELAY
+                                            }
                                             placement='bottom'
                                             overlay={filterClearTooltip}
                                         >
@@ -313,7 +359,8 @@ export default class AdminSidebar extends React.Component {
                                                 {'×'}
                                             </span>
                                         </OverlayTrigger>
-                                    </div>}
+                                    </div>
+                                )}
                             </li>
                             {this.renderRootMenu(AdminDefinition)}
                         </ul>

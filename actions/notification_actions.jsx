@@ -2,10 +2,19 @@
 // See LICENSE.txt for license information.
 
 import {getProfilesByIds} from 'mattermost-redux/actions/users';
-import {getChannel, getCurrentChannel, getMyChannelMember} from 'mattermost-redux/selectors/entities/channels';
+import {
+    getChannel,
+    getCurrentChannel,
+    getMyChannelMember,
+} from 'mattermost-redux/selectors/entities/channels';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
-import {getCurrentUserId, getCurrentUser, getStatusForUserId, getUser} from 'mattermost-redux/selectors/entities/users';
+import {
+    getCurrentUserId,
+    getCurrentUser,
+    getStatusForUserId,
+    getUser,
+} from 'mattermost-redux/selectors/entities/users';
 import {isChannelMuted} from 'mattermost-redux/utils/channel_utils';
 import {isSystemMessage} from 'mattermost-redux/utils/post_utils';
 import {displayUsername} from 'mattermost-redux/utils/user_utils';
@@ -22,7 +31,10 @@ export function sendDesktopNotification(post, msgProps) {
         const state = getState();
         const currentUserId = getCurrentUserId(state);
 
-        if ((currentUserId === post.user_id && post.props.from_webhook !== 'true')) {
+        if (
+            currentUserId === post.user_id &&
+            post.props.from_webhook !== 'true'
+        ) {
             return;
         }
 
@@ -32,8 +44,13 @@ export function sendDesktopNotification(post, msgProps) {
 
         let userFromPost = getUser(state, post.user_id);
         if (!userFromPost) {
-            const missingProfileResponse = await dispatch(getProfilesByIds([post.user_id]));
-            if (missingProfileResponse.data && missingProfileResponse.data.length) {
+            const missingProfileResponse = await dispatch(
+                getProfilesByIds([post.user_id]),
+            );
+            if (
+                missingProfileResponse.data &&
+                missingProfileResponse.data.length
+            ) {
                 userFromPost = missingProfileResponse.data[0];
             }
         }
@@ -49,29 +66,54 @@ export function sendDesktopNotification(post, msgProps) {
         const userStatus = getStatusForUserId(state, user.id);
         const member = getMyChannelMember(state, post.channel_id);
 
-        if (!member || isChannelMuted(member) || userStatus === UserStatuses.DND || userStatus === UserStatuses.OUT_OF_OFFICE) {
+        if (
+            !member ||
+            isChannelMuted(member) ||
+            userStatus === UserStatuses.DND ||
+            userStatus === UserStatuses.OUT_OF_OFFICE
+        ) {
             return;
         }
 
-        let notifyLevel = member && member.notify_props ? member.notify_props.desktop : NotificationLevels.DEFAULT;
+        let notifyLevel =
+            member && member.notify_props
+                ? member.notify_props.desktop
+                : NotificationLevels.DEFAULT;
         if (notifyLevel === NotificationLevels.DEFAULT) {
-            notifyLevel = user && user.notify_props ? user.notify_props.desktop : NotificationLevels.ALL;
+            notifyLevel =
+                user && user.notify_props
+                    ? user.notify_props.desktop
+                    : NotificationLevels.ALL;
         }
 
         if (notifyLevel === NotificationLevels.NONE) {
             return;
-        } else if (notifyLevel === NotificationLevels.MENTION && mentions.indexOf(user.id) === -1 && msgProps.channel_type !== Constants.DM_CHANNEL) {
+        } else if (
+            notifyLevel === NotificationLevels.MENTION &&
+            mentions.indexOf(user.id) === -1 &&
+            msgProps.channel_type !== Constants.DM_CHANNEL
+        ) {
             return;
         }
 
         const config = getConfig(state);
         let username = '';
-        if (post.props.override_username && config.EnablePostUsernameOverride === 'true') {
+        if (
+            post.props.override_username &&
+            config.EnablePostUsernameOverride === 'true'
+        ) {
             username = post.props.override_username;
         } else if (userFromPost) {
-            username = displayUsername(userFromPost, getTeammateNameDisplaySetting(state), false);
+            username = displayUsername(
+                userFromPost,
+                getTeammateNameDisplaySetting(state),
+                false,
+            );
         } else {
-            username = Utils.localizeMessage('channel_loader.someone', 'Someone');
+            username = Utils.localizeMessage(
+                'channel_loader.someone',
+                'Someone',
+            );
         }
 
         let title = Utils.localizeMessage('channel_loader.posted', 'Posted');
@@ -89,7 +131,10 @@ export function sendDesktopNotification(post, msgProps) {
 
         if (title === '') {
             if (msgProps.channel_type === Constants.DM_CHANNEL) {
-                title = Utils.localizeMessage('notification.dm', 'Direct Message');
+                title = Utils.localizeMessage(
+                    'notification.dm',
+                    'Direct Message',
+                );
             } else {
                 title = msgProps.channel_display_name;
             }
@@ -98,11 +143,15 @@ export function sendDesktopNotification(post, msgProps) {
         let notifyText = post.message;
 
         const msgPropsPost = JSON.parse(msgProps.post);
-        const attachments = msgPropsPost && msgPropsPost.props && msgPropsPost.props.attachments ? msgPropsPost.props.attachments : [];
+        const attachments =
+            msgPropsPost && msgPropsPost.props && msgPropsPost.props.attachments
+                ? msgPropsPost.props.attachments
+                : [];
         let image = false;
         attachments.forEach((attachment) => {
             if (notifyText.length === 0) {
-                notifyText = attachment.fallback ||
+                notifyText =
+                    attachment.fallback ||
                     attachment.pretext ||
                     attachment.text;
             }
@@ -111,32 +160,51 @@ export function sendDesktopNotification(post, msgProps) {
 
         let strippedMarkdownNotifyText = stripMarkdown(notifyText);
         if (strippedMarkdownNotifyText.length > NOTIFY_TEXT_MAX_LENGTH) {
-            strippedMarkdownNotifyText = strippedMarkdownNotifyText.substring(0, NOTIFY_TEXT_MAX_LENGTH - 1) + '...';
+            strippedMarkdownNotifyText =
+                strippedMarkdownNotifyText.substring(
+                    0,
+                    NOTIFY_TEXT_MAX_LENGTH - 1,
+                ) + '...';
         }
 
         let body = `@${username}`;
         if (strippedMarkdownNotifyText.length === 0) {
             if (msgProps.image) {
-                body += Utils.localizeMessage('channel_loader.uploadedImage', ' uploaded an image');
+                body += Utils.localizeMessage(
+                    'channel_loader.uploadedImage',
+                    ' uploaded an image',
+                );
             } else if (msgProps.otherFile) {
-                body += Utils.localizeMessage('channel_loader.uploadedFile', ' uploaded a file');
+                body += Utils.localizeMessage(
+                    'channel_loader.uploadedFile',
+                    ' uploaded a file',
+                );
             } else if (image) {
-                body += Utils.localizeMessage('channel_loader.postedImage', ' posted an image');
+                body += Utils.localizeMessage(
+                    'channel_loader.postedImage',
+                    ' posted an image',
+                );
             } else {
-                body += Utils.localizeMessage('channel_loader.something', ' did something new');
+                body += Utils.localizeMessage(
+                    'channel_loader.something',
+                    ' did something new',
+                );
             }
         } else {
             body += `: ${strippedMarkdownNotifyText}`;
         }
 
         //Play a sound if explicitly set in settings
-        const sound = !user.notify_props || user.notify_props.desktop_sound === 'true';
+        const sound =
+            !user.notify_props || user.notify_props.desktop_sound === 'true';
 
         // Notify if you're not looking in the right channel or when
         // the window itself is not active
         const activeChannel = getCurrentChannel(state);
         const channelId = channel ? channel.id : null;
-        const notify = (activeChannel && activeChannel.id !== channelId) || !state.views.browser.focused;
+        const notify =
+            (activeChannel && activeChannel.id !== channelId) ||
+            !state.views.browser.focused;
 
         if (notify) {
             Utils.notifyMe(title, body, channel, teamId, !sound);

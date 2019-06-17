@@ -7,7 +7,6 @@ import {intlShape} from 'react-intl';
 
 export default class LocalizedInput extends React.Component {
     static propTypes = {
-
         placeholder: PropTypes.shape({
             id: PropTypes.string.isRequired,
             defaultMessage: PropTypes.string.isRequired,
@@ -38,9 +37,12 @@ export default class LocalizedInput extends React.Component {
     };
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.value !== this.props.value ||
+        return (
+            nextProps.value !== this.props.value ||
             nextProps.placeholder.id !== this.props.placeholder.id ||
-            nextProps.placeholder.defaultMessage !== this.props.placeholder.defaultMessage;
+            nextProps.placeholder.defaultMessage !==
+                this.props.placeholder.defaultMessage
+        );
     }
 
     render() {

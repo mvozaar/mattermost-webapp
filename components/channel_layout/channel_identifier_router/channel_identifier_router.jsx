@@ -8,7 +8,6 @@ import ChannelView from 'components/channel_view/index';
 
 export default class ChannelIdentifierRouter extends React.PureComponent {
     static propTypes = {
-
         /*
          * Object from react-router
          */
@@ -22,7 +21,7 @@ export default class ChannelIdentifierRouter extends React.PureComponent {
         actions: PropTypes.shape({
             onChannelByIdentifierEnter: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -30,14 +29,18 @@ export default class ChannelIdentifierRouter extends React.PureComponent {
         this.props.actions.onChannelByIdentifierEnter(props);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-        if (this.props.match.params.team !== nextProps.match.params.team ||
-            this.props.match.params.identifier !== nextProps.match.params.identifier) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
+        if (
+            this.props.match.params.team !== nextProps.match.params.team ||
+            this.props.match.params.identifier !==
+                nextProps.match.params.identifier
+        ) {
             this.props.actions.onChannelByIdentifierEnter(nextProps);
         }
     }
 
     render() {
-        return <ChannelView/>;
+        return <ChannelView />;
     }
 }

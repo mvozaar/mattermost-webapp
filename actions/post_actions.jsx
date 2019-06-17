@@ -3,7 +3,10 @@
 
 import {SearchTypes} from 'mattermost-redux/action_types';
 import {getMyChannelMember} from 'mattermost-redux/actions/channels';
-import {getChannel, getMyChannelMember as getMyChannelMemberSelector} from 'mattermost-redux/selectors/entities/channels';
+import {
+    getChannel,
+    getMyChannelMember as getMyChannelMemberSelector,
+} from 'mattermost-redux/selectors/entities/channels';
 import * as PostActions from 'mattermost-redux/actions/posts';
 import * as PostSelectors from 'mattermost-redux/selectors/entities/posts';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
@@ -33,8 +36,15 @@ export function handleNewPost(post, msg) {
             websocketMessageProps = msg.data;
         }
 
-        const myChannelMember = getMyChannelMemberSelector(getState(), post.channel_id);
-        if (myChannelMember && Object.keys(myChannelMember).length === 0 && myChannelMember.constructor === 'Object') {
+        const myChannelMember = getMyChannelMemberSelector(
+            getState(),
+            post.channel_id,
+        );
+        if (
+            myChannelMember &&
+            Object.keys(myChannelMember).length === 0 &&
+            myChannelMember.constructor === 'Object'
+        ) {
             await dispatch(getMyChannelMember(post.channel_id));
         }
 
@@ -93,7 +103,9 @@ export function createPost(post, files) {
 
         let result;
         if (UserAgent.isIosClassic()) {
-            result = await dispatch(PostActions.createPostImmediately(post, files));
+            result = await dispatch(
+                PostActions.createPostImmediately(post, files),
+            );
         } else {
             result = await dispatch(PostActions.createPost(post, files));
         }
@@ -116,7 +128,9 @@ export function storeDraft(channelId, draft) {
 
 export function storeCommentDraft(rootPostId, draft) {
     return (dispatch) => {
-        dispatch(StorageActions.setGlobalItem('comment_draft_' + rootPostId, draft));
+        dispatch(
+            StorageActions.setGlobalItem('comment_draft_' + rootPostId, draft),
+        );
     };
 }
 
@@ -195,7 +209,13 @@ export function unpinPost(postId) {
     };
 }
 
-export function setEditingPost(postId = '', commentCount = 0, refocusId = '', title = '', isRHS = false) {
+export function setEditingPost(
+    postId = '',
+    commentCount = 0,
+    refocusId = '',
+    title = '',
+    isRHS = false,
+) {
     return async (dispatch, getState) => {
         const state = getState();
         const post = PostSelectors.getPost(state, postId);
@@ -210,7 +230,15 @@ export function setEditingPost(postId = '', commentCount = 0, refocusId = '', ti
         const channel = getChannel(state, post.channel_id);
         const teamId = channel.team_id || '';
 
-        const canEditNow = canEditPost(state, config, license, teamId, post.channel_id, userId, post);
+        const canEditNow = canEditPost(
+            state,
+            config,
+            license,
+            teamId,
+            post.channel_id,
+            userId,
+            post,
+        );
 
         // Only show the modal if we can edit the post now, but allow it to be hidden at any time
 
@@ -256,10 +284,18 @@ export function toggleEmbedVisibility(postId) {
     return (dispatch, getState) => {
         const visible = isEmbedVisible(getState(), postId);
 
-        dispatch(StorageActions.setGlobalItem(StoragePrefixes.EMBED_VISIBLE + postId, !visible));
+        dispatch(
+            StorageActions.setGlobalItem(
+                StoragePrefixes.EMBED_VISIBLE + postId,
+                !visible,
+            ),
+        );
     };
 }
 
 export function resetEmbedVisibility() {
-    return StorageActions.actionOnGlobalItemsWithPrefix(StoragePrefixes.EMBED_VISIBLE, () => null);
+    return StorageActions.actionOnGlobalItemsWithPrefix(
+        StoragePrefixes.EMBED_VISIBLE,
+        () => null,
+    );
 }

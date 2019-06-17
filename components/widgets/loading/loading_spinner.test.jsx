@@ -9,7 +9,7 @@ import LoadingSpinner from './loading_spinner.jsx';
 
 describe('components/widgets/loadingLoadingSpinner', () => {
     test('showing spinner with text', () => {
-        const wrapper = shallowWithIntl(<LoadingSpinner text='test'/>);
+        const wrapper = shallowWithIntl(<LoadingSpinner text='test' />);
         expect(wrapper).toMatchInlineSnapshot(`
 <span
   className="LoadingSpinner with-text"
@@ -24,7 +24,7 @@ describe('components/widgets/loadingLoadingSpinner', () => {
 `);
     });
     test('showing spinner without text', () => {
-        const wrapper = shallowWithIntl(<LoadingSpinner/>);
+        const wrapper = shallowWithIntl(<LoadingSpinner />);
         expect(wrapper).toMatchInlineSnapshot(`
 <span
   className="LoadingSpinner"

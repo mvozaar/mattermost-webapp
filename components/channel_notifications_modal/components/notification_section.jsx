@@ -11,7 +11,6 @@ import ExpandView from './expand_view.jsx';
 
 export default class NotificationSection extends React.PureComponent {
     static propTypes = {
-
         /**
          * Notification section
          */
@@ -56,19 +55,19 @@ export default class NotificationSection extends React.PureComponent {
          * Error string from the server
          */
         serverError: PropTypes.string,
-    }
+    };
 
     handleOnChange = (e) => {
         this.props.onChange(e.target.value);
-    }
+    };
 
     handleExpandSection = () => {
         this.props.onUpdateSection(this.props.section);
-    }
+    };
 
     handleCollapseSection = () => {
         this.props.onUpdateSection(NotificationSections.NONE);
-    }
+    };
 
     render() {
         const {

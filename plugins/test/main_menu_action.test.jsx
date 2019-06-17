@@ -25,7 +25,13 @@ describe('plugins/MainMenuActions', () => {
             enableEmailInvitations: false,
             showDropdown: true,
             onToggleDropdown: () => {}, //eslint-disable-line no-empty-function
-            pluginMenuItems: [{id: 'someplugin', text: 'some plugin text', action: pluginAction}],
+            pluginMenuItems: [
+                {
+                    id: 'someplugin',
+                    text: 'some plugin text',
+                    action: pluginAction,
+                },
+            ],
             canCreateOrDeleteCustomEmoji: true,
             moreTeamsToJoin: true,
             teamIsGroupConstrained: true,
@@ -38,15 +44,18 @@ describe('plugins/MainMenuActions', () => {
             },
         };
 
-        const wrapper = shallow(
-            <MainMenu {...requiredProps}/>
-        );
+        const wrapper = shallow(<MainMenu {...requiredProps} />);
 
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.findWhere((node) => node.key() === 'someplugin_pluginmenuitem').props().text).toBe('some plugin text');
+        expect(
+            wrapper
+                .findWhere((node) => node.key() === 'someplugin_pluginmenuitem')
+                .props().text,
+        ).toBe('some plugin text');
 
-        wrapper.findWhere((node) => node.key() === 'someplugin_pluginmenuitem').simulate('click');
+        wrapper
+            .findWhere((node) => node.key() === 'someplugin_pluginmenuitem')
+            .simulate('click');
         expect(pluginAction).toBeCalled();
     });
 });
-

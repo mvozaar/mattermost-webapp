@@ -27,6 +27,7 @@ export default class MenuWrapper extends React.PureComponent {
         this.state = {
             open: false,
         };
+
         this.node = React.createRef();
     }
 
@@ -49,7 +50,7 @@ export default class MenuWrapper extends React.PureComponent {
                 this.props.onToggle(false);
             }
         }
-    }
+    };
 
     toggle = () => {
         const newState = !this.state.open;
@@ -57,7 +58,7 @@ export default class MenuWrapper extends React.PureComponent {
         if (this.props.onToggle) {
             this.props.onToggle(newState);
         }
-    }
+    };
 
     render() {
         const {children} = this.props;
@@ -71,9 +72,7 @@ export default class MenuWrapper extends React.PureComponent {
                 ref={this.node}
             >
                 {children[0]}
-                <Animation show={this.state.open}>
-                    {children[1]}
-                </Animation>
+                <Animation show={this.state.open}>{children[1]}</Animation>
             </div>
         );
     }

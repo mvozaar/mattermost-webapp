@@ -12,10 +12,7 @@ describe('components/LoadingImagePreview', () => {
         let progress = 50;
 
         const wrapper = shallow(
-            <LoadingImagePreview
-                loading={loading}
-                progress={progress}
-            />
+            <LoadingImagePreview loading={loading} progress={progress} />,
         );
 
         expect(wrapper).toMatchSnapshot();

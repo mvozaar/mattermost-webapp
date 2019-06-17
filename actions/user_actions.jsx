@@ -1,8 +1,14 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import {getChannelAndMyMember, getChannelMembersByIds} from 'mattermost-redux/actions/channels';
-import {deletePreferences as deletePreferencesRedux, savePreferences as savePreferencesRedux} from 'mattermost-redux/actions/preferences';
+import {
+    getChannelAndMyMember,
+    getChannelMembersByIds,
+} from 'mattermost-redux/actions/channels';
+import {
+    deletePreferences as deletePreferencesRedux,
+    savePreferences as savePreferencesRedux,
+} from 'mattermost-redux/actions/preferences';
 import {getTeamMembersByIds} from 'mattermost-redux/actions/teams';
 import * as UserActions from 'mattermost-redux/actions/users';
 import {Client4} from 'mattermost-redux/client';
@@ -15,12 +21,21 @@ import {
     getMyChannelMember,
     getChannelMembersInChannels,
 } from 'mattermost-redux/selectors/entities/channels';
-import {getBool, makeGetCategory} from 'mattermost-redux/selectors/entities/preferences';
-import {getCurrentTeamId, getTeamMember} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getBool,
+    makeGetCategory,
+} from 'mattermost-redux/selectors/entities/preferences';
+import {
+    getCurrentTeamId,
+    getTeamMember,
+} from 'mattermost-redux/selectors/entities/teams';
 import * as Selectors from 'mattermost-redux/selectors/entities/users';
 
 import {browserHistory} from 'utils/browser_history';
-import {loadStatusesForProfilesList, loadStatusesForProfilesMap} from 'actions/status_actions.jsx';
+import {
+    loadStatusesForProfilesList,
+    loadStatusesForProfilesMap,
+} from 'actions/status_actions.jsx';
 import store from 'stores/redux_store.jsx';
 import * as Utils from 'utils/utils.jsx';
 import {Constants, Preferences, UserStatuses} from 'utils/constants.jsx';
@@ -31,7 +46,9 @@ const getState = store.getState;
 export function loadProfilesAndTeamMembers(page, perPage, teamId) {
     return async (doDispatch, doGetState) => {
         const newTeamId = teamId || getCurrentTeamId(doGetState());
-        const {data} = await doDispatch(UserActions.getProfilesInTeam(newTeamId, page, perPage));
+        const {data} = await doDispatch(
+            UserActions.getProfilesInTeam(newTeamId, page, perPage),
+        );
         if (data) {
             doDispatch(loadTeamMembersForProfilesList(data, newTeamId));
             doDispatch(loadStatusesForProfilesList(data));
@@ -41,16 +58,27 @@ export function loadProfilesAndTeamMembers(page, perPage, teamId) {
     };
 }
 
-export function loadProfilesAndTeamMembersAndChannelMembers(page, perPage, teamId, channelId) {
+export function loadProfilesAndTeamMembersAndChannelMembers(
+    page,
+    perPage,
+    teamId,
+    channelId,
+) {
     return async (doDispatch, doGetState) => {
         const state = doGetState();
         const teamIdParam = teamId || getCurrentTeamId(state);
         const channelIdParam = channelId || getCurrentChannelId(state);
-        const {data} = await doDispatch(UserActions.getProfilesInChannel(channelIdParam, page, perPage));
+        const {data} = await doDispatch(
+            UserActions.getProfilesInChannel(channelIdParam, page, perPage),
+        );
         if (data) {
-            const {data: listData} = await doDispatch(loadTeamMembersForProfilesList(data, teamIdParam));
+            const {data: listData} = await doDispatch(
+                loadTeamMembersForProfilesList(data, teamIdParam),
+            );
             if (listData) {
-                doDispatch(loadChannelMembersForProfilesList(data, channelIdParam));
+                doDispatch(
+                    loadChannelMembersForProfilesList(data, channelIdParam),
+                );
                 doDispatch(loadStatusesForProfilesList(data));
             }
         }
@@ -85,7 +113,9 @@ export function loadTeamMembersForProfilesList(profiles, teamId) {
 
 export function loadProfilesWithoutTeam(page, perPage) {
     return async (doDispatch) => {
-        const {data} = await doDispatch(UserActions.getProfilesWithoutTeam(page, perPage));
+        const {data} = await doDispatch(
+            UserActions.getProfilesWithoutTeam(page, perPage),
+        );
 
         doDispatch(loadStatusesForProfilesMap(data));
 
@@ -93,14 +123,22 @@ export function loadProfilesWithoutTeam(page, perPage) {
     };
 }
 
-export function loadTeamMembersAndChannelMembersForProfilesList(profiles, teamId, channelId) {
+export function loadTeamMembersAndChannelMembersForProfilesList(
+    profiles,
+    teamId,
+    channelId,
+) {
     return async (doDispatch, doGetState) => {
         const state = doGetState();
         const teamIdParam = teamId || getCurrentTeamId(state);
         const channelIdParam = channelId || getCurrentChannelId(state);
-        const {data} = await doDispatch(loadTeamMembersForProfilesList(profiles, teamIdParam));
+        const {data} = await doDispatch(
+            loadTeamMembersForProfilesList(profiles, teamIdParam),
+        );
         if (data) {
-            doDispatch(loadChannelMembersForProfilesList(profiles, channelIdParam));
+            doDispatch(
+                loadChannelMembersForProfilesList(profiles, channelIdParam),
+            );
         }
 
         return {data: true};
@@ -139,13 +177,28 @@ export async function loadNewDMIfNeeded(channelId) {
             return;
         }
 
-        const pref = getBool(getState(), Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, userId, false);
+        const pref = getBool(
+            getState(),
+            Preferences.CATEGORY_DIRECT_CHANNEL_SHOW,
+            userId,
+            false,
+        );
         if (pref === false) {
             const now = Utils.getTimestamp();
             const currentUserId = Selectors.getCurrentUserId(getState());
             savePreferencesRedux(currentUserId, [
-                {user_id: currentUserId, category: Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, name: userId, value: 'true'},
-                {user_id: currentUserId, category: Preferences.CATEGORY_CHANNEL_OPEN_TIME, name: channelId, value: now.toString()},
+                {
+                    user_id: currentUserId,
+                    category: Preferences.CATEGORY_DIRECT_CHANNEL_SHOW,
+                    name: userId,
+                    value: 'true',
+                },
+                {
+                    user_id: currentUserId,
+                    category: Preferences.CATEGORY_CHANNEL_OPEN_TIME,
+                    name: channelId,
+                    value: now.toString(),
+                },
             ])(dispatch, getState);
             loadProfilesForDM();
         }
@@ -155,7 +208,10 @@ export async function loadNewDMIfNeeded(channelId) {
     if (channel) {
         checkPreference(channel);
     } else {
-        const {data} = await getChannelAndMyMember(channelId)(dispatch, getState);
+        const {data} = await getChannelAndMyMember(channelId)(
+            dispatch,
+            getState,
+        );
         if (data) {
             checkPreference(data.channel);
         }
@@ -164,10 +220,22 @@ export async function loadNewDMIfNeeded(channelId) {
 
 export async function loadNewGMIfNeeded(channelId) {
     function checkPreference() {
-        const pref = getBool(getState(), Preferences.CATEGORY_GROUP_CHANNEL_SHOW, channelId, false);
+        const pref = getBool(
+            getState(),
+            Preferences.CATEGORY_GROUP_CHANNEL_SHOW,
+            channelId,
+            false,
+        );
         if (pref === false) {
             const currentUserId = Selectors.getCurrentUserId(getState());
-            savePreferencesRedux(currentUserId, [{user_id: currentUserId, category: Preferences.CATEGORY_GROUP_CHANNEL_SHOW, name: channelId, value: 'true'}])(dispatch, getState);
+            savePreferencesRedux(currentUserId, [
+                {
+                    user_id: currentUserId,
+                    category: Preferences.CATEGORY_GROUP_CHANNEL_SHOW,
+                    name: channelId,
+                    value: 'true',
+                },
+            ])(dispatch, getState);
             loadProfilesForGM();
         }
     }
@@ -202,11 +270,19 @@ export async function loadProfilesForGM() {
             continue;
         }
 
-        const isVisible = getBool(state, Preferences.CATEGORY_GROUP_CHANNEL_SHOW, channel.id);
+        const isVisible = getBool(
+            state,
+            Preferences.CATEGORY_GROUP_CHANNEL_SHOW,
+            channel.id,
+        );
 
         if (!isVisible) {
             const member = getMyChannelMember(state, channel.id);
-            if (!member || (member.mention_count === 0 && member.msg_count >= channel.total_msg_count)) {
+            if (
+                !member ||
+                (member.mention_count === 0 &&
+                    member.msg_count >= channel.total_msg_count)
+            ) {
                 continue;
             }
 
@@ -218,7 +294,13 @@ export async function loadProfilesForGM() {
             });
         }
 
-        await dispatch(UserActions.getProfilesInChannel(channel.id, 0, Constants.MAX_USERS_IN_GM)); //eslint-disable-line no-await-in-loop
+        await dispatch(
+            UserActions.getProfilesInChannel(
+                channel.id,
+                0,
+                Constants.MAX_USERS_IN_GM,
+            ),
+        ); //eslint-disable-line no-await-in-loop
     }
 
     if (newPreferences.length > 0) {
@@ -240,8 +322,14 @@ export async function loadProfilesForDM() {
             continue;
         }
 
-        const teammateId = channel.name.replace(currentUserId, '').replace('__', '');
-        const isVisible = getBool(state, Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, teammateId);
+        const teammateId = channel.name
+            .replace(currentUserId, '')
+            .replace('__', '');
+        const isVisible = getBool(
+            state,
+            Preferences.CATEGORY_DIRECT_CHANNEL_SHOW,
+            teammateId,
+        );
 
         if (!isVisible) {
             const member = getMyChannelMember(state, channel.id);
@@ -275,12 +363,14 @@ export async function loadProfilesForDM() {
 export function saveTheme(teamId, theme) {
     return async (doDispatch, doGetState) => {
         const currentUserId = Selectors.getCurrentUserId(doGetState());
-        const preference = [{
-            user_id: currentUserId,
-            category: Preferences.CATEGORY_THEME,
-            name: teamId,
-            value: JSON.stringify(theme),
-        }];
+        const preference = [
+            {
+                user_id: currentUserId,
+                category: Preferences.CATEGORY_THEME,
+                name: teamId,
+                value: JSON.stringify(theme),
+            },
+        ];
 
         await doDispatch(savePreferencesRedux(currentUserId, preference));
         return doDispatch(onThemeSaved(teamId));
@@ -321,8 +411,16 @@ function onThemeSaved(teamId) {
     };
 }
 
-export async function searchUsers(term, teamId = getCurrentTeamId(getState()), options = {}, success) {
-    const {data} = await UserActions.searchProfiles(term, {team_id: teamId, ...options})(dispatch, getState);
+export async function searchUsers(
+    term,
+    teamId = getCurrentTeamId(getState()),
+    options = {},
+    success,
+) {
+    const {data} = await UserActions.searchProfiles(term, {
+        team_id: teamId,
+        ...options,
+    })(dispatch, getState);
     dispatch(loadStatusesForProfilesList(data));
 
     if (success) {
@@ -331,14 +429,20 @@ export async function searchUsers(term, teamId = getCurrentTeamId(getState()), o
 }
 
 export async function autocompleteUsersInTeam(username, success) {
-    const {data} = await UserActions.autocompleteUsers(username, getCurrentTeamId(getState()))(dispatch, getState);
+    const {data} = await UserActions.autocompleteUsers(
+        username,
+        getCurrentTeamId(getState()),
+    )(dispatch, getState);
     if (success) {
         success(data);
     }
 }
 
 export async function autocompleteUsers(username, success) {
-    const {data} = await UserActions.autocompleteUsers(username)(dispatch, getState);
+    const {data} = await UserActions.autocompleteUsers(username)(
+        dispatch,
+        getState,
+    );
     if (success) {
         success(data);
     }
@@ -346,7 +450,9 @@ export async function autocompleteUsers(username, success) {
 
 export function revokeAllSessions(userId) {
     return async (doDispatch, doGetState) => {
-        const {data, error} = await doDispatch(UserActions.revokeAllSessionsForUser(userId));
+        const {data, error} = await doDispatch(
+            UserActions.revokeAllSessionsForUser(userId),
+        );
         if (error) {
             const serverError = doGetState().requests.users.updateUser.error;
             return {error: {id: serverError.server_error_id, ...serverError}};
@@ -356,7 +462,10 @@ export function revokeAllSessions(userId) {
 }
 
 export async function verifyEmail(token, success, error) {
-    const {data, error: err} = await UserActions.verifyUserEmail(token)(dispatch, getState);
+    const {data, error: err} = await UserActions.verifyUserEmail(token)(
+        dispatch,
+        getState,
+    );
     if (data && success) {
         success(data);
     } else if (err && error) {
@@ -365,7 +474,10 @@ export async function verifyEmail(token, success, error) {
 }
 
 export async function resetPassword(token, password, success, error) {
-    const {data, error: err} = await UserActions.resetUserPassword(token, password)(dispatch, getState);
+    const {data, error: err} = await UserActions.resetUserPassword(
+        token,
+        password,
+    )(dispatch, getState);
     if (data) {
         browserHistory.push('/login?extra=' + Constants.PASSWORD_CHANGE);
         if (success) {
@@ -377,7 +489,10 @@ export async function resetPassword(token, password, success, error) {
 }
 
 export async function resendVerification(email, success, error) {
-    const {data, error: err} = await UserActions.sendVerificationEmail(email)(dispatch, getState);
+    const {data, error: err} = await UserActions.sendVerificationEmail(email)(
+        dispatch,
+        getState,
+    );
     if (data && success) {
         success(data);
     } else if (err && error) {
@@ -407,16 +522,30 @@ export function deauthorizeOAuthApp(appId) {
 export function autoResetStatus() {
     return async (doDispatch, doGetState) => {
         const {currentUserId} = getState().entities.users;
-        const {data: userStatus} = await UserActions.getStatus(currentUserId)(doDispatch, doGetState);
+        const {data: userStatus} = await UserActions.getStatus(currentUserId)(
+            doDispatch,
+            doGetState,
+        );
 
-        if (userStatus.status === UserStatuses.OUT_OF_OFFICE || !userStatus.manual) {
+        if (
+            userStatus.status === UserStatuses.OUT_OF_OFFICE ||
+            !userStatus.manual
+        ) {
             return userStatus;
         }
 
-        const autoReset = getBool(getState(), PreferencesRedux.CATEGORY_AUTO_RESET_MANUAL_STATUS, currentUserId, false);
+        const autoReset = getBool(
+            getState(),
+            PreferencesRedux.CATEGORY_AUTO_RESET_MANUAL_STATUS,
+            currentUserId,
+            false,
+        );
 
         if (autoReset) {
-            UserActions.setStatus({user_id: currentUserId, status: 'online'})(doDispatch, doGetState);
+            UserActions.setStatus({user_id: currentUserId, status: 'online'})(
+                doDispatch,
+                doGetState,
+            );
             return userStatus;
         }
 
@@ -425,7 +554,10 @@ export function autoResetStatus() {
 }
 
 export async function sendPasswordResetEmail(email, success, error) {
-    const {data, error: err} = await UserActions.sendPasswordResetEmail(email)(dispatch, getState);
+    const {data, error: err} = await UserActions.sendPasswordResetEmail(email)(
+        dispatch,
+        getState,
+    );
     if (data && success) {
         success(data);
     } else if (err && error) {

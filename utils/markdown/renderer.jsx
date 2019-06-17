@@ -24,7 +24,9 @@ export default class Renderer extends marked.Renderer {
         usedLanguage = usedLanguage.toLowerCase();
 
         if (usedLanguage === 'tex' || usedLanguage === 'latex') {
-            return `<div data-latex="${TextFormatting.escapeHtml(code)}"></div>`;
+            return `<div data-latex="${TextFormatting.escapeHtml(
+                code,
+            )}"></div>`;
         }
 
         // treat html as xml to prevent injection attacks
@@ -39,11 +41,10 @@ export default class Renderer extends marked.Renderer {
 
         let header = '';
         if (SyntaxHighlighting.canHighlight(usedLanguage)) {
-            header = (
-                '<span class="post-code__language">' +
-                    SyntaxHighlighting.getLanguageName(usedLanguage) +
-                '</span>'
-            );
+            header =
+                "<span class='post-code__language'>" +
+                SyntaxHighlighting.getLanguageName(usedLanguage) +
+                '</span>';
         }
 
         // if we have to apply syntax highlighting AND highlighting of search terms, create two copies
@@ -56,26 +57,31 @@ export default class Renderer extends marked.Renderer {
             const tokens = new Map();
 
             let searched = TextFormatting.sanitizeHtml(code);
-            searched = TextFormatting.highlightSearchTerms(searched, tokens, this.formattingOptions.searchPatterns);
+            searched = TextFormatting.highlightSearchTerms(
+                searched,
+                tokens,
+                this.formattingOptions.searchPatterns,
+            );
 
             if (tokens.size > 0) {
                 searched = TextFormatting.replaceTokens(searched, tokens);
 
-                searchedContent = (
-                    '<div class="post-code__search-highlighting">' +
-                        searched +
-                    '</div>'
-                );
+                searchedContent =
+                    "<div class='post-code__search-highlighting'>" +
+                    searched +
+                    '</div>';
             }
         }
 
         return (
-            '<div class="' + className + '">' +
-                header +
-                '<code class="hljs">' +
-                    searchedContent +
-                    content +
-                '</code>' +
+            "<div class='" +
+            className +
+            "'>" +
+            header +
+            "<code class='hljs'>" +
+            searchedContent +
+            content +
+            '</code>' +
             '</div>'
         );
     }
@@ -85,15 +91,19 @@ export default class Renderer extends marked.Renderer {
 
         if (this.formattingOptions.searchPatterns) {
             const tokens = new Map();
-            output = TextFormatting.highlightSearchTerms(output, tokens, this.formattingOptions.searchPatterns);
+            output = TextFormatting.highlightSearchTerms(
+                output,
+                tokens,
+                this.formattingOptions.searchPatterns,
+            );
             output = TextFormatting.replaceTokens(output, tokens);
         }
 
         return (
-            '<span class="codespan__pre-wrap">' +
-                '<code>' +
-                    output +
-                '</code>' +
+            "<span class='codespan__pre-wrap'>" +
+            '<code>' +
+            output +
+            '</code>' +
             '</span>'
         );
     }
@@ -121,17 +131,17 @@ export default class Renderer extends marked.Renderer {
             }
         }
         src = PostUtils.getImageSrc(src, this.formattingOptions.proxyImages);
-        let out = '<img src="' + src + '" alt="' + text + '"';
+        let out = "<img src='" + src + "' alt='" + text + "'";
         if (title) {
-            out += ' title="' + title + '"';
+            out += " title='" + title + "'";
         }
         if (dimensions.length > 0) {
-            out += ' width="' + dimensions[0] + '"';
+            out += " width='" + dimensions[0] + "'";
         }
         if (dimensions.length > 1) {
-            out += ' height="' + dimensions[1] + '"';
+            out += " height='" + dimensions[1] + "'";
         }
-        out += ' class="markdown-inline-img"';
+        out += " class='markdown-inline-img'";
         out += this.options.xhtml ? '/>' : '>';
         return out;
     }
@@ -148,7 +158,10 @@ export default class Renderer extends marked.Renderer {
             if (!scheme) {
                 outHref = `http://${outHref}`;
             } else if (isUrl && this.formattingOptions.autolinkedUrlSchemes) {
-                const isValidUrl = this.formattingOptions.autolinkedUrlSchemes.indexOf(scheme.toLowerCase()) !== -1;
+                const isValidUrl =
+                    this.formattingOptions.autolinkedUrlSchemes.indexOf(
+                        scheme.toLowerCase(),
+                    ) !== -1;
 
                 if (!isValidUrl) {
                     return text;
@@ -160,7 +173,7 @@ export default class Renderer extends marked.Renderer {
             return text;
         }
 
-        let output = '<a class="theme markdown__link';
+        let output = "<a class='theme markdown__link";
 
         if (this.formattingOptions.searchPatterns) {
             for (const pattern of this.formattingOptions.searchPatterns) {
@@ -171,21 +184,28 @@ export default class Renderer extends marked.Renderer {
             }
         }
 
-        output += '" href="' + outHref + '" rel="noreferrer"';
+        output += "' href='" + outHref + "' rel='noreferrer'";
 
         // special case for team invite links, channel links, and permalinks that are inside the app
         let internalLink = false;
-        const pattern = new RegExp('^(' + TextFormatting.escapeRegex(this.formattingOptions.siteURL) + ')?\\/(?:signup_user_complete|admin_console|[^\\/]+\\/(?:pl|channels|messages))\\/');
+        const pattern = new RegExp(
+            '^(' +
+                TextFormatting.escapeRegex(this.formattingOptions.siteURL) +
+                ')?\\/(?:signup_user_complete|admin_console|[^\\/]+\\/(?:pl|channels|messages))\\/',
+        );
         internalLink = pattern.test(outHref);
 
         if (internalLink) {
-            output += ' data-link="' + outHref.replace(this.formattingOptions.siteURL, '') + '"';
+            output +=
+                " data-link='" +
+                outHref.replace(this.formattingOptions.siteURL, '') +
+                "'";
         } else {
-            output += ' target="_blank"';
+            output += " target='_blank'";
         }
 
         if (title) {
-            output += ' title="' + title + '"';
+            output += " title='" + title + "'";
         }
 
         // remove any links added to the text by hashtag or mention parsing since they'll break this link
@@ -219,10 +239,12 @@ export default class Renderer extends marked.Renderer {
         const isTaskList = taskListReg.exec(text);
 
         if (isTaskList) {
-            return `<li class="list-item--task-list">${'<input type="checkbox" disabled="disabled" ' + (isTaskList[1] === ' ' ? '' : 'checked="checked" ') + '/> '}${text.replace(taskListReg, '')}</li>`;
+            return `<li class="list-item--task-list">${"<input type='checkbox' disabled='disabled' " +
+                (isTaskList[1] === ' ' ? '' : "checked='checked' ") +
+                '/> '}${text.replace(taskListReg, '')}</li>`;
         }
 
-        if ((/^\d+.$/).test(bullet)) {
+        if (/^\d+.$/.test(bullet)) {
             // this is a numbered list item so override the numbering
             return `<li value="${parseInt(bullet, 10)}">${text}</li>`;
         }
@@ -243,9 +265,9 @@ function unescapeHtmlEntities(html) {
         if (n === 'colon') {
             return ':';
         } else if (n.charAt(0) === '#') {
-            return n.charAt(1) === 'x' ?
-                String.fromCharCode(parseInt(n.substring(2), 16)) :
-                String.fromCharCode(Number(n.substring(1)));
+            return n.charAt(1) === 'x'
+                ? String.fromCharCode(parseInt(n.substring(2), 16))
+                : String.fromCharCode(Number(n.substring(1)));
         }
         return '';
     });

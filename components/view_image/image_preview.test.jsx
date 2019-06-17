@@ -13,10 +13,7 @@ describe('components/view_image/ImagePreview', () => {
         };
 
         const wrapper = shallow(
-            <ImagePreview
-                fileInfo={fileInfo}
-                canDownloadFiles={true}
-            />
+            <ImagePreview fileInfo={fileInfo} canDownloadFiles={true} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -29,10 +26,7 @@ describe('components/view_image/ImagePreview', () => {
         };
 
         const wrapper = shallow(
-            <ImagePreview
-                fileInfo={fileInfo}
-                canDownloadFiles={true}
-            />
+            <ImagePreview fileInfo={fileInfo} canDownloadFiles={true} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -44,10 +38,7 @@ describe('components/view_image/ImagePreview', () => {
         };
 
         const wrapper = shallow(
-            <ImagePreview
-                fileInfo={fileInfo}
-                canDownloadFiles={false}
-            />
+            <ImagePreview fileInfo={fileInfo} canDownloadFiles={false} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -60,10 +51,7 @@ describe('components/view_image/ImagePreview', () => {
         };
 
         const wrapper = shallow(
-            <ImagePreview
-                fileInfo={fileInfo}
-                canDownloadFiles={false}
-            />
+            <ImagePreview fileInfo={fileInfo} canDownloadFiles={false} />,
         );
 
         expect(wrapper).toMatchSnapshot();

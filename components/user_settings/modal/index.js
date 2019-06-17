@@ -12,8 +12,10 @@ import UserSettingsModal from './user_settings_modal.jsx';
 function mapStateToProps(state) {
     const config = getConfig(state);
 
-    const closeUnusedDirectMessages = config.CloseUnusedDirectMessages === 'true';
-    const experimentalChannelOrganization = config.ExperimentalChannelOrganization === 'true';
+    const closeUnusedDirectMessages =
+        config.CloseUnusedDirectMessages === 'true';
+    const experimentalChannelOrganization =
+        config.ExperimentalChannelOrganization === 'true';
     const sendEmailNotifications = config.SendEmailNotifications === 'true';
     const requireEmailVerification = config.RequireEmailVerification === 'true';
 
@@ -28,10 +30,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            sendVerificationEmail,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                sendVerificationEmail,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSettingsModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UserSettingsModal);

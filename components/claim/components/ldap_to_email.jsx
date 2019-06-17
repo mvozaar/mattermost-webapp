@@ -43,29 +43,46 @@ export default class LDAPToEmail extends React.Component {
 
         const ldapPassword = this.refs.ldappassword.value;
         if (!ldapPassword) {
-            state.ldapPasswordError = Utils.localizeMessage('claim.ldap_to_email.ldapPasswordError', 'Please enter your AD/LDAP password.');
+            state.ldapPasswordError = Utils.localizeMessage(
+                'claim.ldap_to_email.ldapPasswordError',
+                'Please enter your AD/LDAP password.',
+            );
+
             this.setState(state);
             return;
         }
 
         const password = this.refs.password.value;
         if (!password) {
-            state.passwordError = Utils.localizeMessage('claim.ldap_to_email.pwdError', 'Please enter your password.');
+            state.passwordError = Utils.localizeMessage(
+                'claim.ldap_to_email.pwdError',
+                'Please enter your password.',
+            );
+
             this.setState(state);
             return;
         }
 
-        const {valid, error} = Utils.isValidPassword(password, this.props.passwordConfig);
+        const {valid, error} = Utils.isValidPassword(
+            password,
+            this.props.passwordConfig,
+        );
+
         if (!valid && error) {
             this.setState({
                 passwordError: error,
             });
+
             return;
         }
 
         const confirmPassword = this.refs.passwordconfirm.value;
         if (!confirmPassword || password !== confirmPassword) {
-            state.confirmError = Utils.localizeMessage('claim.ldap_to_email.pwdNotMatch', 'Passwords do not match.');
+            state.confirmError = Utils.localizeMessage(
+                'claim.ldap_to_email.pwdNotMatch',
+                'Passwords do not match.',
+            );
+
             this.setState(state);
             return;
         }
@@ -78,53 +95,111 @@ export default class LDAPToEmail extends React.Component {
     }
 
     submit(loginId, password, token, ldapPassword) {
-        this.props.switchLdapToEmail(ldapPassword || this.state.ldapPassword, this.props.email, password, token).then(({data, error: err}) => {
-            if (data && data.follow_link) {
-                window.location.href = data.follow_link;
-            } else if (err) {
-                if (err.server_error_id.startsWith('model.user.is_valid.pwd')) {
-                    this.setState({passwordError: err.message, showMfa: false});
-                } else if (err.server_error_id === 'ent.ldap.do_login.invalid_password.app_error') {
-                    this.setState({ldapPasswordError: err.message, showMfa: false});
-                } else if (!this.state.showMfa && err.server_error_id === 'mfa.validate_token.authenticate.app_error') {
-                    this.setState({showMfa: true});
-                } else {
-                    this.setState({serverError: err.message, showMfa: false});
+        this.props
+            .switchLdapToEmail(
+                ldapPassword || this.state.ldapPassword,
+                this.props.email,
+                password,
+                token,
+            )
+            .then(({data, error: err}) => {
+                if (data && data.follow_link) {
+                    window.location.href = data.follow_link;
+                } else if (err) {
+                    if (
+                        err.server_error_id.startsWith(
+                            'model.user.is_valid.pwd',
+                        )
+                    ) {
+                        this.setState({
+                            passwordError: err.message,
+                            showMfa: false,
+                        });
+                    } else if (
+                        err.server_error_id ===
+                        'ent.ldap.do_login.invalid_password.app_error'
+                    ) {
+                        this.setState({
+                            ldapPasswordError: err.message,
+                            showMfa: false,
+                        });
+                    } else if (
+                        !this.state.showMfa &&
+                        err.server_error_id ===
+                            'mfa.validate_token.authenticate.app_error'
+                    ) {
+                        this.setState({showMfa: true});
+                    } else {
+                        this.setState({
+                            serverError: err.message,
+                            showMfa: false,
+                        });
+                    }
                 }
-            }
-        });
+            });
     }
 
     render() {
         let serverError = null;
         let formClass = 'form-group';
         if (this.state.serverError) {
-            serverError = <div className='form-group has-error'><label className='control-label'>{this.state.serverError}</label></div>;
+            serverError = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>
+                        {this.state.serverError}
+                    </label>
+                </div>
+            );
+
             formClass += ' has-error';
         }
 
         let passwordError = null;
         let passwordClass = 'form-group';
         if (this.state.passwordError) {
-            passwordError = <div className='form-group has-error'><label className='control-label'>{this.state.passwordError}</label></div>;
+            passwordError = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>
+                        {this.state.passwordError}
+                    </label>
+                </div>
+            );
+
             passwordClass += ' has-error';
         }
 
         let ldapPasswordError = null;
         let ldapPasswordClass = 'form-group';
         if (this.state.ldapPasswordError) {
-            ldapPasswordError = <div className='form-group has-error'><label className='control-label'>{this.state.ldapPasswordError}</label></div>;
+            ldapPasswordError = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>
+                        {this.state.ldapPasswordError}
+                    </label>
+                </div>
+            );
+
             ldapPasswordClass += ' has-error';
         }
 
         let confirmError = null;
         let confimClass = 'form-group';
         if (this.state.confirmError) {
-            confirmError = <div className='form-group has-error'><label className='control-label'>{this.state.confirmError}</label></div>;
+            confirmError = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>
+                        {this.state.confirmError}
+                    </label>
+                </div>
+            );
+
             confimClass += ' has-error';
         }
 
-        const passwordPlaceholder = Utils.localizeMessage('claim.ldap_to_email.ldapPwd', 'AD/LDAP Password');
+        const passwordPlaceholder = Utils.localizeMessage(
+            'claim.ldap_to_email.ldapPwd',
+            'AD/LDAP Password',
+        );
 
         let content;
         if (this.state.showMfa) {
@@ -137,14 +212,11 @@ export default class LDAPToEmail extends React.Component {
             );
         } else {
             content = (
-                <form
-                    onSubmit={this.preSubmit}
-                    className={formClass}
-                >
+                <form onSubmit={this.preSubmit} className={formClass}>
                     <p>
                         <FormattedMessage
                             id='claim.ldap_to_email.email'
-                            defaultMessage='After switching your authentication method, you will use {email} to login. Your AD/LDAP credentials will no longer allow access to Mattermost.'
+                            defaultMessage='After switching your authentication method, you will use {email} to login. Your AD/LDAP credentials will no longer allow access to SCC.'
                             values={{
                                 email: this.props.email,
                             }}
@@ -182,7 +254,10 @@ export default class LDAPToEmail extends React.Component {
                             className='form-control'
                             name='password'
                             ref='password'
-                            placeholder={{id: t('claim.ldap_to_email.pwd'), defaultMessage: 'Password'}}
+                            placeholder={{
+                                id: t('claim.ldap_to_email.pwd'),
+                                defaultMessage: 'Password',
+                            }}
                             spellCheck='false'
                         />
                     </div>
@@ -193,15 +268,15 @@ export default class LDAPToEmail extends React.Component {
                             className='form-control'
                             name='passwordconfirm'
                             ref='passwordconfirm'
-                            placeholder={{id: t('claim.ldap_to_email.confirm'), defaultMessage: 'Confirm Password'}}
+                            placeholder={{
+                                id: t('claim.ldap_to_email.confirm'),
+                                defaultMessage: 'Confirm Password',
+                            }}
                             spellCheck='false'
                         />
                     </div>
                     {confirmError}
-                    <button
-                        type='submit'
-                        className='btn btn-primary'
-                    >
+                    <button type='submit' className='btn btn-primary'>
                         <FormattedMessage
                             id='claim.ldap_to_email.switchTo'
                             defaultMessage='Switch account to email/password'

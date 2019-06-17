@@ -18,8 +18,10 @@ export function matchesFilter(incomingWebhook, channel, filter) {
         return true;
     }
 
-    if (incomingWebhook.display_name.toLowerCase().indexOf(filter) !== -1 ||
-        incomingWebhook.description.toLowerCase().indexOf(filter) !== -1) {
+    if (
+        incomingWebhook.display_name.toLowerCase().indexOf(filter) !== -1 ||
+        incomingWebhook.description.toLowerCase().indexOf(filter) !== -1
+    ) {
         return true;
     }
 
@@ -34,42 +36,41 @@ export function matchesFilter(incomingWebhook, channel, filter) {
 
 export default class InstalledIncomingWebhook extends React.PureComponent {
     static propTypes = {
-
         /**
-        * Data used for showing webhook details
-        */
+         * Data used for showing webhook details
+         */
         incomingWebhook: PropTypes.object.isRequired,
 
         /**
-        * Function to call when webhook delete button is pressed
-        */
+         * Function to call when webhook delete button is pressed
+         */
         onDelete: PropTypes.func.isRequired,
 
         /**
-        * String used for filtering webhook item
-        */
+         * String used for filtering webhook item
+         */
         filter: PropTypes.string,
 
         /**
-        * Data used for showing created by details
-        */
+         * Data used for showing created by details
+         */
         creator: PropTypes.object.isRequired,
 
         /**
-        *  Set to show available actions on webhook
-        */
+         *  Set to show available actions on webhook
+         */
         canChange: PropTypes.bool.isRequired,
 
         /**
-        *  Data used in routing of webhook for modifications
-        */
+         *  Data used in routing of webhook for modifications
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        *  Data used for filtering of webhook based on filter prop
-        */
+         *  Data used for filtering of webhook based on filter prop
+         */
         channel: PropTypes.object,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -119,7 +120,9 @@ export default class InstalledIncomingWebhook extends React.PureComponent {
         if (this.props.canChange) {
             actions = (
                 <div className='item-actions'>
-                    <Link to={`/${this.props.team.name}/integrations/incoming_webhooks/edit?id=${incomingWebhook.id}`}>
+                    <Link
+                        to={`/${this.props.team.name}/integrations/incoming_webhooks/edit?id=${incomingWebhook.id}`}
+                    >
                         <FormattedMessage
                             id='installed_integrations.edit'
                             defaultMessage='Edit'
@@ -127,7 +130,9 @@ export default class InstalledIncomingWebhook extends React.PureComponent {
                     </Link>
                     {' - '}
                     <DeleteIntegration
-                        messageId={t('installed_incoming_webhooks.delete.confirm')}
+                        messageId={t(
+                            'installed_incoming_webhooks.delete.confirm',
+                        )}
                         onDelete={this.handleDelete}
                     />
                 </div>
@@ -154,10 +159,9 @@ export default class InstalledIncomingWebhook extends React.PureComponent {
                                     url: incomingWebhookId,
                                 }}
                             />
+
                             <span>
-                                <CopyText
-                                    value={incomingWebhookId}
-                                />
+                                <CopyText value={incomingWebhookId} />
                             </span>
                         </span>
                     </div>

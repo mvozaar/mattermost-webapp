@@ -17,7 +17,9 @@ describe('Message Draft', () => {
     it('M13473 Message Draft - Pencil Icon', () => {
         // # Got to a test channel on the side bar
         cy.get('#sidebarItem_town-square').scrollIntoView();
-        cy.get('#sidebarItem_town-square').should('be.visible').click();
+        cy.get('#sidebarItem_town-square')
+            .should('be.visible')
+            .click();
 
         // * Validate if the channel has been opened
         cy.url().should('include', '/ad-1/channels/town-square');
@@ -31,7 +33,9 @@ describe('Message Draft', () => {
 
         // # Go to another test channel without submitting the draft in the previous channel
         cy.get('#sidebarItem_autem-2').scrollIntoView();
-        cy.get('#sidebarItem_autem-2').should('be.visible').click();
+        cy.get('#sidebarItem_autem-2')
+            .should('be.visible')
+            .click();
 
         // * Validate if the newly navigated channel is open
         cy.url().should('include', '/ad-1/channels/autem-2');

@@ -13,7 +13,6 @@ import {t} from 'utils/i18n';
 
 export default class ResetStatusModal extends React.PureComponent {
     static propTypes = {
-
         /*
          * The user's preference for whether their status is automatically reset
          */
@@ -34,7 +33,6 @@ export default class ResetStatusModal extends React.PureComponent {
          */
         onHide: PropTypes.func,
         actions: PropTypes.shape({
-
             /*
              * Function to get and then reset the user's status if needed
              */
@@ -63,17 +61,18 @@ export default class ResetStatusModal extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.props.actions.autoResetStatus().then(
-            (status) => {
-                const statusIsManual = status.manual;
-                const autoResetPrefNotSet = this.props.autoResetPref === '';
+        this.props.actions.autoResetStatus().then((status) => {
+            const statusIsManual = status.manual;
+            const autoResetPrefNotSet = this.props.autoResetPref === '';
 
-                this.setState({
-                    currentUserStatus: status, // Set in state until status refactor where we store 'manual' field in redux
-                    show: Boolean(status.status === UserStatuses.OUT_OF_OFFICE || (statusIsManual && autoResetPrefNotSet)),
-                });
-            }
-        );
+            this.setState({
+                currentUserStatus: status, // Set in state until status refactor where we store 'manual' field in redux
+                show: Boolean(
+                    status.status === UserStatuses.OUT_OF_OFFICE ||
+                        (statusIsManual && autoResetPrefNotSet),
+                ),
+            });
+        });
     }
 
     hideModal = () => {
@@ -88,7 +87,13 @@ export default class ResetStatusModal extends React.PureComponent {
         this.props.actions.setStatus(newStatus);
 
         if (checked) {
-            const pref = {category: Preferences.CATEGORY_AUTO_RESET_MANUAL_STATUS, user_id: newStatus.user_id, name: newStatus.user_id, value: 'true'};
+            const pref = {
+                category: Preferences.CATEGORY_AUTO_RESET_MANUAL_STATUS,
+                user_id: newStatus.user_id,
+                name: newStatus.user_id,
+                value: 'true',
+            };
+
             this.props.actions.savePreferences(pref.user_id, [pref]);
         }
     };
@@ -98,7 +103,13 @@ export default class ResetStatusModal extends React.PureComponent {
 
         if (checked) {
             const status = {...this.state.currentUserStatus};
-            const pref = {category: Preferences.CATEGORY_AUTO_RESET_MANUAL_STATUS, user_id: status.user_id, name: status.user_id, value: 'false'};
+            const pref = {
+                category: Preferences.CATEGORY_AUTO_RESET_MANUAL_STATUS,
+                user_id: status.user_id,
+                name: status.user_id,
+                value: 'false',
+            };
+
             this.props.actions.savePreferences(pref.user_id, [pref]);
         }
     };
@@ -108,7 +119,7 @@ export default class ResetStatusModal extends React.PureComponent {
             return (
                 <FormattedMessage
                     id={`modal.manual_status.auto_responder.message_${this.state.newStatus}`}
-                    defaultMessage='Would you like to switch your status to "{status}" and disable Automatic Replies?'
+                    defaultMessage="Would you like to switch your status to '{status}' and disable Automatic Replies?"
                     values={{
                         status: toTitleCase(this.state.newStatus),
                     }}
@@ -119,7 +130,7 @@ export default class ResetStatusModal extends React.PureComponent {
         return (
             <FormattedMessage
                 id={`modal.manual_status.message_${this.state.newStatus}`}
-                defaultMessage='Would you like to switch your status to "{status}"?'
+                defaultMessage="Would you like to switch your status to '{status}'?"
                 values={{
                     status: toTitleCase(this.state.newStatus),
                 }}
@@ -133,7 +144,7 @@ export default class ResetStatusModal extends React.PureComponent {
         const manualStatusTitle = (
             <FormattedMessage
                 id={userStatusId}
-                defaultMessage='Your status is set to "{status}"'
+                defaultMessage="Your status is set to '{status}'"
                 values={{
                     status: toTitleCase(userStatus),
                 }}
@@ -145,17 +156,18 @@ export default class ResetStatusModal extends React.PureComponent {
         const manualStatusButton = (
             <FormattedMessage
                 id={`modal.manual_status.button_${this.state.newStatus}`}
-                defaultMessage='Yes, set my status to "{status}"'
+                defaultMessage="Yes, set my status to '{status}'"
                 values={{
                     status: toTitleCase(this.state.newStatus),
                 }}
             />
         );
+
         const manualStatusId = 'modal.manual_status.cancel_' + userStatus;
         const manualStatusCancel = (
             <FormattedMessage
                 id={manualStatusId}
-                defaultMessage='No, keep it as "{status}"'
+                defaultMessage="No, keep it as '{status}'"
                 values={{
                     status: toTitleCase(userStatus),
                 }}
@@ -169,7 +181,8 @@ export default class ResetStatusModal extends React.PureComponent {
             />
         );
 
-        const showCheckbox = this.props.currentUserStatus !== UserStatuses.OUT_OF_OFFICE;
+        const showCheckbox =
+            this.props.currentUserStatus !== UserStatuses.OUT_OF_OFFICE;
 
         return (
             <ConfirmModal

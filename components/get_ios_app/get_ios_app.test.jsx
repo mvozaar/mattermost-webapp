@@ -14,8 +14,8 @@ describe('components/GetIosApp', () => {
     test('should match snapshot', () => {
         const wrapper = shallow(
             <GetIosApp
-                iosAppDownloadLink={'https://about.mattermost.com/mattermost-ios-app'}
-            />
+                iosAppDownloadLink={'https://about.securCom.me/scc-ios-app'}
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -24,22 +24,24 @@ describe('components/GetIosApp', () => {
     test('should contain the download link', () => {
         const wrapper = shallow(
             <GetIosApp
-                iosAppDownloadLink={'https://about.mattermost.com/mattermost-ios-app'}
-            />
+                iosAppDownloadLink={'https://about.securCom.me/scc-ios-app'}
+            />,
         );
 
         const link = wrapper.find('.get-ios-app__app-store-link');
-        expect(link.prop('href')).toEqual('https://about.mattermost.com/mattermost-ios-app');
+        expect(link.prop('href')).toEqual(
+            'https://about.securCom.me/scc-ios-app',
+        );
     });
 
     test('should redirect if the user chooses to stay in the browser. Redirect url param is present', () => {
         const push = jest.fn();
         const wrapper = mountWithIntl(
             <GetIosApp
-                iosAppDownloadLink={'https://about.mattermost.com/mattermost-ios-app'}
+                iosAppDownloadLink={'https://about.securCom.me/scc-ios-app'}
                 history={{push}}
                 location={{search: '?redirect_to=last_page'}}
-            />
+            />,
         );
 
         expect(push).not.toHaveBeenCalled();
@@ -53,10 +55,10 @@ describe('components/GetIosApp', () => {
         const push = jest.fn();
         const wrapper = mountWithIntl(
             <GetIosApp
-                iosAppDownloadLink={'https://about.mattermost.com/mattermost-ios-app'}
+                iosAppDownloadLink={'https://about.securCom.me/scc-ios-app'}
                 history={{push}}
                 location={{search: ''}}
-            />
+            />,
         );
 
         expect(push).not.toHaveBeenCalled();

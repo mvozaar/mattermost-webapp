@@ -4,7 +4,12 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import ReactDOM from 'react-dom';
-import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {
+    defineMessages,
+    FormattedMessage,
+    injectIntl,
+    intlShape,
+} from 'react-intl';
 import PropTypes from 'prop-types';
 
 import {isEmail} from 'mattermost-redux/utils/helpers';
@@ -25,22 +30,28 @@ const holders = defineMessages({
         id: t('invite_member.emailError'),
         defaultMessage: 'Please enter a valid email address',
     },
+
     firstname: {
         id: t('invite_member.firstname'),
         defaultMessage: 'First name',
     },
+
     lastname: {
         id: t('invite_member.lastname'),
         defaultMessage: 'Last name',
     },
+
     modalTitle: {
         id: t('invite_member.modalTitle'),
         defaultMessage: 'Discard Invitations?',
     },
+
     modalMessage: {
         id: t('invite_member.modalMessage'),
-        defaultMessage: 'You have unsent invitations, are you sure you want to discard them?',
+        defaultMessage:
+            'You have unsent invitations, are you sure you want to discard them?',
     },
+
     modalButton: {
         id: t('invite_member.modalButton'),
         defaultMessage: 'Yes, Discard',
@@ -60,7 +71,7 @@ class InviteMemberModal extends React.PureComponent {
         actions: PropTypes.shape({
             sendEmailInvitesToTeam: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -79,7 +90,7 @@ class InviteMemberModal extends React.PureComponent {
 
     onHide = () => {
         this.setState({show: false});
-    }
+    };
 
     handleSubmit = async () => {
         if (!this.props.sendEmailNotifications) {
@@ -98,12 +109,21 @@ class InviteMemberModal extends React.PureComponent {
         for (let i = 0; i < count; i++) {
             const invite = {};
             const index = inviteIds[i];
-            invite.email = ReactDOM.findDOMNode(this.refs['email' + index]).value.trim();
-            invite.firstName = ReactDOM.findDOMNode(this.refs['first_name' + index]).value.trim();
-            invite.lastName = ReactDOM.findDOMNode(this.refs['last_name' + index]).value.trim();
+            invite.email = ReactDOM.findDOMNode(
+                this.refs['email' + index],
+            ).value.trim();
+            invite.firstName = ReactDOM.findDOMNode(
+                this.refs['first_name' + index],
+            ).value.trim();
+            invite.lastName = ReactDOM.findDOMNode(
+                this.refs['last_name' + index],
+            ).value.trim();
             if (invite.email !== '' || index === 0) {
                 if (!invite.email || !isEmail(invite.email)) {
-                    emailErrors[index] = this.props.intl.formatMessage(holders.emailError);
+                    emailErrors[index] = this.props.intl.formatMessage(
+                        holders.emailError,
+                    );
+
                     valid = false;
                 } else {
                     emailErrors[index] = '';
@@ -124,7 +144,11 @@ class InviteMemberModal extends React.PureComponent {
 
         this.setState({isSendingEmails: true});
 
-        const {data, error} = await this.props.actions.sendEmailInvitesToTeam(this.props.teamId, emails);
+        const {data, error} = await this.props.actions.sendEmailInvitesToTeam(
+            this.props.teamId,
+            emails,
+        );
+
         if (data) {
             this.handleHide(false);
             this.setState({isSendingEmails: false});
@@ -138,14 +162,18 @@ class InviteMemberModal extends React.PureComponent {
 
             this.setState({isSendingEmails: false});
         }
-    }
+    };
 
     handleHide = (requireConfirm) => {
         if (requireConfirm) {
             var notEmpty = false;
             for (var i = 0; i < this.state.inviteIds.length; i++) {
                 var index = this.state.inviteIds[i];
-                if (ReactDOM.findDOMNode(this.refs['email' + index]).value.trim() !== '') {
+                if (
+                    ReactDOM.findDOMNode(
+                        this.refs['email' + index],
+                    ).value.trim() !== ''
+                ) {
                     notEmpty = true;
                     break;
                 }
@@ -166,14 +194,14 @@ class InviteMemberModal extends React.PureComponent {
             show: false,
             showConfirmModal: false,
         });
-    }
+    };
 
     addInviteFields = () => {
         const count = this.state.idCount + 1;
         const inviteIds = [...this.state.inviteIds];
         inviteIds.push(count);
         this.setState({inviteIds, idCount: count});
-    }
+    };
 
     clearFields = () => {
         var inviteIds = this.state.inviteIds;
@@ -192,7 +220,7 @@ class InviteMemberModal extends React.PureComponent {
             firstNameErrors: {},
             lastNameErrors: {},
         });
-    }
+    };
 
     removeInviteFields = (inviteId) => {
         let count = this.state.idCount;
@@ -201,24 +229,24 @@ class InviteMemberModal extends React.PureComponent {
             inviteIds.push(++count);
         }
         this.setState({inviteIds, idCount: count});
-    }
+    };
 
     showGetTeamInviteLinkModal = () => {
         this.handleHide(false);
 
         GlobalActions.showGetTeamInviteLinkModal();
-    }
+    };
 
     handleKeyDown = (e) => {
         if (utils.isKeyPressed(e, Constants.KeyCodes.ENTER)) {
             e.preventDefault();
             this.handleSubmit();
         }
-    }
+    };
 
     hideConfirmModal = () => {
         this.setState({showConfirmModal: false});
-    }
+    };
 
     render() {
         const {currentUser} = this.props;
@@ -231,15 +259,27 @@ class InviteMemberModal extends React.PureComponent {
                 var index = inviteIds[i];
                 var emailError = null;
                 if (this.state.emailErrors[index]) {
-                    emailError = <label className='control-label'>{this.state.emailErrors[index]}</label>;
+                    emailError = (
+                        <label className='control-label'>
+                            {this.state.emailErrors[index]}
+                        </label>
+                    );
                 }
                 var firstNameError = null;
                 if (this.state.firstNameErrors[index]) {
-                    firstNameError = <label className='control-label'>{this.state.firstNameErrors[index]}</label>;
+                    firstNameError = (
+                        <label className='control-label'>
+                            {this.state.firstNameErrors[index]}
+                        </label>
+                    );
                 }
                 var lastNameError = null;
                 if (this.state.lastNameErrors[index]) {
-                    lastNameError = <label className='control-label'>{this.state.lastNameErrors[index]}</label>;
+                    lastNameError = (
+                        <label className='control-label'>
+                            {this.state.lastNameErrors[index]}
+                        </label>
+                    );
                 }
 
                 var removeButton = null;
@@ -249,11 +289,17 @@ class InviteMemberModal extends React.PureComponent {
                             <button
                                 type='button'
                                 className='btn btn-link remove__member'
-                                onClick={this.removeInviteFields.bind(this, index)}
+                                onClick={this.removeInviteFields.bind(
+                                    this,
+                                    index,
+                                )}
                             >
                                 <span
                                     className='fa fa-trash'
-                                    title={formatMessage({id: 'generic_icons.remove', defaultMessage: 'Remove Icon'})}
+                                    title={formatMessage({
+                                        id: 'generic_icons.remove',
+                                        defaultMessage: 'Remove Icon',
+                                    })}
                                 />
                             </button>
                         </div>
@@ -285,9 +331,13 @@ class InviteMemberModal extends React.PureComponent {
                                     ref={'first_name' + index}
                                     placeholder={holders.firstname}
                                     maxLength='64'
-                                    disabled={!this.props.sendEmailNotifications || !this.props.enableUserCreation}
+                                    disabled={
+                                        !this.props.sendEmailNotifications ||
+                                        !this.props.enableUserCreation
+                                    }
                                     spellCheck='false'
                                 />
+
                                 {firstNameError}
                             </div>
                         </div>
@@ -300,9 +350,13 @@ class InviteMemberModal extends React.PureComponent {
                                     ref={'last_name' + index}
                                     placeholder={holders.lastname}
                                     maxLength='64'
-                                    disabled={!this.props.sendEmailNotifications || !this.props.enableUserCreation}
+                                    disabled={
+                                        !this.props.sendEmailNotifications ||
+                                        !this.props.enableUserCreation
+                                    }
                                     spellCheck='false'
                                 />
+
                                 {lastNameError}
                             </div>
                         </div>
@@ -321,10 +375,14 @@ class InviteMemberModal extends React.PureComponent {
                                 className='form-control'
                                 placeholder='email@domain.com'
                                 maxLength='64'
-                                disabled={!this.props.sendEmailNotifications || !this.props.enableUserCreation}
+                                disabled={
+                                    !this.props.sendEmailNotifications ||
+                                    !this.props.enableUserCreation
+                                }
                                 spellCheck='false'
                                 autoFocus={true}
                             />
+
                             {emailError}
                         </div>
                         {nameFields}
@@ -334,13 +392,22 @@ class InviteMemberModal extends React.PureComponent {
 
             var serverError = null;
             if (this.state.serverError) {
-                serverError = <div className='form-group has-error'><label className='control-label'>{this.state.serverError}</label></div>;
+                serverError = (
+                    <div className='form-group has-error'>
+                        <label className='control-label'>
+                            {this.state.serverError}
+                        </label>
+                    </div>
+                );
             }
 
             var content = null;
             var sendButton = null;
 
-            if (this.props.sendEmailNotifications && this.props.enableUserCreation) {
+            if (
+                this.props.sendEmailNotifications &&
+                this.props.enableUserCreation
+            ) {
                 content = (
                     <div>
                         {serverError}
@@ -354,8 +421,8 @@ class InviteMemberModal extends React.PureComponent {
                                 defaultMessage='Add another'
                             />
                         </button>
-                        <br/>
-                        <br/>
+                        <br />
+                        <br />
                         <span>
                             <FormattedMarkdownMessage
                                 id='invite_member.autoJoin'
@@ -374,6 +441,7 @@ class InviteMemberModal extends React.PureComponent {
                         defaultMessage='Send Invitation'
                     />
                 );
+
                 if (this.state.inviteIds.length > 1) {
                     sendButtonLabel = (
                         <FormattedMessage
@@ -392,7 +460,10 @@ class InviteMemberModal extends React.PureComponent {
                     >
                         <LoadingWrapper
                             loading={this.state.isSendingEmails}
-                            text={utils.localizeMessage('invite_member.sending', ' Sending')}
+                            text={utils.localizeMessage(
+                                'invite_member.sending',
+                                ' Sending',
+                            )}
                         >
                             {sendButtonLabel}
                         </LoadingWrapper>
@@ -474,9 +545,7 @@ class InviteMemberModal extends React.PureComponent {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body ref='modalBody'>
-                            <form role='form'>
-                                {inviteSections}
-                            </form>
+                            <form role='form'>{inviteSections}</form>
                             {content}
                         </Modal.Body>
                         <Modal.Footer>

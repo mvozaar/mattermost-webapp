@@ -38,12 +38,12 @@ export default class UserAccessTokenSection extends React.Component {
             disableUserAccessToken: PropTypes.func.isRequired,
             clearUserAccessTokens: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         user: {},
         active: false,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -64,7 +64,8 @@ export default class UserAccessTokenSection extends React.Component {
         this.props.actions.getUserAccessTokensForUser(userId, 0, 200);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (!nextProps.active && this.props.active) {
             this.setState({
                 showConfirmModal: false,
@@ -79,19 +80,27 @@ export default class UserAccessTokenSection extends React.Component {
 
     startCreatingToken = () => {
         this.setState({tokenCreationState: TOKEN_CREATING});
-    }
+    };
 
     stopCreatingToken = () => {
         this.setState({tokenCreationState: TOKEN_NOT_CREATING, saving: false});
-    }
+    };
 
     handleCreateToken = async () => {
         this.handleCancelConfirm();
 
-        const description = this.refs.newtokendescription ? this.refs.newtokendescription.value : '';
+        const description = this.refs.newtokendescription
+            ? this.refs.newtokendescription.value
+            : '';
 
         if (description === '') {
-            this.setState({tokenError: Utils.localizeMessage('user.settings.tokens.nameRequired', 'Please enter a description.')});
+            this.setState({
+                tokenError: Utils.localizeMessage(
+                    'user.settings.tokens.nameRequired',
+                    'Please enter a description.',
+                ),
+            });
+
             return;
         }
 
@@ -99,14 +108,21 @@ export default class UserAccessTokenSection extends React.Component {
         this.props.setRequireConfirm(true, this.confirmCopyToken);
 
         const userId = this.props.user ? this.props.user.id : '';
-        const {data, error} = await this.props.actions.createUserAccessToken(userId, description);
+        const {data, error} = await this.props.actions.createUserAccessToken(
+            userId,
+            description,
+        );
 
         if (data && this.state.tokenCreationState === TOKEN_CREATING) {
-            this.setState({tokenCreationState: TOKEN_CREATED, newToken: data, saving: false});
+            this.setState({
+                tokenCreationState: TOKEN_CREATED,
+                newToken: data,
+                saving: false,
+            });
         } else if (error) {
             this.setState({serverError: error.message, saving: false});
         }
-    }
+    };
 
     confirmCopyToken = (confirmAction) => {
         this.setState({
@@ -117,14 +133,16 @@ export default class UserAccessTokenSection extends React.Component {
                     defaultMessage='Have you copied your token?'
                 />
             ),
+
             confirmMessage: (state) => (
                 <div>
                     <FormattedHTMLMessage
                         id='user.settings.tokens.confirmCopyMessage'
                         defaultMessage="Make sure you have copied and saved the access token below. You won't be able to see it again!"
                     />
-                    <br/>
-                    <br/>
+
+                    <br />
+                    <br />
                     {state.tokenCreationState === TOKEN_CREATING ? (
                         <div>
                             <strong className='word-break--all'>
@@ -144,24 +162,27 @@ export default class UserAccessTokenSection extends React.Component {
                                 id='user.settings.tokens.token'
                                 defaultMessage='Access Token: '
                             />
+
                             {state.newToken.token}
                         </strong>
                     )}
                 </div>
             ),
+
             confirmButton: (
                 <FormattedMessage
                     id='user.settings.tokens.confirmCopyButton'
                     defaultMessage='Yes, I have copied the token'
                 />
             ),
+
             confirmComplete: () => {
                 this.handleCancelConfirm();
                 confirmAction();
             },
             confirmHideCancel: true,
         });
-    }
+    };
 
     handleCancelConfirm = () => {
         this.setState({
@@ -172,7 +193,7 @@ export default class UserAccessTokenSection extends React.Component {
             confirmComplete: null,
             confirmHideCancel: false,
         });
-    }
+    };
 
     confirmCreateToken = () => {
         if (!UserUtils.isSystemAdmin(this.props.user.roles)) {
@@ -188,6 +209,7 @@ export default class UserAccessTokenSection extends React.Component {
                     defaultMessage='Create System Admin Personal Access Token'
                 />
             ),
+
             confirmMessage: () => (
                 <div className='alert alert-danger'>
                     <FormattedHTMLMessage
@@ -196,24 +218,26 @@ export default class UserAccessTokenSection extends React.Component {
                     />
                 </div>
             ),
+
             confirmButton: (
                 <FormattedMessage
                     id='user.settings.tokens.confirmCreateButton'
                     defaultMessage='Yes, Create'
                 />
             ),
+
             confirmComplete: () => {
                 this.handleCreateToken();
                 trackEvent('settings', 'system_admin_create_user_access_token');
             },
         });
-    }
+    };
 
     saveTokenKeyPress = (e) => {
         if (Utils.isKeyPressed(e, Constants.KeyCodes.ENTER)) {
             this.confirmCreateToken();
         }
-    }
+    };
 
     confirmRevokeToken = (tokenId) => {
         const token = this.props.userAccessTokens[tokenId];
@@ -226,29 +250,32 @@ export default class UserAccessTokenSection extends React.Component {
                     defaultMessage='Delete Token?'
                 />
             ),
+
             confirmMessage: () => (
                 <div className='alert alert-danger'>
                     <FormattedMarkdownMessage
                         id='user.settings.tokens.confirmDeleteMessage'
-                        defaultMessage='Any integrations using this token will no longer be able to access the Mattermost API. You cannot undo this action. \n \nAre you sure want to delete the **{description}** token?'
+                        defaultMessage='Any integrations using this token will no longer be able to access the SCC API. You cannot undo this action. \\n \\nAre you sure want to delete the **{description}** token?'
                         values={{
                             description: token.description,
                         }}
                     />
                 </div>
             ),
+
             confirmButton: (
                 <FormattedMessage
                     id='user.settings.tokens.confirmDeleteButton'
                     defaultMessage='Yes, Delete'
                 />
             ),
+
             confirmComplete: () => {
                 this.revokeToken(tokenId);
                 trackEvent('settings', 'revoke_user_access_token');
             },
         });
-    }
+    };
 
     revokeToken = async (tokenId) => {
         const {error} = await this.props.actions.revokeUserAccessToken(tokenId);
@@ -256,7 +283,7 @@ export default class UserAccessTokenSection extends React.Component {
             this.setState({serverError: error.message});
         }
         this.handleCancelConfirm();
-    }
+    };
 
     activateToken = async (tokenId) => {
         const {error} = await this.props.actions.enableUserAccessToken(tokenId);
@@ -265,26 +292,35 @@ export default class UserAccessTokenSection extends React.Component {
         } else {
             trackEvent('settings', 'activate_user_access_token');
         }
-    }
+    };
 
     deactivateToken = async (tokenId) => {
-        const {error} = await this.props.actions.disableUserAccessToken(tokenId);
+        const {error} = await this.props.actions.disableUserAccessToken(
+            tokenId,
+        );
+
         if (error) {
             this.setState({serverError: error.message});
         } else {
             trackEvent('settings', 'deactivate_user_access_token');
         }
-    }
+    };
 
     render() {
         let tokenListClass = '';
 
         if (!this.props.active) {
-            const describe = Utils.localizeMessage('user.settings.tokens.clickToEdit', "Click 'Edit' to manage your personal access tokens");
+            const describe = Utils.localizeMessage(
+                'user.settings.tokens.clickToEdit',
+                "Click 'Edit' to manage your personal access tokens",
+            );
 
             return (
                 <SettingItemMin
-                    title={Utils.localizeMessage('user.settings.tokens.title', 'Personal Access Tokens')}
+                    title={Utils.localizeMessage(
+                        'user.settings.tokens.title',
+                        'Personal Access Tokens',
+                    )}
                     describe={describe}
                     section={SECTION_TOKENS}
                     updateSection={this.props.updateSection}
@@ -315,7 +351,8 @@ export default class UserAccessTokenSection extends React.Component {
                             id='user.settings.tokens.deactivate'
                             defaultMessage='Disable'
                         />
-                    </a>);
+                    </a>
+                );
             } else {
                 activeStatus = (
                     <span className='has-error setting-box__inline-error'>
@@ -325,6 +362,7 @@ export default class UserAccessTokenSection extends React.Component {
                         />
                     </span>
                 );
+
                 activeLink = (
                     <a
                         name={token.id + '_activate'}
@@ -343,15 +381,13 @@ export default class UserAccessTokenSection extends React.Component {
             }
 
             tokenList.push(
-                <div
-                    key={token.id}
-                    className='setting-box__item'
-                >
+                <div key={token.id} className='setting-box__item'>
                     <div className='whitespace--nowrap overflow--ellipsis'>
                         <FormattedMessage
                             id='user.settings.tokens.tokenDesc'
                             defaultMessage='Token Description: '
                         />
+
                         {token.description}
                         {activeStatus}
                     </div>
@@ -360,6 +396,7 @@ export default class UserAccessTokenSection extends React.Component {
                             id='user.settings.tokens.tokenId'
                             defaultMessage='Token ID: '
                         />
+
                         {token.id}
                     </div>
                     <div>
@@ -379,8 +416,8 @@ export default class UserAccessTokenSection extends React.Component {
                             />
                         </a>
                     </div>
-                    <hr className='margin-bottom margin-top x2'/>
-                </div>
+                    <hr className='margin-bottom margin-top x2' />
+                </div>,
             );
         });
 
@@ -401,7 +438,7 @@ export default class UserAccessTokenSection extends React.Component {
                 <span>
                     <FormattedMarkdownMessage
                         id='user.settings.tokens.description_mobile'
-                        defaultMessage='[Personal access tokens](!https://about.mattermost.com/default-user-access-tokens) function similarly to session tokens and can be used by integrations to [authenticate against the REST API](!https://about.mattermost.com/default-api-authentication). Create new tokens on your desktop.'
+                        defaultMessage='[Personal access tokens](!https://about.securCom.me/default-user-access-tokens) function similarly to session tokens and can be used by integrations to [authenticate against the REST API](!https://about.securCom.me/default-api-authentication). Create new tokens on your desktop.'
                     />
                 </span>
             );
@@ -410,7 +447,7 @@ export default class UserAccessTokenSection extends React.Component {
                 <span>
                     <FormattedMarkdownMessage
                         id='user.settings.tokens.description'
-                        defaultMessage='[Personal access tokens](!https://about.mattermost.com/default-user-access-tokens) function similarly to session tokens and can be used by integrations to [authenticate against the REST API](!https://about.mattermost.com/default-api-authentication).'
+                        defaultMessage='[Personal access tokens](!https://about.securCom.me/default-user-access-tokens) function similarly to session tokens and can be used by integrations to [authenticate against the REST API](!https://about.securCom.me/default-api-authentication).'
                     />
                 </span>
             );
@@ -464,6 +501,7 @@ export default class UserAccessTokenSection extends React.Component {
                             saving={this.state.saving}
                             onClick={this.confirmCreateToken}
                         />
+
                         <button
                             className='btn btn-link'
                             onClick={this.stopCreatingToken}
@@ -482,21 +520,21 @@ export default class UserAccessTokenSection extends React.Component {
             }
 
             newTokenSection = (
-                <div
-                    className='alert alert-warning'
-                >
-                    <WarningIcon additionalClassName='margin-right'/>
+                <div className='alert alert-warning'>
+                    <WarningIcon additionalClassName='margin-right' />
                     <FormattedMessage
                         id='user.settings.tokens.copy'
                         defaultMessage="Please copy the access token below. You won't be able to see it again!"
                     />
-                    <br/>
-                    <br/>
+
+                    <br />
+                    <br />
                     <div className='whitespace--nowrap overflow--ellipsis'>
                         <FormattedMessage
                             id='user.settings.tokens.name'
                             defaultMessage='Token Description: '
                         />
+
                         {this.state.newToken.description}
                     </div>
                     <div className='whitespace--nowrap overflow--ellipsis'>
@@ -504,6 +542,7 @@ export default class UserAccessTokenSection extends React.Component {
                             id='user.settings.tokens.id'
                             defaultMessage='Token ID: '
                         />
+
                         {this.state.newToken.id}
                     </div>
                     <strong className='word-break--all'>
@@ -511,6 +550,7 @@ export default class UserAccessTokenSection extends React.Component {
                             id='user.settings.tokens.token'
                             defaultMessage='Access Token: '
                         />
+
                         {this.state.newToken.token}
                     </strong>
                 </div>
@@ -532,10 +572,7 @@ export default class UserAccessTokenSection extends React.Component {
 
         const inputs = [];
         inputs.push(
-            <div
-                key='tokensSetting'
-                className='padding-top'
-            >
+            <div key='tokensSetting' className='padding-top'>
                 <div key='tokenList'>
                     <div className={'alert alert-transparent' + tokenListClass}>
                         {tokenList}
@@ -543,13 +580,16 @@ export default class UserAccessTokenSection extends React.Component {
                     </div>
                     {newTokenSection}
                 </div>
-            </div>
+            </div>,
         );
 
         return (
             <div>
                 <SettingItemMax
-                    title={Utils.localizeMessage('user.settings.tokens.title', 'Personal Access Tokens')}
+                    title={Utils.localizeMessage(
+                        'user.settings.tokens.title',
+                        'Personal Access Tokens',
+                    )}
                     inputs={inputs}
                     extraInfo={extraInfo}
                     infoPosition='top'
@@ -564,9 +604,14 @@ export default class UserAccessTokenSection extends React.Component {
                         />
                     }
                 />
+
                 <ConfirmModal
                     title={this.state.confirmTitle}
-                    message={this.state.confirmMessage ? this.state.confirmMessage(this.state) : null}
+                    message={
+                        this.state.confirmMessage
+                            ? this.state.confirmMessage(this.state)
+                            : null
+                    }
                     confirmButtonText={this.state.confirmButton}
                     show={this.state.showConfirmModal}
                     onConfirm={this.state.confirmComplete || (() => {})} //eslint-disable-line no-empty-function

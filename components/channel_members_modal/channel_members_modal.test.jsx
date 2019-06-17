@@ -17,6 +17,7 @@ describe('components/ChannelMembersModal', () => {
             display_name: 'channel_display_name',
             delete_at: 0,
         },
+
         canManageChannelMembers: true,
         onHide: jest.fn(),
         actions: {
@@ -25,17 +26,13 @@ describe('components/ChannelMembersModal', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <ChannelMembersModal {...baseProps}/>
-        );
+        const wrapper = shallow(<ChannelMembersModal {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match state when onHide is called', () => {
-        const wrapper = shallow(
-            <ChannelMembersModal {...baseProps}/>
-        );
+        const wrapper = shallow(<ChannelMembersModal {...baseProps} />);
 
         wrapper.setState({show: true});
         wrapper.instance().handleHide();
@@ -52,9 +49,8 @@ describe('components/ChannelMembersModal', () => {
                 openModal,
             },
         };
-        const wrapper = shallow(
-            <ChannelMembersModal {...props}/>
-        );
+
+        const wrapper = shallow(<ChannelMembersModal {...props} />);
 
         wrapper.instance().onAddNewMembersButton();
         expect(openModal).toHaveBeenCalledTimes(1);
@@ -62,45 +58,47 @@ describe('components/ChannelMembersModal', () => {
     });
 
     test('should have state when Modal.onHide', () => {
-        const wrapper = shallow(
-            <ChannelMembersModal {...baseProps}/>
-        );
+        const wrapper = shallow(<ChannelMembersModal {...baseProps} />);
 
         wrapper.setState({show: true});
-        wrapper.find(Modal).first().props().onHide();
+        wrapper
+            .find(Modal)
+            .first()
+            .props()
+            .onHide();
         expect(wrapper.state('show')).toEqual(false);
     });
 
     test('should match snapshot with archived channel', () => {
-        const props = {...baseProps, channel: {...baseProps.channel, delete_at: 1234}};
+        const props = {
+            ...baseProps,
+            channel: {...baseProps.channel, delete_at: 1234},
+        };
 
-        const wrapper = shallow(
-            <ChannelMembersModal {...props}/>
-        );
+        const wrapper = shallow(<ChannelMembersModal {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('renders the channel display name', () => {
-        const wrapper = shallow(
-            <ChannelMembersModal {...baseProps}/>
+        const wrapper = shallow(<ChannelMembersModal {...baseProps} />);
+
+        expect(wrapper.find('.name').text()).toBe(
+            baseProps.channel.display_name,
         );
-        expect(wrapper.find('.name').text()).toBe(baseProps.channel.display_name);
     });
 
     test('should show the invite modal link if the user can manage channel members', () => {
         const newProps = {...baseProps, canManageChannelMembers: true};
-        const wrapper = shallow(
-            <ChannelMembersModal {...newProps}/>
-        );
+        const wrapper = shallow(<ChannelMembersModal {...newProps} />);
+
         expect(wrapper.find('#showInviteModal').length).toBe(1);
     });
 
     test('should not show the invite modal link if the user can not manage channel members', () => {
         const newProps = {...baseProps, canManageChannelMembers: false};
-        const wrapper = shallow(
-            <ChannelMembersModal {...newProps}/>
-        );
+        const wrapper = shallow(<ChannelMembersModal {...newProps} />);
+
         expect(wrapper.find('#showInviteModal').length).toBe(0);
     });
 
@@ -113,9 +111,9 @@ describe('components/ChannelMembersModal', () => {
                 openModal,
             },
         };
-        const wrapper = shallow(
-            <ChannelMembersModal {...newProps}/>
-        );
+
+        const wrapper = shallow(<ChannelMembersModal {...newProps} />);
+
         expect(openModal).not.toHaveBeenCalled();
         wrapper.instance().onAddNewMembersButton();
         expect(openModal).toHaveBeenCalledWith({

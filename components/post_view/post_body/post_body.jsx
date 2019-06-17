@@ -21,7 +21,6 @@ const SENDING_ANIMATION_DELAY = 3000;
 
 export default class PostBody extends React.PureComponent {
     static propTypes = {
-
         /**
          * The post to render the body of
          */
@@ -76,23 +75,21 @@ export default class PostBody extends React.PureComponent {
          * Set not to allow edits on post
          */
         isReadOnly: PropTypes.bool,
-    }
+    };
 
     static defaultProps = {
         isReadOnly: false,
-    }
+    };
 
     constructor(props) {
         super(props);
 
-        this.sendingAction = new DelayedAction(
-            () => {
-                const post = this.props.post;
-                if (post && post.id === post.pending_post_id) {
-                    this.setState({sending: true});
-                }
+        this.sendingAction = new DelayedAction(() => {
+            const post = this.props.post;
+            if (post && post.id === post.pending_post_id) {
+                this.setState({sending: true});
             }
-        );
+        });
 
         this.state = {sending: false};
     }
@@ -108,7 +105,8 @@ export default class PostBody extends React.PureComponent {
         this.sendingAction.cancel();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         const post = nextProps.post;
         if (post && post.id !== post.pending_post_id) {
             this.sendingAction.cancel();
@@ -135,7 +133,7 @@ export default class PostBody extends React.PureComponent {
         let failedOptions;
         if (this.props.post.failed) {
             postClass += ' post--fail';
-            failedOptions = <FailedPostOptions post={this.props.post}/>;
+            failedOptions = <FailedPostOptions post={this.props.post} />;
         }
 
         if (PostUtils.isEdited(this.props.post)) {
@@ -143,7 +141,11 @@ export default class PostBody extends React.PureComponent {
         }
 
         let fileAttachmentHolder = null;
-        if (((post.file_ids && post.file_ids.length > 0) || (post.filenames && post.filenames.length > 0)) && this.props.post.state !== Posts.POST_DELETED) {
+        if (
+            ((post.file_ids && post.file_ids.length > 0) ||
+                (post.filenames && post.filenames.length > 0)) &&
+            this.props.post.state !== Posts.POST_DELETED
+        ) {
             fileAttachmentHolder = (
                 <FileAttachmentListContainer
                     post={post}
@@ -159,7 +161,7 @@ export default class PostBody extends React.PureComponent {
         const messageWrapper = (
             <React.Fragment>
                 {failedOptions}
-                {this.state.sending && <LoadingBars/>}
+                {this.state.sending && <LoadingBars />}
                 <PostMessageView
                     post={this.props.post}
                     compactDisplay={this.props.compactDisplay}
@@ -168,8 +170,12 @@ export default class PostBody extends React.PureComponent {
             </React.Fragment>
         );
 
-        const hasPlugin = (post.type && this.props.pluginPostTypes.hasOwnProperty(post.type)) ||
-            (post.props && post.props.type && this.props.pluginPostTypes.hasOwnProperty(post.props.type));
+        const hasPlugin =
+            (post.type &&
+                this.props.pluginPostTypes.hasOwnProperty(post.type)) ||
+            (post.props &&
+                post.props.type &&
+                this.props.pluginPostTypes.hasOwnProperty(post.props.type));
 
         let messageWithAdditionalContent;
         if (this.props.post.state === Posts.POST_DELETED || hasPlugin) {

@@ -14,7 +14,6 @@ import NextIcon from 'components/icon/next_icon';
 
 export default class TeamSignupDisplayNamePage extends React.PureComponent {
     static propTypes = {
-
         /*
          * Object containing team's display_name and name
          */
@@ -24,7 +23,7 @@ export default class TeamSignupDisplayNamePage extends React.PureComponent {
          * Function that updates parent component with state props
          */
         updateParent: PropTypes.func,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -41,24 +40,33 @@ export default class TeamSignupDisplayNamePage extends React.PureComponent {
 
         var displayName = ReactDOM.findDOMNode(this.refs.name).value.trim();
         if (!displayName) {
-            this.setState({nameError: (
-                <FormattedMessage
-                    id='create_team.display_name.required'
-                    defaultMessage='This field is required'
-                />),
+            this.setState({
+                nameError: (
+                    <FormattedMessage
+                        id='create_team.display_name.required'
+                        defaultMessage='This field is required'
+                    />
+                ),
             });
+
             return;
-        } else if (displayName.length < Constants.MIN_TEAMNAME_LENGTH || displayName.length > Constants.MAX_TEAMNAME_LENGTH) {
-            this.setState({nameError: (
-                <FormattedMessage
-                    id='create_team.display_name.charLength'
-                    defaultMessage='Name must be {min} or more characters up to a maximum of {max}. You can add a longer team description later.'
-                    values={{
-                        min: Constants.MIN_TEAMNAME_LENGTH,
-                        max: Constants.MAX_TEAMNAME_LENGTH,
-                    }}
-                />),
+        } else if (
+            displayName.length < Constants.MIN_TEAMNAME_LENGTH ||
+            displayName.length > Constants.MAX_TEAMNAME_LENGTH
+        ) {
+            this.setState({
+                nameError: (
+                    <FormattedMessage
+                        id='create_team.display_name.charLength'
+                        defaultMessage='Name must be {min} or more characters up to a maximum of {max}. You can add a longer team description later.'
+                        values={{
+                            min: Constants.MIN_TEAMNAME_LENGTH,
+                            max: Constants.MAX_TEAMNAME_LENGTH,
+                        }}
+                    />
+                ),
             });
+
             return;
         }
 
@@ -67,18 +75,21 @@ export default class TeamSignupDisplayNamePage extends React.PureComponent {
         newState.team.display_name = displayName;
         newState.team.name = cleanUpUrlable(displayName);
         this.props.updateParent(newState);
-    }
+    };
 
     handleFocus = (e) => {
         e.preventDefault();
         e.currentTarget.select();
-    }
+    };
 
     render() {
         var nameError = null;
         var nameDivClass = 'form-group';
         if (this.state.nameError) {
-            nameError = <label className='control-label'>{this.state.nameError}</label>;
+            nameError = (
+                <label className='control-label'>{this.state.nameError}</label>
+            );
+
             nameDivClass += ' has-error';
         }
 
@@ -90,6 +101,7 @@ export default class TeamSignupDisplayNamePage extends React.PureComponent {
                         className='signup-team-logo'
                         src={logoImage}
                     />
+
                     <h2>
                         <FormattedMessage
                             id='create_team.display_name.teamName'
@@ -106,7 +118,9 @@ export default class TeamSignupDisplayNamePage extends React.PureComponent {
                                     className='form-control'
                                     placeholder=''
                                     maxLength='128'
-                                    defaultValue={this.props.state.team.display_name}
+                                    defaultValue={
+                                        this.props.state.team.display_name
+                                    }
                                     autoFocus={true}
                                     onFocus={this.handleFocus}
                                     spellCheck='false'
@@ -131,7 +145,8 @@ export default class TeamSignupDisplayNamePage extends React.PureComponent {
                             id='create_team.display_name.next'
                             defaultMessage='Next'
                         />
-                        <NextIcon/>
+
+                        <NextIcon />
                     </button>
                 </form>
             </div>

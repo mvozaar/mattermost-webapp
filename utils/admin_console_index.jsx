@@ -8,7 +8,12 @@ import AdminDefinition from 'components/admin_console/admin_definition.jsx';
 function extractTextsFromSection(section, intl) {
     const texts = [];
     if (section.title) {
-        texts.push(intl.formatMessage({id: section.title, defaultMessage: section.title_default}));
+        texts.push(
+            intl.formatMessage({
+                id: section.title,
+                defaultMessage: section.title_default,
+            }),
+        );
     }
     if (section.schema && section.schema.name) {
         texts.push(section.schema.name);
@@ -16,9 +21,19 @@ function extractTextsFromSection(section, intl) {
     if (section.searchableStrings) {
         for (const searchableString of section.searchableStrings) {
             if (typeof searchableString === 'string') {
-                texts.push(intl.formatMessage({id: searchableString, defaultMessage: searchableString}));
+                texts.push(
+                    intl.formatMessage({
+                        id: searchableString,
+                        defaultMessage: searchableString,
+                    }),
+                );
             } else {
-                texts.push(intl.formatMessage({id: searchableString[0], defaultMessage: ''}, searchableString[1]));
+                texts.push(
+                    intl.formatMessage(
+                        {id: searchableString[0], defaultMessage: ''},
+                        searchableString[1],
+                    ),
+                );
             }
         }
     }
@@ -26,16 +41,42 @@ function extractTextsFromSection(section, intl) {
     if (section.schema && section.schema.settings) {
         for (const setting of Object.values(section.schema.settings)) {
             if (setting.label) {
-                texts.push(intl.formatMessage({id: setting.label, defaultMessage: setting.label_default}, setting.label_values));
+                texts.push(
+                    intl.formatMessage(
+                        {
+                            id: setting.label,
+                            defaultMessage: setting.label_default,
+                        },
+                        setting.label_values,
+                    ),
+                );
             }
             if (setting.help_text && typeof setting.help_text === 'string') {
-                texts.push(intl.formatMessage({id: setting.help_text, defaultMessage: setting.help_text_default}, setting.help_text_values));
+                texts.push(
+                    intl.formatMessage(
+                        {
+                            id: setting.help_text,
+                            defaultMessage: setting.help_text_default,
+                        },
+                        setting.help_text_values,
+                    ),
+                );
             }
             if (setting.remove_help_text) {
-                texts.push(intl.formatMessage({id: setting.remove_help_text, defaultMessage: setting.remove_help_text_default}));
+                texts.push(
+                    intl.formatMessage({
+                        id: setting.remove_help_text,
+                        defaultMessage: setting.remove_help_text_default,
+                    }),
+                );
             }
             if (setting.remove_button_text) {
-                texts.push(intl.formatMessage({id: setting.remove_button_text, defaultMessage: setting.remove_button_text_default}));
+                texts.push(
+                    intl.formatMessage({
+                        id: setting.remove_button_text,
+                        defaultMessage: setting.remove_button_text_default,
+                    }),
+                );
             }
         }
     }
@@ -76,7 +117,10 @@ export function adminDefinitionsToUrlsAndTexts(adminDefinition, intl) {
 
 export function generateIndex(intl) {
     const idx = new FlexSearch();
-    const mappingSectionsToTexts = adminDefinitionsToUrlsAndTexts(AdminDefinition, intl);
+    const mappingSectionsToTexts = adminDefinitionsToUrlsAndTexts(
+        AdminDefinition,
+        intl,
+    );
     for (const key of Object.keys(mappingSectionsToTexts)) {
         let text = '';
         for (const str of mappingSectionsToTexts[key]) {
@@ -86,4 +130,3 @@ export function generateIndex(intl) {
     }
     return idx;
 }
-

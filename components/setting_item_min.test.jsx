@@ -16,18 +16,14 @@ describe('components/SettingItemMin', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <SettingItemMin {...baseProps}/>
-        );
+        const wrapper = shallow(<SettingItemMin {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on disableOpen to true', () => {
         const props = {...baseProps, disableOpen: true};
-        const wrapper = shallow(
-            <SettingItemMin {...props}/>
-        );
+        const wrapper = shallow(<SettingItemMin {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -35,9 +31,7 @@ describe('components/SettingItemMin', () => {
     test('should have called updateSection on handleUpdateSection with section', () => {
         const updateSection = jest.fn();
         const props = {...baseProps, updateSection};
-        const wrapper = shallow(
-            <SettingItemMin {...props}/>
-        );
+        const wrapper = shallow(<SettingItemMin {...props} />);
 
         wrapper.instance().handleUpdateSection({preventDefault: jest.fn()});
         expect(updateSection).toHaveBeenCalled();
@@ -47,9 +41,7 @@ describe('components/SettingItemMin', () => {
     test('should have called updateSection on handleUpdateSection with empty string', () => {
         const updateSection = jest.fn();
         const props = {...baseProps, updateSection, section: ''};
-        const wrapper = shallow(
-            <SettingItemMin {...props}/>
-        );
+        const wrapper = shallow(<SettingItemMin {...props} />);
 
         wrapper.instance().handleUpdateSection({preventDefault: jest.fn()});
         expect(updateSection).toHaveBeenCalled();

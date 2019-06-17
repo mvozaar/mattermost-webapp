@@ -21,7 +21,8 @@ export default class SettingsUpload extends React.Component {
         };
     }
 
-    UNSAFE_componentWillReceiveProps() { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps() {
+        // eslint-disable-line camelcase
         this.setState({
             clientError: this.props.clientError,
             serverError: this.props.serverError,
@@ -73,15 +74,20 @@ export default class SettingsUpload extends React.Component {
         let submitButtonClass = 'btn btn-sm btn-primary disabled';
         if (this.state.filename) {
             fileNameText = (
-                <div className='file-status file-name'>{this.state.filename}</div>
+                <div className='file-status file-name'>
+                    {this.state.filename}
+                </div>
             );
+
             submitButtonClass = 'btn btn-sm btn-primary';
         }
 
         return (
             <ul className='section-max'>
                 <li className='col-sm-12 section-title'>{this.props.title}</li>
-                <li className='col-sm-offset-3 col-sm-9'>{this.props.helpText}</li>
+                <li className='col-sm-offset-3 col-sm-9'>
+                    {this.props.helpText}
+                </li>
                 <li className='col-sm-offset-3 col-sm-9'>
                     <ul className='setting-list'>
                         <li className='setting-list-item'>
@@ -90,6 +96,7 @@ export default class SettingsUpload extends React.Component {
                                     id='setting_upload.select'
                                     defaultMessage='Select file'
                                 />
+
                                 <input
                                     ref='uploadinput'
                                     accept={this.props.fileTypesAccepted}

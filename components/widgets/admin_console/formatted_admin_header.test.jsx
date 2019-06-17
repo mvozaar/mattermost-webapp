@@ -12,8 +12,9 @@ describe('components/widgets/admin_console/FormattedAdminHeader', () => {
             <FormattedAdminHeader
                 id='string.id'
                 defaultMessage='default message'
-            />
+            />,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <AdminHeader>
   <InjectIntl(FormattedMarkdownMessage)
@@ -22,8 +23,7 @@ describe('components/widgets/admin_console/FormattedAdminHeader', () => {
     values={Object {}}
   />
 </AdminHeader>
-`
-        );
+`);
     });
 
     test('render component with all props', () => {
@@ -34,8 +34,9 @@ describe('components/widgets/admin_console/FormattedAdminHeader', () => {
                 values={{
                     a_key: 'a_value',
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <AdminHeader>
   <InjectIntl(FormattedMarkdownMessage)
@@ -48,22 +49,19 @@ describe('components/widgets/admin_console/FormattedAdminHeader', () => {
     }
   />
 </AdminHeader>
-`
-        );
+`);
     });
 
     test('id prop is mandatory', () => {
         console.originalError = console.error;
         console.error = jest.fn();
 
-        shallow(
-            <FormattedAdminHeader
-                defaultMessage='default message'
-            />
-        );
+        shallow(<FormattedAdminHeader defaultMessage='default message' />);
 
         expect(console.error).toBeCalledTimes(1);
-        expect(console.error).toBeCalledWith('Warning: Failed prop type: The prop `id` is marked as required in `FormattedAdminHeader`, but its value is `undefined`.\n    in FormattedAdminHeader');
+        expect(console.error).toBeCalledWith(
+            'Warning: Failed prop type: The prop `id` is marked as required in `FormattedAdminHeader`, but its value is `undefined`.\n    in FormattedAdminHeader',
+        );
 
         console.error = console.originalError;
     });
@@ -72,14 +70,12 @@ describe('components/widgets/admin_console/FormattedAdminHeader', () => {
         console.originalError = console.error;
         console.error = jest.fn();
 
-        shallow(
-            <FormattedAdminHeader
-                id='string.id'
-            />
-        );
+        shallow(<FormattedAdminHeader id='string.id' />);
 
         expect(console.error).toBeCalledTimes(1);
-        expect(console.error).toBeCalledWith('Warning: Failed prop type: The prop `defaultMessage` is marked as required in `FormattedAdminHeader`, but its value is `undefined`.\n    in FormattedAdminHeader');
+        expect(console.error).toBeCalledWith(
+            'Warning: Failed prop type: The prop `defaultMessage` is marked as required in `FormattedAdminHeader`, but its value is `undefined`.\n    in FormattedAdminHeader',
+        );
 
         console.error = console.originalError;
     });

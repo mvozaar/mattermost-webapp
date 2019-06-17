@@ -16,7 +16,6 @@ import {placeCaretAtEnd} from 'utils/utils.jsx';
 
 export default class AddUserToChannelModal extends React.Component {
     static propTypes = {
-
         /**
          * Function that's called when modal is closed
          */
@@ -34,7 +33,6 @@ export default class AddUserToChannelModal extends React.Component {
         channelMembers: PropTypes.object.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * Function to add the user to a channel
              */
@@ -45,13 +43,12 @@ export default class AddUserToChannelModal extends React.Component {
              */
             getChannelMember: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
 
         this.state = {
-
             /**
              * Whether or not the modal is visible
              */
@@ -83,13 +80,14 @@ export default class AddUserToChannelModal extends React.Component {
              */
             submitError: '',
         };
+
         this.suggestionProviders = [new SearchChannelWithPermissionsProvider()];
         this.enableChannelProvider();
     }
 
     enableChannelProvider = () => {
         this.suggestionProviders[0].disableDispatches = false;
-    }
+    };
 
     focusTextbox = () => {
         if (this.channelSearchBox == null) {
@@ -101,27 +99,27 @@ export default class AddUserToChannelModal extends React.Component {
             textbox.focus();
             placeCaretAtEnd(textbox);
         }
-    }
+    };
 
     onInputChange = (e) => {
         this.setState({text: e.target.value, selectedChannelId: null});
-    }
+    };
 
     onHide = () => {
         this.setState({show: false});
         this.props.onHide();
-    }
+    };
 
     setSearchBoxRef = (input) => {
         this.channelSearchBox = input;
         this.focusTextbox();
-    }
+    };
 
     handleSubmitError = (error) => {
         if (error) {
             this.setState({submitError: error.message, saving: false});
         }
-    }
+    };
 
     didSelectChannel = (selection) => {
         const channel = selection.channel;
@@ -137,7 +135,7 @@ export default class AddUserToChannelModal extends React.Component {
         this.props.actions.getChannelMember(channel.id, userId).then(() => {
             this.setState({checkingForMembership: false});
         });
-    }
+    };
 
     handleSubmit = (e) => {
         if (e && e.preventDefault) {
@@ -157,14 +155,16 @@ export default class AddUserToChannelModal extends React.Component {
 
         this.setState({saving: true});
 
-        this.props.actions.addChannelMember(channelId, user.id).then(({error}) => {
-            if (error) {
-                this.handleSubmitError(error);
-            } else {
-                this.onHide();
-            }
-        });
-    }
+        this.props.actions
+            .addChannelMember(channelId, user.id)
+            .then(({error}) => {
+                if (error) {
+                    this.handleSubmitError(error);
+                } else {
+                    this.onHide();
+                }
+            });
+    };
 
     isUserMemberOfChannel = (channelId) => {
         const user = this.props.user;
@@ -179,12 +179,14 @@ export default class AddUserToChannelModal extends React.Component {
         }
 
         return Boolean(memberships[channelId][user.id]);
-    }
+    };
 
     render() {
         const user = this.props.user;
         const channelId = this.state.selectedChannelId;
-        const targetUserIsMemberOfSelectedChannel = this.isUserMemberOfChannel(channelId);
+        const targetUserIsMemberOfSelectedChannel = this.isUserMemberOfChannel(
+            channelId,
+        );
 
         let name = getFullName(user);
         if (!name) {
@@ -246,7 +248,8 @@ export default class AddUserToChannelModal extends React.Component {
             />
         );
 
-        const shouldDisableAddButton = targetUserIsMemberOfSelectedChannel ||
+        const shouldDisableAddButton =
+            targetUserIsMemberOfSelectedChannel ||
             this.state.checkingForMembership ||
             Boolean(!this.state.selectedChannelId) ||
             this.state.saving;
@@ -263,10 +266,7 @@ export default class AddUserToChannelModal extends React.Component {
                 aria-labelledby='addChannelModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='addChannelModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='addChannelModalLabel'>
                         <FormattedMessage
                             id='add_user_to_channel_modal.title'
                             defaultMessage='Add {name} to a channel'
@@ -276,18 +276,13 @@ export default class AddUserToChannelModal extends React.Component {
                         />
                     </Modal.Title>
                 </Modal.Header>
-                <form
-                    role='form'
-                    onSubmit={this.handleSubmit}
-                >
+                <form role='form' onSubmit={this.handleSubmit}>
                     <Modal.Body>
-                        <div className='modal__hint'>
-                            {help}
-                        </div>
+                        <div className='modal__hint'>{help}</div>
                         {content}
                         <div>
                             {errorMsg}
-                            <br/>
+                            <br />
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

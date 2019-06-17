@@ -13,10 +13,7 @@ describe('components/ChannelInfoModal', () => {
         function emptyFunction() {} //eslint-disable-line no-empty-function
 
         const wrapper = shallow(
-            <PostDeletedModal
-                show={true}
-                onHide={emptyFunction}
-            />
+            <PostDeletedModal show={true} onHide={emptyFunction} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -26,10 +23,7 @@ describe('components/ChannelInfoModal', () => {
         function emptyFunction() {} //eslint-disable-line no-empty-function
 
         const wrapper = shallow(
-            <PostDeletedModal
-                show={false}
-                onHide={emptyFunction}
-            />
+            <PostDeletedModal show={false} onHide={emptyFunction} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -41,26 +35,26 @@ describe('components/ChannelInfoModal', () => {
         }
 
         const wrapper = mountWithIntl(
-            <PostDeletedModal
-                show={true}
-                onHide={onHide}
-            />
+            <PostDeletedModal show={true} onHide={onHide} />,
         );
 
-        wrapper.find(Modal).first().props().onHide();
+        wrapper
+            .find(Modal)
+            .first()
+            .props()
+            .onHide();
     });
 
     test('shouldComponentUpdate returns the correct results', () => {
         function emptyFunction() {} //eslint-disable-line no-empty-function
 
         const wrapper = shallow(
-            <PostDeletedModal
-                show={false}
-                onHide={emptyFunction}
-            />
+            <PostDeletedModal show={false} onHide={emptyFunction} />,
         );
 
-        const shouldUpdate = wrapper.instance().shouldComponentUpdate({show: true});
+        const shouldUpdate = wrapper
+            .instance()
+            .shouldComponentUpdate({show: true});
         expect(shouldUpdate).toBe(true);
     });
 });

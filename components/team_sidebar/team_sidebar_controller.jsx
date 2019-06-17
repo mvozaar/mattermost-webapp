@@ -18,27 +18,15 @@ import Pluggable from 'plugins/pluggable';
 import TeamButton from './components/team_button.jsx';
 
 export function renderView(props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--view'
-        />);
+    return <div {...props} className='scrollbar--view' />;
 }
 
 export function renderThumbHorizontal(props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--horizontal'
-        />);
+    return <div {...props} className='scrollbar--horizontal' />;
 }
 
 export function renderThumbVertical(props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--vertical'
-        />);
+    return <div {...props} className='scrollbar--vertical' />;
 }
 
 export default class TeamSidebar extends React.PureComponent {
@@ -54,7 +42,7 @@ export default class TeamSidebar extends React.PureComponent {
             getTeams: PropTypes.func.isRequired,
             switchTeam: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     componentDidMount() {
         this.props.actions.getTeams(0, 200);
@@ -69,23 +57,25 @@ export default class TeamSidebar extends React.PureComponent {
         root.classList.add('multi-teams');
 
         const plugins = [];
-        const teams = filterAndSortTeamsByDisplayName(this.props.myTeams, this.props.locale).
-            map((team) => {
-                const member = this.props.myTeamMembers[team.id];
-                return (
-                    <TeamButton
-                        key={'switch_team_' + team.name}
-                        url={`/${team.name}`}
-                        tip={team.display_name}
-                        active={team.id === this.props.currentTeamId}
-                        displayName={team.display_name}
-                        unread={member.msg_count > 0}
-                        mentions={member.mention_count}
-                        teamIconUrl={Utils.imageURLForTeam(team)}
-                        switchTeam={this.props.actions.switchTeam}
-                    />
-                );
-            });
+        const teams = filterAndSortTeamsByDisplayName(
+            this.props.myTeams,
+            this.props.locale,
+        ).map((team) => {
+            const member = this.props.myTeamMembers[team.id];
+            return (
+                <TeamButton
+                    key={'switch_team_' + team.name}
+                    url={`/${team.name}`}
+                    tip={team.display_name}
+                    active={team.id === this.props.currentTeamId}
+                    displayName={team.display_name}
+                    unread={member.msg_count > 0}
+                    mentions={member.mention_count}
+                    teamIconUrl={Utils.imageURLForTeam(team)}
+                    switchTeam={this.props.actions.switchTeam}
+                />
+            );
+        });
 
         if (this.props.moreTeamsToJoin && !this.props.experimentalPrimaryTeam) {
             teams.push(
@@ -101,7 +91,7 @@ export default class TeamSidebar extends React.PureComponent {
                     }
                     content={'+'}
                     switchTeam={this.props.actions.switchTeam}
-                />
+                />,
             );
         } else {
             teams.push(
@@ -121,7 +111,7 @@ export default class TeamSidebar extends React.PureComponent {
                         content={'+'}
                         switchTeam={this.props.actions.switchTeam}
                     />
-                </SystemPermissionGate>
+                </SystemPermissionGate>,
             );
         }
 
@@ -130,12 +120,16 @@ export default class TeamSidebar extends React.PureComponent {
                 key='team-sidebar-bottom-plugin'
                 className='team-sidebar-bottom-plugin is-empty'
             >
-                <Pluggable pluggableName='BottomTeamSidebar'/>
-            </div>
+                <Pluggable pluggableName='BottomTeamSidebar' />
+            </div>,
         );
 
         return (
-            <div className={classNames('team-sidebar', {'move--right': this.props.isOpen})}>
+            <div
+                className={classNames('team-sidebar', {
+                    'move--right': this.props.isOpen,
+                })}
+            >
                 <div className='team-wrapper'>
                     <Scrollbars
                         autoHide={true}

@@ -29,7 +29,7 @@ export default class RemovedFromChannelModal extends React.PureComponent {
 
     onHide = () => {
         this.setState({show: false});
-    }
+    };
 
     render() {
         let channelName = (
@@ -38,6 +38,7 @@ export default class RemovedFromChannelModal extends React.PureComponent {
                 defaultMessage='the channel'
             />
         );
+
         if (this.props.channelName) {
             channelName = this.props.channelName;
         }
@@ -48,6 +49,7 @@ export default class RemovedFromChannelModal extends React.PureComponent {
                 defaultMessage='Someone'
             />
         );
+
         if (this.props.remover) {
             remover = this.props.remover;
         }
@@ -73,9 +75,8 @@ export default class RemovedFromChannelModal extends React.PureComponent {
                             id='removed_channel.from'
                             defaultMessage='Removed from '
                         />
-                        <span className='name'>
-                            {channelName}
-                        </span>
+
+                        <span className='name'>{channelName}</span>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body ref='modalBody'>
@@ -85,7 +86,7 @@ export default class RemovedFromChannelModal extends React.PureComponent {
                             defaultMessage='{remover} removed you from {channel}'
                             values={{
                                 remover,
-                                channel: (channelName),
+                                channel: channelName,
                             }}
                         />
                     </p>

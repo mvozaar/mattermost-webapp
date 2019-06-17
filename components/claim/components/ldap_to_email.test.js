@@ -19,12 +19,16 @@ describe('components/claim/components/ldap_to_email.jsx', () => {
         const token = 'abcd1234';
         const ldapPassword = 'ldapPsw';
 
-        const wrapper = shallow(<LDAPToEmail {...requiredProps}/>);
+        const wrapper = shallow(<LDAPToEmail {...requiredProps} />);
 
         await wrapper.instance().submit(loginId, password, token, ldapPassword);
 
         expect(requiredProps.switchLdapToEmail).toHaveBeenCalledTimes(1);
-        expect(requiredProps.switchLdapToEmail).
-            toHaveBeenCalledWith(ldapPassword, requiredProps.email, password, token);
+        expect(requiredProps.switchLdapToEmail).toHaveBeenCalledWith(
+            ldapPassword,
+            requiredProps.email,
+            password,
+            token,
+        );
     });
 });

@@ -14,7 +14,7 @@ export default class TeamMembersModal extends React.PureComponent {
         currentTeam: PropTypes.object.isRequired,
         onHide: PropTypes.func.isRequired,
         onLoad: PropTypes.func,
-    }
+    };
 
     componentDidMount() {
         if (this.props.onLoad) {
@@ -24,7 +24,7 @@ export default class TeamMembersModal extends React.PureComponent {
 
     onHide = () => {
         this.props.onHide();
-    }
+    };
 
     render() {
         let teamDisplayName = '';
@@ -42,10 +42,7 @@ export default class TeamMembersModal extends React.PureComponent {
                 aria-labelledby='teamMemberModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='teamMemberModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='teamMemberModalLabel'>
                         <FormattedMessage
                             id='team_member_modal.members'
                             defaultMessage='{team} Members'
@@ -56,9 +53,7 @@ export default class TeamMembersModal extends React.PureComponent {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <MemberListTeam
-                        teamId={this.props.currentTeam.id}
-                    />
+                    <MemberListTeam teamId={this.props.currentTeam.id} />
                 </Modal.Body>
             </Modal>
         );

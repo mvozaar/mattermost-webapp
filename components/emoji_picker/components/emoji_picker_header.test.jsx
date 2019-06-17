@@ -12,9 +12,7 @@ describe('components/emoji_picker/components/EmojiPickerHeader', () => {
             handleEmojiPickerClose: jest.fn(),
         };
 
-        const wrapper = shallow(
-            <EmojiPickerHeader {...props}/>
-        );
+        const wrapper = shallow(<EmojiPickerHeader {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -23,13 +21,14 @@ describe('components/emoji_picker/components/EmojiPickerHeader', () => {
             handleEmojiPickerClose: jest.fn(),
         };
 
-        const wrapper = shallow(
-            <EmojiPickerHeader {...props}/>
-        );
+        const wrapper = shallow(<EmojiPickerHeader {...props} />);
 
         expect(wrapper).toMatchSnapshot();
 
-        wrapper.find('button').first().simulate('click');
+        wrapper
+            .find('button')
+            .first()
+            .simulate('click');
         expect(props.handleEmojiPickerClose).toHaveBeenCalledTimes(1);
     });
 });

@@ -25,6 +25,7 @@ export default class AtMentionSuggestion extends Suggestion {
                     defaultMessage='Notifies everyone in this channel'
                 />
             );
+
             icon = (
                 <FormattedMessage
                     id='generic_icons.member'
@@ -46,6 +47,7 @@ export default class AtMentionSuggestion extends Suggestion {
                     defaultMessage='Notifies everyone in this channel'
                 />
             );
+
             icon = (
                 <FormattedMessage
                     id='generic_icons.member'
@@ -67,6 +69,7 @@ export default class AtMentionSuggestion extends Suggestion {
                     defaultMessage='Notifies everyone online in this channel'
                 />
             );
+
             icon = (
                 <FormattedMessage
                     id='generic_icons.member'
@@ -112,17 +115,13 @@ export default class AtMentionSuggestion extends Suggestion {
                 {...Suggestion.baseProps}
             >
                 {icon}
-                <span className='mention--align'>
-                    {'@' + username}
-                </span>
+                <span className='mention--align'>{'@' + username}</span>
                 <BotBadge
                     show={Boolean(user.is_bot)}
                     className='badge-autocomplete'
                 />
-                <span className='mention__fullname'>
-                    {' '}
-                    {description}
-                </span>
+
+                <span className='mention__fullname'> {description}</span>
             </div>
         );
     }

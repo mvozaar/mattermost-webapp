@@ -11,27 +11,27 @@ var HEADER_TOKEN = 'token';
 class TestHelperClass {
     basicClient = () => {
         return this.basicc;
-    }
+    };
 
     basicWebSocketClient = () => {
         return this.basicwsc;
-    }
+    };
 
     basicTeam = () => {
         return this.basict;
-    }
+    };
 
     basicUser = () => {
         return this.basicu;
-    }
+    };
 
     basicChannel = () => {
         return this.basicch;
-    }
+    };
 
     basicPost = () => {
         return this.basicp;
-    }
+    };
 
     generateId = () => {
         // implementation taken from http://stackoverflow.com/a/2117523
@@ -51,7 +51,7 @@ class TestHelperClass {
         });
 
         return 'uid' + id;
-    }
+    };
 
     createClient() {
         var c = new Client4();
@@ -69,7 +69,7 @@ class TestHelperClass {
 
     fakeEmail = () => {
         return 'success' + this.generateId() + '@simulator.amazonses.com';
-    }
+    };
 
     fakeUser = () => {
         var user = {};
@@ -78,7 +78,7 @@ class TestHelperClass {
         user.password = 'password1';
         user.username = this.generateId();
         return user;
-    }
+    };
 
     fakeTeam = () => {
         var team = {};
@@ -88,7 +88,7 @@ class TestHelperClass {
         team.email = this.fakeEmail();
         team.allowed_domains = '';
         return team;
-    }
+    };
 
     fakeChannel = () => {
         var channel = {};
@@ -96,13 +96,13 @@ class TestHelperClass {
         channel.display_name = `Unit Test ${channel.name}`;
         channel.type = 'O'; // open channel
         return channel;
-    }
+    };
 
     fakePost = () => {
         var post = {};
         post.message = `Unit Test ${this.generateId()}`;
         return post;
-    }
+    };
 
     fakeBot = () => {
         return {
@@ -115,18 +115,21 @@ class TestHelperClass {
             update_at: 1507840900004,
             delete_at: 0,
         };
-    }
+    };
 
     randomString = (length) => {
         var text = '';
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var possible =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
         for (var i = 0; i < length; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
+            text += possible.charAt(
+                Math.floor(Math.random() * possible.length),
+            );
         }
 
         return text;
-    }
+    };
 
     initBasic = (done, callback, connectWS) => {
         this.basicc = this.createClient();
@@ -154,10 +157,13 @@ class TestHelperClass {
                     null,
                     function(data, res) {
                         if (connectWS) {
-                            self.basicwsc = self.createWebSocketClient(res.header[HEADER_TOKEN]);
+                            self.basicwsc = self.createWebSocketClient(
+                                res.header[HEADER_TOKEN],
+                            );
                         }
                         self.basicClient().useHeaderToken();
-                        self.basicClient().createTeam(team,
+                        self.basicClient().createTeam(
+                            team,
                             function(rteam) {
                                 self.basict = rteam;
                                 self.basicClient().setTeamId(rteam.id);
@@ -176,25 +182,25 @@ class TestHelperClass {
                                                 self.basicp = rpost;
                                                 d1.resolve();
                                             },
-                                            throwerror
+                                            throwerror,
                                         );
                                     },
-                                    throwerror
+                                    throwerror,
                                 );
                             },
-                            throwerror
+                            throwerror,
                         );
                     },
-                    throwerror
+                    throwerror,
                 );
             },
-            throwerror
+            throwerror,
         );
 
         jqd.when(d1).done(() => {
             callback();
         });
-    }
+    };
 }
 
 var TestHelper = new TestHelperClass();

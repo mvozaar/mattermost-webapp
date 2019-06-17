@@ -11,7 +11,6 @@ import {isKeyPressed} from 'utils/utils';
 
 class LeaveTeamModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * Current user id.
          */
@@ -37,7 +36,6 @@ class LeaveTeamModal extends React.PureComponent {
         intl: intlShape.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * An action to remove user from team
              */
@@ -70,7 +68,11 @@ class LeaveTeamModal extends React.PureComponent {
 
     handleSubmit = () => {
         this.props.onHide();
-        this.props.actions.leaveTeam(this.props.currentTeamId, this.props.currentUserId);
+        this.props.actions.leaveTeam(
+            this.props.currentTeamId,
+            this.props.currentUserId,
+        );
+
         this.props.actions.toggleSideBarRightMenu();
     };
 
@@ -85,10 +87,7 @@ class LeaveTeamModal extends React.PureComponent {
                 aria-labelledby='leaveTeamModalLabel'
             >
                 <Modal.Header closeButton={false}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='leaveTeamModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='leaveTeamModalLabel'>
                         <FormattedMessage
                             id='leave_team_modal.title'
                             defaultMessage='Leave the team?'

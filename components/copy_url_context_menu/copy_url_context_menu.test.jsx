@@ -20,12 +20,14 @@ describe('components/CopyUrlContextMenu', () => {
         const wrapper = shallow(
             <CopyUrlContextMenu {...props}>
                 <span>{'Click'}</span>
-            </CopyUrlContextMenu>
+            </CopyUrlContextMenu>,
         );
 
         expect(wrapper).toMatchSnapshot();
         wrapper.find('MenuItem').simulate('click');
-        expect(props.actions.copyToClipboard).toBeCalledWith('http://example.com/path/to/resource');
+        expect(props.actions.copyToClipboard).toBeCalledWith(
+            'http://example.com/path/to/resource',
+        );
     });
 
     test('should copy absolute url on click', () => {
@@ -41,11 +43,13 @@ describe('components/CopyUrlContextMenu', () => {
         const wrapper = shallow(
             <CopyUrlContextMenu {...props}>
                 <span>{'Click'}</span>
-            </CopyUrlContextMenu>
+            </CopyUrlContextMenu>,
         );
 
         expect(wrapper).toMatchSnapshot();
         wrapper.find('MenuItem').simulate('click');
-        expect(props.actions.copyToClipboard).toBeCalledWith('http://site.example.com/path/to/resource');
+        expect(props.actions.copyToClipboard).toBeCalledWith(
+            'http://site.example.com/path/to/resource',
+        );
     });
 });

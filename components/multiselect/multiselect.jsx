@@ -36,7 +36,7 @@ export default class MultiSelect extends React.Component {
         saving: PropTypes.bool,
         loading: PropTypes.bool,
         placeholderText: PropTypes.string,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -68,7 +68,7 @@ export default class MultiSelect extends React.Component {
             this.refs.list.setSelected(0);
         }
         this.setState({page: this.state.page + 1});
-    }
+    };
 
     prevPage = () => {
         if (this.state.page === 0) {
@@ -80,18 +80,21 @@ export default class MultiSelect extends React.Component {
         }
         this.refs.list.setSelected(0);
         this.setState({page: this.state.page - 1});
-    }
+    };
 
     resetPaging = () => {
         this.setState({page: 0});
-    }
+    };
 
     onSelect = (selected) => {
         this.selected = selected;
-    }
+    };
 
     onAdd = (value) => {
-        if (this.props.maxValues && this.props.values.length >= this.props.maxValues) {
+        if (
+            this.props.maxValues &&
+            this.props.values.length >= this.props.maxValues
+        ) {
             return;
         }
 
@@ -104,7 +107,10 @@ export default class MultiSelect extends React.Component {
         this.props.handleAdd(value);
         this.selected = null;
 
-        this.refs.reactSelect.select.handleInputChange({currentTarget: {value: ''}});
+        this.refs.reactSelect.select.handleInputChange({
+            currentTarget: {value: ''},
+        });
+
         this.onInput('');
         this.refs.reactSelect.focus();
 
@@ -112,7 +118,7 @@ export default class MultiSelect extends React.Component {
         if (submitImmediatelyOn && submitImmediatelyOn(value)) {
             this.props.handleSubmit([value]);
         }
-    }
+    };
 
     onInput = (input, change = {}) => {
         if (change.action === 'input-blur' || change.action === 'menu-close') {
@@ -133,32 +139,32 @@ export default class MultiSelect extends React.Component {
         this.selected = null;
 
         this.props.handleInput(input);
-    }
+    };
 
     onInputKeyDown = (e) => {
         switch (e.key) {
-        case KeyCodes.ENTER[0]:
-            e.preventDefault();
-            break;
+            case KeyCodes.ENTER[0]:
+                e.preventDefault();
+                break;
         }
-    }
+    };
 
     handleEnterPress = (e) => {
         switch (e.key) {
-        case KeyCodes.ENTER[0]:
-            if (this.selected == null) {
-                this.props.handleSubmit();
-                return;
-            }
-            this.onAdd(this.selected);
-            break;
+            case KeyCodes.ENTER[0]:
+                if (this.selected == null) {
+                    this.props.handleSubmit();
+                    return;
+                }
+                this.onAdd(this.selected);
+                break;
         }
-    }
+    };
 
     handleOnClick = (e) => {
         e.preventDefault();
         this.props.handleSubmit();
-    }
+    };
 
     onChange = (_, change) => {
         if (change.action !== 'remove-value' && change.action !== 'pop-value') {
@@ -174,7 +180,7 @@ export default class MultiSelect extends React.Component {
         }
 
         this.props.handleDelete(values);
-    }
+    };
 
     render() {
         const options = Object.assign([], this.props.options);
@@ -200,10 +206,7 @@ export default class MultiSelect extends React.Component {
             buttonSubmitText = this.props.buttonSubmitText;
         } else if (this.props.maxValues != null) {
             buttonSubmitText = (
-                <FormattedMessage
-                    id='multiselect.go'
-                    defaultMessage='Go'
-                />
+                <FormattedMessage id='multiselect.go' defaultMessage='Go' />
             );
         }
 
@@ -221,10 +224,7 @@ export default class MultiSelect extends React.Component {
                             defaultMessage='Info Icon'
                         >
                             {(title) => (
-                                <span
-                                    className='fa fa-info'
-                                    title={title}
-                                />
+                                <span className='fa fa-info' title={title} />
                             )}
                         </FormattedMessage>
                     </div>
@@ -308,7 +308,9 @@ export default class MultiSelect extends React.Component {
                             components={{
                                 Menu: nullComponent,
                                 IndicatorsContainer: nullComponent,
-                                MultiValueLabel: paddedComponent(this.props.valueRenderer),
+                                MultiValueLabel: paddedComponent(
+                                    this.props.valueRenderer,
+                                ),
                             }}
                             isClearable={false}
                             openMenuOnFocus={false}
@@ -320,6 +322,7 @@ export default class MultiSelect extends React.Component {
                             inputValue={this.state.input}
                             getOptionValue={(option) => option.id}
                         />
+
                         <SaveButton
                             id='saveItems'
                             saving={this.props.saving}
@@ -348,6 +351,7 @@ export default class MultiSelect extends React.Component {
                     onSelect={this.onSelect}
                     loading={this.props.loading}
                 />
+
                 <div className='filter-controls'>
                     {previousButton}
                     {nextButton}
@@ -362,8 +366,14 @@ const nullComponent = () => null;
 const paddedComponent = (WrappedComponent) => {
     return (props) => {
         return (
-            <div style={{paddingRight: '5px', paddingLeft: '5px', borderRight: '1px solid rgba(0, 126, 255, 0.24)'}}>
-                <WrappedComponent {...props}/>
+            <div
+                style={{
+                    paddingRight: '5px',
+                    paddingLeft: '5px',
+                    borderRight: '1px solid rgba(0, 126, 255, 0.24)',
+                }}
+            >
+                <WrappedComponent {...props} />
             </div>
         );
     };
@@ -381,12 +391,12 @@ const styles = {
     control: (base) => {
         return {
             ...base,
-            borderRadius: '1px',
-            borderColor: 'hsl(0,0%,80%)',
-            minHeight: '36px',
+            'borderRadius': '1px',
+            'borderColor': 'hsl(0,0%,80%)',
+            'minHeight': '36px',
             '&:hover': {},
-            boxShadow: '',
-            backgroundColor: 'hsl(0,0%,100%)',
+            'boxShadow': '',
+            'backgroundColor': 'hsl(0,0%,100%)',
         };
     },
     multiValue: (base) => {

@@ -9,10 +9,17 @@ import AddCommand from './add_command.jsx';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addCommand,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addCommand,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(AddCommand);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(AddCommand);

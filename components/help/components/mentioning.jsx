@@ -16,7 +16,7 @@ export default function HelpMentioning() {
                     defaultMessage='Mentioning Teammates'
                 />
             </h1>
-            <hr/>
+            <hr />
             <h2 className='markdown__heading'>
                 <FormattedMessage
                     id='help.mentioning.mentions.title'
@@ -44,7 +44,7 @@ export default function HelpMentioning() {
             <p>
                 <FormattedMarkdownMessage
                     id='help.mentioning.username.description2'
-                    defaultMessage='Type `@` to bring up a list of team members who can be mentioned. To filter the list, type the first few letters of any username, first name, last name, or nickname. The **Up** and **Down** arrow keys can then be used to scroll through entries in the list, and pressing **ENTER** will select which user to mention. Once selected, the username will automatically replace the full name or nickname. The following example sends a special mention notification to **alice** that alerts her of the channel and message where she has been mentioned. If **alice** is away from Mattermost and has [email notifications](!http://docs.mattermost.com/help/getting-started/configuring-notifications.html#email-notifications) turned on, then she will receive an email alert of her mention along with the message text.'
+                    defaultMessage='Type `@` to bring up a list of team members who can be mentioned. To filter the list, type the first few letters of any username, first name, last name, or nickname. The **Up** and **Down** arrow keys can then be used to scroll through entries in the list, and pressing **ENTER** will select which user to mention. Once selected, the username will automatically replace the full name or nickname. The following example sends a special mention notification to **alice** that alerts her of the channel and message where she has been mentioned. If **alice** is away from SCC and has [email notifications](!http://docs.securCom.me/help/getting-started/configuring-notifications.html#email-notifications) turned on, then she will receive an email alert of her mention along with the message text.'
                 />
             </p>
             <div className='post-code post-code--wrap'>
@@ -55,7 +55,7 @@ export default function HelpMentioning() {
                     />
                 </code>
             </div>
-            <p/>
+            <p />
             <p>
                 <FormattedMarkdownMessage
                     id='help.mentioning.usernameCont'
@@ -91,7 +91,7 @@ export default function HelpMentioning() {
             <p>
                 <FormattedMarkdownMessage
                     id='help.mentioning.triggers.description'
-                    defaultMessage='In addition to being notified by @username and @channel, you can customize words that trigger mention notifications in **Account Settings** > **Notifications** > **Words that trigger mentions**. By default, you will receive mention notifications on your first name, and you can add more words by typing them into the input box separated by commas. This is useful if you want to be notified of all posts on certain topics, for example, "interviewing" or "marketing".'
+                    defaultMessage="In addition to being notified by @username and @channel, you can customize words that trigger mention notifications in **Account Settings** > **Notifications** > **Words that trigger mentions**. By default, you will receive mention notifications on your first name, and you can add more words by typing them into the input box separated by commas. This is useful if you want to be notified of all posts on certain topics, for example, 'interviewing' or 'marketing'."
                 />
             </p>
             <h2 className='markdown__heading'>

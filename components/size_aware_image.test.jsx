@@ -17,6 +17,7 @@ describe('components/SizeAwareImage', () => {
             height: 200,
             width: 300,
         },
+
         onImageLoaded: jest.fn(),
         src: 'https://example.com/image.png',
     };
@@ -24,7 +25,7 @@ describe('components/SizeAwareImage', () => {
     loadImage.mockReturnValue(() => ({}));
 
     test('should render an svg when first mounted with dimensions', () => {
-        const wrapper = mount(<SizeAwareImage {...baseProps}/>);
+        const wrapper = mount(<SizeAwareImage {...baseProps} />);
 
         const viewBox = wrapper.find('svg').prop('viewBox');
         expect(viewBox).toEqual('0 0 300 200');
@@ -36,13 +37,13 @@ describe('components/SizeAwareImage', () => {
             showLoader: true,
         };
 
-        const wrapper = shallow(<SizeAwareImage {...props}/>);
+        const wrapper = shallow(<SizeAwareImage {...props} />);
         expect(wrapper.find(LoadingImagePreview).exists()).toEqual(true);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should render the actual image after it is loaded', () => {
-        const wrapper = mount(<SizeAwareImage {...baseProps}/>);
+        const wrapper = mount(<SizeAwareImage {...baseProps} />);
         wrapper.setState({loaded: true, error: false});
 
         const src = wrapper.find('img').prop('src');
@@ -53,7 +54,7 @@ describe('components/SizeAwareImage', () => {
         const props = {...baseProps};
         Reflect.deleteProperty(props, 'dimensions');
 
-        const wrapper = mount(<SizeAwareImage {...props}/>);
+        const wrapper = mount(<SizeAwareImage {...props} />);
 
         wrapper.setState({error: false});
 
@@ -62,7 +63,7 @@ describe('components/SizeAwareImage', () => {
     });
 
     test('should load image when mounted and when src changes', () => {
-        const wrapper = shallow(<SizeAwareImage {...baseProps}/>);
+        const wrapper = shallow(<SizeAwareImage {...baseProps} />);
 
         expect(loadImage).toHaveBeenCalledTimes(1);
         expect(loadImage.mock.calls[0][0]).toEqual(baseProps.src);
@@ -84,7 +85,7 @@ describe('components/SizeAwareImage', () => {
         });
 
         const props = {...baseProps};
-        shallow(<SizeAwareImage {...props}/>);
+        shallow(<SizeAwareImage {...props} />);
 
         expect(baseProps.onImageLoaded).toHaveBeenCalledWith({height, width});
     });
@@ -93,7 +94,7 @@ describe('components/SizeAwareImage', () => {
         const onImageLoadFail = jest.fn();
         const props = {...baseProps, onImageLoadFail};
 
-        const wrapper = mount(<SizeAwareImage {...props}/>);
+        const wrapper = mount(<SizeAwareImage {...props} />);
         wrapper.setState({loaded: false});
         wrapper.instance().handleError();
         expect(props.onImageLoadFail).toHaveBeenCalled();

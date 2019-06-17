@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 
-import {makeGetPostsAroundPost, makeGetPostsInChannel} from 'mattermost-redux/selectors/entities/posts';
+import {
+    makeGetPostsAroundPost,
+    makeGetPostsInChannel,
+} from 'mattermost-redux/selectors/entities/posts';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 
 import PostList from './post_list_ie.jsx';
@@ -15,15 +18,24 @@ function makeMapStateToProps() {
     return function mapStateToProps(state, ownProps) {
         let posts;
         if (ownProps.focusedPostId) {
-            posts = getPostsAroundPost(state, ownProps.focusedPostId, ownProps.channelId);
+            posts = getPostsAroundPost(
+                state,
+                ownProps.focusedPostId,
+                ownProps.channelId,
+            );
         } else {
-            posts = getPostsInChannel(state, ownProps.channelId, ownProps.postVisibility);
+            posts = getPostsInChannel(
+                state,
+                ownProps.channelId,
+                ownProps.postVisibility,
+            );
         }
 
         return {
             posts,
             currentUserId: getCurrentUserId(state),
-            lastViewedAt: state.views.channel.lastChannelViewTime[ownProps.channelId],
+            lastViewedAt:
+                state.views.channel.lastChannelViewTime[ownProps.channelId],
         };
     };
 }

@@ -30,8 +30,11 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
     constructor(props) {
         super(props);
         this.state = {
-            termsEnabled: props.config.SupportSettings.CustomTermsOfServiceEnabled,
-            reAcceptancePeriod: props.config.SupportSettings.CustomTermsOfServiceReAcceptancePeriod,
+            termsEnabled:
+                props.config.SupportSettings.CustomTermsOfServiceEnabled,
+            reAcceptancePeriod:
+                props.config.SupportSettings
+                    .CustomTermsOfServiceReAcceptancePeriod,
             loadingTermsText: true,
             receivedTermsText: '',
             termsText: '',
@@ -45,16 +48,20 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
     getStateFromConfig(config) {
         return {
             termsEnabled: config.SupportSettings.CustomTermsOfServiceEnabled,
-            reAcceptancePeriod: config.SupportSettings.CustomTermsOfServiceReAcceptancePeriod,
+            reAcceptancePeriod:
+                config.SupportSettings.CustomTermsOfServiceReAcceptancePeriod,
         };
     }
 
     getConfigFromState = (config) => {
         config.SupportSettings.CustomTermsOfServiceEnabled = this.state.termsEnabled;
-        config.SupportSettings.CustomTermsOfServiceReAcceptancePeriod = this.parseIntNonZero(this.state.reAcceptancePeriod, Constants.DEFAULT_TERMS_OF_SERVICE_RE_ACCEPTANCE_PERIOD);
+        config.SupportSettings.CustomTermsOfServiceReAcceptancePeriod = this.parseIntNonZero(
+            this.state.reAcceptancePeriod,
+            Constants.DEFAULT_TERMS_OF_SERVICE_RE_ACCEPTANCE_PERIOD,
+        );
 
         return config;
-    }
+    };
 
     componentDidMount() {
         this.getTermsOfService();
@@ -66,8 +73,15 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
             serverError: null,
         });
 
-        if (this.state.termsEnabled && (this.state.receivedTermsText !== this.state.termsText || !this.props.config.SupportSettings.CustomTermsOfServiceEnabled)) {
-            const result = await this.props.actions.createTermsOfService(this.state.termsText);
+        if (
+            this.state.termsEnabled &&
+            (this.state.receivedTermsText !== this.state.termsText ||
+                !this.props.config.SupportSettings.CustomTermsOfServiceEnabled)
+        ) {
+            const result = await this.props.actions.createTermsOfService(
+                this.state.termsText,
+            );
+
             if (result.error) {
                 this.handleAPIError(result.error, callback);
                 return;
@@ -100,7 +114,7 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
             },
             (err) => {
                 this.handleAPIError(err, callback, config);
-            }
+            },
         );
     };
 
@@ -157,7 +171,7 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
 
     renderSettings = () => {
         if (this.state.loadingTermsText) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
 
         return (
@@ -174,14 +188,22 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
                     helpText={
                         <FormattedMarkdownMessage
                             id='admin.support.enableTermsOfServiceHelp'
-                            defaultMessage='When true, new users must accept the terms of service before accessing any Mattermost teams on desktop, web or mobile. Existing users must accept them after login or a page refresh.\n \nTo update terms of service link displayed in account creation and login pages, go to [Site Configuration > Customization](../site_config/customization).'
+                            defaultMessage='When true, new users must accept the terms of service before accessing any SCC teams on desktop, web or mobile. Existing users must accept them after login or a page refresh.\\n \\nTo update terms of service link displayed in account creation and login pages, go to [Site Configuration > Customization](../site_config/customization).'
                         />
                     }
                     value={this.state.termsEnabled}
-                    disabled={!(this.props.license.IsLicensed && this.props.license.CustomTermsOfService === 'true')}
+                    disabled={
+                        !(
+                            this.props.license.IsLicensed &&
+                            this.props.license.CustomTermsOfService === 'true'
+                        )
+                    }
                     onChange={this.handleTermsEnabledChange}
-                    setByEnv={this.isSetByEnv('SupportSettings.CustomTermsOfServiceEnabled')}
+                    setByEnv={this.isSetByEnv(
+                        'SupportSettings.CustomTermsOfServiceEnabled',
+                    )}
                 />
+
                 <TextSetting
                     key={'customTermsOfServiceText'}
                     id={'SupportSettings.CustomTermsOfServiceText'}
@@ -200,13 +222,18 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
                     }
                     disabled={!this.state.termsEnabled}
                     onChange={this.handleTermsTextChange}
-                    setByEnv={this.isSetByEnv('SupportSettings.CustomTermsOfServiceText')}
+                    setByEnv={this.isSetByEnv(
+                        'SupportSettings.CustomTermsOfServiceText',
+                    )}
                     value={this.state.termsText}
                     maxLength={Constants.MAX_TERMS_OF_SERVICE_TEXT_LENGTH}
                 />
+
                 <TextSetting
                     key={'customTermsOfServiceReAcceptancePeriod'}
-                    id={'SupportSettings.CustomTermsOfServiceReAcceptancePeriod'}
+                    id={
+                        'SupportSettings.CustomTermsOfServiceReAcceptancePeriod'
+                    }
                     type={'number'}
                     label={
                         <FormattedMessage
@@ -223,9 +250,11 @@ export default class CustomTermsOfServiceSettings extends AdminSettings {
                     disabled={!this.state.termsEnabled}
                     value={this.state.reAcceptancePeriod}
                     onChange={this.handleReAcceptancePeriodChange}
-                    setByEnv={this.isSetByEnv('SupportSettings.CustomTermsOfServiceReAcceptancePeriod')}
+                    setByEnv={this.isSetByEnv(
+                        'SupportSettings.CustomTermsOfServiceReAcceptancePeriod',
+                    )}
                 />
             </SettingsGroup>
         );
-    }
+    };
 }

@@ -21,10 +21,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadTranslations,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadTranslations,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IntlProvider);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(IntlProvider);

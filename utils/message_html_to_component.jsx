@@ -34,11 +34,13 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
     }
 
     const processingInstructions = [
-
         // Workaround to fix MM-14931
         {
             replaceChildren: false,
-            shouldProcessNode: (node) => node.type === 'tag' && node.name === 'input' && node.attribs.type === 'checkbox',
+            shouldProcessNode: (node) =>
+                node.type === 'tag' &&
+                node.name === 'input' &&
+                node.attribs.type === 'checkbox',
             processNode: (node) => {
                 const attribs = node.attribs || {};
                 node.attribs.checked = Boolean(attribs.checked);
@@ -52,7 +54,10 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
         const hrefAttrib = 'href';
         processingInstructions.push({
             replaceChildren: true,
-            shouldProcessNode: (node) => node.type === 'tag' && node.name === 'a' && node.attribs[hrefAttrib],
+            shouldProcessNode: (node) =>
+                node.type === 'tag' &&
+                node.name === 'a' &&
+                node.attribs[hrefAttrib],
             processNode: (node, children) => {
                 return (
                     <LinkTooltip
@@ -67,7 +72,8 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
         const mentionAttrib = 'data-mention';
         processingInstructions.push({
             replaceChildren: true,
-            shouldProcessNode: (node) => node.attribs && node.attribs[mentionAttrib],
+            shouldProcessNode: (node) =>
+                node.attribs && node.attribs[mentionAttrib],
             processNode: (node, children) => {
                 const mentionName = node.attribs[mentionAttrib];
                 const callAtMention = (
@@ -79,6 +85,7 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
                         {children}
                     </AtMention>
                 );
+
                 return callAtMention;
             },
         });
@@ -88,14 +95,12 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
         const emojiAttrib = 'data-emoticon';
         processingInstructions.push({
             replaceChildren: true,
-            shouldProcessNode: (node) => node.attribs && node.attribs[emojiAttrib],
+            shouldProcessNode: (node) =>
+                node.attribs && node.attribs[emojiAttrib],
             processNode: (node) => {
                 const emojiName = node.attribs[emojiAttrib];
-                const callPostEmoji = (
-                    <PostEmoji
-                        name={emojiName}
-                    />
-                );
+                const callPostEmoji = <PostEmoji name={emojiName} />;
+
                 return callPostEmoji;
             },
         });
@@ -103,17 +108,18 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
 
     if (!('images' in options) || options.images) {
         processingInstructions.push({
-            shouldProcessNode: (node) => node.type === 'tag' && node.name === 'img',
+            shouldProcessNode: (node) =>
+                node.type === 'tag' && node.name === 'img',
             processNode: (node) => {
-                const {
-                    class: className,
-                    ...attribs
-                } = node.attribs;
+                const {class: className, ...attribs} = node.attribs;
 
                 return (
                     <SizeAwareImage
                         className={className}
-                        dimensions={options.imagesMetadata && options.imagesMetadata[attribs.src]}
+                        dimensions={
+                            options.imagesMetadata &&
+                            options.imagesMetadata[attribs.src]
+                        }
                         {...attribs}
                         {...options.imageProps}
                     />
@@ -124,11 +130,10 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
 
     if (!('latex' in options) || options.latex) {
         processingInstructions.push({
-            shouldProcessNode: (node) => node.attribs && node.attribs['data-latex'],
+            shouldProcessNode: (node) =>
+                node.attribs && node.attribs['data-latex'],
             processNode: (node) => {
-                return (
-                    <LatexBlock content={node.attribs['data-latex']}/>
-                );
+                return <LatexBlock content={node.attribs['data-latex']} />;
             },
         });
     }
@@ -138,7 +143,11 @@ export function messageHtmlToComponent(html, isRHS, options = {}) {
         processNode: processNodeDefinitions.processDefaultNode,
     });
 
-    return parser.parseWithInstructions(html, isValidNode, processingInstructions);
+    return parser.parseWithInstructions(
+        html,
+        isValidNode,
+        processingInstructions,
+    );
 }
 
 export default messageHtmlToComponent;

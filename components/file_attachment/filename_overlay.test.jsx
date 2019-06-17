@@ -27,9 +27,7 @@ describe('components/file_attachment/FilenameOverlay', () => {
     };
 
     test('should match snapshot, standard display', () => {
-        const wrapper = shallow(
-            <FilenameOverlay {...baseProps}/>
-        );
+        const wrapper = shallow(<FilenameOverlay {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -37,14 +35,15 @@ describe('components/file_attachment/FilenameOverlay', () => {
     test('should match snapshot, compact display', () => {
         const handleImageClick = jest.fn();
         const props = {...baseProps, compactDisplay: true, handleImageClick};
-        const wrapper = shallow(
-            <FilenameOverlay {...props}/>
-        );
+        const wrapper = shallow(<FilenameOverlay {...props} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(AttachmentIcon).exists()).toBe(true);
 
-        wrapper.find('a').first().simulate('click');
+        wrapper
+            .find('a')
+            .first()
+            .simulate('click');
         expect(handleImageClick).toHaveBeenCalledTimes(1);
     });
 
@@ -52,8 +51,8 @@ describe('components/file_attachment/FilenameOverlay', () => {
         const props = {...baseProps, canDownload: true};
         const wrapper = shallow(
             <FilenameOverlay {...props}>
-                <DownloadIcon/>
-            </FilenameOverlay>
+                <DownloadIcon />
+            </FilenameOverlay>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -64,8 +63,8 @@ describe('components/file_attachment/FilenameOverlay', () => {
         const props = {...baseProps, canDownload: false};
         const wrapper = shallow(
             <FilenameOverlay {...props}>
-                <DownloadIcon/>
-            </FilenameOverlay>
+                <DownloadIcon />
+            </FilenameOverlay>,
         );
 
         expect(wrapper).toMatchSnapshot();

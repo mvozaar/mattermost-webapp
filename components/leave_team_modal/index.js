@@ -28,11 +28,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            leaveTeam,
-            toggleSideBarRightMenu: toggleSideBarRightMenuAction,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                leaveTeam,
+                toggleSideBarRightMenu: toggleSideBarRightMenuAction,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeaveTeamModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(LeaveTeamModal);

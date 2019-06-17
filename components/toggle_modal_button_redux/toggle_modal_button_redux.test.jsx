@@ -12,11 +12,9 @@ import ToggleModalButtonRedux from 'components/toggle_modal_button_redux/toggle_
 class TestModal extends React.Component {
     render() {
         return (
-            <Modal
-                show={true}
-            >
-                <Modal.Header closeButton={true}/>
-                <Modal.Body/>
+            <Modal show={true}>
+                <Modal.Header closeButton={true} />
+                <Modal.Body />
             </Modal>
         );
     }
@@ -37,10 +35,15 @@ describe('components/ToggleModalButtonRedux', () => {
                     id='channel_header.delete'
                     defaultMessage='Delete Channel'
                 />
-            </ToggleModalButtonRedux>
+            </ToggleModalButtonRedux>,
         );
 
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find('button span').first().html()).toBe('<span>Delete Channel</span>');
+        expect(
+            wrapper
+                .find('button span')
+                .first()
+                .html(),
+        ).toBe('<span>Delete Channel</span>');
     });
 });

@@ -15,7 +15,8 @@ function mapStateToProps(state) {
     const config = getConfig(state);
 
     const siteName = config.SiteName;
-    const enforceMultifactorAuthentication = config.EnforceMultifactorAuthentication === 'true';
+    const enforceMultifactorAuthentication =
+        config.EnforceMultifactorAuthentication === 'true';
 
     return {
         currentUser: getCurrentUser(state),
@@ -26,11 +27,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            activateMfa,
-            generateMfaSecret,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                activateMfa,
+                generateMfaSecret,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Setup);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Setup);

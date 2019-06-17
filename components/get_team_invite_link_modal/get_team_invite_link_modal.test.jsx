@@ -13,7 +13,7 @@ describe('components/GetTeamInviteLinkModal', () => {
             <GetTeamInviteLinkModal
                 config={{EnableUserCreation: 'true'}}
                 currentTeam={{invite_id: 'invite_id'}}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -24,21 +24,25 @@ describe('components/GetTeamInviteLinkModal', () => {
             <GetTeamInviteLinkModal
                 config={{EnableUserCreation: 'false'}}
                 currentTeam={{invite_id: 'invite_id'}}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should call handleToggle on GetLinkModal\'s onHide', () => {
+    test("should call handleToggle on GetLinkModal's onHide", () => {
         const wrapper = shallow(
             <GetTeamInviteLinkModal
                 config={{EnableUserCreation: 'false'}}
                 currentTeam={{invite_id: 'invite_id'}}
-            />
+            />,
         );
 
-        wrapper.find(GetLinkModal).first().props().onHide();
+        wrapper
+            .find(GetLinkModal)
+            .first()
+            .props()
+            .onHide();
         expect(wrapper.state('show')).toBe(false);
     });
 });

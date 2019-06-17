@@ -22,13 +22,21 @@ export default class GroupUsersRow extends React.PureComponent {
                 <img
                     className='profile-picture'
                     alt={''}
-                    src={Client4.getProfilePictureUrl(this.props.userId, this.props.lastPictureUpdate)}
+                    src={Client4.getProfilePictureUrl(
+                        this.props.userId,
+                        this.props.lastPictureUpdate,
+                    )}
                 />
+
                 <div className='user-data'>
                     <div className='name-row'>
-                        <span className='username'>{'@' + this.props.username}</span>
+                        <span className='username'>
+                            {'@' + this.props.username}
+                        </span>
                         {'-'}
-                        <span className='display-name'>{this.props.displayName}</span>
+                        <span className='display-name'>
+                            {this.props.displayName}
+                        </span>
                     </div>
                     <div>
                         <span className='email-label'>

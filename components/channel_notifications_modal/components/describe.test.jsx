@@ -16,45 +16,49 @@ describe('components/channel_notifications_modal/NotificationSection', () => {
     };
 
     test('should match snapshot, on global DEFAULT', () => {
-        const wrapper = shallow(
-            <Describe {...baseProps}/>
-        );
+        const wrapper = shallow(<Describe {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on MENTION', () => {
-        const props = {...baseProps, memberNotifyLevel: NotificationLevels.MENTION};
-        const wrapper = shallow(
-            <Describe {...props}/>
-        );
+        const props = {
+            ...baseProps,
+            memberNotifyLevel: NotificationLevels.MENTION,
+        };
+
+        const wrapper = shallow(<Describe {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on DESKTOP/PUSH & ALL', () => {
         const props = {...baseProps, memberNotifyLevel: NotificationLevels.ALL};
-        const wrapper = shallow(
-            <Describe {...props}/>
-        );
+        const wrapper = shallow(<Describe {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on MARK_UNREAD & ALL', () => {
-        const props = {...baseProps, section: NotificationSections.MARK_UNREAD, memberNotifyLevel: NotificationLevels.ALL, globalNotifyLevel: null};
-        const wrapper = shallow(
-            <Describe {...props}/>
-        );
+        const props = {
+            ...baseProps,
+            section: NotificationSections.MARK_UNREAD,
+            memberNotifyLevel: NotificationLevels.ALL,
+            globalNotifyLevel: null,
+        };
+
+        const wrapper = shallow(<Describe {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on NONE', () => {
-        const props = {...baseProps, memberNotifyLevel: NotificationLevels.NONE};
-        const wrapper = shallow(
-            <Describe {...props}/>
-        );
+        const props = {
+            ...baseProps,
+            memberNotifyLevel: NotificationLevels.NONE,
+        };
+
+        const wrapper = shallow(<Describe {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

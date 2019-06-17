@@ -13,7 +13,6 @@ export default class StatusAwayAvatarIcon extends React.PureComponent {
                     defaultMessage='Away Icon'
                 >
                     {(ariaLabel) => (
-
                         <svg
                             width='13px'
                             height='13px'

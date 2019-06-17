@@ -25,10 +25,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            switchLdapToEmail,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                switchLdapToEmail,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClaimController);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ClaimController);

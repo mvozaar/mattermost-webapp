@@ -13,10 +13,7 @@ export default class LogoutIcon extends React.PureComponent {
                 defaultMessage='Logout Icon'
             >
                 {(title) => (
-                    <i
-                        className='fa fa-1x fa-angle-left'
-                        title={title}
-                    />
+                    <i className='fa fa-1x fa-angle-left' title={title} />
                 )}
             </FormattedMessage>
         );

@@ -7,15 +7,15 @@ import {ActionTypes} from 'utils/constants';
 
 function websocketConnectionErrorCount(state = 0, action) {
     switch (action.type) {
-    case ActionTypes.INCREMENT_WS_ERROR_COUNT: {
-        return state + 1;
-    }
-    case ActionTypes.RESET_WS_ERROR_COUNT: {
-        return 0;
-    }
-    default: {
-        return state;
-    }
+        case ActionTypes.INCREMENT_WS_ERROR_COUNT: {
+            return state + 1;
+        }
+        case ActionTypes.RESET_WS_ERROR_COUNT: {
+            return 0;
+        }
+        default: {
+            return state;
+        }
     }
 }
 

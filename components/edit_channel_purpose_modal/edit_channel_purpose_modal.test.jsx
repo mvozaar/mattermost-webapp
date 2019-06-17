@@ -23,7 +23,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -44,7 +45,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -65,7 +67,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -81,7 +84,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -97,7 +101,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         const serverError = {
@@ -127,7 +132,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         const serverError = {
@@ -158,7 +164,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         const serverError = {
@@ -199,16 +206,14 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
-        wrapper.find('textarea').simulate(
-            'change',
-            {
-                preventDefault: jest.fn(),
-                target: {value: 'new info'},
-            }
-        );
+        wrapper.find('textarea').simulate('change', {
+            preventDefault: jest.fn(),
+            target: {value: 'new info'},
+        });
 
         expect(wrapper.state('purpose')).toBe('new info');
     });
@@ -223,7 +228,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel: jest.fn()}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         wrapper.setProps({
@@ -250,7 +256,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         wrapper.find('.save-button').simulate('click');
@@ -270,7 +277,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         wrapper.find('textarea').simulate('keydown', {
@@ -295,7 +303,8 @@ describe('comoponents/EditChannelPurposeModal', () => {
                 onModalDismissed={jest.fn()}
                 actions={{patchChannel}}
             />,
-            {disableLifecycleMethods: true}
+
+            {disableLifecycleMethods: true},
         );
 
         wrapper.find('textarea').simulate('keydown', {

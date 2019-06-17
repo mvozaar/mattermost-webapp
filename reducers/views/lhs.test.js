@@ -12,10 +12,7 @@ describe('Reducers.LHS', () => {
     };
 
     test('Initial state', () => {
-        const nextState = lhsReducer(
-            {},
-            {}
-        );
+        const nextState = lhsReducer({}, {});
 
         expect(nextState).toEqual(initialState);
     });
@@ -25,9 +22,10 @@ describe('Reducers.LHS', () => {
             {
                 isOpen: true,
             },
+
             {
                 type: ActionTypes.TOGGLE_LHS,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -41,9 +39,10 @@ describe('Reducers.LHS', () => {
             {
                 isOpen: false,
             },
+
             {
                 type: ActionTypes.TOGGLE_LHS,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -57,9 +56,10 @@ describe('Reducers.LHS', () => {
             {
                 isOpen: false,
             },
+
             {
                 type: ActionTypes.OPEN_LHS,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -73,9 +73,10 @@ describe('Reducers.LHS', () => {
             {
                 isOpen: true,
             },
+
             {
                 type: ActionTypes.CLOSE_LHS,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -95,9 +96,10 @@ describe('Reducers.LHS', () => {
                     {
                         isOpen: true,
                     },
+
                     {
                         type: action,
-                    }
+                    },
                 );
 
                 expect(nextState).toEqual({

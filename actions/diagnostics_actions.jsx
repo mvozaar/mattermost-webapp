@@ -58,11 +58,15 @@ export function measure(name1, name2) {
 
     // Check for existence of entry name to avoid DOMException
     const performanceEntries = performance.getEntries();
-    if (![name1, name2].every((name) => performanceEntries.find((item) => item.name === name))) {
+    if (
+        ![name1, name2].every((name) =>
+            performanceEntries.find((item) => item.name === name),
+        )
+    ) {
         return [-1, ''];
     }
 
-    const displayPrefix = '🐐 Mattermost: ';
+    const displayPrefix = '\uD83D\uDC10securCom: ';
     const measurementName = `${displayPrefix}${name1} - ${name2}`;
     performance.measure(measurementName, name1, name2);
     const lastDuration = mostRecentDurationByEntryName(measurementName);
@@ -73,7 +77,12 @@ export function measure(name1, name2) {
 }
 
 export function trackLoadTime() {
-    if (!isSupported([performance.timing.loadEventEnd, performance.timing.navigationStart])) {
+    if (
+        !isSupported([
+            performance.timing.loadEventEnd,
+            performance.timing.navigationStart,
+        ])
+    ) {
         return;
     }
 
@@ -90,7 +99,9 @@ export function trackLoadTime() {
 
 function mostRecentDurationByEntryName(entryName) {
     const entriesWithName = performance.getEntriesByName(entryName);
-    return entriesWithName.map((item) => item.duration)[entriesWithName.length - 1];
+    return entriesWithName.map((item) => item.duration)[
+        entriesWithName.length - 1
+    ];
 }
 
 function isSupported(checks) {

@@ -15,13 +15,20 @@ jest.mock('utils/utils.jsx', () => {
     };
 });
 
-function createComponent({fileInfo, handleImageClick, index, compactDisplay, canDownloadFiles = true} = {}) {
+function createComponent({
+    fileInfo,
+    handleImageClick,
+    index,
+    compactDisplay,
+    canDownloadFiles = true,
+} = {}) {
     const fileInfoProp = fileInfo || {
         id: 1,
         extension: 'pdf',
         name: 'test.pdf',
         size: 100,
     };
+
     const indexProp = index || 3;
     const handleImageClickProp = handleImageClick || jest.fn();
     return (
@@ -50,6 +57,7 @@ describe('component/FileAttachment', () => {
             height: 400,
             size: 100,
         };
+
         const wrapper = shallow(createComponent({fileInfo}));
         expect(wrapper).toMatchSnapshot();
     });
@@ -63,6 +71,7 @@ describe('component/FileAttachment', () => {
             height: 16,
             size: 100,
         };
+
         const wrapper = shallow(createComponent({fileInfo}));
         expect(wrapper).toMatchSnapshot();
     });
@@ -76,6 +85,7 @@ describe('component/FileAttachment', () => {
             height: 400,
             size: 100,
         };
+
         const wrapper = shallow(createComponent({fileInfo}));
         expect(wrapper).toMatchSnapshot();
     });
@@ -89,6 +99,7 @@ describe('component/FileAttachment', () => {
             height: 400,
             size: 100,
         };
+
         const wrapper = shallow(createComponent());
         wrapper.setProps({fileInfo});
         expect(wrapper).toMatchSnapshot();
@@ -111,6 +122,7 @@ describe('component/FileAttachment', () => {
             name: 'a-quite-long-filename-to-test-the-filename-shortener.pdf',
             size: 100,
         };
+
         const wrapper = shallow(createComponent({fileInfo}));
         expect(wrapper).toMatchSnapshot();
     });

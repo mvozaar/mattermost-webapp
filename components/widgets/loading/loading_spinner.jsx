@@ -8,11 +8,11 @@ import {intlShape} from 'react-intl';
 export default class LoadingSpinner extends React.PureComponent {
     static propTypes = {
         text: PropTypes.node,
-    }
+    };
 
     static defaultProps = {
         text: null,
-    }
+    };
 
     static contextTypes = {
         intl: intlShape.isRequired,
@@ -23,12 +23,18 @@ export default class LoadingSpinner extends React.PureComponent {
         return (
             <span
                 id='loadingSpinner'
-                className={'LoadingSpinner' + (this.props.text ? ' with-text' : '')}
+                className={
+                    'LoadingSpinner' + (this.props.text ? ' with-text' : '')
+                }
             >
                 <span
                     className='fa fa-spinner fa-fw fa-pulse spinner'
-                    title={formatMessage({id: 'generic_icons.loading', defaultMessage: 'Loading Icon'})}
+                    title={formatMessage({
+                        id: 'generic_icons.loading',
+                        defaultMessage: 'Loading Icon',
+                    })}
                 />
+
                 {this.props.text}
             </span>
         );

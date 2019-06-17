@@ -5,8 +5,15 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createSelector} from 'reselect';
 
-import {linkLdapGroup, unlinkLdapGroup, getLdapGroups as fetchLdapGroups} from 'mattermost-redux/actions/admin';
-import {getLdapGroups, getLdapGroupsCount} from 'mattermost-redux/selectors/entities/admin';
+import {
+    linkLdapGroup,
+    unlinkLdapGroup,
+    getLdapGroups as fetchLdapGroups,
+} from 'mattermost-redux/actions/admin';
+import {
+    getLdapGroups,
+    getLdapGroupsCount,
+} from 'mattermost-redux/selectors/entities/admin';
 
 import GroupsList from './groups_list.jsx';
 
@@ -16,7 +23,7 @@ const getSortedListOfLdapGroups = createSelector(
         const groups = Object.values(ldapGroups);
         groups.sort((a, b) => a.name.localeCompare(b.name));
         return groups;
-    }
+    },
 );
 
 function mapStateToProps(state) {
@@ -28,12 +35,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getLdapGroups: fetchLdapGroups,
-            link: linkLdapGroup,
-            unlink: unlinkLdapGroup,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getLdapGroups: fetchLdapGroups,
+                link: linkLdapGroup,
+                unlink: unlinkLdapGroup,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupsList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(GroupsList);

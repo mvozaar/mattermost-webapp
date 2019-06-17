@@ -57,7 +57,8 @@ export default class PopoverBar extends React.PureComponent {
 
         let downloadLinks = null;
         if (this.props.canDownloadFiles) {
-            const shouldOpenFile = this.props.isExternalFile && !this.props.isDesktopApp;
+            const shouldOpenFile =
+                this.props.isExternalFile && !this.props.isDesktopApp;
 
             let downloadLinkText;
             const downloadLinkProps = {};
@@ -96,16 +97,13 @@ export default class PopoverBar extends React.PureComponent {
         }
 
         return (
-            <div
-                ref='imageFooter'
-                className={footerClass}
-            >
+            <div ref='imageFooter' className={footerClass}>
                 <span className='pull-left text'>
                     <FormattedMessage
                         id='view_image_popover.file'
                         defaultMessage='File {count, number} of {total, number}'
                         values={{
-                            count: (this.props.fileIndex + 1),
+                            count: this.props.fileIndex + 1,
                             total: this.props.totalFiles,
                         }}
                     />

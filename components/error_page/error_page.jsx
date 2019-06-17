@@ -38,7 +38,10 @@ export default class ErrorPage extends React.PureComponent {
             params.delete('s');
 
             const key = this.props.asymmetricSigningPublicKey;
-            const keyPEM = '-----BEGIN PUBLIC KEY-----\n' + key + '\n-----END PUBLIC KEY-----';
+            const keyPEM =
+                '-----BEGIN PUBLIC KEY-----\n' +
+                key +
+                '\n-----END PUBLIC KEY-----';
 
             const verify = crypto.createVerify('sha256');
             verify.update('/error?' + params.toString());
@@ -57,7 +60,7 @@ export default class ErrorPage extends React.PureComponent {
                 <Link to={returnTo}>
                     <FormattedMessage
                         id='error.generic.link'
-                        defaultMessage='Back to Mattermost'
+                        defaultMessage='Back to SCC'
                     />
                 </Link>
             );
@@ -80,12 +83,16 @@ export default class ErrorPage extends React.PureComponent {
                         id='error.channelNotFound.link'
                         defaultMessage='Back to {defaultChannelName}'
                         values={{
-                            defaultChannelName: Constants.DEFAULT_CHANNEL_UI_NAME,
+                            defaultChannelName:
+                                Constants.DEFAULT_CHANNEL_UI_NAME,
                         }}
                     />
                 </Link>
             );
-        } else if (type === ErrorPageTypes.OAUTH_ACCESS_DENIED || type === ErrorPageTypes.OAUTH_MISSING_CODE) {
+        } else if (
+            type === ErrorPageTypes.OAUTH_ACCESS_DENIED ||
+            type === ErrorPageTypes.OAUTH_MISSING_CODE
+        ) {
             backButton = (
                 <Link to='/'>
                     <FormattedMessage
@@ -112,19 +119,17 @@ export default class ErrorPage extends React.PureComponent {
             <div className='container-fluid'>
                 <div className='error__container'>
                     <div className='error__icon'>
-                        <WarningIcon/>
+                        <WarningIcon />
                     </div>
                     <h2>
-                        <ErrorTitle
-                            type={type}
-                            title={title}
-                        />
+                        <ErrorTitle type={type} title={title} />
                     </h2>
                     <ErrorMessage
                         type={type}
                         message={message}
                         service={service}
                     />
+
                     {backButton}
                 </div>
             </div>

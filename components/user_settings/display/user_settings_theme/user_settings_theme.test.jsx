@@ -20,12 +20,13 @@ describe('components/user_settings/display/user_settings_theme/user_settings_the
         actions: {
             saveTheme: jest.fn(() => Promise.resolve()),
         },
+
         focused: false,
     };
 
     it('should match snapshot', () => {
         const wrapper = shallowWithIntl(
-            <UserSettingsTheme {...requiredProps}/>
+            <UserSettingsTheme {...requiredProps} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -33,7 +34,7 @@ describe('components/user_settings/display/user_settings_theme/user_settings_the
 
     it('should saveTheme', async () => {
         const wrapper = shallowWithIntl(
-            <UserSettingsTheme {...requiredProps}/>
+            <UserSettingsTheme {...requiredProps} />,
         );
 
         await wrapper.instance().submitTheme();

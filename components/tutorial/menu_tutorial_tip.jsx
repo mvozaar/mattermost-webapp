@@ -37,7 +37,7 @@ const MenuTutorialTip = ({toggleFunc, onBottom}) => {
                     defaultMessage='System administrators will find a **System Console** option to administrate the entire system.'
                 />
             </p>
-        </div>
+        </div>,
     );
 
     let placement = 'right';
@@ -48,9 +48,7 @@ const MenuTutorialTip = ({toggleFunc, onBottom}) => {
     }
 
     return (
-        <div
-            onClick={toggleFunc}
-        >
+        <div onClick={toggleFunc}>
             <TutorialTip
                 placement={placement}
                 screens={screens}

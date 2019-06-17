@@ -29,8 +29,8 @@ export default class ConfirmIntegration extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: (new URLSearchParams(this.props.location.search)).get('type'),
-            id: (new URLSearchParams(this.props.location.search)).get('id'),
+            type: new URLSearchParams(this.props.location.search).get('type'),
+            id: new URLSearchParams(this.props.location.search).get('id'),
         };
     }
 
@@ -44,9 +44,11 @@ export default class ConfirmIntegration extends React.Component {
 
     handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            browserHistory.push('/' + this.props.team.name + '/integrations/' + this.state.type);
+            browserHistory.push(
+                '/' + this.props.team.name + '/integrations/' + this.state.type,
+            );
         }
-    }
+    };
 
     render() {
         let headerText = null;
@@ -68,14 +70,16 @@ export default class ConfirmIntegration extends React.Component {
                     defaultMessage='Slash Commands'
                 />
             );
+
             helpText = (
                 <p>
                     <FormattedMarkdownMessage
                         id='add_command.doneHelp'
-                        defaultMessage='Your slash command has been set up. The following token will be sent in the outgoing payload. Please use it to verify the request came from your Mattermost team (see [documentation](!https://docs.mattermost.com/developer/slash-commands.html) for further details).'
+                        defaultMessage='Your slash command has been set up. The following token will be sent in the outgoing payload. Please use it to verify the request came from your SCC team (see [documentation](!https://docs.securCom.me/developer/slash-commands.html) for further details).'
                     />
                 </p>
             );
+
             tokenText = (
                 <p className='word-break--all'>
                     <FormattedMarkdownMessage
@@ -85,13 +89,16 @@ export default class ConfirmIntegration extends React.Component {
                             token: commandToken,
                         }}
                     />
-                    <CopyText
-                        value={commandToken}
-                    />
+
+                    <CopyText value={commandToken} />
                 </p>
             );
-        } else if (this.state.type === Constants.Integrations.INCOMING_WEBHOOK && incomingHook) {
-            const incomingHookToken = getSiteURL() + '/hooks/' + incomingHook.id;
+        } else if (
+            this.state.type === Constants.Integrations.INCOMING_WEBHOOK &&
+            incomingHook
+        ) {
+            const incomingHookToken =
+                getSiteURL() + '/hooks/' + incomingHook.id;
 
             headerText = (
                 <FormattedMessage
@@ -99,14 +106,16 @@ export default class ConfirmIntegration extends React.Component {
                     defaultMessage='Incoming Webhooks'
                 />
             );
+
             helpText = (
                 <p>
                     <FormattedMarkdownMessage
                         id='add_incoming_webhook.doneHelp'
-                        defaultMessage='Your incoming webhook has been set up. Please send data to the following URL (see [documentation](!https://docs.mattermost.com/developer/webhooks-incoming.html) for further details).'
+                        defaultMessage='Your incoming webhook has been set up. Please send data to the following URL (see [documentation](!https://docs.securCom.me/developer/webhooks-incoming.html) for further details).'
                     />
                 </p>
             );
+
             tokenText = (
                 <p className='word-break--all'>
                     <FormattedMarkdownMessage
@@ -116,6 +125,7 @@ export default class ConfirmIntegration extends React.Component {
                             url: incomingHookToken,
                         }}
                     />
+
                     <CopyText
                         idMessage='integrations.copy_client_secret'
                         defaultMessage='Copy Client Secret'
@@ -123,7 +133,10 @@ export default class ConfirmIntegration extends React.Component {
                     />
                 </p>
             );
-        } else if (this.state.type === Constants.Integrations.OUTGOING_WEBHOOK && outgoingHook) {
+        } else if (
+            this.state.type === Constants.Integrations.OUTGOING_WEBHOOK &&
+            outgoingHook
+        ) {
             const outgoingHookToken = outgoingHook.token;
 
             headerText = (
@@ -132,14 +145,16 @@ export default class ConfirmIntegration extends React.Component {
                     defaultMessage='Outgoing Webhooks'
                 />
             );
+
             helpText = (
                 <p>
                     <FormattedMarkdownMessage
                         id='add_outgoing_webhook.doneHelp'
-                        defaultMessage='Your outgoing webhook has been set up. The following token will be sent in the outgoing payload. Please use it to verify the request came from your Mattermost team (see [documentation](!https://docs.mattermost.com/developer/webhooks-outgoing.html) for further details).'
+                        defaultMessage='Your outgoing webhook has been set up. The following token will be sent in the outgoing payload. Please use it to verify the request came from your SCC team (see [documentation](!https://docs.securCom.me/developer/webhooks-outgoing.html) for further details).'
                     />
                 </p>
             );
+
             tokenText = (
                 <p className='word-break--all'>
                     <FormattedMarkdownMessage
@@ -149,12 +164,14 @@ export default class ConfirmIntegration extends React.Component {
                             token: outgoingHookToken,
                         }}
                     />
-                    <CopyText
-                        value={outgoingHookToken}
-                    />
+
+                    <CopyText value={outgoingHookToken} />
                 </p>
             );
-        } else if (this.state.type === Constants.Integrations.OAUTH_APP && oauthApp) {
+        } else if (
+            this.state.type === Constants.Integrations.OAUTH_APP &&
+            oauthApp
+        ) {
             const oauthAppToken = oauthApp.id;
             const oauthAppSecret = oauthApp.client_secret;
 
@@ -170,10 +187,11 @@ export default class ConfirmIntegration extends React.Component {
                 <p key='add_oauth_app.doneHelp'>
                     <FormattedMarkdownMessage
                         id='add_oauth_app.doneHelp'
-                        defaultMessage='Your OAuth 2.0 application has been set up. Please use the following Client ID and Client Secret when requesting authorization for your application (see [documentation](!https://docs.mattermost.com/developer/oauth-2-0-applications.html) for further details).'
+                        defaultMessage='Your OAuth 2.0 application has been set up. Please use the following Client ID and Client Secret when requesting authorization for your application (see [documentation](!https://docs.securCom.me/developer/oauth-2-0-applications.html) for further details).'
                     />
-                </p>
+                </p>,
             );
+
             helpText.push(
                 <p key='add_oauth_app.clientId'>
                     <FormattedMarkdownMessage
@@ -183,12 +201,14 @@ export default class ConfirmIntegration extends React.Component {
                             id: oauthAppToken,
                         }}
                     />
+
                     <CopyText
                         idMessage='integrations.copy_client_id'
                         defaultMessage='Copy Client Id'
                         value={oauthAppToken}
                     />
-                    <br/>
+
+                    <br />
                     <FormattedMarkdownMessage
                         id='add_oauth_app.clientSecret'
                         defaultMessage='**Client Secret**: {secret}'
@@ -196,12 +216,13 @@ export default class ConfirmIntegration extends React.Component {
                             secret: oauthAppSecret,
                         }}
                     />
+
                     <CopyText
                         idMessage='integrations.copy_client_secret'
                         defaultMessage='Copy Client Secret'
                         value={oauthAppSecret}
                     />
-                </p>
+                </p>,
             );
 
             helpText.push(
@@ -210,7 +231,7 @@ export default class ConfirmIntegration extends React.Component {
                         id='add_oauth_app.doneUrlHelp'
                         defaultMessage='The following are your authorized redirect URL(s).'
                     />
-                </p>
+                </p>,
             );
 
             tokenText = (
@@ -225,7 +246,9 @@ export default class ConfirmIntegration extends React.Component {
                 </p>
             );
         } else if (this.state.type === Constants.Integrations.BOT && bot) {
-            const botToken = (new URLSearchParams(this.props.location.search)).get('token');
+            const botToken = new URLSearchParams(
+                this.props.location.search,
+            ).get('token');
 
             headerText = (
                 <FormattedMessage
@@ -233,17 +256,19 @@ export default class ConfirmIntegration extends React.Component {
                     defaultMessage='Bot Accounts'
                 />
             );
+
             helpText = (
                 <p>
                     <FormattedMarkdownMessage
                         id='bots.manage.created.text'
-                        defaultMessage='Your bot account **{botname}** has been created successfully. Please use the following access token to connect to the bot (see [documentation](https://mattermost.com/pl/default-bot-accounts) for further details).'
+                        defaultMessage='Your bot account **{botname}** has been created successfully. Please use the following access token to connect to the bot (see [documentation](https://securCom.me/pl/default-bot-accounts) for further details).'
                         values={{
                             botname: bot.display_name || bot.username,
                         }}
                     />
                 </p>
             );
+
             tokenText = (
                 <p className='word-break--all'>
                     <FormattedMarkdownMessage
@@ -253,20 +278,29 @@ export default class ConfirmIntegration extends React.Component {
                             token: botToken,
                         }}
                     />
-                    <CopyText
-                        value={botToken}
-                    />
+
+                    <CopyText value={botToken} />
                 </p>
             );
         } else {
-            browserHistory.replace(`/error?type=${ErrorPageTypes.PAGE_NOT_FOUND}`);
+            browserHistory.replace(
+                `/error?type=${ErrorPageTypes.PAGE_NOT_FOUND}`,
+            );
+
             return '';
         }
 
         return (
             <div className='backstage-content row'>
                 <BackstageHeader>
-                    <Link to={'/' + this.props.team.name + '/integrations/' + this.state.type}>
+                    <Link
+                        to={
+                            '/' +
+                            this.props.team.name +
+                            '/integrations/' +
+                            this.state.type
+                        }
+                    >
                         {headerText}
                     </Link>
                     <FormattedMessage
@@ -275,10 +309,7 @@ export default class ConfirmIntegration extends React.Component {
                     />
                 </BackstageHeader>
                 <div className='backstage-form backstage-form__confirmation'>
-                    <h4
-                        className='backstage-form__title'
-                        id='formTitle'
-                    >
+                    <h4 className='backstage-form__title' id='formTitle'>
                         <FormattedMessage
                             id='integrations.successful'
                             defaultMessage='Setup Successful'
@@ -290,7 +321,12 @@ export default class ConfirmIntegration extends React.Component {
                         <Link
                             className='btn btn-primary'
                             type='submit'
-                            to={'/' + this.props.team.name + '/integrations/' + this.state.type}
+                            to={
+                                '/' +
+                                this.props.team.name +
+                                '/integrations/' +
+                                this.state.type
+                            }
                             id='doneButton'
                         >
                             <FormattedMessage

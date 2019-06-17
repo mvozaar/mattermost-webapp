@@ -20,23 +20,28 @@ export default class CommentedOn extends PureComponent {
             showSearchResults: PropTypes.func.isRequired,
             updateSearchTerms: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     handleOnClick = () => {
         const {actions} = this.props;
         const displayName = this.makeUsername();
         actions.updateSearchTerms(displayName);
         actions.showSearchResults();
-    }
+    };
 
     makeUsername = () => {
         const postProps = this.props.post.props;
         let username = this.props.displayName;
-        if (this.props.enablePostUsernameOverride && postProps && postProps.from_webhook === 'true' && postProps.override_username) {
+        if (
+            this.props.enablePostUsernameOverride &&
+            postProps &&
+            postProps.from_webhook === 'true' &&
+            postProps.override_username
+        ) {
             username = postProps.override_username;
         }
         return username;
-    }
+    };
 
     makeCommentedOnMessage = () => {
         const {post} = this.props;
@@ -44,27 +49,31 @@ export default class CommentedOn extends PureComponent {
         if (post.message) {
             message = Utils.replaceHtmlEntities(post.message);
         } else if (post.file_ids && post.file_ids.length > 0) {
-            message = (
-                <CommentedOnFilesMessage parentPostId={post.id}/>
-            );
-        } else if (post.props && post.props.attachments && post.props.attachments.length > 0) {
+            message = <CommentedOnFilesMessage parentPostId={post.id} />;
+        } else if (
+            post.props &&
+            post.props.attachments &&
+            post.props.attachments.length > 0
+        ) {
             const attachment = post.props.attachments[0];
-            const webhookMessage = attachment.pretext || attachment.title || attachment.text || attachment.fallback || '';
+            const webhookMessage =
+                attachment.pretext ||
+                attachment.title ||
+                attachment.text ||
+                attachment.fallback ||
+                '';
             message = Utils.replaceHtmlEntities(webhookMessage);
         }
 
         return message;
-    }
+    };
 
     render() {
         const username = this.makeUsername();
         const message = this.makeCommentedOnMessage();
 
         const name = (
-            <a
-                className='theme'
-                onClick={this.handleOnClick}
-            >
+            <a className='theme' onClick={this.handleOnClick}>
                 {username}
             </a>
         );
@@ -79,10 +88,8 @@ export default class CommentedOn extends PureComponent {
                             name,
                         }}
                     />
-                    <a
-                        className='theme'
-                        onClick={this.props.onCommentClick}
-                    >
+
+                    <a className='theme' onClick={this.props.onCommentClick}>
                         {stripMarkdown(message)}
                     </a>
                 </span>

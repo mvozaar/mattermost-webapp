@@ -21,12 +21,12 @@ describe('components/mfa/components/Confirm', () => {
     });
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<Confirm/>);
+        const wrapper = shallow(<Confirm />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should submit on form submit', () => {
-        const wrapper = mountWithIntl(<Confirm/>);
+        const wrapper = mountWithIntl(<Confirm />);
         wrapper.find('form').simulate('submit');
 
         expect(redirectUserToDefaultTeam).toHaveBeenCalled();
@@ -34,16 +34,19 @@ describe('components/mfa/components/Confirm', () => {
 
     test('should submit on enter', () => {
         const map = {};
-        document.body.addEventListener = jest.fn().mockImplementation((event, cb) => {
-            map[event] = cb;
-        });
+        document.body.addEventListener = jest
+            .fn()
+            .mockImplementation((event, cb) => {
+                map[event] = cb;
+            });
 
-        mountWithIntl(<Confirm/>);
+        mountWithIntl(<Confirm />);
 
         const event = {
             preventDefault: jest.fn(),
             key: Constants.KeyCodes.ENTER[0],
         };
+
         map.keydown(event);
 
         expect(redirectUserToDefaultTeam).toHaveBeenCalled();

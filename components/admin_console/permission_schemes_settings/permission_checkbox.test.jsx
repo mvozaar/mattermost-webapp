@@ -8,30 +8,26 @@ import PermissionCheckbox from 'components/admin_console/permission_schemes_sett
 
 describe('components/admin_console/permission_schemes_settings/permission_checkbox', () => {
     test('should match snapshot on no value', () => {
-        const wrapper = shallow(
-            <PermissionCheckbox/>
-        );
+        const wrapper = shallow(<PermissionCheckbox />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot on value "checked"', () => {
-        const wrapper = shallow(
-            <PermissionCheckbox value='checked'/>
-        );
+    test("should match snapshot on value 'checked'", () => {
+        const wrapper = shallow(<PermissionCheckbox value='checked' />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should match snapshot on value "intermediate"', () => {
-        const wrapper = shallow(
-            <PermissionCheckbox value='intermediate'/>
-        );
+    test("should match snapshot on value 'intermediate'", () => {
+        const wrapper = shallow(<PermissionCheckbox value='intermediate' />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot on other value', () => {
-        const wrapper = shallow(
-            <PermissionCheckbox value='other'/>
-        );
+        const wrapper = shallow(<PermissionCheckbox value='other' />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

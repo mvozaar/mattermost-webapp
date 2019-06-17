@@ -4,8 +4,14 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getTheme, makeGetCategory} from 'mattermost-redux/selectors/entities/preferences';
-import {getCurrentTeamId, getMyTeamsCount} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getTheme,
+    makeGetCategory,
+} from 'mattermost-redux/selectors/entities/preferences';
+import {
+    getCurrentTeamId,
+    getMyTeamsCount,
+} from 'mattermost-redux/selectors/entities/teams';
 
 import {saveTheme} from 'actions/user_actions';
 
@@ -20,7 +26,8 @@ function makeMapStateToProps() {
         return {
             currentTeamId: getCurrentTeamId(state),
             theme: getTheme(state),
-            applyToAllTeams: getThemeCategory(state, Preferences.CATEGORY_THEME).length <= 1,
+            applyToAllTeams:
+                getThemeCategory(state, Preferences.CATEGORY_THEME).length <= 1,
             showAllTeamsCheckbox: getMyTeamsCount(state) > 1,
         };
     };
@@ -28,10 +35,17 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            saveTheme,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                saveTheme,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(UserSettingsTheme);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(UserSettingsTheme);

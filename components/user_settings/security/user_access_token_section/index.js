@@ -3,7 +3,14 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {clearUserAccessTokens, createUserAccessToken, getUserAccessTokensForUser, revokeUserAccessToken, enableUserAccessToken, disableUserAccessToken} from 'mattermost-redux/actions/users';
+import {
+    clearUserAccessTokens,
+    createUserAccessToken,
+    getUserAccessTokensForUser,
+    revokeUserAccessToken,
+    enableUserAccessToken,
+    disableUserAccessToken,
+} from 'mattermost-redux/actions/users';
 
 import UserAccessTokenSection from './user_access_token_section.jsx';
 
@@ -15,15 +22,22 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getUserAccessTokensForUser,
-            createUserAccessToken,
-            revokeUserAccessToken,
-            enableUserAccessToken,
-            disableUserAccessToken,
-            clearUserAccessTokens,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getUserAccessTokensForUser,
+                createUserAccessToken,
+                revokeUserAccessToken,
+                enableUserAccessToken,
+                disableUserAccessToken,
+                clearUserAccessTokens,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserAccessTokenSection);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UserAccessTokenSection);

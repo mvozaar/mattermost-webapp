@@ -12,92 +12,100 @@ import FormattedMarkdownMessage from 'components/formatted_markdown_message';
 
 export default class InstalledCommands extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The team object
-        */
+         * The team object
+         */
         team: PropTypes.object,
 
         /**
-        * The user object
-        */
+         * The user object
+         */
         user: PropTypes.object,
 
         /**
-        * The users collection
-        */
+         * The users collection
+         */
         users: PropTypes.object,
 
         /**
-        * Installed slash commands to display
-        */
+         * Installed slash commands to display
+         */
         commands: PropTypes.array,
 
         /**
-        * Set whether to show the loading... animation or not
-        */
+         * Set whether to show the loading... animation or not
+         */
         loading: PropTypes.bool,
 
         /**
-        * Set to allow changes to installed slash commands
-        */
+         * Set to allow changes to installed slash commands
+         */
         canManageOthersSlashCommands: PropTypes.bool,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call when Regenerate Token link is clicked
-            */
+             * The function to call when Regenerate Token link is clicked
+             */
             regenCommandToken: PropTypes.func.isRequired,
 
             /**
-            * The function to call when Delete link is clicked
-            */
+             * The function to call when Delete link is clicked
+             */
             deleteCommand: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     regenCommandToken = (command) => {
         this.props.actions.regenCommandToken(command.id);
-    }
+    };
 
     deleteCommand = (command) => {
         this.props.actions.deleteCommand(command.id);
-    }
+    };
 
     commandCompare(a, b) {
         let nameA = a.display_name;
         if (!nameA) {
-            nameA = Utils.localizeMessage('installed_commands.unnamed_command', 'Unnamed Slash Command');
+            nameA = Utils.localizeMessage(
+                'installed_commands.unnamed_command',
+                'Unnamed Slash Command',
+            );
         }
 
         let nameB = b.display_name;
         if (!nameB) {
-            nameB = Utils.localizeMessage('installed_commands.unnamed_command', 'Unnamed Slash Command');
+            nameB = Utils.localizeMessage(
+                'installed_commands.unnamed_command',
+                'Unnamed Slash Command',
+            );
         }
 
         return nameA.localeCompare(nameB);
     }
 
     render() {
-        const commands = (filter) => this.props.commands.
-            filter((command) => command.team_id === this.props.team.id).
-            filter((command) => matchesFilter(command, filter)).
-            sort(this.commandCompare).map((command) => {
-                const canChange = this.props.canManageOthersSlashCommands || this.props.user.id === command.creator_id;
+        const commands = (filter) =>
+            this.props.commands
+                .filter((command) => command.team_id === this.props.team.id)
+                .filter((command) => matchesFilter(command, filter))
+                .sort(this.commandCompare)
+                .map((command) => {
+                    const canChange =
+                        this.props.canManageOthersSlashCommands ||
+                        this.props.user.id === command.creator_id;
 
-                return (
-                    <InstalledCommand
-                        key={command.id}
-                        team={this.props.team}
-                        command={command}
-                        onRegenToken={this.regenCommandToken}
-                        onDelete={this.deleteCommand}
-                        creator={this.props.users[command.creator_id] || {}}
-                        canChange={canChange}
-                    />
-                );
-            });
+                    return (
+                        <InstalledCommand
+                            key={command.id}
+                            team={this.props.team}
+                            command={command}
+                            onRegenToken={this.regenCommandToken}
+                            onDelete={this.deleteCommand}
+                            creator={this.props.users[command.creator_id] || {}}
+                            canChange={canChange}
+                        />
+                    );
+                });
 
         return (
             <BackstageList
@@ -113,7 +121,9 @@ export default class InstalledCommands extends React.PureComponent {
                         defaultMessage='Add Slash Command'
                     />
                 }
-                addLink={'/' + this.props.team.name + '/integrations/commands/add'}
+                addLink={
+                    '/' + this.props.team.name + '/integrations/commands/add'
+                }
                 addButtonId='addSlashCommand'
                 emptyText={
                     <FormattedMessage
@@ -130,13 +140,13 @@ export default class InstalledCommands extends React.PureComponent {
                 helpText={
                     <FormattedMessage
                         id='installed_commands.help'
-                        defaultMessage='Use slash commands to connect external tools to Mattermost. {buildYourOwn} or visit the {appDirectory} to find self-hosted, third-party apps and integrations.'
+                        defaultMessage='Use slash commands to connect external tools to SCC. {buildYourOwn} or visit the {appDirectory} to find self-hosted, third-party apps and integrations.'
                         values={{
                             buildYourOwn: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='http://docs.mattermost.com/developer/slash-commands.html'
+                                    href='http://docs.securCom.me/developer/slash-commands.html'
                                 >
                                     <FormattedMessage
                                         id='installed_commands.help.buildYourOwn'
@@ -144,11 +154,12 @@ export default class InstalledCommands extends React.PureComponent {
                                     />
                                 </a>
                             ),
+
                             appDirectory: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='https://about.mattermost.com/default-app-directory/'
+                                    href='https://about.securCom.me/default-app-directory/'
                                 >
                                     <FormattedMessage
                                         id='installed_commands.help.appDirectory'
@@ -159,7 +170,10 @@ export default class InstalledCommands extends React.PureComponent {
                         }}
                     />
                 }
-                searchPlaceholder={Utils.localizeMessage('installed_commands.search', 'Search Slash Commands')}
+                searchPlaceholder={Utils.localizeMessage(
+                    'installed_commands.search',
+                    'Search Slash Commands',
+                )}
                 loading={this.props.loading}
             >
                 {(filter) => {

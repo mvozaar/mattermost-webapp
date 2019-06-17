@@ -7,10 +7,10 @@ import {ActionTypes} from 'utils/constants.jsx';
 
 function focused(state = true, action) {
     switch (action.type) {
-    case ActionTypes.BROWSER_CHANGE_FOCUS:
-        return action.focus;
-    default:
-        return state;
+        case ActionTypes.BROWSER_CHANGE_FOCUS:
+            return action.focus;
+        default:
+            return state;
     }
 }
 

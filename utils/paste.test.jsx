@@ -49,7 +49,9 @@ describe('Paste', () => {
         test('returns a markdown table under a message when one is provided', () => {
             const testMessage = 'test message';
 
-            expect(formatMarkdownTableMessage(validTable, testMessage)).toBe(`${testMessage}\n\n${markdownTable}`);
+            expect(formatMarkdownTableMessage(validTable, testMessage)).toBe(
+                `${testMessage}\n\n${markdownTable}`,
+            );
         });
     });
 });

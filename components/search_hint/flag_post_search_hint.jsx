@@ -13,7 +13,7 @@ export default class FlagPostSearchHint extends PureComponent {
     static propTypes = {
         dataRetentionEnableMessageDeletion: PropTypes.bool,
         dataRetentionMessageRetentionDays: PropTypes.string,
-    }
+    };
 
     render() {
         return (
@@ -30,7 +30,7 @@ export default class FlagPostSearchHint extends PureComponent {
                             id='search_results.usageFlag2'
                             defaultMessage='You can add a flag to messages and comments by clicking the {flagIcon} icon next to the timestamp.'
                             values={{
-                                flagIcon: <FlagIcon className='usage__icon'/>,
+                                flagIcon: <FlagIcon className='usage__icon' />,
                             }}
                         />
                     </li>
@@ -40,9 +40,13 @@ export default class FlagPostSearchHint extends PureComponent {
                             defaultMessage='Flags are a way to mark messages for follow up. Your flags are personal, and cannot be seen by other users.'
                         />
                     </li>
-                    {this.props.dataRetentionEnableMessageDeletion &&
-                        <DataRetentionHint dataRetentionMessageRetentionDays={this.props.dataRetentionMessageRetentionDays}/>
-                    }
+                    {this.props.dataRetentionEnableMessageDeletion && (
+                        <DataRetentionHint
+                            dataRetentionMessageRetentionDays={
+                                this.props.dataRetentionMessageRetentionDays
+                            }
+                        />
+                    )}
                 </ul>
             </React.Fragment>
         );

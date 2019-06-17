@@ -15,6 +15,7 @@ describe('components/interactive_dialog/DialogElement', () => {
         type: 'text',
         maxLength: 100,
     };
+
     const baseTextSettingProps = {
         id: baseDialogProps.name,
         maxLength: 100,
@@ -27,48 +28,40 @@ describe('components/interactive_dialog/DialogElement', () => {
             </React.Fragment>
         ),
     };
+
     it('subtype blank', () => {
         const wrapper = shallow(
-            <DialogElement
-                {...baseDialogProps}
-                subtype=''
-            />
+            <DialogElement {...baseDialogProps} subtype='' />,
         );
-        expect(wrapper.matchesElement(
-            <TextSetting
-                {...baseTextSettingProps}
-                type='input'
-            />
-        )).toEqual(true);
+
+        expect(
+            wrapper.matchesElement(
+                <TextSetting {...baseTextSettingProps} type='input' />,
+            ),
+        ).toEqual(true);
     });
 
     it('subtype email', () => {
         const wrapper = shallow(
-            <DialogElement
-                {...baseDialogProps}
-                subtype='email'
-            />
+            <DialogElement {...baseDialogProps} subtype='email' />,
         );
-        expect(wrapper.matchesElement(
-            <TextSetting
-                {...baseTextSettingProps}
-                type='email'
-            />
-        )).toEqual(true);
+
+        expect(
+            wrapper.matchesElement(
+                <TextSetting {...baseTextSettingProps} type='email' />,
+            ),
+        ).toEqual(true);
     });
 
     it('subtype invalid', () => {
         const wrapper = shallow(
-            <DialogElement
-                {...baseDialogProps}
-                subtype='invalid'
-            />
+            <DialogElement {...baseDialogProps} subtype='invalid' />,
         );
-        expect(wrapper.matchesElement(
-            <TextSetting
-                {...baseTextSettingProps}
-                type='input'
-            />
-        )).toEqual(true);
+
+        expect(
+            wrapper.matchesElement(
+                <TextSetting {...baseTextSettingProps} type='input' />,
+            ),
+        ).toEqual(true);
     });
 });

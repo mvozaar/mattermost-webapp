@@ -11,7 +11,9 @@ import {browserHistory} from 'utils/browser_history';
 
 export function removeUserFromTeamAndGetStats(teamId, userId) {
     return async (dispatch, getState) => {
-        const response = await dispatch(TeamActions.removeUserFromTeam(teamId, userId));
+        const response = await dispatch(
+            TeamActions.removeUserFromTeam(teamId, userId),
+        );
         dispatch(getUser(userId));
         dispatch(TeamActions.getTeamStats(teamId));
         dispatch(getChannelStats(getCurrentChannelId(getState())));
@@ -21,7 +23,9 @@ export function removeUserFromTeamAndGetStats(teamId, userId) {
 
 export function addUserToTeamFromInvite(token, inviteId) {
     return async (dispatch) => {
-        const {data: member, error} = await dispatch(TeamActions.addUserToTeamFromInvite(token, inviteId));
+        const {data: member, error} = await dispatch(
+            TeamActions.addUserToTeamFromInvite(token, inviteId),
+        );
         if (member) {
             const {data} = await dispatch(TeamActions.getTeam(member.team_id));
 
@@ -43,7 +47,9 @@ export function addUserToTeamFromInvite(token, inviteId) {
 
 export function addUserToTeam(teamId, userId) {
     return async (dispatch) => {
-        const {data: member, error} = await dispatch(TeamActions.addUserToTeam(teamId, userId));
+        const {data: member, error} = await dispatch(
+            TeamActions.addUserToTeam(teamId, userId),
+        );
         if (member) {
             const {data} = await dispatch(TeamActions.getTeam(member.team_id));
 
@@ -65,7 +71,9 @@ export function addUserToTeam(teamId, userId) {
 
 export function addUsersToTeam(teamId, userIds) {
     return async (dispatch, getState) => {
-        const {data, error} = await dispatch(TeamActions.addUsersToTeam(teamId, userIds));
+        const {data, error} = await dispatch(
+            TeamActions.addUsersToTeam(teamId, userIds),
+        );
 
         if (error) {
             return {error};

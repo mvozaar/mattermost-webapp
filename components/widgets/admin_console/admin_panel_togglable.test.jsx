@@ -19,7 +19,12 @@ describe('components/widgets/admin_console/AdminPanelTogglable', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<AdminPanelTogglable {...defaultProps}>{'Test'}</AdminPanelTogglable>);
+        const wrapper = shallow(
+            <AdminPanelTogglable {...defaultProps}>
+                {'Test'}
+            </AdminPanelTogglable>,
+        );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <AdminPanel
   button={<AccordionToggleIcon />}
@@ -33,18 +38,16 @@ describe('components/widgets/admin_console/AdminPanelTogglable', () => {
 >
   Test
 </AdminPanel>
-`
-        );
+`);
     });
 
     test('should match snapshot closed', () => {
         const wrapper = shallow(
-            <AdminPanelTogglable
-                {...defaultProps}
-                open={false}
-            >
+            <AdminPanelTogglable {...defaultProps} open={false}>
                 {'Test'}
-            </AdminPanelTogglable>);
+            </AdminPanelTogglable>,
+        );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <AdminPanel
   button={<AccordionToggleIcon />}
@@ -58,7 +61,6 @@ describe('components/widgets/admin_console/AdminPanelTogglable', () => {
 >
   Test
 </AdminPanel>
-`
-        );
+`);
     });
 });

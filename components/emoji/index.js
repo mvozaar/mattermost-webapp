@@ -22,10 +22,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadRolesIfNeeded,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadRolesIfNeeded,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmojiPage);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(EmojiPage);

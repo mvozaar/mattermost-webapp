@@ -15,9 +15,16 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        updateChannelNotifyProps,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            updateChannelNotifyProps,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelNotificationsModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ChannelNotificationsModal);

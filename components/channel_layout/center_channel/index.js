@@ -13,7 +13,11 @@ import {getLastViewedChannelNameByTeamName} from 'selectors/local_storage';
 import CenterChannel from './center_channel';
 
 const mapStateToProps = (state, ownProps) => {
-    let channelName = getLastViewedChannelNameByTeamName(state, ownProps.match.params.team);
+    let channelName = getLastViewedChannelNameByTeamName(
+        state,
+        ownProps.match.params.team,
+    );
+
     if (!channelName) {
         const team = getTeamByName(state, ownProps.match.params.team);
         channelName = getRedirectChannelNameForTeam(state, team.id);

@@ -19,6 +19,7 @@ describe('PostImage', () => {
             height: 400,
             width: 300,
         },
+
         link: 'https://example.com/image.png',
         post: {},
     };
@@ -29,13 +30,15 @@ describe('PostImage', () => {
             hasImageProxy: true,
         };
 
-        const wrapper = shallow(<PostImage {...props}/>);
+        const wrapper = shallow(<PostImage {...props} />);
 
         const expectedLink = PostUtils.getImageSrc(props.link, true);
 
         expect(wrapper.find(SizeAwareImage).prop('src')).toBe(expectedLink);
-        expect(wrapper.find(ViewImageModal).prop('fileInfos')).toMatchObject([{
-            link: expectedLink,
-        }]);
+        expect(wrapper.find(ViewImageModal).prop('fileInfos')).toMatchObject([
+            {
+                link: expectedLink,
+            },
+        ]);
     });
 });

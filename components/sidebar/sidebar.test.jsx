@@ -33,30 +33,35 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             name: 'public-test-1',
             type: Constants.OPEN_CHANNEL,
         },
+
         c2: {
             id: 'c2',
             display_name: 'Public test 2',
             name: 'public-test-2',
             type: Constants.OPEN_CHANNEL,
         },
+
         c3: {
             id: 'c3',
             display_name: 'Private test 1',
             name: 'private-test-1',
             type: Constants.PRIVATE_CHANNEL,
         },
+
         c4: {
             id: 'c4',
             display_name: 'Private test 2',
             name: 'private-test-2',
             type: Constants.PRIVATE_CHANNEL,
         },
+
         c5: {
             id: 'c5',
             display_name: 'Direct message test',
             name: 'direct-message-test',
             type: Constants.DM_CHANNEL,
         },
+
         c6: {
             id: 'c6',
             display_name: 'Group message test',
@@ -70,6 +75,7 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             EnableXToLeaveChannelsFromLHS: 'false',
             SiteName: 'Test site',
         },
+
         isOpen: false,
         showUnreadSection: false,
         channelSwitcherOption: true,
@@ -80,23 +86,27 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
                 name: 'PUBLIC CHANNELS',
                 items: ['c1', 'c2'],
             },
+
             {
                 type: 'private',
                 name: 'PRIVATE CHANNELS',
                 items: ['c3', 'c4'],
             },
+
             {
                 type: 'direct',
                 name: 'DIRECT MESSAGES',
                 items: ['c5', 'c6'],
             },
         ],
+
         currentChannel: {
             id: 'c1',
             display_name: 'Public test 1',
             name: 'public-test-1',
             type: Constants.OPEN_CHANNEL,
         },
+
         currentTeam: {
             id: 'team_id',
             name: 'test-team',
@@ -104,47 +114,56 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             description: 'Test team description',
             type: 'team-type',
         },
+
         currentUser: {
             id: 'my-user-id',
         },
+
         memberships: {
             c1: {
                 name: 'Public test 1 membership',
             },
+
             c2: {
                 name: 'Public test 2 membership',
             },
+
             c3: {
                 name: 'Private test 1 membership',
             },
+
             c4: {
                 name: 'Private test 2 membership',
             },
+
             c5: {
                 name: 'Direct message test membership',
             },
+
             c6: {
                 name: 'Group message test membership',
             },
         },
+
         unreads: {
             messageCount: 0,
             mentions: 0,
         },
+
         actions: {
             close: jest.fn(),
             switchToChannelById: jest.fn(),
             openModal: jest.fn(),
         },
+
         redirectChannel: 'default-channel',
         canCreatePublicChannel: true,
         canCreatePrivateChannel: true,
     };
 
     test('should match snapshot, on sidebar show', () => {
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -155,8 +174,9 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
                     ...defaultProps,
                     favoriteChannelIds: ['c1', 'c3', 'c5'],
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -168,8 +188,9 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
                     unreadChannelIds: ['c3', 'c5'],
                     showUnreadSection: true,
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -181,8 +202,9 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
                     unreadChannelIds: ['c3', 'c5'],
                     channelSwitcherOption: true,
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -193,8 +215,9 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
                     ...defaultProps,
                     currentTeam: null,
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
         wrapper = shallow(
             <Sidebar
@@ -202,8 +225,9 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
                     ...defaultProps,
                     currentUser: null,
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -215,6 +239,7 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             key: Constants.KeyCodes.DOWN[0],
             keyCode: Constants.KeyCodes.DOWN[1],
         };
+
         const prevEvent = {
             preventDefault: jest.fn(),
             altKey: true,
@@ -223,9 +248,8 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             keyCode: Constants.KeyCodes.UP[1],
         };
 
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.updateScrollbarOnChannelChange = jest.fn();
         instance.componentDidUpdate = jest.fn();
@@ -312,9 +336,8 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             keyCode: Constants.KeyCodes.UP[1],
         };
 
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.updateScrollbarOnChannelChange = jest.fn();
         instance.updateUnreadIndicators = jest.fn();
@@ -341,27 +364,47 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
         expect(instance.props.actions.switchToChannelById).lastCalledWith('c3');
         expect(instance.updateScrollbarOnChannelChange).lastCalledWith('c3');
 
-        wrapper.setProps({currentChannel: allChannels.c3, unreadChannelIds: ['c6']});
+        wrapper.setProps({
+            currentChannel: allChannels.c3,
+            unreadChannelIds: ['c6'],
+        });
+
         instance.navigateUnreadChannelShortcut(nextEvent);
         expect(instance.props.actions.switchToChannelById).lastCalledWith('c6');
         expect(instance.updateScrollbarOnChannelChange).lastCalledWith('c6');
 
-        wrapper.setProps({currentChannel: allChannels.c6, unreadChannelIds: ['c3']});
+        wrapper.setProps({
+            currentChannel: allChannels.c6,
+            unreadChannelIds: ['c3'],
+        });
+
         instance.navigateUnreadChannelShortcut(nextEvent);
         expect(instance.props.actions.switchToChannelById).lastCalledWith('c3');
         expect(instance.updateScrollbarOnChannelChange).lastCalledWith('c3');
 
-        wrapper.setProps({currentChannel: allChannels.c1, unreadChannelIds: ['c3', 'c6']});
+        wrapper.setProps({
+            currentChannel: allChannels.c1,
+            unreadChannelIds: ['c3', 'c6'],
+        });
+
         instance.navigateUnreadChannelShortcut(prevEvent);
         expect(instance.props.actions.switchToChannelById).lastCalledWith('c6');
         expect(instance.updateScrollbarOnChannelChange).lastCalledWith('c6');
 
-        wrapper.setProps({currentChannel: allChannels.c6, unreadChannelIds: ['c3']});
+        wrapper.setProps({
+            currentChannel: allChannels.c6,
+            unreadChannelIds: ['c3'],
+        });
+
         instance.navigateUnreadChannelShortcut(prevEvent);
         expect(instance.props.actions.switchToChannelById).lastCalledWith('c3');
         expect(instance.updateScrollbarOnChannelChange).lastCalledWith('c3');
 
-        wrapper.setProps({currentChannel: allChannels.c3, unreadChannelIds: ['c6']});
+        wrapper.setProps({
+            currentChannel: allChannels.c3,
+            unreadChannelIds: ['c6'],
+        });
+
         instance.navigateUnreadChannelShortcut(prevEvent);
         expect(instance.props.actions.switchToChannelById).lastCalledWith('c6');
         expect(instance.updateScrollbarOnChannelChange).lastCalledWith('c6');
@@ -378,6 +421,7 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             key: Constants.KeyCodes.K[0],
             keyCode: Constants.KeyCodes.K[1],
         };
+
         const cmdShiftK = {
             preventDefault: jest.fn(),
             altKey: false,
@@ -387,9 +431,8 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
             keyCode: Constants.KeyCodes.K[1],
         };
 
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.handleOpenMoreDirectChannelsModal = jest.fn();
         expect(instance.handleOpenMoreDirectChannelsModal).not.toBeCalled();
@@ -402,22 +445,30 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
         expect(instance.handleOpenMoreDirectChannelsModal).toBeCalled();
 
         instance.navigateChannelShortcut(ctrlShiftK);
-        expect(instance.handleOpenMoreDirectChannelsModal).toHaveBeenCalledTimes(2);
+        expect(
+            instance.handleOpenMoreDirectChannelsModal,
+        ).toHaveBeenCalledTimes(2);
     });
 
     test('set correctly the title when needed', () => {
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.updateTitle();
         instance.componentDidUpdate = jest.fn();
         instance.render = jest.fn();
-        expect(document.title).toBe('Public test 1 - Test team display name Test site');
+        expect(document.title).toBe(
+            'Public test 1 - Test team display name Test site',
+        );
+
         wrapper.setProps({config: {SiteName: null}});
         instance.updateTitle();
         expect(document.title).toBe('Public test 1 - Test team display name');
-        wrapper.setProps({currentChannel: {type: Constants.DM_CHANNEL}, currentTeammate: {display_name: 'teammate'}});
+        wrapper.setProps({
+            currentChannel: {type: Constants.DM_CHANNEL},
+            currentTeammate: {display_name: 'teammate'},
+        });
+
         instance.updateTitle();
         expect(document.title).toBe('teammate - Test team display name');
         wrapper.setProps({unreads: {mentionCount: 3, messageCount: 4}});
@@ -426,9 +477,8 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
     });
 
     test('should show/hide correctly more channels modal', () => {
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.componentDidUpdate = jest.fn();
         instance.showMoreChannelsModal();
@@ -440,9 +490,8 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
     });
 
     test('should show/hide correctly new channel modal', () => {
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.componentDidUpdate = jest.fn();
         instance.showNewChannelModal(Constants.PRIVATE_CHANNEL);
@@ -454,9 +503,8 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
     });
 
     test('should show/hide correctly more direct channels modal', () => {
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.componentDidUpdate = jest.fn();
         instance.showMoreDirectChannelsModal([]);
@@ -468,18 +516,26 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
     });
 
     test('should verify if the channel is displayed for props', () => {
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
-        expect(instance.channelIdIsDisplayedForProps(instance.props.orderedChannelIds, 'c1')).toBe(true);
-        expect(instance.channelIdIsDisplayedForProps(instance.props.orderedChannelIds, 'c9')).toBe(false);
+        expect(
+            instance.channelIdIsDisplayedForProps(
+                instance.props.orderedChannelIds,
+                'c1',
+            ),
+        ).toBe(true);
+        expect(
+            instance.channelIdIsDisplayedForProps(
+                instance.props.orderedChannelIds,
+                'c9',
+            ),
+        ).toBe(false);
     });
 
     test('should handle correctly open more direct channels toggle', () => {
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
         instance.showMoreDirectChannelsModal = jest.fn();
         instance.hideMoreDirectChannelsModal = jest.fn();
@@ -497,9 +553,8 @@ describe('component/sidebar/sidebar_channel/SidebarChannel', () => {
     test('should listen/unlisten keydown events', () => {
         document.addEventListener = jest.fn();
         document.removeEventListener = jest.fn();
-        const wrapper = shallow(
-            <Sidebar {...defaultProps}/>
-        );
+        const wrapper = shallow(<Sidebar {...defaultProps} />);
+
         const instance = wrapper.instance();
 
         expect(document.addEventListener).toHaveBeenCalledTimes(2);

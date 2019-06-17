@@ -5,8 +5,14 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createSelector} from 'reselect';
 
-import {createComplianceReport, getComplianceReports} from 'mattermost-redux/actions/admin';
-import {getComplianceReports as selectComplianceReports, getConfig} from 'mattermost-redux/selectors/entities/admin';
+import {
+    createComplianceReport,
+    getComplianceReports,
+} from 'mattermost-redux/actions/admin';
+import {
+    getComplianceReports as selectComplianceReports,
+    getConfig,
+} from 'mattermost-redux/selectors/entities/admin';
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 
 import ComplianceReports from './compliance_reports.jsx';
@@ -23,7 +29,7 @@ const getUsersForReports = createSelector(
             }
         });
         return usersMap;
-    }
+    },
 );
 
 function mapStateToProps(state) {
@@ -42,9 +48,11 @@ function mapStateToProps(state) {
         serverError = error.message;
     }
 
-    const reports = Object.values(selectComplianceReports(state)).sort((a, b) => {
-        return b.create_at - a.create_at;
-    });
+    const reports = Object.values(selectComplianceReports(state)).sort(
+        (a, b) => {
+            return b.create_at - a.create_at;
+        },
+    );
 
     return {
         isLicensed,
@@ -57,11 +65,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getComplianceReports,
-            createComplianceReport,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getComplianceReports,
+                createComplianceReport,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComplianceReports);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ComplianceReports);

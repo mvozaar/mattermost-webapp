@@ -15,18 +15,19 @@ describe('components/widgets/admin_console/AdminHeader', () => {
 >
   Test
 </h3>
-`
-        );
+`);
     });
 
     test('children prop is mandatory', () => {
         console.originalError = console.error;
         console.error = jest.fn();
 
-        shallow(<AdminHeader/>);
+        shallow(<AdminHeader />);
 
         expect(console.error).toBeCalledTimes(1);
-        expect(console.error).toBeCalledWith('Warning: Failed prop type: The prop `children` is marked as required in `AdminHeader`, but its value is `undefined`.\n    in AdminHeader');
+        expect(console.error).toBeCalledWith(
+            'Warning: Failed prop type: The prop `children` is marked as required in `AdminHeader`, but its value is `undefined`.\n    in AdminHeader',
+        );
 
         console.error = console.originalError;
     });

@@ -22,16 +22,28 @@ function mapStateToProps(state, ownProps) {
         enableLinkPreviews: config.EnableLinkPreviews === 'true',
         hasImageProxy: config.HasImageProxy === 'true',
         openGraphData: getOpenGraphMetadataForUrl(state, ownProps.link),
-        previewEnabled: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.LINK_PREVIEW_DISPLAY, true),
+        previewEnabled: getBool(
+            state,
+            Preferences.CATEGORY_DISPLAY_SETTINGS,
+            Preferences.LINK_PREVIEW_DISPLAY,
+            true,
+        ),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            editPost,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                editPost,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostAttachmentOpenGraph);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PostAttachmentOpenGraph);

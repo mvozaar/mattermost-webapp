@@ -4,7 +4,10 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getSessions, revokeSession} from 'mattermost-redux/actions/users';
-import {getCurrentUserId, getUserSessions} from 'mattermost-redux/selectors/entities/users';
+import {
+    getCurrentUserId,
+    getUserSessions,
+} from 'mattermost-redux/selectors/entities/users';
 
 import {getCurrentLocale} from 'selectors/i18n';
 
@@ -20,11 +23,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getSessions,
-            revokeSession,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getSessions,
+                revokeSession,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActivityLogModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ActivityLogModal);

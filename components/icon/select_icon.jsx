@@ -13,10 +13,7 @@ export default class SelectIcon extends React.PureComponent {
                 defaultMessage='Select Icon'
             >
                 {(title) => (
-                    <i
-                        className='fa fa fa-plus-square'
-                        title={title}
-                    />
+                    <i className='fa fa fa-plus-square' title={title} />
                 )}
             </FormattedMessage>
         );

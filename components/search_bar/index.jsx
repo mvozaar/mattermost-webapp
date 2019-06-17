@@ -29,14 +29,21 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            updateSearchTerms,
-            showSearchResults,
-            showMentions,
-            showFlaggedPosts,
-            closeRightHandSide,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                updateSearchTerms,
+                showSearchResults,
+                showMentions,
+                showFlaggedPosts,
+                closeRightHandSide,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SearchBar);

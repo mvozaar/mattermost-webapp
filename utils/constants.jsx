@@ -18,7 +18,7 @@ import githubIcon from 'images/themes/code_themes/github.png';
 import monokaiIcon from 'images/themes/code_themes/monokai.png';
 import solarizedDarkIcon from 'images/themes/code_themes/solarized-dark.png';
 import solarizedLightIcon from 'images/themes/code_themes/solarized-light.png';
-import mattermostThemeImage from 'images/themes/mattermost.png';
+import mattermostThemeImage from 'images/themes/scc.png';
 import mattermostDarkThemeImage from 'images/themes/mattermost_dark.png';
 import defaultThemeImage from 'images/themes/organization.png';
 import windows10ThemeImage from 'images/themes/windows_dark.png';
@@ -379,7 +379,9 @@ export const AnnouncementBarTypes = {
 };
 
 export const AnnouncementBarMessages = {
-    EMAIL_VERIFICATION_REQUIRED: t('announcement_bar.error.email_verification_required'),
+    EMAIL_VERIFICATION_REQUIRED: t(
+        'announcement_bar.error.email_verification_required',
+    ),
     EMAIL_VERIFIED: t('announcement_bar.notification.email_verified'),
     LICENSE_EXPIRED: t('announcement_bar.error.license_expired'),
     LICENSE_EXPIRING: t('announcement_bar.error.license_expiring'),
@@ -557,9 +559,9 @@ export const DefaultRolePermissions = {
         Permissions.LIST_PUBLIC_TEAMS,
         Permissions.JOIN_PUBLIC_TEAMS,
     ],
-    channel_admin: [
-        Permissions.MANAGE_CHANNEL_ROLES,
-    ],
+
+    channel_admin: [Permissions.MANAGE_CHANNEL_ROLES],
+
     team_admin: [
         Permissions.EDIT_OTHERS_POSTS,
         Permissions.REMOVE_USER_FROM_TEAM,
@@ -610,7 +612,15 @@ export const Constants = {
     PostListRowListIds,
     MAX_POST_VISIBILITY: 1000000,
 
-    IGNORE_POST_TYPES: [PostTypes.JOIN_LEAVE, PostTypes.JOIN_TEAM, PostTypes.LEAVE_TEAM, PostTypes.JOIN_CHANNEL, PostTypes.LEAVE_CHANNEL, PostTypes.REMOVE_FROM_CHANNEL, PostTypes.ADD_REMOVE],
+    IGNORE_POST_TYPES: [
+        PostTypes.JOIN_LEAVE,
+        PostTypes.JOIN_TEAM,
+        PostTypes.LEAVE_TEAM,
+        PostTypes.JOIN_CHANNEL,
+        PostTypes.LEAVE_CHANNEL,
+        PostTypes.REMOVE_FROM_CHANNEL,
+        PostTypes.ADD_REMOVE,
+    ],
 
     PayloadSources: keyMirror({
         SERVER_ACTION: null,
@@ -639,7 +649,142 @@ export const Constants = {
     PRESENTATION_TYPES: ['ppt', 'pptx'],
     SPREADSHEET_TYPES: ['xlsx', 'csv'],
     WORD_TYPES: ['doc', 'docx'],
-    CODE_TYPES: ['applescript', 'as', 'atom', 'bas', 'bash', 'boot', 'c', 'c++', 'cake', 'cc', 'cjsx', 'cl2', 'clj', 'cljc', 'cljs', 'cljs.hl', 'cljscm', 'cljx', '_coffee', 'coffee', 'cpp', 'cs', 'csharp', 'cson', 'css', 'd', 'dart', 'delphi', 'dfm', 'di', 'diff', 'django', 'docker', 'dockerfile', 'dpr', 'erl', 'ex', 'exs', 'f90', 'f95', 'freepascal', 'fs', 'fsharp', 'gcode', 'gemspec', 'go', 'groovy', 'gyp', 'h', 'h++', 'handlebars', 'hbs', 'hic', 'hpp', 'hs', 'html', 'html.handlebars', 'html.hbs', 'hx', 'iced', 'irb', 'java', 'jinja', 'jl', 'js', 'json', 'jsp', 'jsx', 'kt', 'ktm', 'kts', 'lazarus', 'less', 'lfm', 'lisp', 'log', 'lpr', 'lua', 'm', 'mak', 'matlab', 'md', 'mk', 'mkd', 'mkdown', 'ml', 'mm', 'nc', 'obj-c', 'objc', 'osascript', 'pas', 'pascal', 'perl', 'php', 'php3', 'php4', 'php5', 'php6', 'pl', 'plist', 'podspec', 'pp', 'ps', 'ps1', 'py', 'r', 'rb', 'rs', 'rss', 'ruby', 'scala', 'scm', 'scpt', 'scss', 'sh', 'sld', 'sql', 'st', 'styl', 'swift', 'tex', 'thor', 'txt', 'v', 'vb', 'vbnet', 'vbs', 'veo', 'xhtml', 'xml', 'xsl', 'yaml', 'zsh'],
+    CODE_TYPES: [
+        'applescript',
+        'as',
+        'atom',
+        'bas',
+        'bash',
+        'boot',
+        'c',
+        'c++',
+        'cake',
+        'cc',
+        'cjsx',
+        'cl2',
+        'clj',
+        'cljc',
+        'cljs',
+        'cljs.hl',
+        'cljscm',
+        'cljx',
+        '_coffee',
+        'coffee',
+        'cpp',
+        'cs',
+        'csharp',
+        'cson',
+        'css',
+        'd',
+        'dart',
+        'delphi',
+        'dfm',
+        'di',
+        'diff',
+        'django',
+        'docker',
+        'dockerfile',
+        'dpr',
+        'erl',
+        'ex',
+        'exs',
+        'f90',
+        'f95',
+        'freepascal',
+        'fs',
+        'fsharp',
+        'gcode',
+        'gemspec',
+        'go',
+        'groovy',
+        'gyp',
+        'h',
+        'h++',
+        'handlebars',
+        'hbs',
+        'hic',
+        'hpp',
+        'hs',
+        'html',
+        'html.handlebars',
+        'html.hbs',
+        'hx',
+        'iced',
+        'irb',
+        'java',
+        'jinja',
+        'jl',
+        'js',
+        'json',
+        'jsp',
+        'jsx',
+        'kt',
+        'ktm',
+        'kts',
+        'lazarus',
+        'less',
+        'lfm',
+        'lisp',
+        'log',
+        'lpr',
+        'lua',
+        'm',
+        'mak',
+        'matlab',
+        'md',
+        'mk',
+        'mkd',
+        'mkdown',
+        'ml',
+        'mm',
+        'nc',
+        'obj-c',
+        'objc',
+        'osascript',
+        'pas',
+        'pascal',
+        'perl',
+        'php',
+        'php3',
+        'php4',
+        'php5',
+        'php6',
+        'pl',
+        'plist',
+        'podspec',
+        'pp',
+        'ps',
+        'ps1',
+        'py',
+        'r',
+        'rb',
+        'rs',
+        'rss',
+        'ruby',
+        'scala',
+        'scm',
+        'scpt',
+        'scss',
+        'sh',
+        'sld',
+        'sql',
+        'st',
+        'styl',
+        'swift',
+        'tex',
+        'thor',
+        'txt',
+        'v',
+        'vb',
+        'vbnet',
+        'vbs',
+        'veo',
+        'xhtml',
+        'xml',
+        'xsl',
+        'yaml',
+        'zsh',
+    ],
     PDF_TYPES: ['pdf'],
     PATCH_TYPES: ['patch'],
     SVG_TYPES: ['svg'],
@@ -654,6 +799,7 @@ export const Constants = {
         patch: patchIcon,
         other: genericIcon,
     },
+
     ICON_NAME_FROM_TYPE: {
         audio: 'audio',
         video: 'video',
@@ -666,6 +812,7 @@ export const Constants = {
         other: 'generic',
         image: 'image',
     },
+
     MAX_UPLOAD_FILES: 5,
     MAX_FILENAME_LENGTH: 35,
     THUMBNAIL_WIDTH: 128,
@@ -714,6 +861,7 @@ export const Constants = {
         'api',
         'oauth',
     ],
+
     RESERVED_USERNAMES: [
         'valet',
         'all',
@@ -722,7 +870,21 @@ export const Constants = {
         'matterbot',
         'system',
     ],
-    MONTHS: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+    MONTHS: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ],
     MAX_DMS: 20,
     MAX_USERS_IN_GM: 8,
     MIN_USERS_IN_GM: 3,
@@ -741,7 +903,7 @@ export const Constants = {
     EMOJI_PICKER_WIDTH_OFFSET: 295,
     THEMES: {
         default: {
-            type: 'Mattermost',
+            type: 'securCom',
             sidebarBg: '#145dbf',
             sidebarText: '#ffffff',
             sidebarUnreadText: '#ffffff',
@@ -767,6 +929,7 @@ export const Constants = {
             codeTheme: 'github',
             image: mattermostThemeImage,
         },
+
         organization: {
             type: 'Organization',
             sidebarBg: '#2071a7',
@@ -794,6 +957,7 @@ export const Constants = {
             codeTheme: 'github',
             image: defaultThemeImage,
         },
+
         mattermostDark: {
             type: 'Mattermost Dark',
             sidebarBg: '#1b2c3e',
@@ -821,6 +985,7 @@ export const Constants = {
             codeTheme: 'solarized-dark',
             image: mattermostDarkThemeImage,
         },
+
         windows10: {
             type: 'Windows Dark',
             sidebarBg: '#171717',
@@ -849,117 +1014,140 @@ export const Constants = {
             image: windows10ThemeImage,
         },
     },
+
     THEME_ELEMENTS: [
         {
             group: 'sidebarElements',
             id: 'sidebarBg',
             uiName: 'Sidebar BG',
         },
+
         {
             group: 'sidebarElements',
             id: 'sidebarText',
             uiName: 'Sidebar Text',
         },
+
         {
             group: 'sidebarElements',
             id: 'sidebarHeaderBg',
             uiName: 'Sidebar Header BG',
         },
+
         {
             group: 'sidebarElements',
             id: 'sidebarHeaderTextColor',
             uiName: 'Sidebar Header Text',
         },
+
         {
             group: 'sidebarElements',
             id: 'sidebarUnreadText',
             uiName: 'Sidebar Unread Text',
         },
+
         {
             group: 'sidebarElements',
             id: 'sidebarTextHoverBg',
             uiName: 'Sidebar Text Hover BG',
         },
+
         {
             group: 'sidebarElements',
             id: 'sidebarTextActiveBorder',
             uiName: 'Sidebar Text Active Border',
         },
+
         {
             group: 'sidebarElements',
             id: 'sidebarTextActiveColor',
             uiName: 'Sidebar Text Active Color',
         },
+
         {
             group: 'sidebarElements',
             id: 'onlineIndicator',
             uiName: 'Online Indicator',
         },
+
         {
             group: 'sidebarElements',
             id: 'awayIndicator',
             uiName: 'Away Indicator',
         },
+
         {
             group: 'sidebarElements',
             id: 'dndIndicator',
             uiName: 'Away Indicator',
         },
+
         {
             group: 'sidebarElements',
             id: 'mentionBg',
             uiName: 'Mention Jewel BG',
         },
+
         {
             group: 'sidebarElements',
             id: 'mentionColor',
             uiName: 'Mention Jewel Text',
         },
+
         {
             group: 'centerChannelElements',
             id: 'centerChannelBg',
             uiName: 'Center Channel BG',
         },
+
         {
             group: 'centerChannelElements',
             id: 'centerChannelColor',
             uiName: 'Center Channel Text',
         },
+
         {
             group: 'centerChannelElements',
             id: 'newMessageSeparator',
             uiName: 'New Message Separator',
         },
+
         {
             group: 'centerChannelElements',
             id: 'errorTextColor',
             uiName: 'Error Text Color',
         },
+
         {
             group: 'centerChannelElements',
             id: 'mentionHighlightBg',
             uiName: 'Mention Highlight BG',
         },
+
         {
             group: 'linkAndButtonElements',
             id: 'linkColor',
             uiName: 'Link Color',
         },
+
         {
             group: 'centerChannelElements',
             id: 'mentionHighlightLink',
             uiName: 'Mention Highlight Link',
         },
+
         {
             group: 'linkAndButtonElements',
             id: 'buttonBg',
             uiName: 'Button BG',
         },
+
         {
             group: 'linkAndButtonElements',
             id: 'buttonColor',
             uiName: 'Button Text',
         },
+
         {
             group: 'centerChannelElements',
             id: 'codeTheme',
@@ -971,18 +1159,21 @@ export const Constants = {
                     cssURL: solarizedDarkCSS,
                     iconURL: solarizedDarkIcon,
                 },
+
                 {
                     id: 'solarized-light',
                     uiName: 'Solarized Light',
                     cssURL: solarizedLightCSS,
                     iconURL: solarizedLightIcon,
                 },
+
                 {
                     id: 'github',
                     uiName: 'GitHub',
                     cssURL: githubCSS,
                     iconURL: githubIcon,
                 },
+
                 {
                     id: 'monokai',
                     uiName: 'Monokai',
@@ -992,6 +1183,7 @@ export const Constants = {
             ],
         },
     ],
+
     DEFAULT_CODE_THEME: 'github',
 
     // KeyCodes
@@ -1100,77 +1292,181 @@ export const Constants = {
         CLOSE_BRACKET: [']', 221],
         COMPOSING: ['Composing', 229],
     },
+
     CODE_PREVIEW_MAX_FILE_SIZE: 500000, // 500 KB
     HighlightedLanguages: {
-        actionscript: {name: 'ActionScript', extensions: ['as'], aliases: ['as', 'as3']},
-        applescript: {name: 'AppleScript', extensions: ['applescript', 'osascript', 'scpt']},
+        actionscript: {
+            name: 'ActionScript',
+            extensions: ['as'],
+            aliases: ['as', 'as3'],
+        },
+        applescript: {
+            name: 'AppleScript',
+            extensions: ['applescript', 'osascript', 'scpt'],
+        },
         bash: {name: 'Bash', extensions: ['sh'], aliases: ['sh']},
-        clojure: {name: 'Clojure', extensions: ['clj', 'boot', 'cl2', 'cljc', 'cljs', 'cljs.hl', 'cljscm', 'cljx', 'hic']},
-        coffeescript: {name: 'CoffeeScript', extensions: ['coffee', '_coffee', 'cake', 'cjsx', 'cson', 'iced'], aliases: ['coffee', 'coffee-script']},
-        cpp: {name: 'C/C++', extensions: ['cpp', 'c', 'cc', 'h', 'c++', 'h++', 'hpp'], aliases: ['c++', 'c']},
-        cs: {name: 'C#', extensions: ['cs', 'csharp'], aliases: ['c#', 'csharp']},
+        clojure: {
+            name: 'Clojure',
+            extensions: [
+                'clj',
+                'boot',
+                'cl2',
+                'cljc',
+                'cljs',
+                'cljs.hl',
+                'cljscm',
+                'cljx',
+                'hic',
+            ],
+        },
+        coffeescript: {
+            name: 'CoffeeScript',
+            extensions: ['coffee', '_coffee', 'cake', 'cjsx', 'cson', 'iced'],
+            aliases: ['coffee', 'coffee-script'],
+        },
+        cpp: {
+            name: 'C/C++',
+            extensions: ['cpp', 'c', 'cc', 'h', 'c++', 'h++', 'hpp'],
+            aliases: ['c++', 'c'],
+        },
+        cs: {
+            name: 'C#',
+            extensions: ['cs', 'csharp'],
+            aliases: ['c#', 'csharp'],
+        },
         css: {name: 'CSS', extensions: ['css']},
         d: {name: 'D', extensions: ['d', 'di'], aliases: ['dlang']},
         dart: {name: 'Dart', extensions: ['dart']},
-        delphi: {name: 'Delphi', extensions: ['delphi', 'dpr', 'dfm', 'pas', 'pascal', 'freepascal', 'lazarus', 'lpr', 'lfm']},
-        diff: {name: 'Diff', extensions: ['diff', 'patch'], aliases: ['patch', 'udiff']},
+        delphi: {
+            name: 'Delphi',
+            extensions: [
+                'delphi',
+                'dpr',
+                'dfm',
+                'pas',
+                'pascal',
+                'freepascal',
+                'lazarus',
+                'lpr',
+                'lfm',
+            ],
+        },
+        diff: {
+            name: 'Diff',
+            extensions: ['diff', 'patch'],
+            aliases: ['patch', 'udiff'],
+        },
         django: {name: 'Django', extensions: ['django', 'jinja']},
-        dockerfile: {name: 'Dockerfile', extensions: ['dockerfile', 'docker'], aliases: ['docker']},
-        elixir: {name: 'Elixir', extensions: ['ex', 'exs'], aliases: ['ex', 'exs']},
+        dockerfile: {
+            name: 'Dockerfile',
+            extensions: ['dockerfile', 'docker'],
+            aliases: ['docker'],
+        },
+        elixir: {
+            name: 'Elixir',
+            extensions: ['ex', 'exs'],
+            aliases: ['ex', 'exs'],
+        },
         erlang: {name: 'Erlang', extensions: ['erl'], aliases: ['erl']},
         fortran: {name: 'Fortran', extensions: ['f90', 'f95']},
         fsharp: {name: 'F#', extensions: ['fsharp', 'fs']},
         gcode: {name: 'G-Code', extensions: ['gcode', 'nc']},
         go: {name: 'Go', extensions: ['go'], aliases: ['golang']},
         groovy: {name: 'Groovy', extensions: ['groovy']},
-        handlebars: {name: 'Handlebars', extensions: ['handlebars', 'hbs', 'html.hbs', 'html.handlebars'], aliases: ['hbs', 'mustache']},
+        handlebars: {
+            name: 'Handlebars',
+            extensions: ['handlebars', 'hbs', 'html.hbs', 'html.handlebars'],
+            aliases: ['hbs', 'mustache'],
+        },
         haskell: {name: 'Haskell', extensions: ['hs'], aliases: ['hs']},
         haxe: {name: 'Haxe', extensions: ['hx']},
         java: {name: 'Java', extensions: ['java', 'jsp']},
-        javascript: {name: 'JavaScript', extensions: ['js', 'jsx'], aliases: ['js']},
+        javascript: {
+            name: 'JavaScript',
+            extensions: ['js', 'jsx'],
+            aliases: ['js'],
+        },
         json: {name: 'JSON', extensions: ['json']},
         julia: {name: 'Julia', extensions: ['jl'], aliases: ['jl']},
         kotlin: {name: 'Kotlin', extensions: ['kt', 'ktm', 'kts']},
         less: {name: 'Less', extensions: ['less']},
         lisp: {name: 'Lisp', extensions: ['lisp']},
         lua: {name: 'Lua', extensions: ['lua']},
-        makefile: {name: 'Makefile', extensions: ['mk', 'mak'], aliases: ['make', 'mf', 'gnumake', 'bsdmake']},
-        markdown: {name: 'Markdown', extensions: ['md', 'mkdown', 'mkd'], aliases: ['md', 'mkd']},
+        makefile: {
+            name: 'Makefile',
+            extensions: ['mk', 'mak'],
+            aliases: ['make', 'mf', 'gnumake', 'bsdmake'],
+        },
+        markdown: {
+            name: 'Markdown',
+            extensions: ['md', 'mkdown', 'mkd'],
+            aliases: ['md', 'mkd'],
+        },
         matlab: {name: 'Matlab', extensions: ['matlab', 'm'], aliases: ['m']},
-        objectivec: {name: 'Objective C', extensions: ['mm', 'objc', 'obj-c'], aliases: ['objective_c', 'objc']},
+        objectivec: {
+            name: 'Objective C',
+            extensions: ['mm', 'objc', 'obj-c'],
+            aliases: ['objective_c', 'objc'],
+        },
         ocaml: {name: 'OCaml', extensions: ['ml']},
         perl: {name: 'Perl', extensions: ['perl', 'pl'], aliases: ['pl']},
-        php: {name: 'PHP', extensions: ['php', 'php3', 'php4', 'php5', 'php6'], aliases: ['php3', 'php4', 'php5']},
-        powershell: {name: 'PowerShell', extensions: ['ps', 'ps1'], aliases: ['posh']},
+        php: {
+            name: 'PHP',
+            extensions: ['php', 'php3', 'php4', 'php5', 'php6'],
+            aliases: ['php3', 'php4', 'php5'],
+        },
+        powershell: {
+            name: 'PowerShell',
+            extensions: ['ps', 'ps1'],
+            aliases: ['posh'],
+        },
         puppet: {name: 'Puppet', extensions: ['pp'], aliases: ['pp']},
         python: {name: 'Python', extensions: ['py', 'gyp'], aliases: ['py']},
         r: {name: 'R', extensions: ['r'], aliases: ['r', 's']},
-        ruby: {name: 'Ruby', extensions: ['ruby', 'rb', 'gemspec', 'podspec', 'thor', 'irb'], aliases: ['rb']},
+        ruby: {
+            name: 'Ruby',
+            extensions: ['ruby', 'rb', 'gemspec', 'podspec', 'thor', 'irb'],
+            aliases: ['rb'],
+        },
         rust: {name: 'Rust', extensions: ['rs'], aliases: ['rs']},
         scala: {name: 'Scala', extensions: ['scala']},
         scheme: {name: 'Scheme', extensions: ['scm', 'sld']},
         scss: {name: 'SCSS', extensions: ['scss']},
-        smalltalk: {name: 'Smalltalk', extensions: ['st'], aliases: ['st', 'squeak']},
+        smalltalk: {
+            name: 'Smalltalk',
+            extensions: ['st'],
+            aliases: ['st', 'squeak'],
+        },
         sql: {name: 'SQL', extensions: ['sql']},
         stylus: {name: 'Stylus', extensions: ['styl'], aliases: ['styl']},
         swift: {name: 'Swift', extensions: ['swift']},
         tex: {name: 'TeX', extensions: ['tex'], aliases: ['latex']},
         text: {name: 'Text', extensions: ['txt', 'log']},
-        vbnet: {name: 'VB.Net', extensions: ['vbnet', 'vb', 'bas'], aliases: ['vb', 'visualbasic']},
+        vbnet: {
+            name: 'VB.Net',
+            extensions: ['vbnet', 'vb', 'bas'],
+            aliases: ['vb', 'visualbasic'],
+        },
         vbscript: {name: 'VBScript', extensions: ['vbs']},
         verilog: {name: 'Verilog', extensions: ['v', 'veo', 'sv', 'svh']},
         vhdl: {name: 'VHDL', extensions: ['vhd', 'vhdl']},
-        xml: {name: 'HTML, XML', extensions: ['xml', 'html', 'xhtml', 'rss', 'atom', 'xsl', 'plist']},
+        xml: {
+            name: 'HTML, XML',
+            extensions: ['xml', 'html', 'xhtml', 'rss', 'atom', 'xsl', 'plist'],
+        },
         yaml: {name: 'YAML', extensions: ['yaml'], aliases: ['yml']},
     },
+
     PostsViewJumpTypes: {
         BOTTOM: 1,
         POST: 2,
         SIDEBAR_OPEN: 3,
     },
+
     NotificationPrefs: {
         MENTION: 'mention',
     },
+
     Integrations: {
         COMMAND: 'commands',
         PAGE_SIZE: '10000',
@@ -1180,6 +1476,7 @@ export const Constants = {
         OAUTH_APP: 'oauth2-apps',
         BOT: 'bots',
     },
+
     FeatureTogglePrefix: 'feature_enabled_',
     PRE_RELEASE_FEATURES: {
         MARKDOWN_PREVIEW: {
@@ -1187,6 +1484,7 @@ export const Constants = {
             description: 'Show markdown preview option in message input box',
         },
     },
+
     OVERLAY_TIME_DELAY_SMALL: 100,
     OVERLAY_TIME_DELAY: 400,
     DEFAULT_MAX_USERS_PER_TEAM: 50,
@@ -1213,8 +1511,8 @@ export const Constants = {
     EMOJI_PATH: '/static/emoji',
     RECENT_EMOJI_KEY: 'recentEmojis',
     DEFAULT_WEBHOOK_LOGO: logoWebhook,
-    MHPNS: 'https://push.mattermost.com',
-    MTPNS: 'https://push-test.mattermost.com',
+    MHPNS: 'https://push.securCom.me',
+    MTPNS: 'https://push-test.securCom.me',
     MAX_PREV_MSGS: 100,
     POST_COLLAPSE_TIMEOUT: 1000 * 60 * 5, // five minutes
     PERMISSIONS_ALL: 'all',
@@ -1247,13 +1545,19 @@ export const Constants = {
         SHOW_NICKNAME_FULLNAME: 'nickname_full_name',
         SHOW_FULLNAME: 'full_name',
     },
+
     SEARCH_POST: 'searchpost',
     CHANNEL_ID_LENGTH: 26,
-    TRANSPARENT_PIXEL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+    TRANSPARENT_PIXEL:
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
     TRIPLE_BACK_TICKS: /```/g,
 };
 
-export const AcceptedProfileImageTypes = ['image/jpeg', 'image/png', 'image/bmp'];
+export const AcceptedProfileImageTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/bmp',
+];
 
 t('suggestion.mention.channels');
 t('suggestion.mention.morechannels');

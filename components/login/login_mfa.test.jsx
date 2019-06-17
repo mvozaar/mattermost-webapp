@@ -14,20 +14,19 @@ describe('components/login/LoginMfa', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <LoginMfa {...baseProps}/>
-        );
+        const wrapper = shallow(<LoginMfa {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should have match state when handleChange is called', () => {
-        const wrapper = shallow(
-            <LoginMfa {...baseProps}/>
-        );
+        const wrapper = shallow(<LoginMfa {...baseProps} />);
 
         wrapper.setState({token: ''});
-        wrapper.instance().handleChange({preventDefault: jest.fn(), target: {value: '123456'}});
+        wrapper.instance().handleChange({
+            preventDefault: jest.fn(),
+            target: {value: '123456'},
+        });
 
         expect(wrapper.state('token')).toEqual('123456');
     });
@@ -35,9 +34,7 @@ describe('components/login/LoginMfa', () => {
     test('should have match state when handleSubmit is called', () => {
         const submit = jest.fn();
         const props = {...baseProps, submit};
-        const wrapper = shallow(
-            <LoginMfa {...props}/>
-        );
+        const wrapper = shallow(<LoginMfa {...props} />);
 
         wrapper.setState({token: '', serverError: '', saving: false});
         wrapper.instance().handleSubmit({preventDefault: jest.fn()});

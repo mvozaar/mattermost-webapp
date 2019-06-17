@@ -26,11 +26,7 @@ export default class SettingsGroup extends React.Component {
 
         let header = null;
         if (this.props.header) {
-            header = (
-                <h4>
-                    {this.props.header}
-                </h4>
-            );
+            header = <h4>{this.props.header}</h4>;
         }
 
         return (

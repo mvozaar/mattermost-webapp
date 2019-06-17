@@ -26,17 +26,23 @@ describe('components/user_settings/display/manage_timezones/manage_timezones', (
 
     test('submitUser() should have called [updateMe, updateSection]', async () => {
         const updateMe = jest.fn(() => Promise.resolve({data: true}));
-        const props = {...requiredProps, actions: {...requiredProps.actions, updateMe}};
-        const wrapper = shallow(<ManageTimezones {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {...requiredProps.actions, updateMe},
+        };
+
+        const wrapper = shallow(<ManageTimezones {...props} />);
 
         await wrapper.instance().submitUser(props.user);
 
-        const expected = {...props.user,
+        const expected = {
+            ...props.user,
             timezone: {
                 useAutomaticTimezone: props.useAutomaticTimezone.toString(),
                 manualTimezone: props.manualTimezone,
                 automaticTimezone: props.automaticTimezone,
-            }};
+            },
+        };
 
         expect(props.actions.updateMe).toHaveBeenCalled();
         expect(props.actions.updateMe).toHaveBeenCalledWith(expected);

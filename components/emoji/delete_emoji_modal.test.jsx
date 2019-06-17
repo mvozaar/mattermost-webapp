@@ -15,7 +15,9 @@ describe('components/emoji/components/DeleteEmoji', () => {
     });
     test('modal message should match the of delete emoji modal message', () => {
         const wrapper = mountWithIntl(instance.modalMessage);
-        expect(wrapper.html()).toMatch(/This action permanently deletes the custom emoji. Are you sure you want to delete it?/);
+        expect(wrapper.html()).toMatch(
+            /This action permanently deletes the custom emoji. Are you sure you want to delete it?/,
+        );
     });
     test('modal confirmation button should match the of delete emoji modal confirmation button', () => {
         const wrapper = mountWithIntl(instance.modalConfirmButton);

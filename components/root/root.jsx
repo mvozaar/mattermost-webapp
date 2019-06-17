@@ -22,7 +22,10 @@ import * as I18n from 'i18n/i18n.jsx';
 import {initializePlugins} from 'plugins';
 import 'plugins/export.js';
 import Constants, {StoragePrefixes} from 'utils/constants.jsx';
-import {HFTRoute, LoggedInHFTRoute} from 'components/header_footer_template_route';
+import {
+    HFTRoute,
+    LoggedInHFTRoute,
+} from 'components/header_footer_template_route';
 import IntlProvider from 'components/intl_provider';
 import NeedsTeam from 'components/needs_team';
 import {makeAsyncComponent} from 'components/async_load';
@@ -74,7 +77,7 @@ const LoggedInRoute = ({component: Component, ...rest}) => (
         {...rest}
         render={(props) => (
             <LoggedIn {...props}>
-                <Component {...props}/>
+                <Component {...props} />
             </LoggedIn>
         )}
     />
@@ -89,7 +92,7 @@ export default class Root extends React.Component {
         actions: PropTypes.shape({
             loadMeAndConfig: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -102,7 +105,11 @@ export default class Root extends React.Component {
         // Force logout of all tabs if one tab is logged out
         $(window).bind('storage', (e) => {
             // when one tab on a browser logs out, it sets __logout__ in localStorage to trigger other tabs to log out
-            if (e.originalEvent.key === StoragePrefixes.LOGOUT && e.originalEvent.storageArea === localStorage && e.originalEvent.newValue) {
+            if (
+                e.originalEvent.key === StoragePrefixes.LOGOUT &&
+                e.originalEvent.storageArea === localStorage &&
+                e.originalEvent.newValue
+            ) {
                 // make sure it isn't this tab that is sending the logout signal (only necessary for IE11)
                 if (BrowserStore.isSignallingLogout(e.originalEvent.newValue)) {
                     return;
@@ -112,7 +119,11 @@ export default class Root extends React.Component {
                 GlobalActions.emitUserLoggedOutEvent('/', false, false);
             }
 
-            if (e.originalEvent.key === StoragePrefixes.LOGIN && e.originalEvent.storageArea === localStorage && e.originalEvent.newValue) {
+            if (
+                e.originalEvent.key === StoragePrefixes.LOGIN &&
+                e.originalEvent.storageArea === localStorage &&
+                e.originalEvent.newValue
+            ) {
                 // make sure it isn't this tab that is sending the logout signal (only necessary for IE11)
                 if (BrowserStore.isSignallingLogin(e.originalEvent.newValue)) {
                     return;
@@ -151,38 +162,108 @@ export default class Root extends React.Component {
         const diagnosticId = this.props.diagnosticId;
 
         /*eslint-disable */
-        if (segmentKey != null && segmentKey !== '' && !segmentKey.startsWith('placeholder') && this.props.diagnosticsEnabled) {
-            !function(){var analytics=global.window.analytics=global.window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(...args){var e=Array.prototype.slice.call(args);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol ? "https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.0.1";
-                analytics.load(segmentKey);
+        if (
+            segmentKey != null &&
+            segmentKey !== '' &&
+            !segmentKey.startsWith('placeholder') &&
+            this.props.diagnosticsEnabled
+        ) {
+            !(function() {
+                var analytics = (global.window.analytics =
+                    global.window.analytics || []);
+                if (!analytics.initialize)
+                    if (analytics.invoked)
+                        window.console &&
+                            console.error &&
+                            console.error('Segment snippet included twice.');
+                    else {
+                        analytics.invoked = !0;
+                        analytics.methods = [
+                            'trackSubmit',
+                            'trackClick',
+                            'trackLink',
+                            'trackForm',
+                            'pageview',
+                            'identify',
+                            'group',
+                            'track',
+                            'ready',
+                            'alias',
+                            'page',
+                            'once',
+                            'off',
+                            'on',
+                        ];
 
-                analytics.identify(diagnosticId, {}, {
-                    context: {
-                        ip: '0.0.0.0',
-                    },
-                    page: {
-                        path: '',
-                        referrer: '',
-                        search: '',
-                        title: '',
-                        url: '',
-                    },
-                    anonymousId: '00000000000000000000000000',
-                });
+                        analytics.factory = function(t) {
+                            return function(...args) {
+                                var e = Array.prototype.slice.call(args);
+                                e.unshift(t);
+                                analytics.push(e);
+                                return analytics;
+                            };
+                        };
+                        for (var t = 0; t < analytics.methods.length; t++) {
+                            var e = analytics.methods[t];
+                            analytics[e] = analytics.factory(e);
+                        }
+                        analytics.load = function(t) {
+                            var e = document.createElement('script');
+                            e.type = 'text/javascript';
+                            e.async = !0;
+                            e.src =
+                                ('https:' === document.location.protocol
+                                    ? 'https://'
+                                    : 'http://') +
+                                'cdn.segment.com/analytics.js/v1/' +
+                                t +
+                                '/analytics.min.js';
+                            var n = document.getElementsByTagName('script')[0];
+                            n.parentNode.insertBefore(e, n);
+                        };
+                        analytics.SNIPPET_VERSION = '3.0.1';
+                        analytics.load(segmentKey);
 
-                analytics.page('ApplicationLoaded', {
-                        path: '',
-                        referrer: '',
-                        search: '',
-                        title: '',
-                        url: '',
-                    },
-                    {
-                        context: {
-                            ip: '0.0.0.0'
-                        },
-                        anonymousId: '00000000000000000000000000'
-                    });
-            }}();
+                        analytics.identify(
+                            diagnosticId,
+                            {},
+                            {
+                                context: {
+                                    ip: '0.0.0.0',
+                                },
+
+                                page: {
+                                    path: '',
+                                    referrer: '',
+                                    search: '',
+                                    title: '',
+                                    url: '',
+                                },
+
+                                anonymousId: '00000000000000000000000000',
+                            },
+                        );
+
+                        analytics.page(
+                            'ApplicationLoaded',
+                            {
+                                path: '',
+                                referrer: '',
+                                search: '',
+                                title: '',
+                                url: '',
+                            },
+
+                            {
+                                context: {
+                                    ip: '0.0.0.0',
+                                },
+
+                                anonymousId: '00000000000000000000000000',
+                            },
+                        );
+                    }
+            })();
         }
         /*eslint-enable */
 
@@ -204,19 +285,41 @@ export default class Root extends React.Component {
         loadRecentlyUsedCustomEmojis()(store.dispatch, store.getState);
 
         const iosDownloadLink = getConfig(store.getState()).IosAppDownloadLink;
-        const androidDownloadLink = getConfig(store.getState()).AndroidAppDownloadLink;
+        const androidDownloadLink = getConfig(store.getState())
+            .AndroidAppDownloadLink;
 
-        const toResetPasswordScreen = this.props.location.pathname === '/reset_password_complete';
+        const toResetPasswordScreen =
+            this.props.location.pathname === '/reset_password_complete';
 
         // redirect to the mobile landing page if the user hasn't seen it before
-        if (iosDownloadLink && UserAgent.isIosWeb() && !BrowserStore.hasSeenLandingPage() && !toResetPasswordScreen) {
-            this.props.history.push('/get_ios_app?redirect_to=' + encodeURIComponent(this.props.location.pathname) + encodeURIComponent(this.props.location.search));
+        if (
+            iosDownloadLink &&
+            UserAgent.isIosWeb() &&
+            !BrowserStore.hasSeenLandingPage() &&
+            !toResetPasswordScreen
+        ) {
+            this.props.history.push(
+                '/get_ios_app?redirect_to=' +
+                    encodeURIComponent(this.props.location.pathname) +
+                    encodeURIComponent(this.props.location.search),
+            );
+
             BrowserStore.setLandingPageSeen(true);
-        } else if (androidDownloadLink && UserAgent.isAndroidWeb() && !BrowserStore.hasSeenLandingPage() && !toResetPasswordScreen) {
-            this.props.history.push('/get_android_app?redirect_to=' + encodeURIComponent(this.props.location.pathname) + encodeURIComponent(this.props.location.search));
+        } else if (
+            androidDownloadLink &&
+            UserAgent.isAndroidWeb() &&
+            !BrowserStore.hasSeenLandingPage() &&
+            !toResetPasswordScreen
+        ) {
+            this.props.history.push(
+                '/get_android_app?redirect_to=' +
+                    encodeURIComponent(this.props.location.pathname) +
+                    encodeURIComponent(this.props.location.search),
+            );
+
             BrowserStore.setLandingPageSeen(true);
         }
-    }
+    };
 
     redirectIfNecessary = (props) => {
         if (props.location.pathname === '/') {
@@ -226,15 +329,20 @@ export default class Root extends React.Component {
                 this.props.history.push('/terms_of_service');
             }
         }
-    }
+    };
 
-    UNSAFE_componentWillReceiveProps(newProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(newProps) {
+        // eslint-disable-line camelcase
         this.redirectIfNecessary(newProps);
     }
 
     componentDidMount() {
         this.props.actions.loadMeAndConfig().then((response) => {
-            if (this.props.location.pathname === '/' && response[2] && response[2].data) {
+            if (
+                this.props.location.pathname === '/' &&
+                response[2] &&
+                response[2].data
+            ) {
                 GlobalActions.redirectUserToDefaultTeam();
             }
             this.onConfigLoaded();
@@ -248,88 +356,83 @@ export default class Root extends React.Component {
 
     render() {
         if (!this.state.configLoaded) {
-            return <div/>;
+            return <div />;
         }
 
         return (
             <IntlProvider>
                 <Switch>
-                    <Route
-                        path={'/error'}
-                        component={ErrorPage}
-                    />
-                    <HFTRoute
-                        path={'/login'}
-                        component={LoginController}
-                    />
+                    <Route path={'/error'} component={ErrorPage} />
+
+                    <HFTRoute path={'/login'} component={LoginController} />
+
                     <HFTRoute
                         path={'/reset_password'}
                         component={PasswordResetSendLink}
                     />
+
                     <HFTRoute
                         path={'/reset_password_complete'}
                         component={PasswordResetForm}
                     />
+
                     <HFTRoute
                         path={'/signup_user_complete'}
                         component={SignupController}
                     />
-                    <HFTRoute
-                        path={'/signup_email'}
-                        component={SignupEmail}
-                    />
+
+                    <HFTRoute path={'/signup_email'} component={SignupEmail} />
+
                     <HFTRoute
                         path={'/should_verify_email'}
                         component={ShouldVerifyEmail}
                     />
+
                     <HFTRoute
                         path={'/do_verify_email'}
                         component={DoVerifyEmail}
                     />
-                    <HFTRoute
-                        path={'/claim'}
-                        component={ClaimController}
-                    />
-                    <HFTRoute
-                        path={'/help'}
-                        component={HelpController}
-                    />
+
+                    <HFTRoute path={'/claim'} component={ClaimController} />
+
+                    <HFTRoute path={'/help'} component={HelpController} />
+
                     <LoggedInRoute
                         path={'/terms_of_service'}
                         component={TermsOfService}
                     />
-                    <Route
-                        path={'/get_ios_app'}
-                        component={GetIosApp}
-                    />
+
+                    <Route path={'/get_ios_app'} component={GetIosApp} />
+
                     <Route
                         path={'/get_android_app'}
                         component={GetAndroidApp}
                     />
+
                     <LoggedInRoute
                         path={'/admin_console'}
                         component={AdminConsole}
                     />
+
                     <LoggedInHFTRoute
                         path={'/select_team'}
                         component={SelectTeam}
                     />
+
                     <LoggedInHFTRoute
                         path={'/oauth/authorize'}
                         component={Authorize}
                     />
+
                     <LoggedInHFTRoute
                         path={'/create_team'}
                         component={CreateTeam}
                     />
-                    <LoggedInRoute
-                        path={'/mfa'}
-                        component={Mfa}
-                    />
-                    <LoggedInRoute
-                        path={'/:team'}
-                        component={NeedsTeam}
-                    />
+
+                    <LoggedInRoute path={'/mfa'} component={Mfa} />
+
+                    <LoggedInRoute path={'/:team'} component={NeedsTeam} />
+
                     <Redirect
                         to={{
                             ...this.props.location,

@@ -12,11 +12,15 @@ describe('components/channel_invite_modal', () => {
         preventDefault: jest.fn(),
     };
 
-    const users = [{
-        id: 'user-1',
-    }, {
-        id: 'user-2',
-    }];
+    const users = [
+        {
+            id: 'user-1',
+        },
+
+        {
+            id: 'user-2',
+        },
+    ];
 
     const channel = {
         create_at: 1508265709607,
@@ -46,23 +50,23 @@ describe('components/channel_invite_modal', () => {
 
                 return Promise.resolve({error});
             }),
-            getProfilesNotInChannel: jest.fn().mockImplementation(() => Promise.resolve()),
+            getProfilesNotInChannel: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve()),
             getTeamStats: jest.fn(),
         },
+
         onHide: jest.fn(),
     };
 
     test('should match snapshot for channel_invite_modal', () => {
-        const wrapper = shallow(
-            <ChannelInviteModal {...baseProps}/>
-        );
+        const wrapper = shallow(<ChannelInviteModal {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match state when onHide is called', () => {
-        const wrapper = shallow(
-            <ChannelInviteModal {...baseProps}/>
-        );
+        const wrapper = shallow(<ChannelInviteModal {...baseProps} />);
 
         wrapper.setState({show: true});
         wrapper.instance().onHide();
@@ -70,25 +74,24 @@ describe('components/channel_invite_modal', () => {
     });
 
     test('should have called props.onHide when Modal.onExited is called', () => {
-        const wrapper = shallow(
-            <ChannelInviteModal {...baseProps}/>
-        );
+        const wrapper = shallow(<ChannelInviteModal {...baseProps} />);
 
-        wrapper.find(Modal).props().onExited();
+        wrapper
+            .find(Modal)
+            .props()
+            .onExited();
         expect(wrapper.instance().props.onHide).toHaveBeenCalledTimes(1);
     });
 
     test('should fail to add users on handleSubmit', (done) => {
-        const wrapper = shallow(
-            <ChannelInviteModal
-                {...baseProps}
-            />
-        );
+        const wrapper = shallow(<ChannelInviteModal {...baseProps} />);
 
         wrapper.setState({values: users, show: true});
         wrapper.instance().handleSubmit(event);
         expect(wrapper.state('saving')).toEqual(true);
-        expect(wrapper.instance().props.actions.addUsersToChannel).toHaveBeenCalledTimes(1);
+        expect(
+            wrapper.instance().props.actions.addUsersToChannel,
+        ).toHaveBeenCalledTimes(1);
         process.nextTick(() => {
             expect(wrapper.state('inviteError')).toEqual('Failed');
             expect(wrapper.state('saving')).toEqual(false);
@@ -108,16 +111,14 @@ describe('components/channel_invite_modal', () => {
             },
         };
 
-        const wrapper = shallow(
-            <ChannelInviteModal
-                {...props}
-            />
-        );
+        const wrapper = shallow(<ChannelInviteModal {...props} />);
 
         wrapper.setState({values: users, show: true});
         wrapper.instance().handleSubmit(event);
         expect(wrapper.state('saving')).toEqual(true);
-        expect(wrapper.instance().props.actions.addUsersToChannel).toHaveBeenCalledTimes(1);
+        expect(
+            wrapper.instance().props.actions.addUsersToChannel,
+        ).toHaveBeenCalledTimes(1);
         process.nextTick(() => {
             expect(wrapper.state('inviteError')).toBeNull();
             expect(wrapper.state('saving')).toEqual(false);

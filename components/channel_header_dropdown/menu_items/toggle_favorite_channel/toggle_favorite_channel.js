@@ -21,31 +21,36 @@ export default class ToggleFavoriteChannel extends React.PureComponent {
 
     static defaultProps = {
         show: true,
-    }
+    };
 
     toggleFavoriteChannel = (channelId) => {
         const {
             isFavorite,
-            actions: {
-                favoriteChannel,
-                unfavoriteChannel,
-            },
+            actions: {favoriteChannel, unfavoriteChannel},
         } = this.props;
 
-        return isFavorite ? unfavoriteChannel(channelId) : favoriteChannel(channelId);
-    }
+        return isFavorite
+            ? unfavoriteChannel(channelId)
+            : favoriteChannel(channelId);
+    };
 
     handleClick = (e) => {
         e.preventDefault();
         this.toggleFavoriteChannel(this.props.channel.id);
-    }
+    };
 
     render() {
         let text;
         if (this.props.isFavorite) {
-            text = localizeMessage('channelHeader.removeFromFavorites', 'Remove from Favorites');
+            text = localizeMessage(
+                'channelHeader.removeFromFavorites',
+                'Remove from Favorites',
+            );
         } else {
-            text = localizeMessage('channelHeader.addToFavorites', 'Add to Favorites');
+            text = localizeMessage(
+                'channelHeader.addToFavorites',
+                'Add to Favorites',
+            );
         }
         return (
             <MenuItemAction

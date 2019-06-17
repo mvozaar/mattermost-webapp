@@ -15,10 +15,17 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        closeRightHandSide,
-        showPinnedPosts,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            closeRightHandSide,
+            showPinnedPosts,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewPinnedPosts);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ViewPinnedPosts);

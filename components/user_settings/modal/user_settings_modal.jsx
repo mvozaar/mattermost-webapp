@@ -5,7 +5,12 @@ import $ from 'jquery';
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import ReactDOM from 'react-dom';
-import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {
+    defineMessages,
+    FormattedMessage,
+    injectIntl,
+    intlShape,
+} from 'react-intl';
 import PropTypes from 'prop-types';
 
 import Constants from 'utils/constants.jsx';
@@ -22,38 +27,49 @@ const holders = defineMessages({
         id: t('user.settings.modal.general'),
         defaultMessage: 'General',
     },
+
     security: {
         id: t('user.settings.modal.security'),
         defaultMessage: 'Security',
     },
+
     notifications: {
         id: t('user.settings.modal.notifications'),
         defaultMessage: 'Notifications',
     },
+
     display: {
         id: t('user.settings.modal.display'),
         defaultMessage: 'Display',
     },
+
     sidebar: {
         id: t('user.settings.modal.sidebar'),
         defaultMessage: 'Sidebar',
     },
+
     advanced: {
         id: t('user.settings.modal.advanced'),
         defaultMessage: 'Advanced',
     },
+
     checkEmail: {
         id: 'user.settings.general.checkEmail',
-        defaultMessage: 'Check your email at {email} to verify the address. Cannot find the email?',
+        defaultMessage:
+            'Check your email at {email} to verify the address. Cannot find the email?',
     },
+
     confirmTitle: {
         id: t('user.settings.modal.confirmTitle'),
         defaultMessage: 'Discard Changes?',
     },
+
     confirmMsg: {
         id: t('user.settings.modal.confirmMsg'),
-        defaultMessage: 'You have unsaved changes, are you sure you want to discard them?',
+        defaultMessage:
+            'You have unsaved changes, are you sure you want to discard them?',
     },
+
     confirmBtns: {
         id: t('user.settings.modal.confirmBtns'),
         defaultMessage: 'Yes, Discard',
@@ -68,7 +84,7 @@ class UserSettingsModal extends React.Component {
         actions: PropTypes.shape({
             sendVerificationEmail: PropTypes.func.isRequred,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -95,14 +111,16 @@ class UserSettingsModal extends React.Component {
     handleResend = (email) => {
         this.setState({resendStatus: 'sending'});
 
-        this.props.actions.sendVerificationEmail(email).then(({data, error: err}) => {
-            if (data) {
-                this.setState({resendStatus: 'success'});
-            } else if (err) {
-                this.setState({resendStatus: 'failure'});
-            }
-        });
-    }
+        this.props.actions
+            .sendVerificationEmail(email)
+            .then(({data, error: err}) => {
+                if (data) {
+                    this.setState({resendStatus: 'success'});
+                } else if (err) {
+                    this.setState({resendStatus: 'failure'});
+                }
+            });
+    };
 
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown);
@@ -114,7 +132,9 @@ class UserSettingsModal extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (!Utils.isMobile()) {
-            $('.settings-content .minimize-settings').perfectScrollbar('update');
+            $('.settings-content .minimize-settings').perfectScrollbar(
+                'update',
+            );
         }
 
         if (this.state.active_tab !== prevState.active_tab) {
@@ -123,10 +143,14 @@ class UserSettingsModal extends React.Component {
     }
 
     handleKeyDown = (e) => {
-        if (Utils.cmdOrCtrlPressed(e) && e.shiftKey && Utils.isKeyPressed(e, Constants.KeyCodes.A)) {
+        if (
+            Utils.cmdOrCtrlPressed(e) &&
+            e.shiftKey &&
+            Utils.isKeyPressed(e, Constants.KeyCodes.A)
+        ) {
             this.handleHide();
         }
-    }
+    };
 
     // Called when the close button is pressed on the main modal
     handleHide = () => {
@@ -138,7 +162,7 @@ class UserSettingsModal extends React.Component {
         this.setState({
             show: false,
         });
-    }
+    };
 
     // called after the dialog is fully hidden and faded out
     handleHidden = () => {
@@ -147,19 +171,22 @@ class UserSettingsModal extends React.Component {
             active_section: '',
             prev_active_section: 'dummySectionName',
         });
+
         this.props.onHide();
-    }
+    };
 
     // Called to hide the settings pane when on mobile
     handleCollapse = () => {
-        $(ReactDOM.findDOMNode(this.modalBodyRef.current)).closest('.modal-dialog').removeClass('display--content');
+        $(ReactDOM.findDOMNode(this.modalBodyRef.current))
+            .closest('.modal-dialog')
+            .removeClass('display--content');
 
         this.setState({
             active_tab: '',
             active_section: '',
             prev_active_section: '',
         });
-    }
+    };
 
     handleConfirm = () => {
         this.setState({
@@ -174,7 +201,7 @@ class UserSettingsModal extends React.Component {
             this.afterConfirm();
             this.afterConfirm = null;
         }
-    }
+    };
 
     handleCancelConfirmation = () => {
         this.setState({
@@ -183,7 +210,7 @@ class UserSettingsModal extends React.Component {
         });
 
         this.afterConfirm = null;
-    }
+    };
 
     showConfirmModal = (afterConfirm) => {
         if (afterConfirm) {
@@ -199,7 +226,7 @@ class UserSettingsModal extends React.Component {
             showConfirmModal: true,
             enforceFocus: false,
         });
-    }
+    };
 
     // Called by settings tabs when their close button is pressed
     closeModal = () => {
@@ -208,7 +235,7 @@ class UserSettingsModal extends React.Component {
         } else {
             this.handleHide();
         }
-    }
+    };
 
     // Called by settings tabs when their back button is pressed
     collapseModal = () => {
@@ -217,7 +244,7 @@ class UserSettingsModal extends React.Component {
         } else {
             this.handleCollapse();
         }
-    }
+    };
 
     updateTab = (tab, skipConfirm) => {
         if (!skipConfirm && this.requireConfirm) {
@@ -229,7 +256,7 @@ class UserSettingsModal extends React.Component {
                 prev_active_section: 'dummySectionName',
             });
         }
-    }
+    };
 
     updateSection = (section, skipConfirm) => {
         if (!skipConfirm && this.requireConfirm) {
@@ -240,21 +267,74 @@ class UserSettingsModal extends React.Component {
                 active_section: section,
             });
         }
-    }
+    };
 
     render() {
         const {formatMessage} = this.props.intl;
         if (this.props.currentUser == null) {
-            return (<div/>);
+            return <div />;
         }
         var tabs = [];
 
-        tabs.push({name: 'general', uiName: formatMessage(holders.general), icon: 'icon fa fa-gear', iconTitle: Utils.localizeMessage('user.settings.general.icon', 'General Settings Icon')});
-        tabs.push({name: 'security', uiName: formatMessage(holders.security), icon: 'icon fa fa-lock', iconTitle: Utils.localizeMessage('user.settings.security.icon', 'Security Settings Icon')});
-        tabs.push({name: 'notifications', uiName: formatMessage(holders.notifications), icon: 'icon fa fa-exclamation-circle', iconTitle: Utils.localizeMessage('user.settings.notifications.icon', 'Notification Settings Icon')});
-        tabs.push({name: 'display', uiName: formatMessage(holders.display), icon: 'icon fa fa-eye', iconTitle: Utils.localizeMessage('user.settings.display.icon', 'Display Settings Icon')});
-        tabs.push({name: 'sidebar', uiName: formatMessage(holders.sidebar), icon: 'icon fa fa-columns', iconTitle: Utils.localizeMessage('user.settings.sidebar.icon', 'Sidebar Settings Icon')});
-        tabs.push({name: 'advanced', uiName: formatMessage(holders.advanced), icon: 'icon fa fa-list-alt', iconTitle: Utils.localizeMessage('user.settings.advance.icon', 'Advanced Settings Icon')});
+        tabs.push({
+            name: 'general',
+            uiName: formatMessage(holders.general),
+            icon: 'icon fa fa-gear',
+            iconTitle: Utils.localizeMessage(
+                'user.settings.general.icon',
+                'General Settings Icon',
+            ),
+        });
+
+        tabs.push({
+            name: 'security',
+            uiName: formatMessage(holders.security),
+            icon: 'icon fa fa-lock',
+            iconTitle: Utils.localizeMessage(
+                'user.settings.security.icon',
+                'Security Settings Icon',
+            ),
+        });
+
+        tabs.push({
+            name: 'notifications',
+            uiName: formatMessage(holders.notifications),
+            icon: 'icon fa fa-exclamation-circle',
+            iconTitle: Utils.localizeMessage(
+                'user.settings.notifications.icon',
+                'Notification Settings Icon',
+            ),
+        });
+
+        tabs.push({
+            name: 'display',
+            uiName: formatMessage(holders.display),
+            icon: 'icon fa fa-eye',
+            iconTitle: Utils.localizeMessage(
+                'user.settings.display.icon',
+                'Display Settings Icon',
+            ),
+        });
+
+        tabs.push({
+            name: 'sidebar',
+            uiName: formatMessage(holders.sidebar),
+            icon: 'icon fa fa-columns',
+            iconTitle: Utils.localizeMessage(
+                'user.settings.sidebar.icon',
+                'Sidebar Settings Icon',
+            ),
+        });
+
+        tabs.push({
+            name: 'advanced',
+            uiName: formatMessage(holders.advanced),
+            icon: 'icon fa fa-list-alt',
+            iconTitle: Utils.localizeMessage(
+                'user.settings.advance.icon',
+                'Advanced Settings Icon',
+            ),
+        });
 
         return (
             <Modal
@@ -267,10 +347,7 @@ class UserSettingsModal extends React.Component {
                 role='dialog'
                 aria-labelledby='accountSettingsModalLabel'
             >
-                <Modal.Header
-                    id='accountSettingsHeader'
-                    closeButton={true}
-                >
+                <Modal.Header id='accountSettingsHeader' closeButton={true}>
                     <Modal.Title
                         componentClass='h1'
                         id='accountSettingsModalLabel'
@@ -296,18 +373,23 @@ class UserSettingsModal extends React.Component {
                                 doLoad={loadUserSettings}
                                 activeTab={this.state.active_tab}
                                 activeSection={this.state.active_section}
-                                prevActiveSection={this.state.prev_active_section}
+                                prevActiveSection={
+                                    this.state.prev_active_section
+                                }
                                 updateSection={this.updateSection}
                                 updateTab={this.updateTab}
                                 closeModal={this.closeModal}
                                 collapseModal={this.collapseModal}
-                                setEnforceFocus={(enforceFocus) => this.setState({enforceFocus})}
-                                setRequireConfirm={
-                                    (requireConfirm, customConfirmAction) => {
-                                        this.requireConfirm = requireConfirm;
-                                        this.customConfirmAction = customConfirmAction;
-                                    }
+                                setEnforceFocus={(enforceFocus) =>
+                                    this.setState({enforceFocus})
                                 }
+                                setRequireConfirm={(
+                                    requireConfirm,
+                                    customConfirmAction,
+                                ) => {
+                                    this.requireConfirm = requireConfirm;
+                                    this.customConfirmAction = customConfirmAction;
+                                }}
                             />
                         </div>
                     </div>

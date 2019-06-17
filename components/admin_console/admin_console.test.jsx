@@ -14,11 +14,13 @@ describe('components/AdminConsole', () => {
                 RestrictSystemAdmin: false,
             },
         },
+
         license: {},
         buildEnterpriseReady: true,
         match: {
             url: '',
         },
+
         roles: {
             channel_admin: 'test',
             channel_user: 'test',
@@ -27,6 +29,7 @@ describe('components/AdminConsole', () => {
             system_admin: 'test',
             system_user: 'test',
         },
+
         showNavigationPrompt: false,
         isCurrentUserSystemAdmin: false,
         actions: {
@@ -45,9 +48,9 @@ describe('components/AdminConsole', () => {
             ...baseProps,
             isCurrentUserSystemAdmin: false,
         };
-        const wrapper = shallow(
-            <AdminConsole {...props}/>
-        );
+
+        const wrapper = shallow(<AdminConsole {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -56,9 +59,9 @@ describe('components/AdminConsole', () => {
             ...baseProps,
             isCurrentUserSystemAdmin: true,
         };
-        const wrapper = shallow(
-            <AdminConsole {...props}/>
-        );
+
+        const wrapper = shallow(<AdminConsole {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

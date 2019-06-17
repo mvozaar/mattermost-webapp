@@ -11,7 +11,6 @@ import * as UserAgent from 'utils/user_agent.jsx';
 
 export default class DeletePostModal extends React.PureComponent {
     static propTypes = {
-
         channelName: PropTypes.string,
         focusedPostId: PropTypes.string,
         teamName: PropTypes.string,
@@ -22,7 +21,7 @@ export default class DeletePostModal extends React.PureComponent {
         actions: PropTypes.shape({
             deleteAndRemovePost: PropTypes.func.isRequired,
         }),
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -49,13 +48,13 @@ export default class DeletePostModal extends React.PureComponent {
         if (result.data) {
             this.onHide();
         }
-    }
+    };
 
     handleEntered = () => {
         if (this.deletePostBtn) {
             this.deletePostBtn.focus();
         }
-    }
+    };
 
     onHide = () => {
         this.setState({show: false});
@@ -71,7 +70,7 @@ export default class DeletePostModal extends React.PureComponent {
                 element.focus();
             }
         }
-    }
+    };
 
     render() {
         var commentWarning = '';
@@ -93,10 +92,7 @@ export default class DeletePostModal extends React.PureComponent {
                 defaultMessage='Comment'
             />
         ) : (
-            <FormattedMessage
-                id='delete_post.post'
-                defaultMessage='Post'
-            />
+            <FormattedMessage id='delete_post.post' defaultMessage='Post' />
         );
 
         return (
@@ -111,15 +107,12 @@ export default class DeletePostModal extends React.PureComponent {
                 aria-labelledby='deletePostModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='deletePostModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='deletePostModalLabel'>
                         <FormattedMessage
                             id='delete_post.confirm'
                             defaultMessage='Confirm {term} Delete'
                             values={{
-                                term: (postTerm),
+                                term: postTerm,
                             }}
                         />
                     </Modal.Title>
@@ -129,11 +122,12 @@ export default class DeletePostModal extends React.PureComponent {
                         id='delete_post.question'
                         defaultMessage='Are you sure you want to delete this {term}?'
                         values={{
-                            term: (postTerm),
+                            term: postTerm,
                         }}
                     />
-                    <br/>
-                    <br/>
+
+                    <br />
+                    <br />
                     {commentWarning}
                 </Modal.Body>
                 <Modal.Footer>

@@ -17,7 +17,7 @@ const AdminTextSetting = (props) => {
             labelClassName='col-sm-4'
             inputClassName='col-sm-8'
             disabled={disabled || setByEnv}
-            footer={setByEnv ? <SetByEnv/> : null}
+            footer={setByEnv ? <SetByEnv /> : null}
         />
     );
 };

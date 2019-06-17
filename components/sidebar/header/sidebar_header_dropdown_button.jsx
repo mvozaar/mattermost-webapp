@@ -32,9 +32,7 @@ export default class SidebarHeaderDropdownButton extends React.PureComponent {
 
         let tutorialTip = null;
         if (this.props.showTutorialTip) {
-            tutorialTip = (
-                <MenuTutorialTip onBottom={false}/>
-            );
+            tutorialTip = <MenuTutorialTip onBottom={false} />;
         }
 
         let teamNameWithToolTip = (
@@ -46,13 +44,18 @@ export default class SidebarHeaderDropdownButton extends React.PureComponent {
                 {this.props.teamDisplayName}
             </h1>
         );
+
         if (this.props.teamDescription) {
             teamNameWithToolTip = (
                 <OverlayTrigger
                     trigger={['hover', 'focus']}
                     delayShow={Constants.OVERLAY_TIME_DELAY}
                     placement='bottom'
-                    overlay={<Tooltip id='team-name__tooltip'>{this.props.teamDescription}</Tooltip>}
+                    overlay={
+                        <Tooltip id='team-name__tooltip'>
+                            {this.props.teamDescription}
+                        </Tooltip>
+                    }
                     ref='descriptionOverlay'
                 >
                     {teamNameWithToolTip}
@@ -72,18 +75,12 @@ export default class SidebarHeaderDropdownButton extends React.PureComponent {
                     placement='right'
                     overlay={mainMenuToolTip}
                 >
-                    <div
-                        id='headerInfo'
-                        className='header__info'
-                    >
+                    <div id='headerInfo' className='header__info'>
                         {teamNameWithToolTip}
-                        <div
-                            id='headerUsername'
-                            className='user__name'
-                        >
+                        <div id='headerUsername' className='user__name'>
                             {'@' + this.props.currentUser.username}
                         </div>
-                        <MenuIcon className='sidebar-header-dropdown__icon'/>
+                        <MenuIcon className='sidebar-header-dropdown__icon' />
                     </div>
                 </OverlayTrigger>
             </div>

@@ -20,12 +20,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addUsersToChannel,
-            getProfilesNotInChannel,
-            getTeamStats,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addUsersToChannel,
+                getProfilesNotInChannel,
+                getTeamStats,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelInviteModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ChannelInviteModal);

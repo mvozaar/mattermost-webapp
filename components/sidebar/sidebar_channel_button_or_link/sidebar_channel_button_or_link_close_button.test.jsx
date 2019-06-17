@@ -12,8 +12,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
             <SidebarChannelButtonOrLinkCloseButton
                 channelId={'test-id'}
                 channelType={Constants.DM_CHANNEL}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -24,8 +25,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 channelId={'test-id'}
                 channelType={Constants.DM_CHANNEL}
                 badge={true}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -35,8 +37,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 handleClose={jest.fn()}
                 channelId={'test-id'}
                 channelType={Constants.OPEN_CHANNEL}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -46,8 +49,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 handleClose={jest.fn()}
                 channelId={'test-id'}
                 channelType={Constants.PRIVATE_CHANNEL}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -57,8 +61,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 handleClose={jest.fn()}
                 channelId={'test-id'}
                 channelType={Constants.DM_CHANNEL}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -68,8 +73,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 handleClose={jest.fn()}
                 channelId={'test-id'}
                 channelType={Constants.GM_CHANNEL}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -80,10 +86,15 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 handleClose={mock}
                 channelId={'test-id'}
                 channelType={Constants.GM_CHANNEL}
-            />
+            />,
         );
+
         expect(mock).not.toBeCalled();
-        wrapper.find('.btn-close').simulate('click', {stopPropagation: jest.fn(), preventDefault: jest.fn()});
+        wrapper.find('.btn-close').simulate('click', {
+            stopPropagation: jest.fn(),
+            preventDefault: jest.fn(),
+        });
+
         expect(mock).toBeCalled();
     });
 });

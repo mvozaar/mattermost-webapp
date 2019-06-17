@@ -20,6 +20,7 @@ describe('components/ChannelHeaderDropdown/MenuItem.LeaveChannel', () => {
             id: 'channel_id',
             type: Constants.OPEN_CHANNEL,
         },
+
         isDefault: false,
         actions: {
             leaveChannel: jest.fn(),
@@ -27,7 +28,7 @@ describe('components/ChannelHeaderDropdown/MenuItem.LeaveChannel', () => {
     };
 
     it('should match snapshot', () => {
-        const wrapper = shallow(<LeaveChannel {...baseProps}/>);
+        const wrapper = shallow(<LeaveChannel {...baseProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -36,7 +37,8 @@ describe('components/ChannelHeaderDropdown/MenuItem.LeaveChannel', () => {
             ...baseProps,
             isDefault: true,
         };
-        const wrapper = shallow(<LeaveChannel {...props}/>);
+
+        const wrapper = shallow(<LeaveChannel {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -45,7 +47,8 @@ describe('components/ChannelHeaderDropdown/MenuItem.LeaveChannel', () => {
             ...baseProps,
             channel: {...baseProps.channel},
         };
-        const makeWrapper = () => shallow(<LeaveChannel {...props}/>);
+
+        const makeWrapper = () => shallow(<LeaveChannel {...props} />);
 
         props.channel.type = Constants.DM_CHANNEL;
         expect(makeWrapper()).toMatchSnapshot();
@@ -60,13 +63,20 @@ describe('components/ChannelHeaderDropdown/MenuItem.LeaveChannel', () => {
             channel: {...baseProps.channel},
             actions: {...baseProps.actions},
         };
-        const {showLeavePrivateChannelModal} = require('actions/global_actions'); //eslint-disable-line global-require
-        const wrapper = shallow(<LeaveChannel {...props}/>);
+
+        const {
+            showLeavePrivateChannelModal,
+        } = require('actions/global_actions'); //eslint-disable-line global-require
+        const wrapper = shallow(<LeaveChannel {...props} />);
 
         wrapper.find(MenuItemAction).simulate('click', {
             preventDefault: jest.fn(),
         });
-        expect(props.actions.leaveChannel).toHaveBeenCalledWith(props.channel.id);
+
+        expect(props.actions.leaveChannel).toHaveBeenCalledWith(
+            props.channel.id,
+        );
+
         expect(showLeavePrivateChannelModal).not.toHaveBeenCalled();
 
         props.channel.type = Constants.PRIVATE_CHANNEL;
@@ -74,7 +84,10 @@ describe('components/ChannelHeaderDropdown/MenuItem.LeaveChannel', () => {
         wrapper.find(MenuItemAction).simulate('click', {
             preventDefault: jest.fn(),
         });
+
         expect(props.actions.leaveChannel).not.toHaveBeenCalled();
-        expect(showLeavePrivateChannelModal).toHaveBeenCalledWith(props.channel);
+        expect(showLeavePrivateChannelModal).toHaveBeenCalledWith(
+            props.channel,
+        );
     });
 });

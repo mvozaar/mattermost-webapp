@@ -8,9 +8,8 @@ import BotBadge from './bot_badge.jsx';
 
 describe('components/widgets/badges/BotBadge', () => {
     test('should match the snapshot', () => {
-        const wrapper = shallow(
-            <BotBadge className={'test'}/>
-        );
+        const wrapper = shallow(<BotBadge className={'test'} />);
+
         expect(wrapper).toMatchInlineSnapshot(`
 <Badge
   className="BotBadge test"

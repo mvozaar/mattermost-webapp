@@ -4,8 +4,20 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {linkGroupSyncable, unlinkGroupSyncable, getGroup as fetchGroup, getGroupMembers as fetchMembers, getGroupSyncables as fetchGroupSyncables} from 'mattermost-redux/actions/groups';
-import {getGroup, getGroupTeams, getGroupChannels, getGroupMembers, getGroupMemberCount} from 'mattermost-redux/selectors/entities/groups';
+import {
+    linkGroupSyncable,
+    unlinkGroupSyncable,
+    getGroup as fetchGroup,
+    getGroupMembers as fetchMembers,
+    getGroupSyncables as fetchGroupSyncables,
+} from 'mattermost-redux/actions/groups';
+import {
+    getGroup,
+    getGroupTeams,
+    getGroupChannels,
+    getGroupMembers,
+    getGroupMemberCount,
+} from 'mattermost-redux/selectors/entities/groups';
 
 import GroupDetails from './group_details.jsx';
 
@@ -29,14 +41,21 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getGroup: fetchGroup,
-            getMembers: fetchMembers,
-            getGroupSyncables: fetchGroupSyncables,
-            link: linkGroupSyncable,
-            unlink: unlinkGroupSyncable,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getGroup: fetchGroup,
+                getMembers: fetchMembers,
+                getGroupSyncables: fetchGroupSyncables,
+                link: linkGroupSyncable,
+                unlink: unlinkGroupSyncable,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupDetails);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(GroupDetails);

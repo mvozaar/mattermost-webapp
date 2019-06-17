@@ -16,19 +16,32 @@ import ResetStatusModal from './reset_status_modal.jsx';
 function mapStateToProps(state) {
     const {currentUserId} = state.entities.users;
     return {
-        autoResetPref: get(state, Preferences.CATEGORY_AUTO_RESET_MANUAL_STATUS, currentUserId, ''),
+        autoResetPref: get(
+            state,
+            Preferences.CATEGORY_AUTO_RESET_MANUAL_STATUS,
+            currentUserId,
+            '',
+        ),
+
         currentUserStatus: getStatusForUserId(state, currentUserId),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            autoResetStatus,
-            setStatus,
-            savePreferences,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                autoResetStatus,
+                setStatus,
+                savePreferences,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetStatusModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ResetStatusModal);

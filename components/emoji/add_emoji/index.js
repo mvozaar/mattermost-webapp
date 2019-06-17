@@ -18,10 +18,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            createCustomEmoji,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                createCustomEmoji,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddEmoji);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddEmoji);

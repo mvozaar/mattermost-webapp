@@ -22,10 +22,7 @@ describe('Reducers.RHS', () => {
     };
 
     test('Initial state', () => {
-        const nextState = rhsReducer(
-            {},
-            {}
-        );
+        const nextState = rhsReducer({}, {});
 
         expect(nextState).toEqual(initialState);
     });
@@ -37,7 +34,7 @@ describe('Reducers.RHS', () => {
                 type: ActionTypes.UPDATE_RHS_STATE,
                 state: RHSStates.PIN,
                 channelId: '123',
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -53,10 +50,11 @@ describe('Reducers.RHS', () => {
             {
                 selectedPostId: '123',
             },
+
             {
                 type: ActionTypes.UPDATE_RHS_STATE,
                 state: RHSStates.SEARCH,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -72,7 +70,7 @@ describe('Reducers.RHS', () => {
             {},
             {
                 type: SearchTypes.SEARCH_FLAGGED_POSTS_REQUEST,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -86,7 +84,7 @@ describe('Reducers.RHS', () => {
             {},
             {
                 type: SearchTypes.SEARCH_FLAGGED_POSTS_SUCCESS,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -101,7 +99,7 @@ describe('Reducers.RHS', () => {
             {
                 type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
                 terms: 'testing',
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -117,7 +115,7 @@ describe('Reducers.RHS', () => {
                 type: ActionTypes.SELECT_POST,
                 postId: '123',
                 channelId: '321',
-            }
+            },
         );
 
         expect(nextState1).toEqual({
@@ -128,14 +126,14 @@ describe('Reducers.RHS', () => {
         });
 
         const nextState2 = rhsReducer(
-            {
-            },
+            {},
+
             {
                 type: ActionTypes.SELECT_POST,
                 postId: '123',
                 channelId: '321',
                 previousRhsState: RHSStates.SEARCH,
-            }
+            },
         );
 
         expect(nextState2).toEqual({
@@ -150,12 +148,13 @@ describe('Reducers.RHS', () => {
             {
                 previousRhsState: RHSStates.SEARCH,
             },
+
             {
                 type: ActionTypes.SELECT_POST,
                 postId: '123',
                 channelId: '321',
                 previousRhsState: RHSStates.FLAG,
-            }
+            },
         );
 
         expect(nextState3).toEqual({
@@ -172,12 +171,13 @@ describe('Reducers.RHS', () => {
             {
                 rhsState: RHSStates.PIN,
             },
+
             {
                 type: ActionTypes.SELECT_POST,
                 postId: '123',
                 channelId: '321',
                 previousRhsState: RHSStates.PIN,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -196,9 +196,10 @@ describe('Reducers.RHS', () => {
                 isSidebarOpen: true,
                 isMenuOpen: false,
             },
+
             {
                 type: ActionTypes.TOGGLE_RHS_MENU,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -214,9 +215,10 @@ describe('Reducers.RHS', () => {
                 isSidebarOpen: false,
                 isMenuOpen: true,
             },
+
             {
                 type: ActionTypes.TOGGLE_RHS_MENU,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -232,9 +234,10 @@ describe('Reducers.RHS', () => {
                 isSidebarOpen: true,
                 isMenuOpen: false,
             },
+
             {
                 type: ActionTypes.OPEN_RHS_MENU,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -250,9 +253,10 @@ describe('Reducers.RHS', () => {
                 isSidebarOpen: false,
                 isMenuOpen: true,
             },
+
             {
                 type: ActionTypes.CLOSE_RHS_MENU,
-            }
+            },
         );
 
         expect(nextState).toEqual({
@@ -274,9 +278,10 @@ describe('Reducers.RHS', () => {
                         isSidebarOpen: true,
                         isMenuOpen: true,
                     },
+
                     {
                         type: action,
-                    }
+                    },
                 );
 
                 expect(nextState).toEqual({

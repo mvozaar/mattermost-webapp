@@ -25,7 +25,12 @@ export default class AtMentionProvider extends Provider {
 
     // setProps gives the provider additional context for matching pretexts. Ideally this would
     // just be something akin to a connected component with access to the store itself.
-    setProps({currentUserId, profilesInChannel, profilesNotInChannel, autocompleteUsersInChannel}) {
+    setProps({
+        currentUserId,
+        profilesInChannel,
+        profilesNotInChannel,
+        autocompleteUsersInChannel,
+    }) {
         this.currentUserId = currentUserId;
         this.profilesInChannel = profilesInChannel;
         this.profilesNotInChannel = profilesNotInChannel;
@@ -38,12 +43,12 @@ export default class AtMentionProvider extends Provider {
             return [];
         }
 
-        return ['here', 'channel', 'all'].filter((item) =>
-            item.startsWith(this.latestPrefix)
-        ).map((name) => ({
-            username: name,
-            type: Constants.MENTION_SPECIAL,
-        }));
+        return ['here', 'channel', 'all']
+            .filter((item) => item.startsWith(this.latestPrefix))
+            .map((name) => ({
+                username: name,
+                type: Constants.MENTION_SPECIAL,
+            }));
     }
 
     // retrieves the parts of the profile that should be checked
@@ -55,7 +60,11 @@ export default class AtMentionProvider extends Provider {
         }
 
         if (profile.username) {
-            const usernameSuggestions = getSuggestionsSplitByMultiple(profile.username.toLowerCase(), Constants.AUTOCOMPLETE_SPLIT_CHARACTERS);
+            const usernameSuggestions = getSuggestionsSplitByMultiple(
+                profile.username.toLowerCase(),
+                Constants.AUTOCOMPLETE_SPLIT_CHARACTERS,
+            );
+
             profileSuggestions.push(...usernameSuggestions);
         }
         if (profile.first_name) {
@@ -84,19 +93,21 @@ export default class AtMentionProvider extends Provider {
         const prefixLower = this.latestPrefix.toLowerCase();
         const profileSuggestions = this.getProfileSuggestions(profile);
 
-        return profileSuggestions.some((suggestion) => suggestion.startsWith(prefixLower));
+        return profileSuggestions.some((suggestion) =>
+            suggestion.startsWith(prefixLower),
+        );
     }
 
     // localMembers matches up to 25 local results from the store before the server has responded.
     localMembers() {
-        const localMembers = this.profilesInChannel.
-            filter((profile) => this.filterProfile(profile)).
-            map((profile) => ({
+        const localMembers = this.profilesInChannel
+            .filter((profile) => this.filterProfile(profile))
+            .map((profile) => ({
                 type: Constants.MENTION_MEMBERS,
                 ...profile,
-            })).
-            sort((a, b) => a.username.localeCompare(b.username)).
-            splice(0, 25);
+            }))
+            .sort((a, b) => a.username.localeCompare(b.username))
+            .splice(0, 25);
 
         return localMembers;
     }
@@ -107,9 +118,9 @@ export default class AtMentionProvider extends Provider {
             return [];
         }
 
-        return (this.data.users || []).
-            filter((profile) => this.filterProfile(profile)).
-            map((profile) => ({
+        return (this.data.users || [])
+            .filter((profile) => this.filterProfile(profile))
+            .map((profile) => ({
                 type: Constants.MENTION_MEMBERS,
                 ...profile,
             }));
@@ -122,9 +133,9 @@ export default class AtMentionProvider extends Provider {
             return [];
         }
 
-        return (this.data.out_of_channel || []).
-            filter((profile) => this.filterProfile(profile)).
-            map((profile) => ({
+        return (this.data.out_of_channel || [])
+            .filter((profile) => this.filterProfile(profile))
+            .map((profile) => ({
                 type: Constants.MENTION_NONMEMBERS,
                 ...profile,
             }));
@@ -140,16 +151,22 @@ export default class AtMentionProvider extends Provider {
             localUserIds[item.id] = true;
         });
 
-        const remoteMembers = this.remoteMembers().filter((item) => !localUserIds[item.id]);
-
-        // Combine the local and remote members, sorting to mix the results together.
-        const localAndRemoteMembers = localMembers.concat(remoteMembers).sort((a, b) =>
-            a.username.localeCompare(b.username)
+        const remoteMembers = this.remoteMembers().filter(
+            (item) => !localUserIds[item.id],
         );
 
-        const remoteNonMembers = this.remoteNonMembers().filter((item) => !localUserIds[item.id]);
+        // Combine the local and remote members, sorting to mix the results together.
+        const localAndRemoteMembers = localMembers
+            .concat(remoteMembers)
+            .sort((a, b) => a.username.localeCompare(b.username));
 
-        return localAndRemoteMembers.concat(specialMentions).concat(remoteNonMembers);
+        const remoteNonMembers = this.remoteNonMembers().filter(
+            (item) => !localUserIds[item.id],
+        );
+
+        return localAndRemoteMembers
+            .concat(specialMentions)
+            .concat(remoteNonMembers);
     }
 
     // updateMatches invokes the resultCallback with the metadata for rendering at mentions
@@ -170,7 +187,10 @@ export default class AtMentionProvider extends Provider {
     }
 
     handlePretextChanged(pretext, resultCallback) {
-        const captured = XRegExp.cache('(?:^|\\W)@([\\pL\\d\\-_.]*)$', 'i').exec(pretext.toLowerCase());
+        const captured = XRegExp.cache(
+            '(?:^|\\W)@([\\pL\\d\\-_.]*)$',
+            'i',
+        ).exec(pretext.toLowerCase());
         if (!captured) {
             return false;
         }
@@ -186,10 +206,15 @@ export default class AtMentionProvider extends Provider {
                 return;
             }
 
-            this.updateMatches(resultCallback, this.users().concat([{
-                type: Constants.MENTION_MORE_MEMBERS,
-                loading: true,
-            }]));
+            this.updateMatches(
+                resultCallback,
+                this.users().concat([
+                    {
+                        type: Constants.MENTION_MORE_MEMBERS,
+                        loading: true,
+                    },
+                ]),
+            );
 
             showLoadingIndicator = null;
         }, 500);

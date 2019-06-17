@@ -17,10 +17,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            goToLastViewedChannel,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                goToLastViewedChannel,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RemovedFromChannelModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(RemovedFromChannelModal);

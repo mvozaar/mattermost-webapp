@@ -29,7 +29,9 @@ class PasswordResetSendLink extends React.Component {
     handleSendLink(e) {
         e.preventDefault();
 
-        var email = ReactDOM.findDOMNode(this.refs.email).value.trim().toLowerCase();
+        var email = ReactDOM.findDOMNode(this.refs.email)
+            .value.trim()
+            .toLowerCase();
         if (!email || !isEmail(email)) {
             this.setState({
                 error: (
@@ -39,6 +41,7 @@ class PasswordResetSendLink extends React.Component {
                     />
                 ),
             });
+
             return;
         }
 
@@ -58,10 +61,11 @@ class PasswordResetSendLink extends React.Component {
                                 id='password_send.link'
                                 defaultMessage='If the account exists, a password reset email will be sent to:'
                             />
+
                             <div>
                                 <b>{email}</b>
                             </div>
-                            <br/>
+                            <br />
                             <FormattedMessage
                                 id='password_send.checkInbox'
                                 defaultMessage='Please check your inbox.'
@@ -69,6 +73,7 @@ class PasswordResetSendLink extends React.Component {
                         </div>
                     ),
                 });
+
                 $(ReactDOM.findDOMNode(this.refs.reset_form)).hide();
             },
             (err) => {
@@ -76,13 +81,17 @@ class PasswordResetSendLink extends React.Component {
                     error: err.message,
                     update_text: null,
                 });
-            }
+            },
         );
     }
     render() {
         var error = null;
         if (this.state.error) {
-            error = <div className='form-group has-error'><label className='control-label'>{this.state.error}</label></div>;
+            error = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>{this.state.error}</label>
+                </div>
+            );
         }
 
         var formClass = 'form-group';
@@ -92,7 +101,7 @@ class PasswordResetSendLink extends React.Component {
 
         return (
             <div>
-                <BackButton/>
+                <BackButton />
                 <div className='col-sm-12'>
                     <div className='signup-team__container'>
                         <h3>
@@ -102,10 +111,7 @@ class PasswordResetSendLink extends React.Component {
                             />
                         </h3>
                         {this.state.updateText}
-                        <form
-                            onSubmit={this.handleSendLink}
-                            ref='reset_form'
-                        >
+                        <form onSubmit={this.handleSendLink} ref='reset_form'>
                             <p>
                                 <FormattedMessage
                                     id='password_send.description'
@@ -118,15 +124,15 @@ class PasswordResetSendLink extends React.Component {
                                     className='form-control'
                                     name='email'
                                     ref='email'
-                                    placeholder={{id: t('password_send.email'), defaultMessage: 'Email'}}
+                                    placeholder={{
+                                        id: t('password_send.email'),
+                                        defaultMessage: 'Email',
+                                    }}
                                     spellCheck='false'
                                 />
                             </div>
                             {error}
-                            <button
-                                type='submit'
-                                className='btn btn-primary'
-                            >
+                            <button type='submit' className='btn btn-primary'>
                                 <FormattedMessage
                                     id='password_send.reset'
                                     defaultMessage='Reset my password'
@@ -140,8 +146,8 @@ class PasswordResetSendLink extends React.Component {
     }
 }
 
-PasswordResetSendLink.defaultProps = {
-};
+PasswordResetSendLink.defaultProps = {};
+
 PasswordResetSendLink.propTypes = {
     params: PropTypes.object.isRequired,
 };

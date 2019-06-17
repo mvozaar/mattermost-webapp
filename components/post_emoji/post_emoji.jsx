@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 export default class PostEmoji extends React.PureComponent {
     static propTypes = {
-
         /*
          * Emoji name.
          */
@@ -27,7 +26,7 @@ export default class PostEmoji extends React.PureComponent {
         name: '',
         imageUrl: '',
         displayTextOnly: false,
-    }
+    };
 
     render() {
         const emojiText = ':' + this.props.name + ':';

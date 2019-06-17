@@ -2,7 +2,10 @@
 // See LICENSE.txt for license information.
 
 import {Client4} from 'mattermost-redux/client';
-import {getLicense, getConfig} from 'mattermost-redux/selectors/entities/general';
+import {
+    getLicense,
+    getConfig,
+} from 'mattermost-redux/selectors/entities/general';
 import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import {getChannel} from 'mattermost-redux/selectors/entities/channels';
@@ -21,11 +24,14 @@ import {isMobile} from 'utils/user_agent.jsx';
 const CHANNEL_SWITCH_IGNORE_ENTER_THRESHOLD_MS = 500;
 
 export function isSystemMessage(post) {
-    return Boolean(post.type && (post.type.lastIndexOf(Constants.SYSTEM_MESSAGE_PREFIX) === 0));
+    return Boolean(
+        post.type &&
+            post.type.lastIndexOf(Constants.SYSTEM_MESSAGE_PREFIX) === 0,
+    );
 }
 
 export function fromAutoResponder(post) {
-    return Boolean(post.type && (post.type === Constants.AUTO_RESPONDER));
+    return Boolean(post.type && post.type === Constants.AUTO_RESPONDER);
 }
 
 export function isFromWebhook(post) {
@@ -72,9 +78,17 @@ export function canDeletePost(post) {
     }
 
     if (isPostOwner(post)) {
-        return haveIChannelPermission(store.getState(), {channel: post.channel_id, team: channel && channel.team_id, permission: Permissions.DELETE_POST});
+        return haveIChannelPermission(store.getState(), {
+            channel: post.channel_id,
+            team: channel && channel.team_id,
+            permission: Permissions.DELETE_POST,
+        });
     }
-    return haveIChannelPermission(store.getState(), {channel: post.channel_id, team: channel && channel.team_id, permission: Permissions.DELETE_OTHERS_POSTS});
+    return haveIChannelPermission(store.getState(), {
+        channel: post.channel_id,
+        team: channel && channel.team_id,
+        permission: Permissions.DELETE_OTHERS_POSTS,
+    });
 }
 
 export function canEditPost(post) {
@@ -83,7 +97,15 @@ export function canEditPost(post) {
     const config = getConfig(state);
     const channel = getChannel(state, post.channel_id);
     const userId = getCurrentUserId(state);
-    return canEditPostRedux(state, config, license, channel && channel.team_id, channel && channel.id, userId, post);
+    return canEditPostRedux(
+        state,
+        config,
+        license,
+        channel && channel.team_id,
+        channel && channel.id,
+        userId,
+        post,
+    );
 }
 
 export function shouldShowDotMenu(post) {
@@ -114,7 +136,7 @@ export function containsAtChannel(text) {
 
     const mentionableText = formatWithRenderer(text, new MentionableRenderer());
 
-    return (/\B@(all|channel)\b/i).test(mentionableText);
+    return /\B@(all|channel)\b/i.test(mentionableText);
 }
 
 export function shouldFocusMainTextbox(e, activeElement) {
@@ -129,7 +151,10 @@ export function shouldFocusMainTextbox(e, activeElement) {
     }
 
     // Focus if it is an attempted paste
-    if (Utils.cmdOrCtrlPressed(e) && Utils.isKeyPressed(e, Constants.KeyCodes.V)) {
+    if (
+        Utils.cmdOrCtrlPressed(e) &&
+        Utils.isKeyPressed(e, Constants.KeyCodes.V)
+    ) {
         return true;
     }
 
@@ -152,13 +177,17 @@ export function shouldFocusMainTextbox(e, activeElement) {
 }
 
 function canAutomaticallyCloseBackticks(message) {
-    const splitMessage = message.split('\n').filter((line) => line.trim() !== '');
+    const splitMessage = message
+        .split('\n')
+        .filter((line) => line.trim() !== '');
     const lastPart = splitMessage[splitMessage.length - 1];
 
     if (splitMessage.length > 1 && !lastPart.includes('```')) {
         return {
             allowSending: true,
-            message: message.endsWith('\n') ? message.concat('```') : message.concat('\n```'),
+            message: message.endsWith('\n')
+                ? message.concat('```')
+                : message.concat('\n```'),
             withClosedCodeBlock: true,
         };
     }
@@ -166,11 +195,22 @@ function canAutomaticallyCloseBackticks(message) {
     return {allowSending: true};
 }
 
-function sendOnCtrlEnter(message, ctrlOrMetaKeyPressed, isSendMessageOnCtrlEnter) {
+function sendOnCtrlEnter(
+    message,
+    ctrlOrMetaKeyPressed,
+    isSendMessageOnCtrlEnter,
+) {
     const match = message.match(Constants.TRIPLE_BACK_TICKS);
-    if (isSendMessageOnCtrlEnter && ctrlOrMetaKeyPressed && (!match || match.length % 2 === 0)) {
+    if (
+        isSendMessageOnCtrlEnter &&
+        ctrlOrMetaKeyPressed &&
+        (!match || match.length % 2 === 0)
+    ) {
         return {allowSending: true};
-    } else if (!isSendMessageOnCtrlEnter && (!match || match.length % 2 === 0)) {
+    } else if (
+        !isSendMessageOnCtrlEnter &&
+        (!match || match.length % 2 === 0)
+    ) {
         return {allowSending: true};
     } else if (ctrlOrMetaKeyPressed && match && match.length % 2 !== 0) {
         return canAutomaticallyCloseBackticks(message);
@@ -179,7 +219,14 @@ function sendOnCtrlEnter(message, ctrlOrMetaKeyPressed, isSendMessageOnCtrlEnter
     return {allowSending: false};
 }
 
-export function postMessageOnKeyPress(event, message, sendMessageOnCtrlEnter, sendCodeBlockOnCtrlEnter, now = 0, lastChannelSwitchAt = 0) {
+export function postMessageOnKeyPress(
+    event,
+    message,
+    sendMessageOnCtrlEnter,
+    sendCodeBlockOnCtrlEnter,
+    now = 0,
+    lastChannelSwitchAt = 0,
+) {
     if (!event) {
         return {allowSending: false};
     }
@@ -190,12 +237,20 @@ export function postMessageOnKeyPress(event, message, sendMessageOnCtrlEnter, se
     }
 
     // Only ENTER sends, unless shift or alt key pressed.
-    if (!Utils.isKeyPressed(event, Constants.KeyCodes.ENTER) || event.shiftKey || event.altKey) {
+    if (
+        !Utils.isKeyPressed(event, Constants.KeyCodes.ENTER) ||
+        event.shiftKey ||
+        event.altKey
+    ) {
         return {allowSending: false};
     }
 
     // Don't send if we just switched channels within a threshold.
-    if (lastChannelSwitchAt > 0 && now > 0 && now - lastChannelSwitchAt <= CHANNEL_SWITCH_IGNORE_ENTER_THRESHOLD_MS) {
+    if (
+        lastChannelSwitchAt > 0 &&
+        now > 0 &&
+        now - lastChannelSwitchAt <= CHANNEL_SWITCH_IGNORE_ENTER_THRESHOLD_MS
+    ) {
         return {allowSending: false, ignoreKeyPress: true};
     }
 
@@ -219,7 +274,10 @@ export function postMessageOnKeyPress(event, message, sendMessageOnCtrlEnter, se
 
 export function isErrorInvalidSlashCommand(error) {
     if (error && error.server_error_id) {
-        return error.server_error_id === 'api.command.execute_command.not_found.app_error';
+        return (
+            error.server_error_id ===
+            'api.command.execute_command.not_found.app_error'
+        );
     }
 
     return false;
@@ -243,7 +301,9 @@ export function getLastPostId(postIds) {
 
         if (PostListUtils.isCombinedUserActivityPost(item)) {
             // This is a combined post, so find the first post ID from it
-            const combinedIds = PostListUtils.getPostIdsForCombinedUserActivityPost(item);
+            const combinedIds = PostListUtils.getPostIdsForCombinedUserActivityPost(
+                item,
+            );
 
             return combinedIds[combinedIds.length - 1];
         }

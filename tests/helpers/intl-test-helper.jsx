@@ -17,6 +17,10 @@ export function shallowWithIntl(node, {context} = {}) {
 export function mountWithIntl(node, {context, childContextTypes} = {}) {
     return mount(React.cloneElement(node, {intl}), {
         context: Object.assign({}, context, {intl}),
-        childContextTypes: Object.assign({}, {intl: intlShape}, childContextTypes),
+        childContextTypes: Object.assign(
+            {},
+            {intl: intlShape},
+            childContextTypes,
+        ),
     });
 }

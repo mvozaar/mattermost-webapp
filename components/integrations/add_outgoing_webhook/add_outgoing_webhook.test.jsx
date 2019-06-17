@@ -24,8 +24,9 @@ describe('components/integrations/AddOutgoingWebhook', () => {
                 actions={{createOutgoingHook: emptyFunction}}
                 enablePostUsernameOverride={false}
                 enablePostIconOverride={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

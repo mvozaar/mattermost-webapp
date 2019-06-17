@@ -31,7 +31,7 @@ export default class DialogElement extends React.PureComponent {
         options: PropTypes.arrayOf(PropTypes.object),
         value: PropTypes.any,
         onChange: PropTypes.func,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -65,7 +65,7 @@ export default class DialogElement extends React.PureComponent {
             onChange(name, selected.value);
             this.setState({value: selected.text});
         }
-    }
+    };
 
     render() {
         const {
@@ -109,9 +109,7 @@ export default class DialogElement extends React.PureComponent {
             helpTextContent = (
                 <React.Fragment>
                     {helpText}
-                    <div className='error-text margin-top x2'>
-                        {errorText}
-                    </div>
+                    <div className='error-text margin-top x2'>{errorText}</div>
                 </React.Fragment>
             );
         }

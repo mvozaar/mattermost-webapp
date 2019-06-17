@@ -12,7 +12,6 @@ import SuccessIcon from 'components/icon/success_icon';
 
 export default class UploadButton extends React.PureComponent {
     static propTypes = {
-
         /*
          * Upload status - loading, complete, default ('')
          */
@@ -32,25 +31,23 @@ export default class UploadButton extends React.PureComponent {
          * Funtion to call on button click
          */
         onClick: PropTypes.func,
-    }
+    };
 
     render() {
-        const {
-            status,
-            primaryClass,
-            disabled,
-            onClick,
-        } = this.props;
+        const {status, primaryClass, disabled, onClick} = this.props;
 
         let buttonContent;
         if (status === UploadStatuses.COMPLETE) {
             buttonContent = [
-                <SuccessIcon key='icon'/>,
+                <SuccessIcon key='icon' />,
                 ' ',
                 Utils.localizeMessage('admin.team.uploaded', 'Uploaded!'),
             ];
         } else {
-            buttonContent = Utils.localizeMessage('admin.team.upload', 'Upload');
+            buttonContent = Utils.localizeMessage(
+                'admin.team.upload',
+                'Upload',
+            );
         }
 
         return (
@@ -62,7 +59,10 @@ export default class UploadButton extends React.PureComponent {
             >
                 <LoadingWrapper
                     loading={status === UploadStatuses.LOADING}
-                    text={Utils.localizeMessage('admin.team.uploading', 'Uploading...')}
+                    text={Utils.localizeMessage(
+                        'admin.team.uploading',
+                        'Uploading...',
+                    )}
                 >
                     {buttonContent}
                 </LoadingWrapper>

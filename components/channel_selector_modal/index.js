@@ -4,7 +4,10 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {createSelector} from 'reselect';
-import {getAllChannels as loadChannels, searchAllChannels} from 'mattermost-redux/actions/channels';
+import {
+    getAllChannels as loadChannels,
+    searchAllChannels,
+} from 'mattermost-redux/actions/channels';
 
 import {getChannelsForChannelSelector} from 'selectors/views/channel_selector_modal';
 import {setModalSearchTerm} from 'actions/views/search';
@@ -16,12 +19,22 @@ const customChannelSelector = createSelector(
     getChannelsForChannelSelector,
     (searchTerm, channels) => {
         return Object.values(channels || {}).filter((channel) => {
-            return channel.display_name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
-                   channel.name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
-                   channel.team_display_name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
-                   channel.team_name.toLowerCase().startsWith(searchTerm.toLowerCase());
+            return (
+                channel.display_name
+                    .toLowerCase()
+                    .startsWith(searchTerm.toLowerCase()) ||
+                channel.name
+                    .toLowerCase()
+                    .startsWith(searchTerm.toLowerCase()) ||
+                channel.team_display_name
+                    .toLowerCase()
+                    .startsWith(searchTerm.toLowerCase()) ||
+                channel.team_name
+                    .toLowerCase()
+                    .startsWith(searchTerm.toLowerCase())
+            );
         });
-    }
+    },
 );
 
 function mapStateToProps(state) {
@@ -37,12 +50,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadChannels,
-            setModalSearchTerm,
-            searchChannels: searchAllChannels,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadChannels,
+                setModalSearchTerm,
+                searchChannels: searchAllChannels,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelSelectorModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ChannelSelectorModal);

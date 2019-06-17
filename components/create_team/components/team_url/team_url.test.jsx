@@ -20,11 +20,15 @@ describe('/components/create_team/components/display_name', () => {
             team: {name: 'test-team', display_name: 'test-team'},
             wizard: 'display_name',
         },
+
         actions: {
             checkIfTeamExists: jest.fn().mockResolvedValue({exists: true}),
-            createTeam: jest.fn().mockResolvedValue({data: {name: 'test-team'}}),
+            createTeam: jest
+                .fn()
+                .mockResolvedValue({data: {name: 'test-team'}}),
             trackEvent: jest.fn(),
         },
+
         history: {push: jest.fn()},
     };
 
@@ -40,12 +44,12 @@ describe('/components/create_team/components/display_name', () => {
     );
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<TeamUrl {...defaultProps}/>);
+        const wrapper = shallow(<TeamUrl {...defaultProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should return to display_name.jsx page', () => {
-        const wrapper = mountWithIntl(<TeamUrl {...defaultProps}/>);
+        const wrapper = mountWithIntl(<TeamUrl {...defaultProps} />);
 
         wrapper.find('a').simulate('click', {
             preventDefault: () => jest.fn(),
@@ -56,16 +60,15 @@ describe('/components/create_team/components/display_name', () => {
     });
 
     test('should successfully submit', async () => {
-        const checkIfTeamExists = jest.fn().
-            mockResolvedValueOnce({exists: true}).
-            mockResolvedValue({exists: false});
+        const checkIfTeamExists = jest
+            .fn()
+            .mockResolvedValueOnce({exists: true})
+            .mockResolvedValue({exists: false});
 
         const actions = {...defaultProps.actions, checkIfTeamExists};
         const props = {...defaultProps, actions};
 
-        const wrapper = mountWithIntl(
-            <TeamUrl {...props}/>
-        );
+        const wrapper = mountWithIntl(<TeamUrl {...props} />);
 
         await wrapper.instance().submitNext({preventDefault: jest.fn()});
         expect(actions.checkIfTeamExists).toHaveBeenCalledTimes(1);
@@ -74,56 +77,74 @@ describe('/components/create_team/components/display_name', () => {
         await wrapper.instance().submitNext({preventDefault: jest.fn()});
         expect(actions.checkIfTeamExists).toHaveBeenCalledTimes(2);
         expect(actions.createTeam).toHaveBeenCalledTimes(1);
-        expect(actions.createTeam).toBeCalledWith({display_name: 'test-team', name: 'test-team', type: 'O'});
+        expect(actions.createTeam).toBeCalledWith({
+            display_name: 'test-team',
+            name: 'test-team',
+            type: 'O',
+        });
+
         expect(props.history.push).toHaveBeenCalledTimes(1);
-        expect(props.history.push).toBeCalledWith('/test-team/channels/town-square');
+        expect(props.history.push).toBeCalledWith(
+            '/test-team/channels/town-square',
+        );
     });
 
     test('should display isRequired error', () => {
-        const wrapper = mountWithIntl(<TeamUrl {...defaultProps}/>);
+        const wrapper = mountWithIntl(<TeamUrl {...defaultProps} />);
         wrapper.find('.form-control').instance().value = '';
-        wrapper.find('button').simulate('click', {preventDefault: () => jest.fn()});
+        wrapper
+            .find('button')
+            .simulate('click', {preventDefault: () => jest.fn()});
 
         expect(wrapper.state('nameError')).toEqual(
             <FormattedMessage
                 id='create_team.team_url.required'
                 defaultMessage='This field is required'
-            />
+            />,
         );
     });
 
     test('should display charLength error', () => {
-        const wrapper = mountWithIntl(<TeamUrl {...defaultProps}/>);
+        const wrapper = mountWithIntl(<TeamUrl {...defaultProps} />);
         wrapper.find('.form-control').instance().value = 'a';
-        wrapper.find('button').simulate('click', {preventDefault: () => jest.fn()});
+        wrapper
+            .find('button')
+            .simulate('click', {preventDefault: () => jest.fn()});
         expect(wrapper.state('nameError')).toEqual(chatLengthError);
 
-        wrapper.find('.form-control').instance().value = 'should_trigger_an_error_because_it_exceeds_MAX_TEAMNAME_LENGTH';
-        wrapper.find('button').simulate('click', {preventDefault: () => jest.fn()});
+        wrapper.find('.form-control').instance().value =
+            'should_trigger_an_error_because_it_exceeds_MAX_TEAMNAME_LENGTH';
+        wrapper
+            .find('button')
+            .simulate('click', {preventDefault: () => jest.fn()});
         expect(wrapper.state('nameError')).toEqual(chatLengthError);
     });
 
     test('should display teamUrl regex error', () => {
-        const wrapper = mountWithIntl(<TeamUrl {...defaultProps}/>);
+        const wrapper = mountWithIntl(<TeamUrl {...defaultProps} />);
         wrapper.find('.form-control').instance().value = '!!wrongName1';
-        wrapper.find('button').simulate('click', {preventDefault: () => jest.fn()});
+        wrapper
+            .find('button')
+            .simulate('click', {preventDefault: () => jest.fn()});
         expect(wrapper.state('nameError')).toEqual(
             <FormattedMessage
                 id='create_team.team_url.regex'
                 defaultMessage="Use only lower case letters, numbers and dashes. Must start with a letter and can't end in a dash."
-            />
+            />,
         );
     });
 
     test('should display teamUrl taken error', () => {
-        const wrapper = mountWithIntl(<TeamUrl {...defaultProps}/>);
+        const wrapper = mountWithIntl(<TeamUrl {...defaultProps} />);
         wrapper.find('.form-control').instance().value = 'channel';
-        wrapper.find('button').simulate('click', {preventDefault: () => jest.fn()});
+        wrapper
+            .find('button')
+            .simulate('click', {preventDefault: () => jest.fn()});
         expect(wrapper.state('nameError')).toEqual(
             <FormattedMarkdownMessage
-                defaultMessage='This URL [starts with a reserved word](!https://docs.mattermost.com/help/getting-started/creating-teams.html#team-url) or is unavailable. Please try another.'
+                defaultMessage='This URL [starts with a reserved word](!https://docs.securCom.me/help/getting-started/creating-teams.html#team-url) or is unavailable. Please try another.'
                 id='create_team.team_url.taken'
-            />
+            />,
         );
     });
 });

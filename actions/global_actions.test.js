@@ -5,7 +5,10 @@ import {browserHistory} from 'utils/browser_history';
 import {closeRightHandSide, closeMenu as closeRhsMenu} from 'actions/views/rhs';
 import {close as closeLhs} from 'actions/views/lhs';
 
-import {redirectUserToDefaultTeam, toggleSideBarRightMenuAction} from 'actions/global_actions.jsx';
+import {
+    redirectUserToDefaultTeam,
+    toggleSideBarRightMenuAction,
+} from 'actions/global_actions.jsx';
 
 jest.mock('actions/views/rhs', () => ({
     closeMenu: jest.fn(),

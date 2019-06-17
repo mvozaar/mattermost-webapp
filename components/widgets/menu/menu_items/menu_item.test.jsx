@@ -18,18 +18,14 @@ describe('components/MenuItem', () => {
 
     test('should match snapshot not shown', () => {
         const props = {...defaultProps, show: false};
-        const wrapper = shallow(
-            <TestComponent {...props}/>
-        );
+        const wrapper = shallow(<TestComponent {...props} />);
 
-        expect(wrapper).toMatchInlineSnapshot('""');
+        expect(wrapper).toMatchInlineSnapshot("''");
     });
 
     test('should match snapshot shown with icon', () => {
         const props = {...defaultProps, icon: 'test-icon'};
-        const wrapper = shallow(
-            <TestComponent {...props}/>
-        );
+        const wrapper = shallow(<TestComponent {...props} />);
 
         expect(wrapper).toMatchInlineSnapshot(`
 <li
@@ -55,9 +51,7 @@ describe('components/MenuItem', () => {
     });
 
     test('should match snapshot shown without icon', () => {
-        const wrapper = shallow(
-            <TestComponent {...defaultProps}/>
-        );
+        const wrapper = shallow(<TestComponent {...defaultProps} />);
 
         expect(wrapper).toMatchInlineSnapshot(`
 <li

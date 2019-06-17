@@ -23,7 +23,6 @@ const ROWS_FROM_BOTTOM_TO_OPEN_UP = 5;
 
 export default class SystemUsersDropdown extends React.Component {
     static propTypes = {
-
         /*
          * User to manage with dropdown
          */
@@ -95,63 +94,65 @@ export default class SystemUsersDropdown extends React.Component {
 
     handleMakeActive = (e) => {
         e.preventDefault();
-        this.props.actions.updateUserActive(this.props.user.id, true).
-            then(this.onUpdateActiveResult);
-    }
+        this.props.actions
+            .updateUserActive(this.props.user.id, true)
+            .then(this.onUpdateActiveResult);
+    };
 
     handleManageTeams = (e) => {
         e.preventDefault();
 
         this.props.doManageTeams(this.props.user);
-    }
+    };
 
     handleManageRoles = (e) => {
         e.preventDefault();
 
         this.props.doManageRoles(this.props.user);
-    }
+    };
 
     handleManageTokens = (e) => {
         e.preventDefault();
 
         this.props.doManageTokens(this.props.user);
-    }
+    };
 
     handleResetPassword = (e) => {
         e.preventDefault();
         this.props.doPasswordReset(this.props.user);
-    }
+    };
 
     handleResetEmail = (e) => {
         e.preventDefault();
         this.props.doEmailReset(this.props.user);
-    }
+    };
 
     handleResetMfa = (e) => {
         e.preventDefault();
         adminResetMfa(this.props.user.id, null, this.props.onError);
-    }
+    };
 
     handleShowDeactivateMemberModal = (e) => {
         e.preventDefault();
         this.setState({showDeactivateMemberModal: true});
-    }
+    };
 
     handleDeactivateMember = () => {
-        this.props.actions.updateUserActive(this.props.user.id, false).
-            then(this.onUpdateActiveResult);
+        this.props.actions
+            .updateUserActive(this.props.user.id, false)
+            .then(this.onUpdateActiveResult);
         this.setState({showDeactivateMemberModal: false});
-    }
+    };
 
     onUpdateActiveResult = ({error}) => {
         if (error) {
             this.props.onError({id: error.server_error_id, ...error});
         }
-    }
+    };
 
     handleDeactivateCancel = () => {
         this.setState({showDeactivateMemberModal: false});
-    }
+    };
 
     renderDeactivateMemberModal = () => {
         const user = this.props.user;
@@ -167,11 +168,14 @@ export default class SystemUsersDropdown extends React.Component {
         );
 
         let warning;
-        if (user.auth_service !== '' && user.auth_service !== Constants.EMAIL_SERVICE) {
+        if (
+            user.auth_service !== '' &&
+            user.auth_service !== Constants.EMAIL_SERVICE
+        ) {
             warning = (
                 <strong>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <FormattedMessage
                         id='deactivate_member_modal.sso_warning'
                         defaultMessage='You must also deactivate this user in the SSO provider or they will be reactivated on next login or sync.'
@@ -189,6 +193,7 @@ export default class SystemUsersDropdown extends React.Component {
                         username: user.username,
                     }}
                 />
+
                 {warning}
             </div>
         );
@@ -212,31 +217,31 @@ export default class SystemUsersDropdown extends React.Component {
                 onCancel={this.handleDeactivateCancel}
             />
         );
-    }
+    };
 
     handleShowRevokeSessionsModal = (e) => {
         e.preventDefault();
         this.setState({showRevokeSessionsModal: true});
-    }
+    };
 
     handleRevokeSessions = () => {
         const me = this.props.currentUser;
-        this.props.actions.revokeAllSessions(this.props.user.id).then(
-            ({data, error}) => {
+        this.props.actions
+            .revokeAllSessions(this.props.user.id)
+            .then(({data, error}) => {
                 if (data && this.props.user.id === me.id) {
                     emitUserLoggedOutEvent();
                 } else if (error) {
                     this.props.onError(error);
                 }
-            }
-        );
+            });
 
         this.setState({showRevokeSessionsModal: false});
-    }
+    };
 
     handleRevokeSessionsCancel = () => {
         this.setState({showRevokeSessionsModal: false});
-    }
+    };
 
     renderRevokeSessionsModal = () => {
         const title = (
@@ -277,7 +282,7 @@ export default class SystemUsersDropdown extends React.Component {
                 onCancel={this.handleRevokeSessionsCancel}
             />
         );
-    }
+    };
 
     renderAccessToken = () => {
         const userAccessTokensEnabled = this.props.enableUserAccessTokens;
@@ -288,7 +293,10 @@ export default class SystemUsersDropdown extends React.Component {
         const user = this.props.user;
         const hasPostAllRole = UserUtils.hasPostAllRole(user.roles);
         const hasPostAllPublicRole = UserUtils.hasPostAllPublicRole(user.roles);
-        const hasUserAccessTokenRole = UserUtils.hasUserAccessTokenRole(user.roles);
+        const hasUserAccessTokenRole = UserUtils.hasUserAccessTokenRole(
+            user.roles,
+        );
+
         const isSystemAdmin = UserUtils.isSystemAdmin(user.roles);
 
         let messageId = '';
@@ -314,12 +322,12 @@ export default class SystemUsersDropdown extends React.Component {
                 />
             </div>
         );
-    }
+    };
 
     render() {
         const user = this.props.user;
         if (!user) {
-            return <div/>;
+            return <div />;
         }
 
         let currentRoles = (
@@ -351,6 +359,7 @@ export default class SystemUsersDropdown extends React.Component {
                     defaultMessage='Inactive'
                 />
             );
+
             showMakeActive = true;
             showMakeNotActive = false;
             showManageTeams = false;
@@ -367,7 +376,10 @@ export default class SystemUsersDropdown extends React.Component {
 
         const {index, totalUsers} = this.props;
         let openUp = false;
-        if (totalUsers > ROWS_FROM_BOTTOM_TO_OPEN_UP && totalUsers - index <= ROWS_FROM_BOTTOM_TO_OPEN_UP) {
+        if (
+            totalUsers > ROWS_FROM_BOTTOM_TO_OPEN_UP &&
+            totalUsers - index <= ROWS_FROM_BOTTOM_TO_OPEN_UP
+        ) {
             openUp = true;
         }
 
@@ -379,7 +391,7 @@ export default class SystemUsersDropdown extends React.Component {
                     <div className='text-right'>
                         <a>
                             <span>{currentRoles} </span>
-                            <span className='caret'/>
+                            <span className='caret' />
                         </a>
                         {this.renderAccessToken()}
                     </div>
@@ -387,59 +399,109 @@ export default class SystemUsersDropdown extends React.Component {
                         <Menu
                             openLeft={true}
                             openUp={openUp}
-                            ariaLabel={Utils.localizeMessage('admin.user_item.menuAriaLabel', 'User Actions Menu')}
+                            ariaLabel={Utils.localizeMessage(
+                                'admin.user_item.menuAriaLabel',
+                                'User Actions Menu',
+                            )}
                         >
                             <MenuItemAction
                                 show={showMakeActive}
                                 onClick={this.handleMakeActive}
-                                text={Utils.localizeMessage('admin.user_item.makeActive', 'Activate')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.makeActive',
+                                    'Activate',
+                                )}
                                 disabled={disableActivationToggle}
                             />
+
                             <MenuItemAction
                                 show={showMakeNotActive}
                                 onClick={this.handleShowDeactivateMemberModal}
-                                text={Utils.localizeMessage('admin.user_item.makeInactive', 'Deactivate')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.makeInactive',
+                                    'Deactivate',
+                                )}
                                 disabled={disableActivationToggle}
                             />
+
                             <MenuItemAction
                                 onClick={this.handleManageRoles}
-                                text={Utils.localizeMessage('admin.user_item.manageRoles', 'Manage Roles')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.manageRoles',
+                                    'Manage Roles',
+                                )}
                             />
+
                             <MenuItemAction
                                 show={showManageTeams}
                                 onClick={this.handleManageTeams}
-                                text={Utils.localizeMessage('admin.user_item.manageTeams', 'Manage Teams')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.manageTeams',
+                                    'Manage Teams',
+                                )}
                             />
+
                             <MenuItemAction
                                 show={this.props.enableUserAccessTokens}
                                 onClick={this.handleManageTokens}
-                                text={Utils.localizeMessage('admin.user_item.manageTokens', 'Manage Tokens')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.manageTokens',
+                                    'Manage Tokens',
+                                )}
                             />
+
                             <MenuItemAction
                                 show={showMfaReset}
                                 onClick={this.handleResetMfa}
-                                text={Utils.localizeMessage('admin.user_item.resetMfa', 'Remove MFA')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.resetMfa',
+                                    'Remove MFA',
+                                )}
                             />
+
                             <MenuItemAction
-                                show={Boolean(user.auth_service) && this.props.experimentalEnableAuthenticationTransfer}
+                                show={
+                                    Boolean(user.auth_service) &&
+                                    this.props
+                                        .experimentalEnableAuthenticationTransfer
+                                }
                                 onClick={this.handleResetPassword}
-                                text={Utils.localizeMessage('admin.user_item.switchToEmail', 'Switch to Email/Password')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.switchToEmail',
+                                    'Switch to Email/Password',
+                                )}
                             />
+
                             <MenuItemAction
                                 show={!user.auth_service}
                                 onClick={this.handleResetPassword}
-                                text={Utils.localizeMessage('admin.user_item.resetPwd', 'Reset Password')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.resetPwd',
+                                    'Reset Password',
+                                )}
                             />
+
                             <MenuItemAction
                                 show={!user.auth_service}
                                 onClick={this.handleResetEmail}
-                                text={Utils.localizeMessage('admin.user_item.resetEmail', 'Update Email')}
+                                text={Utils.localizeMessage(
+                                    'admin.user_item.resetEmail',
+                                    'Update Email',
+                                )}
                             />
-                            <SystemPermissionGate permissions={[Permissions.REVOKE_USER_ACCESS_TOKEN]}>
+
+                            <SystemPermissionGate
+                                permissions={[
+                                    Permissions.REVOKE_USER_ACCESS_TOKEN,
+                                ]}
+                            >
                                 <MenuItemAction
                                     show={showRevokeSessions}
                                     onClick={this.handleShowRevokeSessionsModal}
-                                    text={Utils.localizeMessage('admin.user_item.revokeSessions', 'Revoke Sessions')}
+                                    text={Utils.localizeMessage(
+                                        'admin.user_item.revokeSessions',
+                                        'Revoke Sessions',
+                                    )}
                                 />
                             </SystemPermissionGate>
                         </Menu>

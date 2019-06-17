@@ -15,7 +15,6 @@ import AdminHeader from 'components/widgets/admin_console/admin_header.jsx';
 
 export default class AdminSettings extends React.Component {
     static propTypes = {
-
         /*
          * Object representing the config file
          */
@@ -30,7 +29,7 @@ export default class AdminSettings extends React.Component {
          * Action for whether a save is needed
          */
         setNavigationBlocked: PropTypes.func,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -45,13 +44,13 @@ export default class AdminSettings extends React.Component {
 
     closeTooltip = () => {
         this.setState({errorTooltip: false});
-    }
+    };
 
     openTooltip = (e) => {
         const elm = e.currentTarget.querySelector('.control-label');
         const isElipsis = elm.offsetWidth < elm.scrollWidth;
         this.setState({errorTooltip: isElipsis});
-    }
+    };
 
     handleChange = (id, value) => {
         this.setState({
@@ -66,7 +65,7 @@ export default class AdminSettings extends React.Component {
         e.preventDefault();
 
         this.doSubmit();
-    }
+    };
 
     doSubmit = (callback) => {
         this.setState({
@@ -112,7 +111,7 @@ export default class AdminSettings extends React.Component {
                 if (this.handleSaved) {
                     this.handleSaved(config);
                 }
-            }
+            },
         );
     };
 
@@ -192,9 +191,7 @@ export default class AdminSettings extends React.Component {
     render() {
         return (
             <div className='wrapper--fixed'>
-                <AdminHeader>
-                    {this.renderTitle()}
-                </AdminHeader>
+                <AdminHeader>{this.renderTitle()}</AdminHeader>
                 <form
                     className='form-horizontal'
                     role='form'
@@ -204,17 +201,24 @@ export default class AdminSettings extends React.Component {
                     <div className='admin-console-save'>
                         <SaveButton
                             saving={this.state.saving}
-                            disabled={!this.state.saveNeeded || (this.canSave && !this.canSave())}
+                            disabled={
+                                !this.state.saveNeeded ||
+                                (this.canSave && !this.canSave())
+                            }
                             onClick={this.handleSubmit}
-                            savingMessage={localizeMessage('admin.saving', 'Saving Config...')}
+                            savingMessage={localizeMessage(
+                                'admin.saving',
+                                'Saving Config...',
+                            )}
                         />
+
                         <div
                             className='error-message'
                             ref='errorMessage'
                             onMouseOver={this.openTooltip}
                             onMouseOut={this.closeTooltip}
                         >
-                            <FormError error={this.state.serverError}/>
+                            <FormError error={this.state.serverError} />
                         </div>
                         <Overlay
                             show={this.state.errorTooltip}
@@ -222,7 +226,7 @@ export default class AdminSettings extends React.Component {
                             placement='top'
                             target={this.refs.errorMessage}
                         >
-                            <Tooltip id='error-tooltip' >
+                            <Tooltip id='error-tooltip'>
                                 {this.state.serverError}
                             </Tooltip>
                         </Overlay>

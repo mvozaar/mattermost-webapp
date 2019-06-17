@@ -8,11 +8,7 @@ import {FormattedMessage} from 'react-intl';
 import NotifyCounts from 'components/notify_counts';
 import MenuIcon from 'components/svg/menu_icon';
 
-const CollapseLhsButton = ({
-    actions: {
-        toggleLhs,
-    },
-}) => (
+const CollapseLhsButton = ({actions: {toggleLhs}}) => (
     <button
         key='navbar-toggle-sidebar'
         type='button'
@@ -27,8 +23,8 @@ const CollapseLhsButton = ({
                 defaultMessage='Toggle sidebar'
             />
         </span>
-        <MenuIcon className='icon icon__menu icon--sidebarHeaderTextColor'/>
-        <NotifyCounts/>
+        <MenuIcon className='icon icon__menu icon--sidebarHeaderTextColor' />
+        <NotifyCounts />
     </button>
 );
 

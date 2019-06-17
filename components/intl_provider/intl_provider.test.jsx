@@ -15,6 +15,7 @@ describe('components/IntlProvider', () => {
         translations: {
             'test.hello_world': 'Hello, World!',
         },
+
         actions: {
             loadTranslations: () => {}, // eslint-disable-line
         },
@@ -27,7 +28,7 @@ describe('components/IntlProvider', () => {
     };
 
     test('should render children when passed translation strings', () => {
-        const wrapper = render(<IntlProvider {...baseProps}/>);
+        const wrapper = render(<IntlProvider {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -41,7 +42,7 @@ describe('components/IntlProvider', () => {
             },
         };
 
-        const wrapper = render(<IntlProvider {...props}/>);
+        const wrapper = render(<IntlProvider {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -52,7 +53,7 @@ describe('components/IntlProvider', () => {
             translations: null,
         };
 
-        const wrapper = render(<IntlProvider {...props}/>);
+        const wrapper = render(<IntlProvider {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -67,9 +68,12 @@ describe('components/IntlProvider', () => {
             },
         };
 
-        shallow(<IntlProvider {...props}/>);
+        shallow(<IntlProvider {...props} />);
 
-        expect(props.actions.loadTranslations).toBeCalledWith('fr', getLanguageInfo('fr').url);
+        expect(props.actions.loadTranslations).toBeCalledWith(
+            'fr',
+            getLanguageInfo('fr').url,
+        );
     });
 
     test('on mount, should not attempt to load when given translations', () => {
@@ -82,7 +86,7 @@ describe('components/IntlProvider', () => {
             },
         };
 
-        shallow(<IntlProvider {...props}/>);
+        shallow(<IntlProvider {...props} />);
 
         expect(props.actions.loadTranslations).not.toBeCalled();
     });
@@ -95,7 +99,7 @@ describe('components/IntlProvider', () => {
             },
         };
 
-        const wrapper = shallow(<IntlProvider {...props}/>);
+        const wrapper = shallow(<IntlProvider {...props} />);
 
         expect(props.actions.loadTranslations).not.toBeCalled();
 
@@ -104,7 +108,10 @@ describe('components/IntlProvider', () => {
             translations: null,
         });
 
-        expect(props.actions.loadTranslations).toBeCalledWith('fr', getLanguageInfo('fr').url);
+        expect(props.actions.loadTranslations).toBeCalledWith(
+            'fr',
+            getLanguageInfo('fr').url,
+        );
     });
 
     test('on locale change, should not attempt to load when given translations', () => {
@@ -115,7 +122,7 @@ describe('components/IntlProvider', () => {
             },
         };
 
-        const wrapper = shallow(<IntlProvider {...props}/>);
+        const wrapper = shallow(<IntlProvider {...props} />);
 
         expect(props.actions.loadTranslations).not.toBeCalled();
 

@@ -3,7 +3,11 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getJobsByType, createJob, cancelJob} from 'mattermost-redux/actions/jobs';
+import {
+    getJobsByType,
+    createJob,
+    cancelJob,
+} from 'mattermost-redux/actions/jobs';
 import * as Selectors from 'mattermost-redux/selectors/entities/jobs';
 
 import Table from './table.jsx';
@@ -16,12 +20,19 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getJobsByType,
-            createJob,
-            cancelJob,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getJobsByType,
+                createJob,
+                cancelJob,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Table);

@@ -18,16 +18,21 @@ function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
 
     const tokensEnabled = config.EnableUserAccessTokens === 'true';
-    const userHasTokenRole = UserUtils.hasUserAccessTokenRole(ownProps.user.roles) || UserUtils.isSystemAdmin(ownProps.user.roles);
+    const userHasTokenRole =
+        UserUtils.hasUserAccessTokenRole(ownProps.user.roles) ||
+        UserUtils.isSystemAdmin(ownProps.user.roles);
 
-    const enableOAuthServiceProvider = config.EnableOAuthServiceProvider === 'true';
+    const enableOAuthServiceProvider =
+        config.EnableOAuthServiceProvider === 'true';
     const enableSignUpWithEmail = config.EnableSignUpWithEmail === 'true';
     const enableSignUpWithGitLab = config.EnableSignUpWithGitLab === 'true';
     const enableSignUpWithGoogle = config.EnableSignUpWithGoogle === 'true';
     const enableLdap = config.EnableLdap === 'true';
     const enableSaml = config.EnableSaml === 'true';
-    const enableSignUpWithOffice365 = config.EnableSignUpWithOffice365 === 'true';
-    const experimentalEnableAuthenticationTransfer = config.ExperimentalEnableAuthenticationTransfer === 'true';
+    const enableSignUpWithOffice365 =
+        config.EnableSignUpWithOffice365 === 'true';
+    const experimentalEnableAuthenticationTransfer =
+        config.ExperimentalEnableAuthenticationTransfer === 'true';
 
     return {
         canUseAccessTokens: tokensEnabled && userHasTokenRole,
@@ -40,19 +45,31 @@ function mapStateToProps(state, ownProps) {
         enableSignUpWithOffice365,
         experimentalEnableAuthenticationTransfer,
         passwordConfig: getPasswordConfig(config),
-        militaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false),
+        militaryTime: getBool(
+            state,
+            Preferences.CATEGORY_DISPLAY_SETTINGS,
+            Preferences.USE_MILITARY_TIME,
+            false,
+        ),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getMe,
-            updateUserPassword,
-            getAuthorizedApps,
-            deauthorizeOAuthApp,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getMe,
+                updateUserPassword,
+                getAuthorizedApps,
+                deauthorizeOAuthApp,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SecurityTab);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SecurityTab);

@@ -19,7 +19,9 @@ export default class ShouldVerifyEmail extends React.Component {
     }
 
     handleResend = () => {
-        const email = (new URLSearchParams(this.props.location.search)).get('email');
+        const email = new URLSearchParams(this.props.location.search).get(
+            'email',
+        );
 
         this.setState({resendStatus: 'sending'});
 
@@ -30,18 +32,18 @@ export default class ShouldVerifyEmail extends React.Component {
             },
             () => {
                 this.setState({resendStatus: 'failure'});
-            }
+            },
         );
-    }
+    };
     render() {
         let resendConfirm = '';
 
         if (this.state.resendStatus === 'success') {
             resendConfirm = (
                 <div>
-                    <br/>
+                    <br />
                     <p className='alert alert-success'>
-                        <SuccessIcon/>
+                        <SuccessIcon />
                         <FormattedMessage
                             id='email_verify.sent'
                             defaultMessage=' Verification email sent.'
@@ -54,20 +56,17 @@ export default class ShouldVerifyEmail extends React.Component {
         if (this.state.resendStatus === 'failure') {
             resendConfirm = (
                 <div>
-                    <br/>
+                    <br />
                     <p className='alert alert-danger'>
                         <FormattedMessage
                             id='generic_icons.fail'
                             defaultMessage='Faliure Icon'
                         >
                             {(title) => (
-                                <i
-                                    className='fa fa-times'
-                                    title={title}
-                                />
+                                <i className='fa fa-times' title={title} />
                             )}
                         </FormattedMessage>
-                        <FormattedMessage id='email_verify.failed'/>
+                        <FormattedMessage id='email_verify.failed' />
                     </p>
                 </div>
             );
@@ -75,7 +74,7 @@ export default class ShouldVerifyEmail extends React.Component {
 
         return (
             <div>
-                <BackButton/>
+                <BackButton />
                 <div className='col-sm-12'>
                     <div className='signup-team__container'>
                         <h3>

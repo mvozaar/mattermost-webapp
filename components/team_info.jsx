@@ -9,7 +9,7 @@ import {imageURLForTeam} from 'utils/utils.jsx';
 export default class TeamInList extends React.Component {
     static propTypes = {
         team: PropTypes.object.isRequired,
-    }
+    };
 
     render() {
         const {team} = this.props;
@@ -25,7 +25,9 @@ export default class TeamInList extends React.Component {
         } else {
             icon = (
                 <div className='team-btn__initials'>
-                    {team.display_name ? team.display_name.replace(/\s/g, '').substring(0, 2) : '??'}
+                    {team.display_name
+                        ? team.display_name.replace(/\s/g, '').substring(0, 2)
+                        : '??'}
                 </div>
             );
         }

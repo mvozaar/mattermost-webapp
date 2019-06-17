@@ -4,7 +4,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Modal} from 'react-bootstrap';
-import {getFilePreviewUrl, getFileUrl, getFileDownloadUrl} from 'mattermost-redux/utils/file_utils';
+import {
+    getFilePreviewUrl,
+    getFileUrl,
+    getFileDownloadUrl,
+} from 'mattermost-redux/utils/file_utils';
 
 import * as GlobalActions from 'actions/global_actions';
 import Constants, {FileTypes} from 'utils/constants';
@@ -23,7 +27,6 @@ const KeyCodes = Constants.KeyCodes;
 
 export default class ViewImageModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * The post the files are attached to
          */
@@ -82,7 +85,7 @@ export default class ViewImageModal extends React.PureComponent {
             id = 0;
         }
         this.showImage(id);
-    }
+    };
 
     handlePrev = (e) => {
         if (e) {
@@ -93,7 +96,7 @@ export default class ViewImageModal extends React.PureComponent {
             id = this.props.fileInfos.length - 1;
         }
         this.showImage(id);
-    }
+    };
 
     handleKeyPress = (e) => {
         if (Utils.isKeyPressed(e, KeyCodes.RIGHT)) {
@@ -101,13 +104,13 @@ export default class ViewImageModal extends React.PureComponent {
         } else if (Utils.isKeyPressed(e, KeyCodes.LEFT)) {
             this.handlePrev();
         }
-    }
+    };
 
     onModalShown = (nextProps) => {
         document.addEventListener('keyup', this.handleKeyPress);
 
         this.showImage(nextProps.startIndex);
-    }
+    };
 
     onModalHidden = () => {
         document.addEventListener('keyup', this.handleKeyPress);
@@ -115,9 +118,10 @@ export default class ViewImageModal extends React.PureComponent {
         if (this.refs.video) {
             this.refs.video.stop();
         }
-    }
+    };
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.show === true && this.props.show === false) {
             this.onModalShown(nextProps);
         } else if (nextProps.show === false && this.props.show === true) {
@@ -141,7 +145,7 @@ export default class ViewImageModal extends React.PureComponent {
         if (!this.state.loaded[id]) {
             this.loadImage(id);
         }
-    }
+    };
 
     loadImage = (index) => {
         const fileInfo = this.props.fileInfos[index];
@@ -159,13 +163,14 @@ export default class ViewImageModal extends React.PureComponent {
             Utils.loadImage(
                 previewUrl,
                 () => this.handleImageLoaded(index),
-                (completedPercentage) => this.handleImageProgress(index, completedPercentage)
+                (completedPercentage) =>
+                    this.handleImageProgress(index, completedPercentage),
             );
         } else {
             // there's nothing to load for non-image files
             this.handleImageLoaded(index);
         }
-    }
+    };
 
     handleImageLoaded = (index) => {
         this.setState((prevState) => {
@@ -176,7 +181,7 @@ export default class ViewImageModal extends React.PureComponent {
                 },
             };
         });
-    }
+    };
 
     handleImageProgress = (index, completedPercentage) => {
         this.setState((prevState) => {
@@ -187,24 +192,29 @@ export default class ViewImageModal extends React.PureComponent {
                 },
             };
         });
-    }
+    };
 
     handleGetPublicLink = () => {
         this.props.onModalDismissed();
 
-        GlobalActions.showGetPublicLinkModal(this.props.fileInfos[this.state.imageIndex].id);
-    }
+        GlobalActions.showGetPublicLinkModal(
+            this.props.fileInfos[this.state.imageIndex].id,
+        );
+    };
 
     onMouseEnterImage = () => {
         this.setState({showFooter: true});
-    }
+    };
 
     onMouseLeaveImage = () => {
         this.setState({showFooter: false});
-    }
+    };
 
     render() {
-        if (this.props.fileInfos.length < 1 || this.props.fileInfos.length - 1 < this.state.imageIndex) {
+        if (
+            this.props.fileInfos.length < 1 ||
+            this.props.fileInfos.length - 1 < this.state.imageIndex
+        ) {
             return null;
         }
 
@@ -212,7 +222,8 @@ export default class ViewImageModal extends React.PureComponent {
         const showPublicLink = !fileInfo.link;
         const fileName = fileInfo.link || fileInfo.name;
         const fileUrl = fileInfo.link || getFileUrl(fileInfo.id);
-        const fileDownloadUrl = fileInfo.link || getFileDownloadUrl(fileInfo.id);
+        const fileDownloadUrl =
+            fileInfo.link || getFileDownloadUrl(fileInfo.id);
         const isExternalFile = !fileInfo.id;
 
         let content;
@@ -226,14 +237,18 @@ export default class ViewImageModal extends React.PureComponent {
                         canDownloadFiles={this.props.canDownloadFiles}
                     />
                 );
-            } else if (fileType === FileTypes.VIDEO || fileType === FileTypes.AUDIO) {
+            } else if (
+                fileType === FileTypes.VIDEO ||
+                fileType === FileTypes.AUDIO
+            ) {
                 content = (
-                    <AudioVideoPreview
-                        fileInfo={fileInfo}
-                        fileUrl={fileUrl}
-                    />
+                    <AudioVideoPreview fileInfo={fileInfo} fileUrl={fileUrl} />
                 );
-            } else if (fileInfo && fileInfo.extension && fileInfo.extension === FileTypes.PDF) {
+            } else if (
+                fileInfo &&
+                fileInfo.extension &&
+                fileInfo.extension === FileTypes.PDF
+            ) {
                 content = (
                     <AsyncComponent
                         doLoad={loadPDFPreview}
@@ -242,30 +257,25 @@ export default class ViewImageModal extends React.PureComponent {
                     />
                 );
             } else if (CodePreview.supports(fileInfo)) {
-                content = (
-                    <CodePreview
-                        fileInfo={fileInfo}
-                        fileUrl={fileUrl}
-                    />
-                );
+                content = <CodePreview fileInfo={fileInfo} fileUrl={fileUrl} />;
             } else {
                 content = (
-                    <FileInfoPreview
-                        fileInfo={fileInfo}
-                        fileUrl={fileUrl}
-                    />
+                    <FileInfoPreview fileInfo={fileInfo} fileUrl={fileUrl} />
                 );
             }
         } else {
             // display a progress indicator when the preview for an image is still loading
-            const loading = Utils.localizeMessage('view_image.loading', 'Loading');
-            const progress = Math.floor(this.state.progress[this.state.imageIndex]);
+            const loading = Utils.localizeMessage(
+                'view_image.loading',
+                'Loading',
+            );
+
+            const progress = Math.floor(
+                this.state.progress[this.state.imageIndex],
+            );
 
             content = (
-                <LoadingImagePreview
-                    loading={loading}
-                    progress={progress}
-                />
+                <LoadingImagePreview loading={loading} progress={progress} />
             );
         }
 
@@ -277,6 +287,7 @@ export default class ViewImageModal extends React.PureComponent {
                         post={this.props.post}
                     />
                 );
+
                 break;
             }
         }
@@ -292,7 +303,7 @@ export default class ViewImageModal extends React.PureComponent {
                     href='#'
                     onClick={this.handlePrev}
                 >
-                    <i className='image-control image-prev'/>
+                    <i className='image-control image-prev' />
                 </a>
             );
 
@@ -304,7 +315,7 @@ export default class ViewImageModal extends React.PureComponent {
                     href='#'
                     onClick={this.handleNext}
                 >
-                    <i className='image-control image-next'/>
+                    <i className='image-control image-next' />
                 </a>
             );
         }
@@ -344,6 +355,7 @@ export default class ViewImageModal extends React.PureComponent {
                                 className={closeButtonClass}
                                 onClick={this.props.onModalDismissed}
                             />
+
                             <div className='modal-image__content'>
                                 {content}
                             </div>

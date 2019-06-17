@@ -39,6 +39,8 @@ That was some latex!`;
         const input = 'lorem ipsum www.dolor.com sit amet';
         const html = TextFormatting.formatText(input);
 
-        expect(messageHtmlToComponent(html, false, {hasPluginTooltips: true})).toMatchSnapshot();
+        expect(
+            messageHtmlToComponent(html, false, {hasPluginTooltips: true}),
+        ).toMatchSnapshot();
     });
 });

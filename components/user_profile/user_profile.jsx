@@ -34,7 +34,7 @@ export default class UserProfile extends PureComponent {
 
     hideProfilePopover = () => {
         this.refs.overlay.hide();
-    }
+    };
 
     render() {
         const {

@@ -28,7 +28,7 @@ export default class MemberListTeam extends React.Component {
             loadTeamMembersForProfilesList: PropTypes.func.isRequired,
             setModalSearchTerm: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -41,11 +41,17 @@ export default class MemberListTeam extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.loadProfilesAndTeamMembers(0, Constants.PROFILE_CHUNK_SIZE, this.props.currentTeamId).then(({data}) => {
-            if (data) {
-                this.loadComplete();
-            }
-        });
+        this.props.actions
+            .loadProfilesAndTeamMembers(
+                0,
+                Constants.PROFILE_CHUNK_SIZE,
+                this.props.currentTeamId,
+            )
+            .then(({data}) => {
+                if (data) {
+                    this.loadComplete();
+                }
+            });
 
         this.props.actions.getTeamStats(this.props.currentTeamId);
     }
@@ -54,7 +60,8 @@ export default class MemberListTeam extends React.Component {
         this.props.actions.setModalSearchTerm('');
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.searchTerm !== nextProps.searchTerm) {
             clearTimeout(this.searchTimeoutId);
 
@@ -65,30 +72,32 @@ export default class MemberListTeam extends React.Component {
                 return;
             }
 
-            const searchTimeoutId = setTimeout(
-                async () => {
-                    const {
-                        loadStatusesForProfilesList,
-                        loadTeamMembersForProfilesList,
-                        searchProfiles,
-                    } = nextProps.actions;
-                    const {data} = await searchProfiles(searchTerm, {team_id: nextProps.currentTeamId});
+            const searchTimeoutId = setTimeout(async () => {
+                const {
+                    loadStatusesForProfilesList,
+                    loadTeamMembersForProfilesList,
+                    searchProfiles,
+                } = nextProps.actions;
+                const {data} = await searchProfiles(searchTerm, {
+                    team_id: nextProps.currentTeamId,
+                });
 
-                    if (searchTimeoutId !== this.searchTimeoutId) {
-                        return;
+                if (searchTimeoutId !== this.searchTimeoutId) {
+                    return;
+                }
+
+                this.setState({loading: true});
+
+                loadStatusesForProfilesList(data);
+                loadTeamMembersForProfilesList(
+                    data,
+                    nextProps.currentTeamId,
+                ).then(({data: membersLoaded}) => {
+                    if (membersLoaded) {
+                        this.loadComplete();
                     }
-
-                    this.setState({loading: true});
-
-                    loadStatusesForProfilesList(data);
-                    loadTeamMembersForProfilesList(data, nextProps.currentTeamId).then(({data: membersLoaded}) => {
-                        if (membersLoaded) {
-                            this.loadComplete();
-                        }
-                    });
-                },
-                Constants.SEARCH_TIMEOUT_MILLISECONDS
-            );
+                });
+            }, Constants.SEARCH_TIMEOUT_MILLISECONDS);
 
             this.searchTimeoutId = searchTimeoutId;
         }
@@ -96,15 +105,15 @@ export default class MemberListTeam extends React.Component {
 
     loadComplete = () => {
         this.setState({loading: false});
-    }
+    };
 
     nextPage = (page) => {
         this.props.actions.loadProfilesAndTeamMembers(page + 1, USERS_PER_PAGE);
-    }
+    };
 
     search = (term) => {
         this.props.actions.setModalSearchTerm(term);
-    }
+    };
 
     render() {
         let teamMembersDropdown = null;

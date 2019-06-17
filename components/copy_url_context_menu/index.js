@@ -24,4 +24,7 @@ function mapDispatchToProps() {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CopyUrlContextMenu);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(CopyUrlContextMenu);

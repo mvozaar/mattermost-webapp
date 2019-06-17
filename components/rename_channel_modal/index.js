@@ -21,7 +21,7 @@ const mapStateToProps = createSelector(
             team,
         };
     },
-    (teamInfo) => ({...teamInfo})
+    (teamInfo) => ({...teamInfo}),
 );
 
 function mapDispatchToProps(dispatch) {
@@ -32,4 +32,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RenameChannelModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(RenameChannelModal);

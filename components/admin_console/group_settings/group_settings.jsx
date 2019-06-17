@@ -27,7 +27,9 @@ export default class GroupSettings extends React.PureComponent {
                     <div className='banner__content'>
                         <FormattedMarkdownMessage
                             id='admin.group_settings.introBanner'
-                            defaultMessage={'Groups are a way to organize users and apply actions to all users within that group.\nFor more information on Groups, please see [documentation](!https://www.mattermost.com/default-ad-ldap-groups).'}
+                            defaultMessage={
+                                'Groups are a way to organize users and apply actions to all users within that group.\nFor more information on Groups, please see [documentation](!https://www.securCom.me/default-ad-ldap-groups).'
+                            }
                         />
                     </div>
                 </div>
@@ -37,10 +39,10 @@ export default class GroupSettings extends React.PureComponent {
                     titleId={t('admin.group_settings.ldapGroupsTitle')}
                     titleDefault='AD/LDAP Groups'
                     subtitleId={t('admin.group_settings.ldapGroupsDescription')}
-                    subtitleDefault={`Link and configure groups from your AD/LDAP to Mattermost. Please ensure you have configured a [group filter](${siteURL}/admin_console/authentication/ldap).`}
+                    subtitleDefault={`Link and configure groups from your AD/LDAP to SCC. Please ensure you have configured a [group filter](${siteURL}/admin_console/authentication/ldap).`}
                     subtitleValues={{siteURL}}
                 >
-                    <GroupsList/>
+                    <GroupsList />
                 </AdminPanel>
             </div>
         );

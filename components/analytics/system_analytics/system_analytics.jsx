@@ -29,7 +29,7 @@ export default class SystemAnalytics extends React.PureComponent {
     static propTypes = {
         isLicensed: PropTypes.bool.isRequired,
         stats: PropTypes.object,
-    }
+    };
 
     componentDidMount() {
         AdminActions.getStandardAnalytics();
@@ -45,8 +45,13 @@ export default class SystemAnalytics extends React.PureComponent {
         const stats = this.props.stats;
         const isLicensed = this.props.isLicensed;
         const skippedIntensiveQueries = stats[StatTypes.TOTAL_POSTS] === -1;
-        const postCountsDay = formatPostsPerDayData(stats[StatTypes.POST_PER_DAY]);
-        const userCountsWithPostsDay = formatUsersWithPostsPerDayData(stats[StatTypes.USERS_WITH_POSTS_PER_DAY]);
+        const postCountsDay = formatPostsPerDayData(
+            stats[StatTypes.POST_PER_DAY],
+        );
+
+        const userCountsWithPostsDay = formatUsersWithPostsPerDayData(
+            stats[StatTypes.USERS_WITH_POSTS_PER_DAY],
+        );
 
         let banner;
         let postCount;
@@ -58,7 +63,7 @@ export default class SystemAnalytics extends React.PureComponent {
                     <div className='banner__content'>
                         <FormattedMarkdownMessage
                             id='analytics.system.skippedIntensiveQueries'
-                            defaultMessage='To maximize performance, some statistics are disabled. You can [re-enable them in config.json](!https://docs.mattermost.com/administration/statistics.html).'
+                            defaultMessage='To maximize performance, some statistics are disabled. You can [re-enable them in config.json](!https://docs.securCom.me/administration/statistics.html).'
                         />
                     </div>
                 </div>
@@ -181,6 +186,7 @@ export default class SystemAnalytics extends React.PureComponent {
                         icon='fa-user'
                         count={stats[StatTypes.TOTAL_WEBSOCKET_CONNECTIONS]}
                     />
+
                     <StatisticCount
                         title={
                             <FormattedMessage
@@ -191,6 +197,7 @@ export default class SystemAnalytics extends React.PureComponent {
                         icon='fa-terminal'
                         count={stats[StatTypes.TOTAL_MASTER_DB_CONNECTIONS]}
                     />
+
                     <StatisticCount
                         title={
                             <FormattedMessage
@@ -204,8 +211,16 @@ export default class SystemAnalytics extends React.PureComponent {
                 </div>
             );
 
-            const channelTypeData = formatChannelDoughtnutData(stats[StatTypes.TOTAL_PUBLIC_CHANNELS], stats[StatTypes.TOTAL_PRIVATE_GROUPS]);
-            const postTypeData = formatPostDoughtnutData(stats[StatTypes.TOTAL_FILE_POSTS], stats[StatTypes.TOTAL_HASHTAG_POSTS], stats[StatTypes.TOTAL_POSTS]);
+            const channelTypeData = formatChannelDoughtnutData(
+                stats[StatTypes.TOTAL_PUBLIC_CHANNELS],
+                stats[StatTypes.TOTAL_PRIVATE_GROUPS],
+            );
+
+            const postTypeData = formatPostDoughtnutData(
+                stats[StatTypes.TOTAL_FILE_POSTS],
+                stats[StatTypes.TOTAL_HASHTAG_POSTS],
+                stats[StatTypes.TOTAL_POSTS],
+            );
 
             let postTypeGraph;
             if (stats[StatTypes.TOTAL_POSTS] !== -1) {
@@ -237,6 +252,7 @@ export default class SystemAnalytics extends React.PureComponent {
                         width={300}
                         height={225}
                     />
+
                     {postTypeGraph}
                 </div>
             );
@@ -277,7 +293,10 @@ export default class SystemAnalytics extends React.PureComponent {
                     />
                 }
                 icon='fa-globe'
-                count={stats[StatTypes.TOTAL_PUBLIC_CHANNELS] + stats[StatTypes.TOTAL_PRIVATE_GROUPS]}
+                count={
+                    stats[StatTypes.TOTAL_PUBLIC_CHANNELS] +
+                    stats[StatTypes.TOTAL_PRIVATE_GROUPS]
+                }
             />
         );
 
@@ -368,6 +387,7 @@ export default class SystemAnalytics extends React.PureComponent {
                     id='analytics.system.title'
                     defaultMessage='System Statistics'
                 />
+
                 {banner}
                 <div className='row'>
                     {firstRow}

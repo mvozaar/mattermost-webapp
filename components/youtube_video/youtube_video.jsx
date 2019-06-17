@@ -21,7 +21,7 @@ export default class YoutubeVideo extends React.PureComponent {
         link: PropTypes.string.isRequired,
         show: PropTypes.bool.isRequired,
         googleDeveloperKey: PropTypes.string,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -42,11 +42,13 @@ export default class YoutubeVideo extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         this.updateStateFromProps(this.props);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         this.updateStateFromProps(nextProps);
     }
 
@@ -104,8 +106,12 @@ export default class YoutubeVideo extends React.PureComponent {
     componentDidMount() {
         const key = this.props.googleDeveloperKey;
         if (key) {
-            getYoutubeVideoInfo(key, this.state.videoId,
-                this.handleReceivedMetadata, this.handleMetadataError);
+            getYoutubeVideoInfo(
+                key,
+                this.state.videoId,
+                this.handleReceivedMetadata,
+                this.handleMetadataError,
+            );
         } else {
             this.loadWithoutKey();
         }
@@ -114,7 +120,12 @@ export default class YoutubeVideo extends React.PureComponent {
     loadWithoutKey() {
         this.setState({
             loaded: true,
-            thumb: PostUtils.getImageSrc('https://i.ytimg.com/vi/' + this.state.videoId + '/hqdefault.jpg', this.props.hasImageProxy),
+            thumb: PostUtils.getImageSrc(
+                'https://i.ytimg.com/vi/' +
+                    this.state.videoId +
+                    '/hqdefault.jpg',
+                this.props.hasImageProxy,
+            ),
         });
     }
 
@@ -122,23 +133,39 @@ export default class YoutubeVideo extends React.PureComponent {
         this.setState({
             failed: true,
             loaded: true,
-            title: Utils.localizeMessage('youtube_video.notFound', 'Video not found'),
+            title: Utils.localizeMessage(
+                'youtube_video.notFound',
+                'Video not found',
+            ),
         });
     }
 
     handleReceivedMetadata(data) {
-        if (!data || !data.items || !data.items.length || !data.items[0].snippet) {
+        if (
+            !data ||
+            !data.items ||
+            !data.items.length ||
+            !data.items[0].snippet
+        ) {
             this.setState({
                 failed: true,
                 loaded: true,
-                title: Utils.localizeMessage('youtube_video.notFound', 'Video not found'),
+                title: Utils.localizeMessage(
+                    'youtube_video.notFound',
+                    'Video not found',
+                ),
             });
+
             return null;
         }
         const metadata = data.items[0].snippet;
-        let thumb = 'https://i.ytimg.com/vi/' + this.state.videoId + '/hqdefault.jpg';
+        let thumb =
+            'https://i.ytimg.com/vi/' + this.state.videoId + '/hqdefault.jpg';
         if (metadata.liveBroadcastContent === 'live') {
-            thumb = 'https://i.ytimg.com/vi/' + this.state.videoId + '/hqdefault_live.jpg';
+            thumb =
+                'https://i.ytimg.com/vi/' +
+                this.state.videoId +
+                '/hqdefault_live.jpg';
         }
 
         this.setState({
@@ -147,6 +174,7 @@ export default class YoutubeVideo extends React.PureComponent {
             title: metadata.title,
             thumb: PostUtils.getImageSrc(thumb, this.props.hasImageProxy),
         });
+
         return null;
     }
 
@@ -161,10 +189,8 @@ export default class YoutubeVideo extends React.PureComponent {
     render() {
         if (!this.state.loaded) {
             return (
-                <div
-                    className='post__embed-container'
-                >
-                    <div className='video-loading'/>
+                <div className='post__embed-container'>
+                    <div className='video-loading' />
                 </div>
             );
         }
@@ -194,9 +220,14 @@ export default class YoutubeVideo extends React.PureComponent {
                     <div className='video-thumbnail__container'>
                         <div className='video-thumbnail__error'>
                             <div>
-                                <WarningIcon additionalClassName='fa-2x'/>
+                                <WarningIcon additionalClassName='fa-2x' />
                             </div>
-                            <div>{Utils.localizeMessage('youtube_video.notFound', 'Video not found')}</div>
+                            <div>
+                                {Utils.localizeMessage(
+                                    'youtube_video.notFound',
+                                    'Video not found',
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -204,7 +235,12 @@ export default class YoutubeVideo extends React.PureComponent {
         } else if (this.state.playing) {
             content = (
                 <iframe
-                    src={'https://www.youtube.com/embed/' + this.state.videoId + '?autoplay=1&autohide=1&border=0&wmode=opaque&fs=1&enablejsapi=1' + this.state.time}
+                    src={
+                        'https://www.youtube.com/embed/' +
+                        this.state.videoId +
+                        '?autoplay=1&autohide=1&border=0&wmode=opaque&fs=1&enablejsapi=1' +
+                        this.state.time
+                    }
                     width='480px'
                     height='360px'
                     type='text/html'
@@ -221,8 +257,11 @@ export default class YoutubeVideo extends React.PureComponent {
                             className='video-thumbnail'
                             src={this.state.thumb}
                         />
+
                         <div className='block'>
-                            <span className='play-button'><span/></span>
+                            <span className='play-button'>
+                                <span />
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -230,9 +269,7 @@ export default class YoutubeVideo extends React.PureComponent {
         }
 
         return (
-            <div
-                className='post__embed-container'
-            >
+            <div className='post__embed-container'>
                 <div>
                     {header}
                     <div

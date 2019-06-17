@@ -30,17 +30,10 @@ class ChannelSuggestion extends Suggestion {
                 {...Suggestion.baseProps}
             >
                 <div className='mention__align'>
-                    <span>
-                        {channelName}
-                    </span>
-                    <span className='mention__channelname'>
-                        {' '}
-                        {description}
-                    </span>
+                    <span>{channelName}</span>
+                    <span className='mention__channelname'> {description}</span>
                 </div>
-                <div className='mention__purpose'>
-                    {purpose}
-                </div>
+                <div className='mention__purpose'>{purpose}</div>
             </div>
         );
     }
@@ -51,23 +44,20 @@ export default class ChannelProvider extends Provider {
         const normalizedPretext = pretext.toLowerCase();
         this.startNewRequest(normalizedPretext);
 
-        autocompleteChannels(
-            normalizedPretext,
-            (data) => {
-                if (this.shouldCancelDispatch(normalizedPretext)) {
-                    return;
-                }
-
-                const channels = Object.assign([], data);
-
-                resultsCallback({
-                    matchedPretext: normalizedPretext,
-                    terms: channels.map((channel) => channel.display_name),
-                    items: channels,
-                    component: ChannelSuggestion,
-                });
+        autocompleteChannels(normalizedPretext, (data) => {
+            if (this.shouldCancelDispatch(normalizedPretext)) {
+                return;
             }
-        );
+
+            const channels = Object.assign([], data);
+
+            resultsCallback({
+                matchedPretext: normalizedPretext,
+                terms: channels.map((channel) => channel.display_name),
+                items: channels,
+                component: ChannelSuggestion,
+            });
+        });
 
         return true;
     }

@@ -22,10 +22,7 @@ export default class TutorialView extends React.Component {
 
     render() {
         return (
-            <div
-                id='app-content'
-                className='app__content'
-            >
+            <div id='app-content' className='app__content'>
                 <TutorialIntroScreens
                     townSquareDisplayName={this.props.townSquareDisplayName}
                     appDownloadLink={this.props.appDownloadLink}

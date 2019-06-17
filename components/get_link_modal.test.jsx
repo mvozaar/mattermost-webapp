@@ -4,7 +4,10 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 
-import {shallowWithIntl, mountWithIntl} from 'tests/helpers/intl-test-helper.jsx';
+import {
+    shallowWithIntl,
+    mountWithIntl,
+} from 'tests/helpers/intl-test-helper.jsx';
 import GetLinkModal from 'components/get_link_modal.jsx';
 
 describe('components/GetLinkModal', () => {
@@ -13,24 +16,20 @@ describe('components/GetLinkModal', () => {
         show: true,
         onHide,
         title: 'title',
-        link: 'https://mattermost.com',
+        link: 'https://securCom.me',
     };
 
     test('should match snapshot when all props is set', () => {
         const helpText = 'help text';
         const props = {...requiredProps, helpText};
 
-        const wrapper = shallowWithIntl(
-            <GetLinkModal {...props}/>
-        );
+        const wrapper = shallowWithIntl(<GetLinkModal {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot when helpText is not set', () => {
-        const wrapper = shallowWithIntl(
-            <GetLinkModal {...requiredProps}/>
-        );
+        const wrapper = shallowWithIntl(<GetLinkModal {...requiredProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -39,11 +38,13 @@ describe('components/GetLinkModal', () => {
         const newOnHide = jest.fn();
         const props = {...requiredProps, onHide: newOnHide};
 
-        const wrapper = shallowWithIntl(
-            <GetLinkModal {...props}/>
-        );
+        const wrapper = shallowWithIntl(<GetLinkModal {...props} />);
 
-        wrapper.find(Modal).first().props().onHide();
+        wrapper
+            .find(Modal)
+            .first()
+            .props()
+            .onHide();
         expect(newOnHide).toHaveBeenCalledTimes(1);
         expect(wrapper.state('copiedLink')).toBe(false);
 
@@ -59,9 +60,7 @@ describe('components/GetLinkModal', () => {
     });
 
     test('should have handle copyLink', () => {
-        const wrapper = mountWithIntl(
-            <GetLinkModal {...requiredProps}/>
-        );
+        const wrapper = mountWithIntl(<GetLinkModal {...requiredProps} />);
 
         wrapper.instance().copyLink();
         expect(wrapper.state('copiedLink')).toBe(true);

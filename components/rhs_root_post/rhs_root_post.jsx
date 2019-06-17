@@ -94,7 +94,10 @@ export default class RhsRootPost extends React.Component {
             return true;
         }
 
-        if ((this.state.width !== nextState.width) || this.state.height !== nextState.height) {
+        if (
+            this.state.width !== nextState.width ||
+            this.state.height !== nextState.height
+        ) {
             return true;
         }
 
@@ -108,9 +111,11 @@ export default class RhsRootPost extends React.Component {
             return null;
         }
 
-        const isPermalink = !(isEphemeral ||
+        const isPermalink = !(
+            isEphemeral ||
             Posts.POST_DELETED === post.state ||
-            ReduxPostUtils.isPostPendingOrFailed(post));
+            ReduxPostUtils.isPostPendingOrFailed(post)
+        );
 
         return (
             <PostTime
@@ -166,7 +171,14 @@ export default class RhsRootPost extends React.Component {
     };
 
     render() {
-        const {post, isReadOnly, teamId, channelIsArchived, channelType, channelDisplayName} = this.props;
+        const {
+            post,
+            isReadOnly,
+            teamId,
+            channelIsArchived,
+            channelType,
+            channelDisplayName,
+        } = this.props;
 
         const isEphemeral = Utils.isPostEphemeral(post);
         const isSystemMessage = PostUtils.isSystemMessage(post);
@@ -184,7 +196,14 @@ export default class RhsRootPost extends React.Component {
         }
 
         let postReaction;
-        if (!isReadOnly && !isEphemeral && !post.failed && !isSystemMessage && this.props.enableEmojiPicker && !channelIsArchived) {
+        if (
+            !isReadOnly &&
+            !isEphemeral &&
+            !post.failed &&
+            !isSystemMessage &&
+            this.props.enableEmojiPicker &&
+            !channelIsArchived
+        ) {
             postReaction = (
                 <PostReaction
                     channelId={post.channel_id}
@@ -224,7 +243,10 @@ export default class RhsRootPost extends React.Component {
                 />
             );
         } else if (post.props && post.props.from_webhook) {
-            if (post.props.override_username && this.props.enablePostUsernameOverride) {
+            if (
+                post.props.override_username &&
+                this.props.enablePostUsernameOverride
+            ) {
                 userProfile = (
                     <UserProfile
                         key={post.user_id}
@@ -245,7 +267,7 @@ export default class RhsRootPost extends React.Component {
                 );
             }
 
-            botIndicator = <BotBadge className='col col__name'/>;
+            botIndicator = <BotBadge className='col col__name' />;
         } else {
             userProfile = (
                 <UserProfile
@@ -291,10 +313,7 @@ export default class RhsRootPost extends React.Component {
         let dotMenuContainer;
         if (this.props.post.type !== Constants.PostTypes.FAKE_PARENT_DELETED) {
             dotMenuContainer = (
-                <div
-                    ref='dotMenu'
-                    className='col col__reply'
-                >
+                <div ref='dotMenu' className='col col__reply'>
                     {dotMenu}
                     {postReaction}
                 </div>
@@ -343,7 +362,9 @@ export default class RhsRootPost extends React.Component {
                             <div className={postClass}>
                                 <MessageWithAdditionalContent
                                     post={post}
-                                    previewCollapsed={this.props.previewCollapsed}
+                                    previewCollapsed={
+                                        this.props.previewCollapsed
+                                    }
                                     previewEnabled={this.props.previewEnabled}
                                     isEmbedVisible={this.props.isEmbedVisible}
                                     pluginPostTypes={this.props.pluginPostTypes}

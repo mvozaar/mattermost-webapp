@@ -17,7 +17,7 @@ export default class FullScreenModal extends React.Component {
         show: PropTypes.bool.isRequired,
         children: PropTypes.node.isRequired,
         onClose: PropTypes.func.isRequired,
-    }
+    };
 
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeypress);
@@ -31,11 +31,11 @@ export default class FullScreenModal extends React.Component {
         if (e.key === 'Escape' && this.props.show) {
             this.close();
         }
-    }
+    };
 
     close = () => {
         this.props.onClose();
-    }
+    };
 
     render() {
         return (
@@ -48,10 +48,8 @@ export default class FullScreenModal extends React.Component {
                 appear={true}
             >
                 <div className='FullScreenModal'>
-                    <CloseIcon
-                        className='close-x'
-                        onClick={this.close}
-                    />
+                    <CloseIcon className='close-x' onClick={this.close} />
+
                     {this.props.children}
                 </div>
             </CSSTransition>

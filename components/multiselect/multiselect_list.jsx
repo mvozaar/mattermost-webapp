@@ -33,7 +33,8 @@ export default class MultiSelectList extends React.Component {
         document.removeEventListener('keydown', this.handleArrowPress);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         this.setState({selected: this.toSelect});
 
         const options = nextProps.options;
@@ -50,7 +51,8 @@ export default class MultiSelectList extends React.Component {
 
         if (this.refs.list && this.refs.selected) {
             const elemTop = this.refs.selected.getBoundingClientRect().top;
-            const elemBottom = this.refs.selected.getBoundingClientRect().bottom;
+            const elemBottom = this.refs.selected.getBoundingClientRect()
+                .bottom;
             const listTop = this.refs.list.getBoundingClientRect().top;
             const listBottom = this.refs.list.getBoundingClientRect().bottom;
             if (elemBottom > listBottom) {
@@ -77,22 +79,26 @@ export default class MultiSelectList extends React.Component {
 
         let selected;
         switch (e.key) {
-        case KeyCodes.DOWN[0]:
-            if (this.state.selected === -1) {
-                selected = 0;
+            case KeyCodes.DOWN[0]:
+                if (this.state.selected === -1) {
+                    selected = 0;
+                    break;
+                }
+                selected = Math.min(
+                    this.state.selected + 1,
+                    options.length - 1,
+                );
+
                 break;
-            }
-            selected = Math.min(this.state.selected + 1, options.length - 1);
-            break;
-        case KeyCodes.UP[0]:
-            if (this.state.selected === -1) {
-                selected = 0;
+            case KeyCodes.UP[0]:
+                if (this.state.selected === -1) {
+                    selected = 0;
+                    break;
+                }
+                selected = Math.max(this.state.selected - 1, 0);
                 break;
-            }
-            selected = Math.max(this.state.selected - 1, 0);
-            break;
-        default:
-            return;
+            default:
+                return;
         }
 
         e.preventDefault();
@@ -123,19 +129,13 @@ export default class MultiSelectList extends React.Component {
         if (this.props.loading) {
             return (
                 <div>
-                    <LoadingScreen
-                        position='absolute'
-                        key='loading'
-                    />
+                    <LoadingScreen position='absolute' key='loading' />
                 </div>
             );
         }
         if (options == null || options.length === 0) {
             return (
-                <div
-                    key='no-users-found'
-                    className='no-channel-message'
-                >
+                <div key='no-users-found' className='no-channel-message'>
                     <p className='primary-message'>
                         <FormattedMessage
                             id='multiselect.list.notFound'
@@ -153,15 +153,13 @@ export default class MultiSelectList extends React.Component {
             renderer = this.defaultOptionRenderer;
         }
 
-        const optionControls = options.map((o, i) => renderer(o, this.state.selected === i, this.props.onAdd));
+        const optionControls = options.map((o, i) =>
+            renderer(o, this.state.selected === i, this.props.onAdd),
+        );
 
         return (
             <div className='more-modal__list'>
-                <div
-                    ref='list'
-                >
-                    {optionControls}
-                </div>
+                <div ref='list'>{optionControls}</div>
             </div>
         );
     }

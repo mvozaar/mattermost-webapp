@@ -25,13 +25,13 @@ export default class UnmuteChannelButton extends React.PureComponent {
         const {
             user,
             channel,
-            actions: {
-                updateChannelNotifyProps,
-            },
+            actions: {updateChannelNotifyProps},
         } = this.props;
 
-        updateChannelNotifyProps(user.id, channel.id, {mark_unread: NotificationLevels.ALL});
-    }
+        updateChannelNotifyProps(user.id, channel.id, {
+            mark_unread: NotificationLevels.ALL,
+        });
+    };
 
     render() {
         return (
@@ -40,7 +40,7 @@ export default class UnmuteChannelButton extends React.PureComponent {
                 className='navbar-toggle icon icon__mute'
                 onClick={this.handleClick}
             >
-                <span className='fa fa-bell-slash-o icon'/>
+                <span className='fa fa-bell-slash-o icon' />
             </button>
         );
     }

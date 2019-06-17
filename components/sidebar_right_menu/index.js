@@ -20,24 +20,39 @@ function mapStateToProps(state) {
     const currentTeam = getCurrentTeam(state);
 
     const enableTutorial = config.EnableTutorial === 'true';
-    const tutorialStep = getInt(state, Preferences.TUTORIAL_STEP, getCurrentUserId(state), TutorialSteps.FINISHED);
+    const tutorialStep = getInt(
+        state,
+        Preferences.TUTORIAL_STEP,
+        getCurrentUserId(state),
+        TutorialSteps.FINISHED,
+    );
 
     const siteName = config.SiteName;
 
     return {
         teamDisplayName: currentTeam.display_name,
         isOpen: getIsRhsMenuOpen(state),
-        showTutorialTip: enableTutorial && isMobile() && tutorialStep === TutorialSteps.MENU_POPOVER,
+        showTutorialTip:
+            enableTutorial &&
+            isMobile() &&
+            tutorialStep === TutorialSteps.MENU_POPOVER,
         siteName,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            openRhsMenu,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                openRhsMenu,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarRightMenu);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SidebarRightMenu);

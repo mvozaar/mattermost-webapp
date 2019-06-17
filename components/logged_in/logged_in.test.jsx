@@ -19,6 +19,7 @@ describe('components/logged_in/LoggedIn', () => {
         actions: {
             autoUpdateTimezone: jest.fn(),
         },
+
         showTermsOfService: false,
         location: {
             pathname: '/',
@@ -38,8 +39,7 @@ describe('components/logged_in/LoggedIn', () => {
   position="relative"
   style={Object {}}
 />
-`
-        );
+`);
     });
 
     it('should redirect to mfa when required and not on /mfa/setup', () => {
@@ -54,8 +54,7 @@ describe('components/logged_in/LoggedIn', () => {
 <Redirect
   to="/mfa/setup"
 />
-`
-        );
+`);
     });
 
     it('should render children when mfa required and already on /mfa/setup', () => {
@@ -73,8 +72,7 @@ describe('components/logged_in/LoggedIn', () => {
 <span>
   Test
 </span>
-`
-        );
+`);
     });
 
     it('should render children when mfa is not required and on /mfa/confirm', () => {
@@ -92,8 +90,7 @@ describe('components/logged_in/LoggedIn', () => {
 <span>
   Test
 </span>
-`
-        );
+`);
     });
 
     it('should redirect to terms of service when mfa not required and terms of service required but not on /terms_of_service', () => {
@@ -109,8 +106,7 @@ describe('components/logged_in/LoggedIn', () => {
 <Redirect
   to="/terms_of_service?redirect_to=%2F"
 />
-`
-        );
+`);
     });
 
     it('should render children when mfa is not required and terms of service required and on /terms_of_service', () => {
@@ -129,8 +125,7 @@ describe('components/logged_in/LoggedIn', () => {
 <span>
   Test
 </span>
-`
-        );
+`);
     });
 
     it('should render children when neither mfa nor terms of service required', () => {
@@ -146,7 +141,6 @@ describe('components/logged_in/LoggedIn', () => {
 <span>
   Test
 </span>
-`
-        );
+`);
     });
 });

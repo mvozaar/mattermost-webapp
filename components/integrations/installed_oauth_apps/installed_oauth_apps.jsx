@@ -13,48 +13,46 @@ import FormattedMarkdownMessage from 'components/formatted_markdown_message';
 
 export default class InstalledOAuthApps extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The team data
-        */
+         * The team data
+         */
         team: PropTypes.object,
 
         /**
-        * The oauthApps data
-        */
+         * The oauthApps data
+         */
         oauthApps: PropTypes.object,
 
         /**
-        * Set if user can manage oath
-        */
+         * Set if user can manage oath
+         */
         canManageOauth: PropTypes.bool,
 
         /**
-        * The request state for regenOAuthAppSecret action. Contains status and error
-        */
+         * The request state for regenOAuthAppSecret action. Contains status and error
+         */
         regenOAuthAppSecretRequest: PropTypes.object.isRequired,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call to fetch OAuth apps
-            */
+             * The function to call to fetch OAuth apps
+             */
             loadOAuthAppsAndProfiles: PropTypes.func.isRequired,
 
             /**
-            * The function to call when Regenerate Secret link is clicked
-            */
+             * The function to call when Regenerate Secret link is clicked
+             */
             regenOAuthAppSecret: PropTypes.func.isRequired,
 
             /**
-            * The function to call when Delete link is clicked
-            */
+             * The function to call when Delete link is clicked
+             */
             deleteOAuthApp: PropTypes.func.isRequired,
         }).isRequired,
 
         /**
-        * Whether or not OAuth applications are enabled.
-        */
+         * Whether or not OAuth applications are enabled.
+         */
         enableOAuthServiceProvider: PropTypes.bool,
     };
 
@@ -67,9 +65,9 @@ export default class InstalledOAuthApps extends React.PureComponent {
 
     componentDidMount() {
         if (this.props.enableOAuthServiceProvider) {
-            this.props.actions.loadOAuthAppsAndProfiles().then(
-                () => this.setState({loading: false})
-            );
+            this.props.actions
+                .loadOAuthAppsAndProfiles()
+                .then(() => this.setState({loading: false}));
         }
     }
 
@@ -77,45 +75,64 @@ export default class InstalledOAuthApps extends React.PureComponent {
         if (app && app.id) {
             this.props.actions.deleteOAuthApp(app.id);
         }
-    }
+    };
 
     oauthAppCompare(a, b) {
         let nameA = a.name;
         if (!nameA) {
-            nameA = localizeMessage('installed_integrations.unnamed_oauth_app', 'Unnamed OAuth 2.0 Application');
+            nameA = localizeMessage(
+                'installed_integrations.unnamed_oauth_app',
+                'Unnamed OAuth 2.0 Application',
+            );
         }
 
         let nameB = b.name;
         if (!nameB) {
-            nameB = localizeMessage('installed_integrations.unnamed_oauth_app', 'Unnamed OAuth 2.0 Application');
+            nameB = localizeMessage(
+                'installed_integrations.unnamed_oauth_app',
+                'Unnamed OAuth 2.0 Application',
+            );
         }
 
         return nameA.localeCompare(nameB);
     }
 
-    oauthApps = (filter) => Object.values(this.props.oauthApps).
-        filter((app) => matchesFilter(app, filter)).
-        sort(this.oauthAppCompare).
-        map((app) => {
-            return (
-                <InstalledOAuthApp
-                    key={app.id}
-                    team={this.props.team}
-                    oauthApp={app}
-                    regenOAuthAppSecretRequest={this.props.regenOAuthAppSecretRequest}
-                    onRegenerateSecret={this.props.actions.regenOAuthAppSecret}
-                    onDelete={this.deleteOAuthApp}
-                />
-            );
-        });
+    oauthApps = (filter) =>
+        Object.values(this.props.oauthApps)
+            .filter((app) => matchesFilter(app, filter))
+            .sort(this.oauthAppCompare)
+            .map((app) => {
+                return (
+                    <InstalledOAuthApp
+                        key={app.id}
+                        team={this.props.team}
+                        oauthApp={app}
+                        regenOAuthAppSecretRequest={
+                            this.props.regenOAuthAppSecretRequest
+                        }
+                        onRegenerateSecret={
+                            this.props.actions.regenOAuthAppSecret
+                        }
+                        onDelete={this.deleteOAuthApp}
+                    />
+                );
+            });
 
     render() {
-        const integrationsEnabled = this.props.enableOAuthServiceProvider && this.props.canManageOauth;
+        const integrationsEnabled =
+            this.props.enableOAuthServiceProvider && this.props.canManageOauth;
         let props;
         if (integrationsEnabled) {
             props = {
-                addLink: '/' + this.props.team.name + '/integrations/oauth2-apps/add',
-                addText: localizeMessage('installed_oauth_apps.add', 'Add OAuth 2.0 Application'),
+                addLink:
+                    '/' +
+                    this.props.team.name +
+                    '/integrations/oauth2-apps/add',
+                addText: localizeMessage(
+                    'installed_oauth_apps.add',
+                    'Add OAuth 2.0 Application',
+                ),
+
                 addButtonId: 'addOauthApp',
             };
         }
@@ -131,13 +148,13 @@ export default class InstalledOAuthApps extends React.PureComponent {
                 helpText={
                     <FormattedMessage
                         id='installed_oauth_apps.help'
-                        defaultMessage='Create {oauthApplications} to securely integrate bots and third-party apps with Mattermost. Visit the {appDirectory} to find available self-hosted apps.'
+                        defaultMessage='Create {oauthApplications} to securely integrate bots and third-party apps with SCC. Visit the {appDirectory} to find available self-hosted apps.'
                         values={{
                             oauthApplications: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='https://docs.mattermost.com/developer/oauth-2-0-applications.html'
+                                    href='https://docs.securCom.me/developer/oauth-2-0-applications.html'
                                 >
                                     <FormattedMessage
                                         id='installed_oauth_apps.help.oauthApplications'
@@ -145,11 +162,12 @@ export default class InstalledOAuthApps extends React.PureComponent {
                                     />
                                 </a>
                             ),
+
                             appDirectory: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='https://about.mattermost.com/default-app-directory/'
+                                    href='https://about.securCom.me/default-app-directory/'
                                 >
                                     <FormattedMessage
                                         id='installed_oauth_apps.help.appDirectory'
@@ -172,7 +190,10 @@ export default class InstalledOAuthApps extends React.PureComponent {
                         defaultMessage='No OAuth 2.0 Applications match {searchTerm}'
                     />
                 }
-                searchPlaceholder={localizeMessage('installed_oauth_apps.search', 'Search OAuth 2.0 Applications')}
+                searchPlaceholder={localizeMessage(
+                    'installed_oauth_apps.search',
+                    'Search OAuth 2.0 Applications',
+                )}
                 loading={this.state.loading}
                 {...props}
             >

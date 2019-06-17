@@ -19,13 +19,12 @@ describe('components/PostMarkdown', () => {
         const props = {...baseProps};
         Reflect.deleteProperty(props, 'post');
 
-        shallow(<PostMarkdown {...props}/>);
+        shallow(<PostMarkdown {...props} />);
     });
 
     test('should render properly with an empty post', () => {
-        const wrapper = shallow(
-            <PostMarkdown {...baseProps}/>
-        );
+        const wrapper = shallow(<PostMarkdown {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -43,9 +42,9 @@ describe('components/PostMarkdown', () => {
                 },
             },
         };
-        const wrapper = shallow(
-            <PostMarkdown {...props}/>
-        );
+
+        const wrapper = shallow(<PostMarkdown {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -66,9 +65,9 @@ describe('components/PostMarkdown', () => {
                 },
             },
         };
-        const wrapper = shallow(
-            <PostMarkdown {...props}/>
-        );
+
+        const wrapper = shallow(<PostMarkdown {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -86,12 +85,14 @@ describe('components/PostMarkdown', () => {
                     },
                 },
             },
+
             pluginHooks: [
                 {
                     hook: (post, updatedMessage) => {
                         return 'hello ' + updatedMessage;
                     },
                 },
+
                 {
                     hook: (post, updatedMessage) => {
                         return updatedMessage + '!';
@@ -99,9 +100,9 @@ describe('components/PostMarkdown', () => {
                 },
             ],
         };
-        const wrapper = shallow(
-            <PostMarkdown {...props}/>
-        );
+
+        const wrapper = shallow(<PostMarkdown {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -119,12 +120,14 @@ describe('components/PostMarkdown', () => {
                     },
                 },
             },
+
             pluginHooks: [
                 {
                     hook: (post) => {
                         return 'hello ' + post.message;
                     },
                 },
+
                 {
                     hook: (post) => {
                         return post.message + '!';
@@ -132,9 +135,9 @@ describe('components/PostMarkdown', () => {
                 },
             ],
         };
-        const wrapper = shallow(
-            <PostMarkdown {...props}/>
-        );
+
+        const wrapper = shallow(<PostMarkdown {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

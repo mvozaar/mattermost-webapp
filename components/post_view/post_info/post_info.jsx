@@ -18,7 +18,6 @@ import PostTime from 'components/post_view/post_time';
 
 export default class PostInfo extends React.PureComponent {
     static propTypes = {
-
         /*
          * The post to render the info for
          */
@@ -85,7 +84,6 @@ export default class PostInfo extends React.PureComponent {
         isReadOnly: PropTypes.bool,
 
         actions: PropTypes.shape({
-
             /*
              * Function to remove the post
              */
@@ -105,7 +103,9 @@ export default class PostInfo extends React.PureComponent {
         const showEmojiPicker = !this.state.showEmojiPicker;
 
         this.setState({showEmojiPicker});
-        this.props.handleDropdownOpened(showEmojiPicker || this.state.showDotMenu);
+        this.props.handleDropdownOpened(
+            showEmojiPicker || this.state.showDotMenu,
+        );
     };
 
     removePost = () => {
@@ -139,10 +139,18 @@ export default class PostInfo extends React.PureComponent {
         }
 
         const {isMobile, isReadOnly} = this.props;
-        const hover = this.props.hover || this.state.showEmojiPicker || this.state.showDotMenu;
+        const hover =
+            this.props.hover ||
+            this.state.showEmojiPicker ||
+            this.state.showDotMenu;
 
-        const showCommentIcon = fromAutoResponder ||
-        (!isSystemMessage && (isMobile || hover || (!post.root_id && Boolean(this.props.replyCount)) || this.props.isFirstReply));
+        const showCommentIcon =
+            fromAutoResponder ||
+            (!isSystemMessage &&
+                (isMobile ||
+                    hover ||
+                    (!post.root_id && Boolean(this.props.replyCount)) ||
+                    this.props.isFirstReply));
         const commentIconExtraClass = isMobile ? '' : 'pull-right';
         let commentIcon;
         if (showCommentIcon) {
@@ -156,7 +164,11 @@ export default class PostInfo extends React.PureComponent {
             );
         }
 
-        const showReactionIcon = !isSystemMessage && hover && !isReadOnly && this.props.enableEmojiPicker;
+        const showReactionIcon =
+            !isSystemMessage &&
+            hover &&
+            !isReadOnly &&
+            this.props.enableEmojiPicker;
         let postReaction;
         if (showReactionIcon) {
             postReaction = (
@@ -189,10 +201,7 @@ export default class PostInfo extends React.PureComponent {
         }
 
         return (
-            <div
-                ref='dotMenu'
-                className={'col col__reply'}
-            >
+            <div ref='dotMenu' className={'col col__reply'}>
                 {dotMenu}
                 {postReaction}
                 {commentIcon}
@@ -207,7 +216,11 @@ export default class PostInfo extends React.PureComponent {
         const isSystemMessage = PostUtils.isSystemMessage(post);
         const fromAutoResponder = PostUtils.fromAutoResponder(post);
 
-        const showFlagIcon = !isEphemeral && !post.failed && !isSystemMessage && (this.props.hover || this.props.isFlagged);
+        const showFlagIcon =
+            !isEphemeral &&
+            !post.failed &&
+            !isSystemMessage &&
+            (this.props.hover || this.props.isFlagged);
         let postFlagIcon;
         if (showFlagIcon) {
             postFlagIcon = (
@@ -227,11 +240,19 @@ export default class PostInfo extends React.PureComponent {
                 </div>
             );
         } else if (!post.failed) {
-            options = this.buildOptions(post, isSystemMessage, fromAutoResponder);
+            options = this.buildOptions(
+                post,
+                isSystemMessage,
+                fromAutoResponder,
+            );
         }
 
         let visibleMessage;
-        if (isEphemeral && !this.props.compactDisplay && post.state !== Posts.POST_DELETED) {
+        if (
+            isEphemeral &&
+            !this.props.compactDisplay &&
+            post.state !== Posts.POST_DELETED
+        ) {
             visibleMessage = (
                 <span className='post__visibility'>
                     <FormattedMessage
@@ -254,11 +275,17 @@ export default class PostInfo extends React.PureComponent {
             );
         }
 
-        const showPostTime = this.props.hover || this.props.showTimeWithoutHover;
+        const showPostTime =
+            this.props.hover || this.props.showTimeWithoutHover;
         let postTime;
         if (showPostTime) {
             // timestamp should not be a permalink if the post has been deleted, is ephemeral message, is pending, or is combined activity
-            const isPermalink = !(isEphemeral || Posts.POST_DELETED === post.state || ReduxPostUtils.isPostPendingOrFailed(post) || post.type === Posts.POST_TYPES.COMBINED_USER_ACTIVITY);
+            const isPermalink = !(
+                isEphemeral ||
+                Posts.POST_DELETED === post.state ||
+                ReduxPostUtils.isPostPendingOrFailed(post) ||
+                post.type === Posts.POST_TYPES.COMBINED_USER_ACTIVITY
+            );
 
             postTime = (
                 <PostTime

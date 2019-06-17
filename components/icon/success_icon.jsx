@@ -12,12 +12,7 @@ export default class SuccessIcon extends React.PureComponent {
                 id='generic_icons.success'
                 defaultMessage='Success Icon'
             >
-                {(title) => (
-                    <i
-                        className='fa fa-check'
-                        title={title}
-                    />
-                )}
+                {(title) => <i className='fa fa-check' title={title} />}
             </FormattedMessage>
         );
     }

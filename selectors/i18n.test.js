@@ -13,6 +13,7 @@ describe('selectors/i18n', () => {
                             DefaultClientLocale: 'fr',
                         },
                     },
+
                     users: {
                         currentUserId: '',
                         profiles: {},
@@ -31,6 +32,7 @@ describe('selectors/i18n', () => {
                             DefaultClientLocale: 'fr',
                         },
                     },
+
                     users: {
                         currentUserId: 'abcd',
                         profiles: {
@@ -60,7 +62,9 @@ describe('selectors/i18n', () => {
         };
 
         test('returns loaded translations', () => {
-            expect(getTranslations(state, 'en')).toBe(state.views.i18n.translations.en);
+            expect(getTranslations(state, 'en')).toBe(
+                state.views.i18n.translations.en,
+            );
         });
 
         test('returns null for unloaded translations', () => {
@@ -69,7 +73,9 @@ describe('selectors/i18n', () => {
 
         test('returns English translations for unsupported locale', () => {
             // This test will have to be changed if we add support for Gaelic
-            expect(getTranslations(state, 'gd')).toBe(state.views.i18n.translations.en);
+            expect(getTranslations(state, 'gd')).toBe(
+                state.views.i18n.translations.en,
+            );
         });
     });
 });

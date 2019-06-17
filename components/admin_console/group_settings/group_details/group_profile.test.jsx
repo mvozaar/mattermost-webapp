@@ -8,7 +8,7 @@ import GroupProfile from 'components/admin_console/group_settings/group_details/
 
 describe('components/admin_console/group_settings/group_details/GroupProfile', () => {
     test('should match snapshot', () => {
-        const wrapper = shallow(<GroupProfile name='Test'/>);
+        const wrapper = shallow(<GroupProfile name='Test' />);
         expect(wrapper).toMatchSnapshot();
     });
 });

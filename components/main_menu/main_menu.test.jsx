@@ -37,23 +37,24 @@ describe('components/Menu', () => {
             closeRightHandSide: jest.fn(),
             closeRhsMenu: jest.fn(),
         },
+
         teamIsGroupConstrained: false,
     };
 
     test('should match snapshot with id', () => {
         const props = {...defaultProps, id: 'test-id'};
-        const wrapper = shallow(<MainMenu {...props}/>);
+        const wrapper = shallow(<MainMenu {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with most of the thing disabled', () => {
-        const wrapper = shallow(<MainMenu {...defaultProps}/>);
+        const wrapper = shallow(<MainMenu {...defaultProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with most of the thing disabled in mobile', () => {
         const props = {...defaultProps, mobile: true};
-        const wrapper = shallow(<MainMenu {...props}/>);
+        const wrapper = shallow(<MainMenu {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -74,7 +75,8 @@ describe('components/Menu', () => {
             reportAProblemLink: 'test-report-link',
             moreTeamsToJoin: true,
         };
-        const wrapper = shallow(<MainMenu {...props}/>);
+
+        const wrapper = shallow(<MainMenu {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -96,7 +98,8 @@ describe('components/Menu', () => {
             reportAProblemLink: 'test-report-link',
             moreTeamsToJoin: true,
         };
-        const wrapper = shallow(<MainMenu {...props}/>);
+
+        const wrapper = shallow(<MainMenu {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -104,11 +107,23 @@ describe('components/Menu', () => {
         const props = {
             ...defaultProps,
             pluginMenuItems: [
-                {id: 'plugin-1', action: jest.fn(), text: 'plugin-1-text', mobileIcon: 'plugin-1-mobile-icon'},
-                {id: 'plugin-2', action: jest.fn(), text: 'plugin-2-text', mobileIcon: 'plugin-2-mobile-icon'},
+                {
+                    id: 'plugin-1',
+                    action: jest.fn(),
+                    text: 'plugin-1-text',
+                    mobileIcon: 'plugin-1-mobile-icon',
+                },
+
+                {
+                    id: 'plugin-2',
+                    action: jest.fn(),
+                    text: 'plugin-2-text',
+                    mobileIcon: 'plugin-2-mobile-icon',
+                },
             ],
         };
-        const wrapper = shallow(<MainMenu {...props}/>);
+
+        const wrapper = shallow(<MainMenu {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -117,11 +132,23 @@ describe('components/Menu', () => {
             ...defaultProps,
             mobile: true,
             pluginMenuItems: [
-                {id: 'plugin-1', action: jest.fn(), text: 'plugin-1-text', mobileIcon: 'plugin-1-mobile-icon'},
-                {id: 'plugin-2', action: jest.fn(), text: 'plugin-2-text', mobileIcon: 'plugin-2-mobile-icon'},
+                {
+                    id: 'plugin-1',
+                    action: jest.fn(),
+                    text: 'plugin-1-text',
+                    mobileIcon: 'plugin-1-mobile-icon',
+                },
+
+                {
+                    id: 'plugin-2',
+                    action: jest.fn(),
+                    text: 'plugin-2-text',
+                    mobileIcon: 'plugin-2-mobile-icon',
+                },
             ],
         };
-        const wrapper = shallow(<MainMenu {...props}/>);
+
+        const wrapper = shallow(<MainMenu {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 });

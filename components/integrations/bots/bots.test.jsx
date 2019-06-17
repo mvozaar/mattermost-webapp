@@ -33,6 +33,7 @@ describe('components/integrations/bots/Bots', () => {
             [bot2.user_id]: bot2,
             [bot3.user_id]: bot3,
         };
+
         const wrapperFull = shallow(
             <Bots
                 bots={bots}
@@ -40,41 +41,57 @@ describe('components/integrations/bots/Bots', () => {
                 accessTokens={{}}
                 owners={{}}
                 actions={actions}
-            />
+            />,
         );
+
         wrapperFull.instance().setState({loading: false});
         const wrapper = shallow(<div>{wrapperFull.instance().bots()[0]}</div>);
 
-        expect(wrapper.find('EnabledSection').shallow().contains(
-            <Bot
-                key={bot1.user_id}
-                bot={bot1}
-                owner={undefined}
-                accessTokens={{}}
-                team={team}
-                actions={actions}
-            />
-        )).toEqual(true);
-        expect(wrapper.find('EnabledSection').shallow().contains(
-            <Bot
-                key={bot2.user_id}
-                bot={bot2}
-                owner={undefined}
-                accessTokens={{}}
-                team={team}
-                actions={actions}
-            />
-        )).toEqual(true);
-        expect(wrapper.find('EnabledSection').shallow().contains(
-            <Bot
-                key={bot3.user_id}
-                bot={bot3}
-                owner={undefined}
-                accessTokens={{}}
-                team={team}
-                actions={actions}
-            />
-        )).toEqual(true);
+        expect(
+            wrapper
+                .find('EnabledSection')
+                .shallow()
+                .contains(
+                    <Bot
+                        key={bot1.user_id}
+                        bot={bot1}
+                        owner={undefined}
+                        accessTokens={{}}
+                        team={team}
+                        actions={actions}
+                    />,
+                ),
+        ).toEqual(true);
+        expect(
+            wrapper
+                .find('EnabledSection')
+                .shallow()
+                .contains(
+                    <Bot
+                        key={bot2.user_id}
+                        bot={bot2}
+                        owner={undefined}
+                        accessTokens={{}}
+                        team={team}
+                        actions={actions}
+                    />,
+                ),
+        ).toEqual(true);
+        expect(
+            wrapper
+                .find('EnabledSection')
+                .shallow()
+                .contains(
+                    <Bot
+                        key={bot3.user_id}
+                        bot={bot3}
+                        owner={undefined}
+                        accessTokens={{}}
+                        team={team}
+                        actions={actions}
+                    />,
+                ),
+        ).toEqual(true);
     });
 
     it('bot owner tokens', () => {
@@ -106,20 +123,26 @@ describe('components/integrations/bots/Bots', () => {
                 accessTokens={tokens}
                 owners={owners}
                 actions={actions}
-            />
+            />,
         );
+
         wrapperFull.instance().setState({loading: false});
         const wrapper = shallow(<div>{wrapperFull.instance().bots()[0]}</div>);
 
-        expect(wrapper.find('EnabledSection').shallow().contains(
-            <Bot
-                key={bot1.user_id}
-                bot={bot1}
-                owner={owner}
-                accessTokens={passedTokens}
-                team={team}
-                actions={actions}
-            />
-        )).toEqual(true);
+        expect(
+            wrapper
+                .find('EnabledSection')
+                .shallow()
+                .contains(
+                    <Bot
+                        key={bot1.user_id}
+                        bot={bot1}
+                        owner={owner}
+                        accessTokens={passedTokens}
+                        team={team}
+                        actions={actions}
+                    />,
+                ),
+        ).toEqual(true);
     });
 });

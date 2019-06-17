@@ -8,7 +8,10 @@ import {shallowWithIntl} from 'tests/helpers/intl-test-helper.jsx';
 import * as GlobalActions from 'actions/global_actions.jsx';
 import EmojiMap from 'utils/emoji_map';
 
-import Constants, {StoragePrefixes, ModalIdentifiers} from 'utils/constants.jsx';
+import Constants, {
+    StoragePrefixes,
+    ModalIdentifiers,
+} from 'utils/constants.jsx';
 import * as Utils from 'utils/utils.jsx';
 
 import CreatePost from 'components/create_post/create_post.jsx';
@@ -48,6 +51,7 @@ const currentChannelProp = {
     id: 'owsyt8n43jfxjpzh9np93mx1wa',
     type: 'O',
 };
+
 const currentChannelMembersCountProp = 9;
 const draftProp = {
     message: '',
@@ -57,7 +61,11 @@ const draftProp = {
 
 const ctrlSendProp = false;
 
-const currentUsersLatestPostProp = {id: 'b', root_id: 'a', channel_id: currentChannelProp.id};
+const currentUsersLatestPostProp = {
+    id: 'b',
+    root_id: 'a',
+    channel_id: currentChannelProp.id,
+};
 
 const commentCountForPostProp = 10;
 
@@ -178,6 +186,7 @@ describe('components/create_post', () => {
                 id: 'owsyt8n43jfxjpzh9np93mx1wb',
             },
         });
+
         expect(wrapper.state('message')).toBe('test');
     });
 
@@ -227,21 +236,34 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     setDraft,
                 },
-            })
+            }),
         );
 
         const postTextbox = wrapper.find('#post_textbox');
         postTextbox.simulate('change', {target: {value: 'change'}});
-        expect(setDraft).toHaveBeenCalledWith(StoragePrefixes.DRAFT + currentChannelProp.id, draft);
+        expect(setDraft).toHaveBeenCalledWith(
+            StoragePrefixes.DRAFT + currentChannelProp.id,
+            draft,
+        );
     });
 
     it('onKeyPress textbox should call emitLocalUserTypingEvent', () => {
         const wrapper = shallowWithIntl(createPost());
-        wrapper.instance().refs = {textbox: {getWrappedInstance: () => ({blur: jest.fn()})}};
+        wrapper.instance().refs = {
+            textbox: {getWrappedInstance: () => ({blur: jest.fn()})},
+        };
 
         const postTextbox = wrapper.find('#post_textbox');
-        postTextbox.simulate('KeyPress', {key: KeyCodes.ENTER[0], preventDefault: jest.fn(), persist: jest.fn()});
-        expect(GlobalActions.emitLocalUserTypingEvent).toHaveBeenCalledWith(currentChannelProp.id, '');
+        postTextbox.simulate('KeyPress', {
+            key: KeyCodes.ENTER[0],
+            preventDefault: jest.fn(),
+            persist: jest.fn(),
+        });
+
+        expect(GlobalActions.emitLocalUserTypingEvent).toHaveBeenCalledWith(
+            currentChannelProp.id,
+            '',
+        );
     });
 
     it('onSubmit test for @all', () => {
@@ -270,7 +292,7 @@ describe('components/create_post', () => {
             createPost({
                 getChannelTimezones: jest.fn(() => Promise.resolve([])),
                 isTimezoneEnabled: true,
-            })
+            }),
         );
 
         wrapper.setState({
@@ -298,7 +320,7 @@ describe('components/create_post', () => {
             createPost({
                 getChannelTimezones: jest.fn(() => Promise.resolve([])),
                 isTimezoneEnabled: false,
-            })
+            }),
         );
 
         wrapper.setState({
@@ -320,7 +342,7 @@ describe('components/create_post', () => {
         expect(wrapper.state('showConfirmModal')).toBe(false);
     });
 
-    it('onSubmit test for "/header" message', () => {
+    it("onSubmit test for '/header' message", () => {
         const openModal = jest.fn();
 
         const wrapper = shallowWithIntl(
@@ -329,7 +351,7 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     openModal,
                 },
-            })
+            }),
         );
 
         wrapper.setState({
@@ -339,11 +361,16 @@ describe('components/create_post', () => {
         const form = wrapper.find('#create_post');
         form.simulate('Submit', {preventDefault: jest.fn()});
         expect(openModal).toHaveBeenCalledTimes(1);
-        expect(openModal.mock.calls[0][0].modalId).toEqual(ModalIdentifiers.EDIT_CHANNEL_HEADER);
-        expect(openModal.mock.calls[0][0].dialogProps.channel).toEqual(currentChannelProp);
+        expect(openModal.mock.calls[0][0].modalId).toEqual(
+            ModalIdentifiers.EDIT_CHANNEL_HEADER,
+        );
+
+        expect(openModal.mock.calls[0][0].dialogProps.channel).toEqual(
+            currentChannelProp,
+        );
     });
 
-    it('onSubmit test for "/purpose" message', () => {
+    it("onSubmit test for '/purpose' message", () => {
         const openModal = jest.fn();
 
         const wrapper = shallowWithIntl(
@@ -352,7 +379,7 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     openModal,
                 },
-            })
+            }),
         );
 
         wrapper.setState({
@@ -362,11 +389,16 @@ describe('components/create_post', () => {
         const form = wrapper.find('#create_post');
         form.simulate('Submit', {preventDefault: jest.fn()});
         expect(openModal).toHaveBeenCalledTimes(1);
-        expect(openModal.mock.calls[0][0].modalId).toEqual(ModalIdentifiers.EDIT_CHANNEL_PURPOSE);
-        expect(openModal.mock.calls[0][0].dialogProps.channel).toEqual(currentChannelProp);
+        expect(openModal.mock.calls[0][0].modalId).toEqual(
+            ModalIdentifiers.EDIT_CHANNEL_PURPOSE,
+        );
+
+        expect(openModal.mock.calls[0][0].dialogProps.channel).toEqual(
+            currentChannelProp,
+        );
     });
 
-    it('onSubmit test for "/rename" message', () => {
+    it("onSubmit test for '/rename' message", () => {
         const wrapper = shallowWithIntl(createPost());
 
         wrapper.setState({
@@ -375,10 +407,12 @@ describe('components/create_post', () => {
 
         const form = wrapper.find('#create_post');
         form.simulate('Submit', {preventDefault: jest.fn()});
-        expect(GlobalActions.showChannelNameUpdateModal).toHaveBeenCalledWith(currentChannelProp);
+        expect(GlobalActions.showChannelNameUpdateModal).toHaveBeenCalledWith(
+            currentChannelProp,
+        );
     });
 
-    it('onSubmit test for "/unknown" message ', async () => {
+    it("onSubmit test for '/unknown' message ", async () => {
         jest.mock('actions/channel_actions.jsx', () => ({
             executeCommand: jest.fn((message, _args, resolve) => resolve()),
         }));
@@ -402,7 +436,7 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     addReaction,
                 },
-            })
+            }),
         );
 
         wrapper.setState({
@@ -422,7 +456,7 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     removeReaction,
                 },
-            })
+            }),
         );
 
         wrapper.setState({
@@ -435,22 +469,18 @@ describe('components/create_post', () => {
     });
 
     /*it('check for postError state on handlePostError callback', () => {
-        const wrapper = shallowWithIntl(createPost());
-        const textBox = wrapper.find('#post_textbox');
-        const form = wrapper.find('#create_post');
-
-        textBox.prop('handlePostError')(true);
-        expect(wrapper.state('postError')).toBe(true);
-
-        wrapper.setState({
-            message: 'test',
-        });
-
-        form.simulate('Submit', {preventDefault: jest.fn()});
-
-        expect(wrapper.update().find('.post-error .animation--highlight').length).toBe(1);
-        expect(wrapper.find('#postCreateFooter').hasClass('post-create-footer has-error')).toBe(true);
-    });*/
+              const wrapper = shallowWithIntl(createPost());
+              const textBox = wrapper.find('#post_textbox');
+              const form = wrapper.find('#create_post');
+               textBox.prop('handlePostError')(true);
+              expect(wrapper.state('postError')).toBe(true);
+               wrapper.setState({
+                  message: 'test',
+              });
+               form.simulate('Submit', {preventDefault: jest.fn()});
+               expect(wrapper.update().find('.post-error .animation--highlight').length).toBe(1);
+              expect(wrapper.find('#postCreateFooter').hasClass('post-create-footer has-error')).toBe(true);
+          });*/
 
     it('check for handleFileUploadChange callback for focus', () => {
         const wrapper = shallowWithIntl(createPost());
@@ -470,21 +500,21 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     setDraft,
                 },
-            })
+            }),
         );
 
         const instance = wrapper.instance();
         const clientIds = ['a'];
         const draft = {
             ...draftProp,
-            uploadsInProgress: [
-                ...draftProp.uploadsInProgress,
-                ...clientIds,
-            ],
+            uploadsInProgress: [...draftProp.uploadsInProgress, ...clientIds],
         };
 
         instance.handleUploadStart(clientIds, currentChannelProp.id);
-        expect(setDraft).toHaveBeenCalledWith(StoragePrefixes.DRAFT + currentChannelProp.id, draft);
+        expect(setDraft).toHaveBeenCalledWith(
+            StoragePrefixes.DRAFT + currentChannelProp.id,
+            draft,
+        );
     });
 
     it('check for handleFileUploadComplete callback', () => {
@@ -496,35 +526,40 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     setDraft,
                 },
-            })
+            }),
         );
 
         const instance = wrapper.instance();
         const clientIds = ['a'];
         const uploadsInProgressDraft = {
             ...draftProp,
-            uploadsInProgress: [
-                ...draftProp.uploadsInProgress,
-                'a',
-            ],
+            uploadsInProgress: [...draftProp.uploadsInProgress, 'a'],
         };
 
-        instance.draftsForChannel[currentChannelProp.id] = uploadsInProgressDraft;
+        instance.draftsForChannel[
+            currentChannelProp.id
+        ] = uploadsInProgressDraft;
 
         wrapper.setProps({draft: uploadsInProgressDraft});
         const fileInfos = {
             id: 'a',
         };
+
         const expectedDraft = {
             ...draftProp,
-            fileInfos: [
-                ...draftProp.fileInfos,
-                fileInfos,
-            ],
+            fileInfos: [...draftProp.fileInfos, fileInfos],
         };
 
-        instance.handleFileUploadComplete(fileInfos, clientIds, currentChannelProp.id);
-        expect(setDraft).toHaveBeenCalledWith(StoragePrefixes.DRAFT + currentChannelProp.id, expectedDraft);
+        instance.handleFileUploadComplete(
+            fileInfos,
+            clientIds,
+            currentChannelProp.id,
+        );
+
+        expect(setDraft).toHaveBeenCalledWith(
+            StoragePrefixes.DRAFT + currentChannelProp.id,
+            expectedDraft,
+        );
     });
 
     it('check for handleUploadError callback', () => {
@@ -536,31 +571,40 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     setDraft,
                 },
-            })
+            }),
         );
 
         const instance = wrapper.instance();
         const uploadsInProgressDraft = {
             ...draftProp,
-            uploadsInProgress: [
-                ...draftProp.uploadsInProgress,
-                'a',
-            ],
+            uploadsInProgress: [...draftProp.uploadsInProgress, 'a'],
         };
 
         wrapper.setProps({draft: uploadsInProgressDraft});
 
-        instance.draftsForChannel[currentChannelProp.id] = uploadsInProgressDraft;
+        instance.draftsForChannel[
+            currentChannelProp.id
+        ] = uploadsInProgressDraft;
         instance.handleUploadError('error message', 'a', currentChannelProp.id);
 
-        expect(setDraft).toHaveBeenCalledWith(StoragePrefixes.DRAFT + currentChannelProp.id, draftProp);
+        expect(setDraft).toHaveBeenCalledWith(
+            StoragePrefixes.DRAFT + currentChannelProp.id,
+            draftProp,
+        );
     });
 
     it('check for uploadsProgressPercent state on handleUploadProgress callback', () => {
         const wrapper = shallowWithIntl(createPost({}));
-        wrapper.find(FileUpload).prop('onUploadProgress')({clientId: 'clientId', name: 'name', percent: 10, type: 'type'});
+        wrapper.find(FileUpload).prop('onUploadProgress')({
+            clientId: 'clientId',
+            name: 'name',
+            percent: 10,
+            type: 'type',
+        });
 
-        expect(wrapper.state('uploadsProgressPercent')).toEqual({clientId: {percent: 10, name: 'name', type: 'type'}});
+        expect(wrapper.state('uploadsProgressPercent')).toEqual({
+            clientId: {percent: 10, name: 'name', type: 'type'},
+        });
     });
 
     it('Remove preview from fileInfos', () => {
@@ -570,12 +614,10 @@ describe('components/create_post', () => {
             extension: 'jpg',
             name: 'trimmedFilename',
         };
+
         const uploadsInProgressDraft = {
             ...draftProp,
-            fileInfos: [
-                ...draftProp.fileInfos,
-                fileInfos,
-            ],
+            fileInfos: [...draftProp.fileInfos, fileInfos],
         };
 
         const wrapper = shallowWithIntl(
@@ -584,125 +626,220 @@ describe('components/create_post', () => {
                     ...actionsProp,
                     setDraft,
                 },
+
                 draft: {
                     ...draftProp,
                     ...uploadsInProgressDraft,
                 },
-            })
+            }),
         );
 
         const instance = wrapper.instance();
         instance.handleFileUploadChange = jest.fn();
         instance.removePreview('a');
         expect(setDraft).toHaveBeenCalledTimes(1);
-        expect(setDraft).toHaveBeenCalledWith(StoragePrefixes.DRAFT + currentChannelProp.id, draftProp);
+        expect(setDraft).toHaveBeenCalledWith(
+            StoragePrefixes.DRAFT + currentChannelProp.id,
+            draftProp,
+        );
+
         expect(instance.handleFileUploadChange).toHaveBeenCalledTimes(1);
     });
 
     it('Should call Shortcut modal on FORWARD_SLASH+cntrl/meta', () => {
         const wrapper = shallowWithIntl(createPost());
         const instance = wrapper.instance();
-        instance.documentKeyHandler({ctrlKey: true, key: Constants.KeyCodes.BACK_SLASH[0], keyCode: Constants.KeyCodes.BACK_SLASH[1], preventDefault: jest.fn()});
+        instance.documentKeyHandler({
+            ctrlKey: true,
+            key: Constants.KeyCodes.BACK_SLASH[0],
+            keyCode: Constants.KeyCodes.BACK_SLASH[1],
+            preventDefault: jest.fn(),
+        });
+
         expect(GlobalActions.toggleShortcutsModal).not.toHaveBeenCalled();
-        instance.documentKeyHandler({ctrlKey: true, key: 'ù', keyCode: Constants.KeyCodes.FORWARD_SLASH[1], preventDefault: jest.fn()});
+        instance.documentKeyHandler({
+            ctrlKey: true,
+            key: 'ù',
+            keyCode: Constants.KeyCodes.FORWARD_SLASH[1],
+            preventDefault: jest.fn(),
+        });
+
         expect(GlobalActions.toggleShortcutsModal).toHaveBeenCalled();
-        instance.documentKeyHandler({ctrlKey: true, key: '/', keyCode: Constants.KeyCodes.SEVEN[1], preventDefault: jest.fn()});
+        instance.documentKeyHandler({
+            ctrlKey: true,
+            key: '/',
+            keyCode: Constants.KeyCodes.SEVEN[1],
+            preventDefault: jest.fn(),
+        });
+
         expect(GlobalActions.toggleShortcutsModal).toHaveBeenCalled();
-        instance.documentKeyHandler({ctrlKey: true, key: Constants.KeyCodes.FORWARD_SLASH[0], keyCode: Constants.KeyCodes.FORWARD_SLASH[1], preventDefault: jest.fn()});
+        instance.documentKeyHandler({
+            ctrlKey: true,
+            key: Constants.KeyCodes.FORWARD_SLASH[0],
+            keyCode: Constants.KeyCodes.FORWARD_SLASH[1],
+            preventDefault: jest.fn(),
+        });
+
         expect(GlobalActions.toggleShortcutsModal).toHaveBeenCalled();
     });
 
     it('Should just return as ctrlSend is enabled and its ctrl+enter', () => {
-        const wrapper = shallowWithIntl(createPost({
-            ctrlSend: true,
-        }));
+        const wrapper = shallowWithIntl(
+            createPost({
+                ctrlSend: true,
+            }),
+        );
 
         const instance = wrapper.instance();
-        instance.refs = {textbox: {getWrappedInstance: () => ({blur: jest.fn()})}};
+        instance.refs = {
+            textbox: {getWrappedInstance: () => ({blur: jest.fn()})},
+        };
 
-        instance.handleKeyDown({ctrlKey: true, key: Constants.KeyCodes.ENTER[0], keyCode: Constants.KeyCodes.ENTER[1], preventDefault: jest.fn(), persist: jest.fn()});
+        instance.handleKeyDown({
+            ctrlKey: true,
+            key: Constants.KeyCodes.ENTER[0],
+            keyCode: Constants.KeyCodes.ENTER[1],
+            preventDefault: jest.fn(),
+            persist: jest.fn(),
+        });
+
         setTimeout(() => {
-            expect(GlobalActions.emitLocalUserTypingEvent).toHaveBeenCalledWith(currentChannelProp.id, '');
+            expect(GlobalActions.emitLocalUserTypingEvent).toHaveBeenCalledWith(
+                currentChannelProp.id,
+                '',
+            );
         }, 0);
     });
 
     it('Should call edit action as comment for arrow up', () => {
         const setEditingPost = jest.fn();
-        const wrapper = shallowWithIntl(createPost({
-            actions: {
-                ...actionsProp,
-                setEditingPost,
-            },
-        }));
+        const wrapper = shallowWithIntl(
+            createPost({
+                actions: {
+                    ...actionsProp,
+                    setEditingPost,
+                },
+            }),
+        );
+
         const instance = wrapper.instance();
-        const type = Utils.localizeMessage('create_post.comment', Posts.MESSAGE_TYPES.COMMENT);
-        instance.handleKeyDown({key: Constants.KeyCodes.UP[0], preventDefault: jest.fn()});
-        expect(setEditingPost).toHaveBeenCalledWith(currentUsersLatestPostProp.id, commentCountForPostProp, 'post_textbox', type);
+        const type = Utils.localizeMessage(
+            'create_post.comment',
+            Posts.MESSAGE_TYPES.COMMENT,
+        );
+
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.UP[0],
+            preventDefault: jest.fn(),
+        });
+
+        expect(setEditingPost).toHaveBeenCalledWith(
+            currentUsersLatestPostProp.id,
+            commentCountForPostProp,
+            'post_textbox',
+            type,
+        );
     });
 
     it('Should call edit action as post for arrow up', () => {
         const setEditingPost = jest.fn();
-        const wrapper = shallowWithIntl(createPost({
-            actions: {
-                ...actionsProp,
-                setEditingPost,
-            },
-        }));
+        const wrapper = shallowWithIntl(
+            createPost({
+                actions: {
+                    ...actionsProp,
+                    setEditingPost,
+                },
+            }),
+        );
+
         const instance = wrapper.instance();
 
         wrapper.setProps({
-            currentUsersLatestPost: {id: 'b', channel_id: currentChannelProp.id},
+            currentUsersLatestPost: {
+                id: 'b',
+                channel_id: currentChannelProp.id,
+            },
         });
 
-        const type = Utils.localizeMessage('create_post.post', Posts.MESSAGE_TYPES.POST);
-        instance.handleKeyDown({key: Constants.KeyCodes.UP[0], preventDefault: jest.fn()});
-        expect(setEditingPost).toHaveBeenCalledWith(currentUsersLatestPostProp.id, commentCountForPostProp, 'post_textbox', type);
+        const type = Utils.localizeMessage(
+            'create_post.post',
+            Posts.MESSAGE_TYPES.POST,
+        );
+
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.UP[0],
+            preventDefault: jest.fn(),
+        });
+
+        expect(setEditingPost).toHaveBeenCalledWith(
+            currentUsersLatestPostProp.id,
+            commentCountForPostProp,
+            'post_textbox',
+            type,
+        );
     });
 
     it('Should call moveHistoryIndexForward as ctrlKey and down arrow', () => {
-        const moveHistoryIndexForward = jest.fn(
-            () => {
-                return new Promise((resolve) => {
-                    process.nextTick(() => resolve());
-                });
-            }
+        const moveHistoryIndexForward = jest.fn(() => {
+            return new Promise((resolve) => {
+                process.nextTick(() => resolve());
+            });
+        });
+
+        const wrapper = shallowWithIntl(
+            createPost({
+                actions: {
+                    ...actionsProp,
+                    moveHistoryIndexForward,
+                },
+            }),
         );
-        const wrapper = shallowWithIntl(createPost({
-            actions: {
-                ...actionsProp,
-                moveHistoryIndexForward,
-            },
-        }));
+
         const instance = wrapper.instance();
 
-        instance.handleKeyDown({key: Constants.KeyCodes.DOWN[0], ctrlKey: true, preventDefault: jest.fn()});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.DOWN[0],
+            ctrlKey: true,
+            preventDefault: jest.fn(),
+        });
+
         expect(moveHistoryIndexForward).toHaveBeenCalled();
     });
 
     it('Should call moveHistoryIndexBack as ctrlKey and up arrow', () => {
-        const moveHistoryIndexBack = jest.fn(
-            () => {
-                return new Promise((resolve) => {
-                    process.nextTick(() => resolve());
-                });
-            }
+        const moveHistoryIndexBack = jest.fn(() => {
+            return new Promise((resolve) => {
+                process.nextTick(() => resolve());
+            });
+        });
+
+        const wrapper = shallowWithIntl(
+            createPost({
+                actions: {
+                    ...actionsProp,
+                    moveHistoryIndexBack,
+                },
+            }),
         );
-        const wrapper = shallowWithIntl(createPost({
-            actions: {
-                ...actionsProp,
-                moveHistoryIndexBack,
-            },
-        }));
+
         const instance = wrapper.instance();
 
-        instance.handleKeyDown({key: Constants.KeyCodes.UP[0], ctrlKey: true, preventDefault: jest.fn()});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.UP[0],
+            ctrlKey: true,
+            preventDefault: jest.fn(),
+        });
+
         expect(moveHistoryIndexBack).toHaveBeenCalled();
     });
 
     it('Show tutorial', () => {
-        const wrapper = shallowWithIntl(createPost({
-            showTutorialTip: true,
-        }));
+        const wrapper = shallowWithIntl(
+            createPost({
+                showTutorialTip: true,
+            }),
+        );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -718,12 +855,15 @@ describe('components/create_post', () => {
 
     it('Should have called actions.onSubmitPost on sendMessage', async () => {
         const onSubmitPost = jest.fn();
-        const wrapper = shallowWithIntl(createPost({
-            actions: {
-                ...actionsProp,
-                onSubmitPost,
-            },
-        }));
+        const wrapper = shallowWithIntl(
+            createPost({
+                actions: {
+                    ...actionsProp,
+                    onSubmitPost,
+                },
+            }),
+        );
+
         const post = {message: 'message', file_ids: []};
         await wrapper.instance().sendMessage(post);
 
@@ -735,13 +875,16 @@ describe('components/create_post', () => {
     it('Should have called actions.selectPostFromRightHandSideSearchByPostId on replyToLastPost', () => {
         const selectPostFromRightHandSideSearchByPostId = jest.fn();
         let latestReplyablePostId = '';
-        const wrapper = shallowWithIntl(createPost({
-            actions: {
-                ...actionsProp,
-                selectPostFromRightHandSideSearchByPostId,
-            },
-            latestReplyablePostId,
-        }));
+        const wrapper = shallowWithIntl(
+            createPost({
+                actions: {
+                    ...actionsProp,
+                    selectPostFromRightHandSideSearchByPostId,
+                },
+
+                latestReplyablePostId,
+            }),
+        );
 
         wrapper.instance().replyToLastPost({preventDefault: jest.fn()});
         expect(selectPostFromRightHandSideSearchByPostId).not.toBeCalled();
@@ -749,8 +892,13 @@ describe('components/create_post', () => {
         latestReplyablePostId = 'latest_replyablePost_id';
         wrapper.setProps({latestReplyablePostId});
         wrapper.instance().replyToLastPost({preventDefault: jest.fn()});
-        expect(selectPostFromRightHandSideSearchByPostId).toHaveBeenCalledTimes(1);
-        expect(selectPostFromRightHandSideSearchByPostId.mock.calls[0][0]).toEqual(latestReplyablePostId);
+        expect(selectPostFromRightHandSideSearchByPostId).toHaveBeenCalledTimes(
+            1,
+        );
+
+        expect(
+            selectPostFromRightHandSideSearchByPostId.mock.calls[0][0],
+        ).toEqual(latestReplyablePostId);
     });
 
     it('should match snapshot for read only channel', () => {
@@ -768,6 +916,7 @@ describe('components/create_post', () => {
             message: 'No command found',
             server_error_id: 'api.command.execute_command.not_found.app_error',
         };
+
         const executeCommand = jest.fn(() => Promise.resolve({error}));
         const onSubmitPost = jest.fn();
 
@@ -778,26 +927,28 @@ describe('components/create_post', () => {
                     executeCommand,
                     onSubmitPost,
                 },
-            })
+            }),
         );
 
         wrapper.setState({
             message: '/fakecommand some text',
         });
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
 
         await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
         expect(executeCommand).toHaveBeenCalled();
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(true);
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(true);
         expect(onSubmitPost).not.toHaveBeenCalled();
 
         await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
 
         expect(onSubmitPost).toHaveBeenCalledWith(
             expect.objectContaining({
                 message: '/fakecommand some text',
             }),
+
             expect.anything(),
         );
     });
@@ -807,6 +958,7 @@ describe('components/create_post', () => {
             message: 'No command found',
             server_error_id: 'api.command.execute_command.not_found.app_error',
         };
+
         const executeCommand = jest.fn(() => Promise.resolve({error}));
         const onSubmitPost = jest.fn();
 
@@ -817,23 +969,25 @@ describe('components/create_post', () => {
                     executeCommand,
                     onSubmitPost,
                 },
-            })
+            }),
         );
 
         wrapper.setState({
             message: '/fakecommand some text',
         });
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
 
         await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
         expect(executeCommand).toHaveBeenCalled();
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(true);
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(true);
         expect(onSubmitPost).not.toHaveBeenCalled();
 
         wrapper.instance().handleChange({
             target: {value: 'some valid text'},
         });
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
 
         await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
 
@@ -841,6 +995,7 @@ describe('components/create_post', () => {
             expect.objectContaining({
                 message: 'some valid text',
             }),
+
             expect.anything(),
         );
     });
@@ -852,6 +1007,7 @@ describe('components/create_post', () => {
             target: {
                 id: 'post_textbox',
             },
+
             preventDefault: jest.fn(),
             clipboardData: {
                 items: [1],
@@ -878,6 +1034,7 @@ describe('components/create_post', () => {
             target: {
                 id: 'post_textbox',
             },
+
             preventDefault: jest.fn(),
             clipboardData: {
                 items: [1],

@@ -7,7 +7,6 @@ import {FormattedMessage} from 'react-intl';
 
 export default class CommentedOnFilesMessage extends React.PureComponent {
     static propTypes = {
-
         /*
          * The id of the post that was commented on
          */
@@ -17,7 +16,7 @@ export default class CommentedOnFilesMessage extends React.PureComponent {
          * An array of file metadata for the parent post
          */
         fileInfos: PropTypes.arrayOf(PropTypes.object),
-    }
+    };
 
     render() {
         if (!this.props.fileInfos || this.props.fileInfos.length === 0) {

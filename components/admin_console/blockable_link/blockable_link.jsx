@@ -9,7 +9,6 @@ import {browserHistory} from 'utils/browser_history';
 
 export default class BlockableLink extends React.Component {
     static propTypes = {
-
         /*
          * Bool whether navigation is blocked
          */
@@ -21,7 +20,6 @@ export default class BlockableLink extends React.Component {
         to: PropTypes.string.isRequired,
 
         actions: PropTypes.shape({
-
             /*
              * Function for deferring navigation while blocked
              */
@@ -44,11 +42,6 @@ export default class BlockableLink extends React.Component {
         Reflect.deleteProperty(props, 'blocked');
         Reflect.deleteProperty(props, 'actions');
 
-        return (
-            <NavLink
-                {...props}
-                onClick={this.handleClick}
-            />
-        );
+        return <NavLink {...props} onClick={this.handleClick} />;
     }
 }

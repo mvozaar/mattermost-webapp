@@ -18,7 +18,9 @@ import SidebarHeaderDropdown from './sidebar_header_dropdown.jsx';
 function mapStateToProps(state) {
     const currentTeam = getCurrentTeam(state);
     const currentUser = getCurrentUser(state);
-    const showTutorialTip = getInt(state, Preferences.TUTORIAL_STEP, currentUser.id) === TutorialSteps.MENU_POPOVER && !Utils.isMobile();
+    const showTutorialTip =
+        getInt(state, Preferences.TUTORIAL_STEP, currentUser.id) ===
+            TutorialSteps.MENU_POPOVER && !Utils.isMobile();
     return {
         currentUser,
         teamDescription: currentTeam.description,
@@ -30,10 +32,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            openModal,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                openModal,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarHeaderDropdown);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SidebarHeaderDropdown);

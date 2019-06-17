@@ -14,7 +14,7 @@ describe('components/MenuItemToggleModalRedux', () => {
                 dialogType={jest.fn}
                 dialogProps={{test: 'test'}}
                 text='Whatever'
-            />
+            />,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`

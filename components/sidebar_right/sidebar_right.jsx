@@ -45,7 +45,11 @@ export default class SidebarRight extends React.PureComponent {
         }
 
         const {actions, isPinnedPosts, channel} = this.props;
-        if (isPinnedPosts && prevProps.isPinnedPosts === isPinnedPosts && channel.id !== prevProps.channel.id) {
+        if (
+            isPinnedPosts &&
+            prevProps.isPinnedPosts === isPinnedPosts &&
+            channel.id !== prevProps.channel.id
+        ) {
             actions.showPinnedPosts(channel.id);
         }
     }
@@ -75,13 +79,23 @@ export default class SidebarRight extends React.PureComponent {
 
         var searchForm = null;
         if (currentUserId) {
-            searchForm = <SearchBar isFocus={searchVisible && !isFlaggedPosts && !isPinnedPosts}/>;
+            searchForm = (
+                <SearchBar
+                    isFocus={searchVisible && !isFlaggedPosts && !isPinnedPosts}
+                />
+            );
         }
 
         let channelDisplayName = '';
         if (channel) {
-            if (channel.type === Constants.DM_CHANNEL || channel.type === Constants.GM_CHANNEL) {
-                channelDisplayName = Utils.localizeMessage('rhs_root.direct', 'Direct Message');
+            if (
+                channel.type === Constants.DM_CHANNEL ||
+                channel.type === Constants.GM_CHANNEL
+            ) {
+                channelDisplayName = Utils.localizeMessage(
+                    'rhs_root.direct',
+                    'Direct Message',
+                );
             } else {
                 channelDisplayName = channel.display_name;
             }
@@ -90,7 +104,9 @@ export default class SidebarRight extends React.PureComponent {
         if (searchVisible) {
             content = (
                 <div className='sidebar--right__content'>
-                    <div className='search-bar__container channel-header alt'>{searchForm}</div>
+                    <div className='search-bar__container channel-header alt'>
+                        {searchForm}
+                    </div>
                     <SearchResults
                         isMentionSearch={isMentionSearch}
                         isFlaggedPosts={isFlaggedPosts}
@@ -104,8 +120,10 @@ export default class SidebarRight extends React.PureComponent {
         } else if (postRightVisible) {
             content = (
                 <div className='post-right__container'>
-                    <FileUploadOverlay overlayType='right'/>
-                    <div className='search-bar__container channel-header alt'>{searchForm}</div>
+                    <FileUploadOverlay overlayType='right' />
+                    <div className='search-bar__container channel-header alt'>
+                        {searchForm}
+                    </div>
                     <RhsThread
                         previousRhsState={previousRhsState}
                         currentUserId={currentUserId}
@@ -122,16 +140,14 @@ export default class SidebarRight extends React.PureComponent {
 
         return (
             <div
-                className={classNames('sidebar--right', expandedClass, {'move--left': this.props.isOpen})}
+                className={classNames('sidebar--right', expandedClass, {
+                    'move--left': this.props.isOpen,
+                })}
                 id='sidebar-right'
             >
-                <div
-                    onClick={this.onShrink}
-                    className='sidebar--right__bg'
-                />
-                <div className='sidebar-right-container'>
-                    {content}
-                </div>
+                <div onClick={this.onShrink} className='sidebar--right__bg' />
+
+                <div className='sidebar-right-container'>{content}</div>
             </div>
         );
     }

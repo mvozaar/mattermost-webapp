@@ -67,4 +67,3 @@ export default class ModalToggleButtonRedux extends React.Component {
         );
     }
 }
-

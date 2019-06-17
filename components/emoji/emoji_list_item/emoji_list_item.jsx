@@ -21,14 +21,14 @@ export default class EmojiListItem extends React.Component {
         actions: PropTypes.shape({
             deleteCustomEmoji: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         emoji: {},
         currentUserId: '',
         currentTeam: {},
         creatorDisplayName: '',
-    }
+    };
 
     handleDelete = () => {
         if (this.props.onDelete) {
@@ -36,7 +36,7 @@ export default class EmojiListItem extends React.Component {
         }
 
         this.props.actions.deleteCustomEmoji(this.props.emoji.id);
-    }
+    };
 
     render() {
         const emoji = this.props.emoji;
@@ -50,15 +50,21 @@ export default class EmojiListItem extends React.Component {
         let deleteButton = null;
         if (emoji.creator_id === this.props.currentUserId) {
             deleteButton = (
-                <AnyTeamPermissionGate permissions={[Permissions.DELETE_EMOJIS]}>
-                    <DeleteEmoji onDelete={this.handleDelete}/>
+                <AnyTeamPermissionGate
+                    permissions={[Permissions.DELETE_EMOJIS]}
+                >
+                    <DeleteEmoji onDelete={this.handleDelete} />
                 </AnyTeamPermissionGate>
             );
         } else {
             deleteButton = (
-                <AnyTeamPermissionGate permissions={[Permissions.DELETE_EMOJIS]}>
-                    <AnyTeamPermissionGate permissions={[Permissions.DELETE_OTHERS_EMOJIS]}>
-                        <DeleteEmoji onDelete={this.handleDelete}/>
+                <AnyTeamPermissionGate
+                    permissions={[Permissions.DELETE_EMOJIS]}
+                >
+                    <AnyTeamPermissionGate
+                        permissions={[Permissions.DELETE_OTHERS_EMOJIS]}
+                    >
+                        <DeleteEmoji onDelete={this.handleDelete} />
                     </AnyTeamPermissionGate>
                 </AnyTeamPermissionGate>
             );
@@ -66,21 +72,20 @@ export default class EmojiListItem extends React.Component {
 
         return (
             <tr className='backstage-list__item'>
-                <td className='emoji-list__name'>
-                    {':' + emoji.name + ':'}
-                </td>
+                <td className='emoji-list__name'>{':' + emoji.name + ':'}</td>
                 <td className='emoji-list__image'>
                     <span
                         className='emoticon'
-                        style={{backgroundImage: 'url(' + Client4.getCustomEmojiImageUrl(emoji.id) + ')'}}
+                        style={{
+                            backgroundImage:
+                                'url(' +
+                                Client4.getCustomEmojiImageUrl(emoji.id) +
+                                ')',
+                        }}
                     />
                 </td>
-                <td className='emoji-list__creator'>
-                    {creatorDisplayName}
-                </td>
-                <td className='emoji-list-item_actions'>
-                    {deleteButton}
-                </td>
+                <td className='emoji-list__creator'>{creatorDisplayName}</td>
+                <td className='emoji-list-item_actions'>{deleteButton}</td>
             </tr>
         );
     }

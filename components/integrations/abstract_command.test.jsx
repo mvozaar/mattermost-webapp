@@ -30,17 +30,17 @@ describe('components/integrations/AbstractCommand', () => {
         url: 'https://google.com/command',
         username: 'username',
     };
+
     const team = {
         name: 'test',
         id: command.team_id,
     };
-    const action = jest.fn().mockImplementation(
-        () => {
-            return new Promise((resolve) => {
-                process.nextTick(() => resolve());
-            });
-        }
-    );
+
+    const action = jest.fn().mockImplementation(() => {
+        return new Promise((resolve) => {
+            process.nextTick(() => resolve());
+        });
+    });
 
     const baseProps = {
         team,
@@ -54,41 +54,40 @@ describe('components/integrations/AbstractCommand', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <AbstractCommand {...baseProps}/>
-        );
+        const wrapper = shallow(<AbstractCommand {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, displays client error', () => {
         const newSeverError = 'server error';
         const props = {...baseProps, serverError: newSeverError};
-        const wrapper = shallow(
-            <AbstractCommand {...props}/>
-        );
+        const wrapper = shallow(<AbstractCommand {...props} />);
 
         wrapper.find('#trigger').simulate('change', {target: {value: ''}});
-        wrapper.find('.btn-primary').simulate('click', {preventDefault: jest.fn()});
+        wrapper
+            .find('.btn-primary')
+            .simulate('click', {preventDefault: jest.fn()});
 
         expect(wrapper).toMatchSnapshot();
         expect(action).not.toBeCalled();
     });
 
     test('should call action function', () => {
-        const wrapper = shallow(
-            <AbstractCommand {...baseProps}/>
-        );
+        const wrapper = shallow(<AbstractCommand {...baseProps} />);
 
-        wrapper.find('#displayName').simulate('change', {target: {value: 'name'}});
-        wrapper.find('.btn-primary').simulate('click', {preventDefault: jest.fn()});
+        wrapper
+            .find('#displayName')
+            .simulate('change', {target: {value: 'name'}});
+        wrapper
+            .find('.btn-primary')
+            .simulate('click', {preventDefault: jest.fn()});
 
         expect(action).toBeCalled();
     });
 
     test('should match object returned by getStateFromCommand', () => {
-        const wrapper = shallow(
-            <AbstractCommand {...baseProps}/>
-        );
+        const wrapper = shallow(<AbstractCommand {...baseProps} />);
 
         const expectedOutput = {
             autocomplete: true,
@@ -105,13 +104,13 @@ describe('components/integrations/AbstractCommand', () => {
             username: 'username',
         };
 
-        expect(wrapper.instance().getStateFromCommand(command)).toEqual(expectedOutput);
+        expect(wrapper.instance().getStateFromCommand(command)).toEqual(
+            expectedOutput,
+        );
     });
 
     test('should match state when method is called', () => {
-        const wrapper = shallow(
-            <AbstractCommand {...baseProps}/>
-        );
+        const wrapper = shallow(<AbstractCommand {...baseProps} />);
 
         const displayName = 'new display_name';
         wrapper.instance().updateDisplayName({target: {value: displayName}});
@@ -147,26 +146,31 @@ describe('components/integrations/AbstractCommand', () => {
         expect(wrapper.state('autocomplete')).toEqual(false);
 
         const autocompleteHint = 'new autocompleteHint';
-        wrapper.instance().updateAutocompleteHint({target: {value: autocompleteHint}});
+        wrapper
+            .instance()
+            .updateAutocompleteHint({target: {value: autocompleteHint}});
         expect(wrapper.state('autocompleteHint')).toEqual(autocompleteHint);
 
         const autocompleteDescription = 'new autocompleteDescription';
-        wrapper.instance().updateAutocompleteDescription({target: {value: autocompleteDescription}});
-        expect(wrapper.state('autocompleteDescription')).toEqual(autocompleteDescription);
+        wrapper.instance().updateAutocompleteDescription({
+            target: {value: autocompleteDescription},
+        });
+
+        expect(wrapper.state('autocompleteDescription')).toEqual(
+            autocompleteDescription,
+        );
     });
 
     test('should match state when handleSubmit is called', () => {
-        const newAction = jest.fn().mockImplementation(
-            () => {
-                return new Promise((resolve) => {
-                    process.nextTick(() => resolve());
-                });
-            }
-        );
+        const newAction = jest.fn().mockImplementation(() => {
+            return new Promise((resolve) => {
+                process.nextTick(() => resolve());
+            });
+        });
+
         const props = {...baseProps, action: newAction};
-        const wrapper = shallow(
-            <AbstractCommand {...props}/>
-        );
+        const wrapper = shallow(<AbstractCommand {...props} />);
+
         expect(newAction).toHaveBeenCalledTimes(0);
 
         const evt = {preventDefault: jest.fn()};
@@ -185,53 +189,67 @@ describe('components/integrations/AbstractCommand', () => {
         // empty trigger
         wrapper.setState({saving: false, trigger: ''});
         handleSubmit(evt);
-        expect(wrapper.state('clientError')).toEqual((
+        expect(wrapper.state('clientError')).toEqual(
             <FormattedMessage
                 defaultMessage='A trigger word is required'
                 id='add_command.triggerRequired'
                 values={{}}
-            />
-        ));
+            />,
+        );
+
         expect(newAction).toHaveBeenCalledTimes(1);
 
         // trigger that starts with a slash '/'
         wrapper.setState({saving: false, trigger: '//startwithslash'});
         handleSubmit(evt);
-        expect(wrapper.state('clientError')).toEqual((
+        expect(wrapper.state('clientError')).toEqual(
             <FormattedMessage
                 defaultMessage='A trigger word cannot begin with a /'
                 id='add_command.triggerInvalidSlash'
                 values={{}}
-            />
-        ));
+            />,
+        );
+
         expect(newAction).toHaveBeenCalledTimes(1);
 
         // trigger with space
         wrapper.setState({saving: false, trigger: '/trigger with space'});
         handleSubmit(evt);
-        expect(wrapper.state('clientError')).toEqual((
+        expect(wrapper.state('clientError')).toEqual(
             <FormattedMessage
                 defaultMessage='A trigger word must not contain spaces'
                 id='add_command.triggerInvalidSpace'
                 values={{}}
-            />
-        ));
+            />,
+        );
+
         expect(newAction).toHaveBeenCalledTimes(1);
 
         // trigger above maximum length
-        wrapper.setState({saving: false, trigger: '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'});
+        wrapper.setState({
+            saving: false,
+            trigger:
+                '123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789',
+        });
+
         handleSubmit(evt);
-        expect(wrapper.state('clientError')).toEqual((
+        expect(wrapper.state('clientError')).toEqual(
             <FormattedMessage
                 defaultMessage='A trigger word must contain between {min} and {max} characters'
                 id='add_command.triggerInvalidLength'
                 values={{max: 128, min: 1}}
-            />
-        ));
+            />,
+        );
+
         expect(newAction).toHaveBeenCalledTimes(1);
 
         // good triggers
-        wrapper.setState({saving: false, trigger: '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678'});
+        wrapper.setState({
+            saving: false,
+            trigger:
+                '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678',
+        });
+
         handleSubmit(evt);
         expect(wrapper.state('clientError')).toEqual('');
         expect(newAction).toHaveBeenCalledTimes(2);
@@ -249,13 +267,14 @@ describe('components/integrations/AbstractCommand', () => {
         // empty url
         wrapper.setState({saving: false, trigger: 'trigger', url: ''});
         handleSubmit(evt);
-        expect(wrapper.state('clientError')).toEqual((
+        expect(wrapper.state('clientError')).toEqual(
             <FormattedMessage
                 defaultMessage='A request URL is required'
                 id='add_command.urlRequired'
                 values={{}}
-            />
-        ));
+            />,
+        );
+
         expect(newAction).toHaveBeenCalledTimes(4);
     });
 });

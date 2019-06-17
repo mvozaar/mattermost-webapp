@@ -44,7 +44,9 @@ export default class LinkTooltip extends React.PureComponent {
                 this.show = true;
 
                 tooltipContainer.show();
-                tooltipContainer.children().on('mouseover', () => clearTimeout(this.hideTimeout));
+                tooltipContainer
+                    .children()
+                    .on('mouseover', () => clearTimeout(this.hideTimeout));
                 tooltipContainer.children().on('mouseleave', (event) => {
                     if (event.toElement !== null) {
                         this.hideTooltip();
@@ -85,13 +87,11 @@ export default class LinkTooltip extends React.PureComponent {
                         style={tooltipContainerStyles}
                         ref={this.tooltipContainerRef}
                     >
-                        <Pluggable
-                            href={href}
-                            pluggableName='LinkTooltip'
-                        />
+                        <Pluggable href={href} pluggableName='LinkTooltip' />
                     </div>,
-                    document.getElementById('root')
+                    document.getElementById('root'),
                 )}
+
                 <span
                     onMouseOver={this.showTooltip}
                     onMouseLeave={this.hideTooltip}
@@ -102,4 +102,3 @@ export default class LinkTooltip extends React.PureComponent {
         );
     }
 }
-

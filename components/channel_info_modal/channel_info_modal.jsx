@@ -20,7 +20,6 @@ const headerMarkdownOptions = {singleline: false, mentionHighlight: false};
 
 export default class ChannelInfoModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * Function that is called when modal is hidden
          */
@@ -42,14 +41,15 @@ export default class ChannelInfoModal extends React.PureComponent {
 
         this.state = {show: true};
 
-        this.getHeaderMarkdownOptions = memoizeResult((channelNamesMap) => (
-            {...headerMarkdownOptions, channelNamesMap}
-        ));
+        this.getHeaderMarkdownOptions = memoizeResult((channelNamesMap) => ({
+            ...headerMarkdownOptions,
+            channelNamesMap,
+        }));
     }
 
     onHide = () => {
         this.setState({show: false});
-    }
+    };
 
     render() {
         let channel = this.props.channel;
@@ -57,7 +57,10 @@ export default class ChannelInfoModal extends React.PureComponent {
         let channelIcon;
 
         if (!channel) {
-            const notFound = Utils.localizeMessage('channel_info.notFound', 'No Channel Found');
+            const notFound = Utils.localizeMessage(
+                'channel_info.notFound',
+                'No Channel Found',
+            );
 
             channel = {
                 display_name: notFound,
@@ -68,23 +71,24 @@ export default class ChannelInfoModal extends React.PureComponent {
             };
         }
 
-        const channelNamesMap = this.props.channel.props && this.props.channel.props.channel_mentions;
+        const channelNamesMap =
+            this.props.channel.props &&
+            this.props.channel.props.channel_mentions;
 
         if (channelIsArchived) {
-            channelIcon = (
-                <ArchiveIcon className='icon icon__archive'/>
-            );
+            channelIcon = <ArchiveIcon className='icon icon__archive' />;
         } else if (channel.type === 'O') {
-            channelIcon = (
-                <GlobeIcon className='icon icon__globe icon--body'/>
-            );
+            channelIcon = <GlobeIcon className='icon icon__globe icon--body' />;
         } else if (channel.type === 'P') {
-            channelIcon = (
-                <LockIcon className='icon icon__globe icon--body'/>
-            );
+            channelIcon = <LockIcon className='icon icon__globe icon--body' />;
         }
 
-        const channelURL = getSiteURL() + '/' + this.props.currentTeam.name + '/channels/' + channel.name;
+        const channelURL =
+            getSiteURL() +
+            '/' +
+            this.props.currentTeam.name +
+            '/channels/' +
+            channel.name;
 
         let channelPurpose;
         if (channel.purpose) {
@@ -126,7 +130,9 @@ export default class ChannelInfoModal extends React.PureComponent {
                     <div className='info__value'>
                         <Markdown
                             message={channel.header}
-                            options={this.getHeaderMarkdownOptions(channelNamesMap)}
+                            options={this.getHeaderMarkdownOptions(
+                                channelNamesMap,
+                            )}
                         />
                     </div>
                 </div>
@@ -143,15 +149,16 @@ export default class ChannelInfoModal extends React.PureComponent {
                 aria-labelledby='channelInfoModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='channelInfoModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='channelInfoModalLabel'>
                         <FormattedMessage
                             id='channel_info.about'
                             defaultMessage='About'
                         />
-                        <strong>{channelIcon}{channel.display_name}</strong>
+
+                        <strong>
+                            {channelIcon}
+                            {channel.display_name}
+                        </strong>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body ref='modalBody'>
@@ -172,6 +179,7 @@ export default class ChannelInfoModal extends React.PureComponent {
                                 id='channel_info.id'
                                 defaultMessage='ID: '
                             />
+
                             {channel.id}
                         </p>
                     </div>

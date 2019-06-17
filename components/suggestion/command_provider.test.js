@@ -13,18 +13,27 @@ describe('CommandSuggestion', () => {
             hint: '@[username] ~[channel]',
             description: 'Invite a user to a channel',
         },
+
         isSelection: true,
         term: '/',
         matchedPretext: '',
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <CommandSuggestion {...baseProps}/>
-        );
+        const wrapper = shallow(<CommandSuggestion {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find('.command__title').first().text()).toEqual('/invite @[username] ~[channel]');
-        expect(wrapper.find('.command__desc').first().text()).toEqual('Invite a user to a channel');
+        expect(
+            wrapper
+                .find('.command__title')
+                .first()
+                .text(),
+        ).toEqual('/invite @[username] ~[channel]');
+        expect(
+            wrapper
+                .find('.command__desc')
+                .first()
+                .text(),
+        ).toEqual('Invite a user to a channel');
     });
 });

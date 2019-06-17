@@ -7,7 +7,6 @@ import {FormattedMessage} from 'react-intl';
 
 export default class StatisticCount extends React.PureComponent {
     static propTypes = {
-
         /*
          * Statistic title
          */
@@ -22,7 +21,7 @@ export default class StatisticCount extends React.PureComponent {
          * Data count
          */
         count: PropTypes.number,
-    }
+    };
 
     render() {
         const loading = (
@@ -37,9 +36,11 @@ export default class StatisticCount extends React.PureComponent {
                 <div className='total-count'>
                     <div className='title'>
                         {this.props.title}
-                        <i className={'fa ' + this.props.icon}/>
+                        <i className={'fa ' + this.props.icon} />
                     </div>
-                    <div className='content'>{isNaN(this.props.count) ? loading : this.props.count}</div>
+                    <div className='content'>
+                        {isNaN(this.props.count) ? loading : this.props.count}
+                    </div>
                 </div>
             </div>
         );

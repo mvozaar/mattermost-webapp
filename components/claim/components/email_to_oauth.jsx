@@ -35,7 +35,11 @@ export default class EmailToOAuth extends React.PureComponent {
 
         var password = ReactDOM.findDOMNode(this.refs.password).value;
         if (!password) {
-            state.error = Utils.localizeMessage('claim.email_to_oauth.pwdError', 'Please enter your password.');
+            state.error = Utils.localizeMessage(
+                'claim.email_to_oauth.pwdError',
+                'Please enter your password.',
+            );
+
             this.setState(state);
             return;
         }
@@ -60,19 +64,27 @@ export default class EmailToOAuth extends React.PureComponent {
                 }
             },
             (err) => {
-                if (!this.state.showMfa && err.server_error_id === 'mfa.validate_token.authenticate.app_error') {
+                if (
+                    !this.state.showMfa &&
+                    err.server_error_id ===
+                        'mfa.validate_token.authenticate.app_error'
+                ) {
                     this.setState({showMfa: true});
                 } else {
                     this.setState({error: err.message, showMfa: false});
                 }
-            }
+            },
         );
     }
 
     render() {
         var error = null;
         if (this.state.error) {
-            error = <div className='form-group has-error'><label className='control-label'>{this.state.error}</label></div>;
+            error = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>{this.state.error}</label>
+                </div>
+            );
         }
 
         var formClass = 'form-group';
@@ -80,7 +92,10 @@ export default class EmailToOAuth extends React.PureComponent {
             formClass += ' has-error';
         }
 
-        const type = (this.props.newType === Constants.SAML_SERVICE ? Constants.SAML_SERVICE.toUpperCase() : Utils.toTitleCase(this.props.newType));
+        const type =
+            this.props.newType === Constants.SAML_SERVICE
+                ? Constants.SAML_SERVICE.toUpperCase()
+                : Utils.toTitleCase(this.props.newType);
         const uiType = `${type} SSO`;
 
         let content;
@@ -128,15 +143,15 @@ export default class EmailToOAuth extends React.PureComponent {
                             className='form-control'
                             name='password'
                             ref='password'
-                            placeholder={{id: t('claim.email_to_oauth.pwd'), defaultMessage: 'Password'}}
+                            placeholder={{
+                                id: t('claim.email_to_oauth.pwd'),
+                                defaultMessage: 'Password',
+                            }}
                             spellCheck='false'
                         />
                     </div>
                     {error}
-                    <button
-                        type='submit'
-                        className='btn btn-primary'
-                    >
+                    <button type='submit' className='btn btn-primary'>
                         <FormattedMessage
                             id='claim.email_to_oauth.switchTo'
                             defaultMessage='Switch account to {uiType}'

@@ -18,7 +18,7 @@ export default class InfiniteScroll extends PureComponent {
         isReverse: PropTypes.bool,
         containerHeight: PropTypes.number,
         scrollPosition: PropTypes.number,
-    }
+    };
 
     static defaultProps = {
         element: 'div',
@@ -30,7 +30,7 @@ export default class InfiniteScroll extends PureComponent {
         isReverse: false,
         containerHeight: null,
         scrollPosition: null,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -69,9 +69,16 @@ export default class InfiniteScroll extends PureComponent {
             this.scrollComponent = node;
         };
 
-        const elementProps = containerHeight ? {...props, style: {height: containerHeight}} : props;
+        const elementProps = containerHeight
+            ? {...props, style: {height: containerHeight}}
+            : props;
 
-        return React.createElement(element, elementProps, children, hasMore && (loader || this.defaultLoader));
+        return React.createElement(
+            element,
+            elementProps,
+            children,
+            hasMore && (loader || this.defaultLoader),
+        );
     }
 
     calculateTopPosition(el) {
@@ -94,16 +101,28 @@ export default class InfiniteScroll extends PureComponent {
 
         let offset;
         if (this.props.useWindow) {
-            var scrollTop = ('pageYOffset' in scrollEl) ? scrollEl.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+            var scrollTop =
+                'pageYOffset' in scrollEl
+                    ? scrollEl.pageYOffset
+                    : (
+                          document.documentElement ||
+                          document.body.parentNode ||
+                          document.body
+                      ).scrollTop;
             if (this.props.isReverse) {
                 offset = scrollTop;
             } else {
-                offset = this.calculateTopPosition(el) + (el.offsetHeight - scrollTop - window.innerHeight);
+                offset =
+                    this.calculateTopPosition(el) +
+                    (el.offsetHeight - scrollTop - window.innerHeight);
             }
         } else if (this.props.isReverse) {
             offset = el.parentNode.scrollTop;
         } else {
-            offset = el.scrollHeight - el.parentNode.scrollTop - el.parentNode.clientHeight;
+            offset =
+                el.scrollHeight -
+                el.parentNode.scrollTop -
+                el.parentNode.clientHeight;
         }
 
         if (offset < Number(this.props.threshold)) {
@@ -111,7 +130,7 @@ export default class InfiniteScroll extends PureComponent {
 
             // Call loadMore after detachScrollListener to allow for non-async loadMore functions
             if (typeof this.props.loadMore === 'function') {
-                this.props.loadMore(this.pageLoaded += 1);
+                this.props.loadMore((this.pageLoaded += 1));
             }
         }
     }

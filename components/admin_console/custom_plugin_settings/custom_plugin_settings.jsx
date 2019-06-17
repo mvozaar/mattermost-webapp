@@ -18,7 +18,11 @@ export default class CustomPluginSettings extends SchemaAdminSettings {
                 saving: false,
                 serverError: null,
                 errorTooltip: false,
-                ...CustomPluginSettings.getStateFromConfig(props.config, props.schema, props.roles),
+                ...CustomPluginSettings.getStateFromConfig(
+                    props.config,
+                    props.schema,
+                    props.roles,
+                ),
             };
         }
         return null;
@@ -55,12 +59,16 @@ export default class CustomPluginSettings extends SchemaAdminSettings {
         const state = {};
 
         if (schema) {
-            const configSettings = config.PluginSettings.Plugins[schema.id] || {};
+            const configSettings =
+                config.PluginSettings.Plugins[schema.id] || {};
 
             const settings = schema.settings || [];
             settings.forEach((setting) => {
                 const lowerKey = setting.key.toLowerCase();
-                state[lowerKey] = configSettings[lowerKey] == null ? setting.default : configSettings[lowerKey];
+                state[lowerKey] =
+                    configSettings[lowerKey] == null
+                        ? setting.default
+                        : configSettings[lowerKey];
             });
         }
 

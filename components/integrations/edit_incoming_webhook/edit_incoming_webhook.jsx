@@ -10,60 +10,65 @@ import AbstractIncomingWebhook from 'components/integrations/abstract_incoming_w
 import LoadingScreen from 'components/loading_screen.jsx';
 
 const HEADER = {id: t('integrations.edit'), defaultMessage: 'Edit'};
-const FOOTER = {id: t('update_incoming_webhook.update'), defaultMessage: 'Update'};
-const LOADING = {id: t('update_incoming_webhook.updating'), defaultMessage: 'Updating...'};
+const FOOTER = {
+    id: t('update_incoming_webhook.update'),
+    defaultMessage: 'Update',
+};
+
+const LOADING = {
+    id: t('update_incoming_webhook.updating'),
+    defaultMessage: 'Updating...',
+};
 
 export default class EditIncomingWebhook extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The current team
-        */
+         * The current team
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        * The incoming webhook to edit
-        */
+         * The incoming webhook to edit
+         */
         hook: PropTypes.object,
 
         /**
-        * The id of the incoming webhook to edit
-        */
+         * The id of the incoming webhook to edit
+         */
         hookId: PropTypes.string.isRequired,
 
         /**
-        * The request state for updateIncomingHook action. Contains status and error
-        */
+         * The request state for updateIncomingHook action. Contains status and error
+         */
         updateIncomingHookRequest: PropTypes.object.isRequired,
 
         /**
-        * Whether or not incoming webhooks are enabled.
-        */
+         * Whether or not incoming webhooks are enabled.
+         */
         enableIncomingWebhooks: PropTypes.bool.isRequired,
 
         /**
-        * Whether to allow configuration of the default post username.
-        */
+         * Whether to allow configuration of the default post username.
+         */
         enablePostUsernameOverride: PropTypes.bool.isRequired,
 
         /**
-        * Whether to allow configuration of the default post icon.
-        */
+         * Whether to allow configuration of the default post icon.
+         */
         enablePostIconOverride: PropTypes.bool.isRequired,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call to update an incoming webhook
-            */
+             * The function to call to update an incoming webhook
+             */
             updateIncomingHook: PropTypes.func.isRequired,
 
             /**
-            * The function to call to get an incoming webhook
-            */
+             * The function to call to get an incoming webhook
+             */
             getIncomingHook: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -92,26 +97,33 @@ export default class EditIncomingWebhook extends React.PureComponent {
         }
 
         await this.submitHook();
-    }
+    };
 
     submitHook = async () => {
         this.setState({serverError: ''});
 
-        const {data} = await this.props.actions.updateIncomingHook(this.newHook);
+        const {data} = await this.props.actions.updateIncomingHook(
+            this.newHook,
+        );
 
         if (data) {
-            browserHistory.push(`/${this.props.team.name}/integrations/incoming_webhooks`);
+            browserHistory.push(
+                `/${this.props.team.name}/integrations/incoming_webhooks`,
+            );
+
             return;
         }
 
         if (this.props.updateIncomingHookRequest.error) {
-            this.setState({serverError: this.props.updateIncomingHookRequest.error.message});
+            this.setState({
+                serverError: this.props.updateIncomingHookRequest.error.message,
+            });
         }
-    }
+    };
 
     render() {
         if (!this.props.hook) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
 
         return (
@@ -120,7 +132,9 @@ export default class EditIncomingWebhook extends React.PureComponent {
                 header={HEADER}
                 footer={FOOTER}
                 loading={LOADING}
-                enablePostUsernameOverride={this.props.enablePostUsernameOverride}
+                enablePostUsernameOverride={
+                    this.props.enablePostUsernameOverride
+                }
                 enablePostIconOverride={this.props.enablePostIconOverride}
                 action={this.editIncomingHook}
                 serverError={this.state.serverError}

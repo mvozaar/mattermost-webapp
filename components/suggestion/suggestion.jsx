@@ -7,10 +7,8 @@ import React from 'react';
 export default class Suggestion extends React.Component {
     static get propTypes() {
         return {
-            item: PropTypes.oneOfType([
-                PropTypes.object,
-                PropTypes.string,
-            ]).isRequired,
+            item: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
+                .isRequired,
             term: PropTypes.string.isRequired,
             matchedPretext: PropTypes.string.isRequired,
             isSelection: PropTypes.bool,

@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import FormattedMarkdownMessage, {CustomRenderer} from 'components/formatted_markdown_message';
+import FormattedMarkdownMessage, {
+    CustomRenderer,
+} from 'components/formatted_markdown_message';
 
 export default class HelpText extends React.PureComponent {
     static propTypes = {
@@ -49,13 +51,15 @@ export default class HelpText extends React.PureComponent {
                 renderer: new CustomRenderer(),
             });
 
-            return <span dangerouslySetInnerHTML={{__html: html}}/>;
+            return <span dangerouslySetInnerHTML={{__html: html}} />;
         }
 
         return <span>{this.props.text}</span>;
     };
 
     render() {
-        return this.props.isTranslated ? this.renderTranslated() : this.renderUntranslated();
+        return this.props.isTranslated
+            ? this.renderTranslated()
+            : this.renderUntranslated();
     }
 }

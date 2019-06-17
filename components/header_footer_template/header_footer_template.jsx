@@ -7,7 +7,6 @@ import {FormattedMessage} from 'react-intl';
 
 export default class NotLoggedIn extends React.PureComponent {
     static propTypes = {
-
         /*
          * Content of the page
          */
@@ -41,8 +40,8 @@ export default class NotLoggedIn extends React.PureComponent {
                     rel='noopener noreferrer'
                     href={this.props.config.AboutLink}
                 >
-                    <FormattedMessage id='web.footer.about'/>
-                </a>
+                    <FormattedMessage id='web.footer.about' />
+                </a>,
             );
         }
 
@@ -56,8 +55,8 @@ export default class NotLoggedIn extends React.PureComponent {
                     rel='noopener noreferrer'
                     href={this.props.config.PrivacyPolicyLink}
                 >
-                    <FormattedMessage id='web.footer.privacy'/>
-                </a>
+                    <FormattedMessage id='web.footer.privacy' />
+                </a>,
             );
         }
 
@@ -71,8 +70,8 @@ export default class NotLoggedIn extends React.PureComponent {
                     rel='noopener noreferrer'
                     href={this.props.config.TermsOfServiceLink}
                 >
-                    <FormattedMessage id='web.footer.terms'/>
-                </a>
+                    <FormattedMessage id='web.footer.terms' />
+                </a>,
             );
         }
 
@@ -86,27 +85,22 @@ export default class NotLoggedIn extends React.PureComponent {
                     rel='noopener noreferrer'
                     href={this.props.config.HelpLink}
                 >
-                    <FormattedMessage id='web.footer.help'/>
-                </a>
+                    <FormattedMessage id='web.footer.help' />
+                </a>,
             );
         }
 
         return (
             <div className='inner-wrap'>
-                <div className='row content'>
-                    {this.props.children}
-                </div>
+                <div className='row content'>{this.props.children}</div>
                 <div className='row footer'>
-                    <div
-                        id='footer_section'
-                        className='footer-pane col-xs-12'
-                    >
+                    <div id='footer_section' className='footer-pane col-xs-12'>
                         <div className='col-xs-12'>
                             <span
                                 id='company_name'
                                 className='pull-right footer-site-name'
                             >
-                                {'Mattermost'}
+                                {'securCom'}
                             </span>
                         </div>
                         <div className='col-xs-12'>
@@ -114,11 +108,9 @@ export default class NotLoggedIn extends React.PureComponent {
                                 id='copyright'
                                 className='pull-right footer-link copyright'
                             >
-                                {`© 2015-${new Date().getFullYear()} Mattermost, Inc.`}
+                                {`© 2015-${new Date().getFullYear()} SecurCom, Ltd.`}
                             </span>
-                            <span className='pull-right'>
-                                {content}
-                            </span>
+                            <span className='pull-right'>{content}</span>
                         </div>
                     </div>
                 </div>
@@ -126,4 +118,3 @@ export default class NotLoggedIn extends React.PureComponent {
         );
     }
 }
-

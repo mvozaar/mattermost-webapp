@@ -22,7 +22,11 @@ export default class PostReaction extends React.PureComponent {
         postId: PropTypes.string.isRequired,
         teamId: PropTypes.string.isRequired,
         getDotMenuRef: PropTypes.func.isRequired,
-        location: PropTypes.oneOf([Locations.CENTER, Locations.RHS_ROOT, Locations.RHS_COMMENT]).isRequired,
+        location: PropTypes.oneOf([
+            Locations.CENTER,
+            Locations.RHS_ROOT,
+            Locations.RHS_COMMENT,
+        ]).isRequired,
         showEmojiPicker: PropTypes.bool.isRequired,
         toggleEmojiPicker: PropTypes.func.isRequired,
         actions: PropTypes.shape({
@@ -53,7 +57,10 @@ export default class PostReaction extends React.PureComponent {
 
         let spaceRequiredAbove;
         let spaceRequiredBelow;
-        if (location === Locations.RHS_ROOT || location === Locations.RHS_COMMENT) {
+        if (
+            location === Locations.RHS_ROOT ||
+            location === Locations.RHS_COMMENT
+        ) {
             spaceRequiredAbove = EmojiPickerOverlay.RHS_SPACE_REQUIRED_ABOVE;
             spaceRequiredBelow = EmojiPickerOverlay.RHS_SPACE_REQUIRED_BELOW;
         }
@@ -75,6 +82,7 @@ export default class PostReaction extends React.PureComponent {
                         spaceRequiredAbove={spaceRequiredAbove}
                         spaceRequiredBelow={spaceRequiredBelow}
                     />
+
                     <OverlayTrigger
                         className='hidden-xs'
                         delayShow={500}
@@ -96,7 +104,7 @@ export default class PostReaction extends React.PureComponent {
                             className='reacticon__container color--link style--none'
                             onClick={this.props.toggleEmojiPicker}
                         >
-                            <EmojiIcon className='icon icon--emoji'/>
+                            <EmojiIcon className='icon icon--emoji' />
                         </button>
                     </OverlayTrigger>
                 </div>

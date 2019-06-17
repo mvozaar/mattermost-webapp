@@ -21,7 +21,6 @@ const TEAM_MODE = 'team';
 
 export default class QuickSwitchModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * The function called to hide the modal
          */
@@ -80,6 +79,7 @@ export default class QuickSwitchModal extends React.PureComponent {
         this.setState({
             text: '',
         });
+
         this.props.onHide();
     };
 
@@ -114,7 +114,10 @@ export default class QuickSwitchModal extends React.PureComponent {
             const {joinChannelById, switchToChannel} = this.props.actions;
             const selectedChannel = selected.channel;
 
-            if (selected.type === Constants.MENTION_MORE_CHANNELS && selectedChannel.type === Constants.OPEN_CHANNEL) {
+            if (
+                selected.type === Constants.MENTION_MORE_CHANNELS &&
+                selectedChannel.type === Constants.OPEN_CHANNEL
+            ) {
                 await joinChannelById(selectedChannel.id);
             }
             switchToChannel(selectedChannel).then((result) => {
@@ -154,7 +157,7 @@ export default class QuickSwitchModal extends React.PureComponent {
         this.enableChannelProvider();
         this.setState({mode});
         this.focusTextbox();
-    }
+    };
 
     render() {
         let providers = this.channelProviders;
@@ -198,6 +201,7 @@ export default class QuickSwitchModal extends React.PureComponent {
                                 id='quick_switch_modal.channels'
                                 defaultMessage='Channels'
                             />
+
                             <span className='small'>
                                 <FormattedMessage
                                     id={channelShortcut}
@@ -216,6 +220,7 @@ export default class QuickSwitchModal extends React.PureComponent {
                                 id='quick_switch_modal.teams'
                                 defaultMessage='Teams'
                             />
+
                             <span className='small'>
                                 <FormattedMessage
                                     id={teamShortcut}
@@ -263,16 +268,11 @@ export default class QuickSwitchModal extends React.PureComponent {
                 role='dialog'
                 aria-labelledby='quickSwitchModalLabel'
             >
-                <Modal.Header
-                    id='quickSwitchModalLabel'
-                    closeButton={true}
-                />
+                <Modal.Header id='quickSwitchModalLabel' closeButton={true} />
+
                 <Modal.Body>
                     {header}
-                    <div
-                        id='quickSwitchHint'
-                        className='modal__hint'
-                    >
+                    <div id='quickSwitchHint' className='modal__hint'>
                         {help}
                     </div>
                     <SuggestionBox

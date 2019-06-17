@@ -11,10 +11,12 @@ import AddOutgoingWebhook from './add_outgoing_webhook.jsx';
 
 function mapStateToProps(state) {
     const config = getConfig(state);
-    const enablePostUsernameOverride = config.EnablePostUsernameOverride === 'true';
+    const enablePostUsernameOverride =
+        config.EnablePostUsernameOverride === 'true';
     const enablePostIconOverride = config.EnablePostIconOverride === 'true';
     return {
-        createOutgoingHookRequest: state.requests.integrations.createOutgoingHook,
+        createOutgoingHookRequest:
+            state.requests.integrations.createOutgoingHook,
         enablePostUsernameOverride,
         enablePostIconOverride,
     };
@@ -22,10 +24,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            createOutgoingHook,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                createOutgoingHook,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddOutgoingWebhook);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddOutgoingWebhook);

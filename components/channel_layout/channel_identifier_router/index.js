@@ -11,10 +11,19 @@ import ChannelIdentifierRouter from './channel_identifier_router.jsx';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            onChannelByIdentifierEnter,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                onChannelByIdentifierEnter,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(ChannelIdentifierRouter));
+export default withRouter(
+    connect(
+        null,
+        mapDispatchToProps,
+    )(ChannelIdentifierRouter),
+);

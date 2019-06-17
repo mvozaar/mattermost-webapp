@@ -12,11 +12,8 @@ export const HFTRoute = ({component: Component, ...rest}) => (
     <Route
         {...rest}
         render={(props) => (
-            <AsyncComponent
-                doLoad={HeaderFooterTemplate}
-                {...props}
-            >
-                <Component {...props}/>
+            <AsyncComponent doLoad={HeaderFooterTemplate} {...props}>
+                <Component {...props} />
             </AsyncComponent>
         )}
     />
@@ -26,15 +23,9 @@ export const LoggedInHFTRoute = ({component: Component, ...rest}) => (
     <Route
         {...rest}
         render={(props) => (
-            <AsyncComponent
-                doLoad={loadLoggedIn}
-                {...props}
-            >
-                <AsyncComponent
-                    doLoad={HeaderFooterTemplate}
-                    {...props}
-                >
-                    <Component {...props}/>
+            <AsyncComponent doLoad={loadLoggedIn} {...props}>
+                <AsyncComponent doLoad={HeaderFooterTemplate} {...props}>
+                    <Component {...props} />
                 </AsyncComponent>
             </AsyncComponent>
         )}

@@ -34,9 +34,8 @@ describe('components/SuggestionBox', () => {
     });
 
     test('should avoid ref access on unmount race', (done) => {
-        const wrapper = mount(
-            <SuggestionBox {...baseProps}/>
-        );
+        const wrapper = mount(<SuggestionBox {...baseProps} />);
+
         wrapper.instance().handleFocusIn({});
         wrapper.unmount();
         done();
@@ -45,14 +44,15 @@ describe('components/SuggestionBox', () => {
     test('should match state and/or call function on handleFocusOut', () => {
         const onBlur = jest.fn();
         const wrapper = shallow(
-            <SuggestionBox
-                {...baseProps}
-                onBlur={onBlur}
-            />
+            <SuggestionBox {...baseProps} onBlur={onBlur} />,
         );
+
         wrapper.setState({focused: true});
         const instance = wrapper.instance();
-        const contains = jest.fn().mockReturnValueOnce(true).mockReturnValue(false);
+        const contains = jest
+            .fn()
+            .mockReturnValueOnce(true)
+            .mockReturnValue(false);
         const relatedTarget = jest.fn();
         instance.container = {contains};
         instance.handleEmitClearSuggestions = jest.fn();
@@ -75,11 +75,8 @@ describe('components/SuggestionBox', () => {
     });
 
     test('should force pretext change on context change', () => {
-        const wrapper = shallow(
-            <SuggestionBox
-                {...baseProps}
-            />
-        );
+        const wrapper = shallow(<SuggestionBox {...baseProps} />);
+
         const instance = wrapper.instance();
         instance.handlePretextChanged = jest.fn();
         instance.getTextbox = jest.fn().mockReturnValue({value: 'value'});
@@ -95,11 +92,8 @@ describe('components/SuggestionBox', () => {
     });
 
     test('should force pretext change on composition update', () => {
-        const wrapper = shallow(
-            <SuggestionBox
-                {...baseProps}
-            />
-        );
+        const wrapper = shallow(<SuggestionBox {...baseProps} />);
+
         const instance = wrapper.instance();
         instance.handlePretextChanged = jest.fn();
         instance.getTextbox = jest.fn().mockReturnValue({value: ''});

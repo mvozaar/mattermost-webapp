@@ -18,18 +18,21 @@ describe('components/TeamSelectorModal', () => {
                 scheme_id: '',
                 display_name: 'Team 1',
             },
+
             {
                 id: 'id2',
                 delete_at: 123,
                 scheme_id: '',
                 display_name: 'Team 2',
             },
+
             {
                 id: 'id3',
                 delete_at: 0,
                 scheme_id: 'test',
                 display_name: 'Team 3',
             },
+
             {
                 id: 'id4',
                 delete_at: 0,
@@ -37,6 +40,7 @@ describe('components/TeamSelectorModal', () => {
                 display_name: 'Team 4',
             },
         ],
+
         onModalDismissed: jest.fn(),
         onTeamsSelected: jest.fn(),
         actions: {
@@ -47,7 +51,7 @@ describe('components/TeamSelectorModal', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<TeamSelectorModal {...defaultProps}/>);
+        const wrapper = shallow(<TeamSelectorModal {...defaultProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });

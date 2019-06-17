@@ -14,7 +14,8 @@ import {
     getCurrentUserId,
     getProfiles as selectProfiles,
     getProfilesInCurrentChannel,
-    getProfilesInCurrentTeam, searchProfiles as searchProfilesSelector,
+    getProfilesInCurrentTeam,
+    searchProfiles as searchProfilesSelector,
     searchProfilesInCurrentTeam,
     getTotalUsersStats as getTotalUsersStatsSelector,
 } from 'mattermost-redux/selectors/entities/users';
@@ -24,7 +25,10 @@ import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 import {filterProfilesMatchingTerm} from 'mattermost-redux/utils/user_utils';
 import {memoizeResult} from 'mattermost-redux/utils/helpers';
 
-import {openDirectChannelToUserId, openGroupChannelToUserIds} from 'actions/channel_actions';
+import {
+    openDirectChannelToUserId,
+    openGroupChannelToUserIds,
+} from 'actions/channel_actions';
 import {loadStatusesForProfilesList} from 'actions/status_actions.jsx';
 import {setModalSearchTerm} from 'actions/views/search';
 
@@ -55,7 +59,10 @@ function mapStateToProps(state, ownProps) {
         users = getProfilesInCurrentTeam(state);
     }
 
-    const filteredGroupChannels = filterGroupChannels(getChannelsWithUserProfiles(state), searchTerm);
+    const filteredGroupChannels = filterGroupChannels(
+        getChannelsWithUserProfiles(state),
+        searchTerm,
+    );
 
     const team = getCurrentTeam(state);
     const stats = getTotalUsersStatsSelector(state) || {total_users_count: 0};
@@ -83,18 +90,25 @@ const filterGroupChannels = memoizeResult((channels, term) => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getProfiles,
-            getProfilesInTeam,
-            getStatusesByIds,
-            getTotalUsersStats,
-            loadStatusesForProfilesList,
-            openDirectChannelToUserId,
-            openGroupChannelToUserIds,
-            searchProfiles,
-            setModalSearchTerm,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getProfiles,
+                getProfilesInTeam,
+                getStatusesByIds,
+                getTotalUsersStats,
+                loadStatusesForProfilesList,
+                openDirectChannelToUserId,
+                openGroupChannelToUserIds,
+                searchProfiles,
+                setModalSearchTerm,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoreDirectChannels);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MoreDirectChannels);

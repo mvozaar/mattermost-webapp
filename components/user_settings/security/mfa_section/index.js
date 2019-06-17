@@ -4,7 +4,10 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
+import {
+    getConfig,
+    getLicense,
+} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 
 import {deactivateMfa} from 'actions/views/mfa';
@@ -16,10 +19,12 @@ function mapStateToProps(state) {
     const license = getLicense(state);
     const config = getConfig(state);
 
-    const mfaLicensed = license && license.IsLicensed === 'true' && license.MFA === 'true';
+    const mfaLicensed =
+        license && license.IsLicensed === 'true' && license.MFA === 'true';
 
     const mfaEnabled = config.EnableMultifactorAuthentication === 'true';
-    const mfaEnforced = mfaLicensed && config.EnforceMultifactorAuthentication === 'true';
+    const mfaEnforced =
+        mfaLicensed && config.EnforceMultifactorAuthentication === 'true';
 
     const user = getCurrentUser(state);
 
@@ -27,7 +32,10 @@ function mapStateToProps(state) {
     let mfaAvailable = false;
     if (user) {
         mfaActive = user.mfa_active;
-        mfaAvailable = mfaEnabled && (user.auth_service === '' || user.auth_service === Constants.LDAP_SERVICE);
+        mfaAvailable =
+            mfaEnabled &&
+            (user.auth_service === '' ||
+                user.auth_service === Constants.LDAP_SERVICE);
     }
 
     return {
@@ -39,10 +47,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            deactivateMfa,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                deactivateMfa,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MfaSection);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MfaSection);

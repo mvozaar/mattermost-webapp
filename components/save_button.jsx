@@ -15,13 +15,13 @@ export default class SaveButton extends React.PureComponent {
         defaultMessage: PropTypes.node,
         btnClass: PropTypes.string,
         extraClasses: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         disabled: false,
         btnClass: 'btn-primary',
         extraClasses: '',
-    }
+    };
 
     static contextTypes = {
         intl: intlShape,
@@ -48,8 +48,12 @@ export default class SaveButton extends React.PureComponent {
             className += ' ' + extraClasses;
         }
 
-        const savingMessageComponent = savingMessage || formatMessage({id: 'save_button.saving', defaultMessage: 'Saving'});
-        const defaultMessageComponent = defaultMessage || formatMessage({id: 'save_button.save', defaultMessage: 'Save'});
+        const savingMessageComponent =
+            savingMessage ||
+            formatMessage({id: 'save_button.saving', defaultMessage: 'Saving'});
+        const defaultMessageComponent =
+            defaultMessage ||
+            formatMessage({id: 'save_button.save', defaultMessage: 'Save'});
 
         return (
             <button
@@ -59,10 +63,7 @@ export default class SaveButton extends React.PureComponent {
                 disabled={disabled}
                 {...props}
             >
-                <LoadingWrapper
-                    loading={saving}
-                    text={savingMessageComponent}
-                >
+                <LoadingWrapper loading={saving} text={savingMessageComponent}>
                     {defaultMessageComponent}
                 </LoadingWrapper>
             </button>

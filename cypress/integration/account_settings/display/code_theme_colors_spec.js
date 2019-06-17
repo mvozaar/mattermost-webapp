@@ -9,10 +9,27 @@
 
 /*eslint max-nested-callbacks: ["error", 3]*/
 
-const THEMES = [{name: 'github', backgroundColor: 'rgb(248, 248, 248)', color: 'rgb(51, 51, 51)'},
-    {name: 'monokai', backgroundColor: 'rgb(39, 40, 34)', color: 'rgb(221, 221, 221)'},
-    {name: 'solarized-light', backgroundColor: 'rgb(253, 246, 227)', color: 'rgb(101, 123, 131)'},
-    {name: 'solarized-dark', backgroundColor: 'rgb(0, 43, 54)', color: 'rgb(131, 148, 150)'},
+const THEMES = [
+    {
+        name: 'github',
+        backgroundColor: 'rgb(248, 248, 248)',
+        color: 'rgb(51, 51, 51)',
+    },
+    {
+        name: 'monokai',
+        backgroundColor: 'rgb(39, 40, 34)',
+        color: 'rgb(221, 221, 221)',
+    },
+    {
+        name: 'solarized-light',
+        backgroundColor: 'rgb(253, 246, 227)',
+        color: 'rgb(101, 123, 131)',
+    },
+    {
+        name: 'solarized-dark',
+        backgroundColor: 'rgb(0, 43, 54)',
+        color: 'rgb(131, 148, 150)',
+    },
 ];
 
 function verifyLastPostStyle(codeTheme) {
@@ -20,9 +37,9 @@ function verifyLastPostStyle(codeTheme) {
         const postCodeBlock = `#postMessageText_${postId} code`;
 
         // * Verify that the code block background color and color match the desired theme
-        cy.get(postCodeBlock).
-            should('have.css', 'background-color', codeTheme.backgroundColor).
-            and('have.css', 'color', codeTheme.color);
+        cy.get(postCodeBlock)
+            .should('have.css', 'background-color', codeTheme.backgroundColor)
+            .and('have.css', 'color', codeTheme.color);
     });
 }
 
@@ -53,10 +70,14 @@ describe('AS14319 Theme Colors - Code', () => {
         navigateToThemeSettings();
 
         // 1. Select the Theme Colors radio
-        cy.get('#standardThemes').check().should('be.checked');
+        cy.get('#standardThemes')
+            .check()
+            .should('be.checked');
 
         // 2. Select the Mattermost pre-made theme
-        cy.get('#premadeThemeMattermost').first().click();
+        cy.get('#premadeThemeMattermost')
+            .first()
+            .click();
 
         // 3. Save and close settings modal
         cy.get('#saveSetting').click();
@@ -69,13 +90,18 @@ describe('AS14319 Theme Colors - Code', () => {
             navigateToThemeSettings();
 
             // 2. Check Custom Themes
-            cy.get('#customThemes').check().should('be.checked');
+            cy.get('#customThemes')
+                .check()
+                .should('be.checked');
 
             // 3. Open Center Channel Styles section
             cy.get('#centerChannelStyles').click();
 
             // 4. Select custom code theme
-            cy.get('#codeThemeSelect').scrollIntoView().should('be.visible').select(THEME.name);
+            cy.get('#codeThemeSelect')
+                .scrollIntoView()
+                .should('be.visible')
+                .select(THEME.name);
 
             // * Verify that the setting changes in the background?
             verifyLastPostStyle(THEME);

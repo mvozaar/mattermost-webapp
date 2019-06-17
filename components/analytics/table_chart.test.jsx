@@ -9,12 +9,7 @@ describe('components/analytics/table_chart.jsx', () => {
     test('should match snapshot, loaded without data', () => {
         const data = [];
 
-        const wrapper = shallow(
-            <TableChart
-                title='Test'
-                data={data}
-            />
-        );
+        const wrapper = shallow(<TableChart title='Test' data={data} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -25,12 +20,7 @@ describe('components/analytics/table_chart.jsx', () => {
             {name: 'test2', tip: 'test-tip2', value: <p>{'test-value2'}</p>},
         ];
 
-        const wrapper = shallow(
-            <TableChart
-                title='Test'
-                data={data}
-            />
-        );
+        const wrapper = shallow(<TableChart title='Test' data={data} />);
 
         expect(wrapper).toMatchSnapshot();
     });

@@ -13,12 +13,15 @@ describe('components/SaveButton', () => {
     };
 
     test('should match snapshot, on defaultMessage', () => {
-        const wrapper = shallowWithIntl(
-            <SaveButton {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<SaveButton {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find('button').first().props().disabled).toBe(false);
+        expect(
+            wrapper
+                .find('button')
+                .first()
+                .props().disabled,
+        ).toBe(false);
 
         wrapper.setProps({defaultMessage: 'Go'});
         expect(wrapper).toMatchSnapshot();
@@ -26,12 +29,15 @@ describe('components/SaveButton', () => {
 
     test('should match snapshot, on savingMessage', () => {
         const props = {...baseProps, saving: true, disabled: true};
-        const wrapper = shallowWithIntl(
-            <SaveButton {...props}/>
-        );
+        const wrapper = shallowWithIntl(<SaveButton {...props} />);
 
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find('button').first().props().disabled).toBe(true);
+        expect(
+            wrapper
+                .find('button')
+                .first()
+                .props().disabled,
+        ).toBe(true);
 
         wrapper.setProps({savingMessage: 'Saving Config...'});
         expect(wrapper).toMatchSnapshot();
@@ -39,9 +45,7 @@ describe('components/SaveButton', () => {
 
     test('should match snapshot, extraClasses', () => {
         const props = {...baseProps, extraClasses: 'some-class'};
-        const wrapper = shallowWithIntl(
-            <SaveButton {...props}/>
-        );
+        const wrapper = shallowWithIntl(<SaveButton {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

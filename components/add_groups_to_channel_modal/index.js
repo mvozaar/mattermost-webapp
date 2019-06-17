@@ -3,7 +3,11 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getGroupsNotAssociatedToChannel, linkGroupSyncable, getAllGroupsAssociatedToChannel} from 'mattermost-redux/actions/groups';
+import {
+    getGroupsNotAssociatedToChannel,
+    linkGroupSyncable,
+    getAllGroupsAssociatedToChannel,
+} from 'mattermost-redux/actions/groups';
 import {getGroupsNotAssociatedToChannel as selectGroupsNotAssociatedToChannel} from 'mattermost-redux/selectors/entities/groups';
 import {getCurrentChannel} from 'mattermost-redux/selectors/entities/channels';
 
@@ -19,7 +23,9 @@ function mapStateToProps(state) {
     let groups = selectGroupsNotAssociatedToChannel(state, channel.id);
     if (searchTerm) {
         var regex = RegExp(searchTerm, 'i');
-        groups = groups.filter((group) => regex.test(group.display_name) || regex.test(group.name));
+        groups = groups.filter(
+            (group) => regex.test(group.display_name) || regex.test(group.name),
+        );
     }
 
     return {
@@ -32,13 +38,20 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getGroupsNotAssociatedToChannel,
-            setModalSearchTerm,
-            linkGroupSyncable,
-            getAllGroupsAssociatedToChannel,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getGroupsNotAssociatedToChannel,
+                setModalSearchTerm,
+                linkGroupSyncable,
+                getAllGroupsAssociatedToChannel,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddGroupsToChannelModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddGroupsToChannelModal);

@@ -26,7 +26,13 @@ function mapStateToProps(state, props) {
 
     return {
         enableTimezone: areTimezonesEnabledAndSupported(state),
-        useMilitaryTime: getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME, false),
+        useMilitaryTime: getBool(
+            state,
+            Preferences.CATEGORY_DISPLAY_SETTINGS,
+            Preferences.USE_MILITARY_TIME,
+            false,
+        ),
+
         timeZone: getUserCurrentTimezone(userTimezone),
     };
 }

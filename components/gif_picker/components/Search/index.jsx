@@ -5,7 +5,10 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import {searchIfNeededInitial, searchGfycat} from 'mattermost-redux/actions/gifs';
+import {
+    searchIfNeededInitial,
+    searchGfycat,
+} from 'mattermost-redux/actions/gifs';
 
 import SearchGrid from 'components/gif_picker/components/SearchGrid';
 
@@ -15,10 +18,10 @@ function mapStateToProps(state) {
     };
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     searchGfycat,
     searchIfNeededInitial,
-});
+};
 
 export class Search extends PureComponent {
     static propTypes = {
@@ -27,7 +30,7 @@ export class Search extends PureComponent {
         searchText: PropTypes.string,
         searchIfNeededInitial: PropTypes.func,
         searchGfycat: PropTypes.func,
-    }
+    };
 
     componentDidMount() {
         const {searchText} = this.props;
@@ -44,7 +47,7 @@ export class Search extends PureComponent {
     loadMore = () => {
         const {searchText} = this.props;
         this.props.searchGfycat({searchText});
-    }
+    };
 
     render() {
         const {handleItemClick, searchText, onCategories} = this.props;
@@ -60,4 +63,7 @@ export class Search extends PureComponent {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Search);

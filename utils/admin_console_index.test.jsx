@@ -10,7 +10,10 @@ const esMessages = require('../i18n/es');
 
 describe('AdminConsoleIndex.generateIndex', () => {
     it('should generate a index where I can search', () => {
-        const intlProvider = new IntlProvider({locale: 'en', messages: enMessages, defaultLocale: 'en'}, {});
+        const intlProvider = new IntlProvider(
+            {locale: 'en', messages: enMessages, defaultLocale: 'en'},
+            {},
+        );
         const {intl} = intlProvider.getChildContext();
 
         const idx = generateIndex(intl);
@@ -22,25 +25,30 @@ describe('AdminConsoleIndex.generateIndex', () => {
             'experimental/features',
             'authentication/email',
         ]);
+
         expect(idx.search('saml')).toEqual([
             'authentication/saml',
             'environment/session_lengths',
             'authentication/email',
             'experimental/features',
         ]);
-        expect(idx.search('nginx')).toEqual([
-            'environment/rate_limiting',
-        ]);
+
+        expect(idx.search('nginx')).toEqual(['environment/rate_limiting']);
+
         expect(idx.search('characters')).toEqual([
             'authentication/password',
             'site_config/customization',
         ]);
+
         expect(idx.search('caracteres')).toEqual([]);
         expect(idx.search('notexistingword')).toEqual([]);
     });
 
     it('should generate a index where I can search in other language', () => {
-        const intlProvider = new IntlProvider({locale: 'es', messages: esMessages, defaultLocale: 'es'}, {});
+        const intlProvider = new IntlProvider(
+            {locale: 'es', messages: esMessages, defaultLocale: 'es'},
+            {},
+        );
         const {intl} = intlProvider.getChildContext();
 
         const idx = generateIndex(intl);
@@ -52,19 +60,21 @@ describe('AdminConsoleIndex.generateIndex', () => {
             'experimental/features',
             'authentication/email',
         ]);
+
         expect(idx.search('saml')).toEqual([
             'authentication/saml',
             'environment/session_lengths',
             'authentication/email',
             'experimental/features',
         ]);
-        expect(idx.search('nginx')).toEqual([
-            'environment/rate_limiting',
-        ]);
+
+        expect(idx.search('nginx')).toEqual(['environment/rate_limiting']);
+
         expect(idx.search('caracteres')).toEqual([
             'site_config/customization',
             'authentication/password',
         ]);
+
         expect(idx.search('characters')).toEqual([]);
         expect(idx.search('notexistingword')).toEqual([]);
     });

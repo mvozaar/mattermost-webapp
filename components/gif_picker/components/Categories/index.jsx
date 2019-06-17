@@ -5,9 +5,18 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import {requestCategoriesList, requestCategoriesListIfNeeded, saveSearchBarText, saveSearchScrollPosition, searchTextUpdate} from 'mattermost-redux/actions/gifs';
+import {
+    requestCategoriesList,
+    requestCategoriesListIfNeeded,
+    saveSearchBarText,
+    saveSearchScrollPosition,
+    searchTextUpdate,
+} from 'mattermost-redux/actions/gifs';
 import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
-import {changeOpacity, makeStyleFromTheme} from 'mattermost-redux/utils/theme_utils';
+import {
+    changeOpacity,
+    makeStyleFromTheme,
+} from 'mattermost-redux/utils/theme_utils';
 
 import {trackEvent} from 'actions/diagnostics_actions.jsx';
 import * as PostUtils from 'utils/post_utils.jsx';
@@ -28,13 +37,13 @@ function mapStateToProps(state) {
     };
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     saveSearchBarText,
     saveSearchScrollPosition,
     searchTextUpdate,
     requestCategoriesList,
     requestCategoriesListIfNeeded,
-});
+};
 
 const getStyle = makeStyleFromTheme((theme) => {
     return {
@@ -60,7 +69,7 @@ export class Categories extends PureComponent {
         tagsList: PropTypes.array,
         hasImageProxy: PropTypes.string,
         theme: PropTypes.object.isRequired,
-    }
+    };
 
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -75,9 +84,12 @@ export class Categories extends PureComponent {
         });
 
         if (gfycats.length) {
-            trackEvent('gfycat', 'views', {context: 'category_list', count: gfycats.length});
+            trackEvent('gfycat', 'views', {
+                context: 'category_list',
+                count: gfycats.length,
+            });
         }
-    }
+    };
 
     componentWillUnmount() {
         this.props.saveSearchScrollPosition(0);
@@ -86,69 +98,88 @@ export class Categories extends PureComponent {
     filterTagsList = () => {
         const {searchBarText, tagsList} = this.props;
 
-        const substr = searchBarText.toLowerCase().trim().split(/ +/).join(' ');
-        return tagsList && tagsList.length ? tagsList.filter((tag) => {
-            if (!searchBarText || tag.tagName.indexOf(substr) !== -1) {
-                return tag;
-            }
-            return '';
-        }) : [];
-    }
+        const substr = searchBarText
+            .toLowerCase()
+            .trim()
+            .split(/ +/)
+            .join(' ');
+        return tagsList && tagsList.length
+            ? tagsList.filter((tag) => {
+                  if (!searchBarText || tag.tagName.indexOf(substr) !== -1) {
+                      return tag;
+                  }
+                  return '';
+              })
+            : [];
+    };
 
     loadMore = () => {
         this.props.requestCategoriesList();
-    }
+    };
 
     render() {
         const style = getStyle(this.props.theme);
 
-        const {hasMore, tagsList, gifs, onSearch, onTrending, hasImageProxy} = this.props;
+        const {
+            hasMore,
+            tagsList,
+            gifs,
+            onSearch,
+            onTrending,
+            hasImageProxy,
+        } = this.props;
 
-        const content = tagsList && tagsList.length ? this.filterTagsList(tagsList).map((item, index) => {
-            const {tagName, gfyId} = item;
+        const content =
+            tagsList && tagsList.length
+                ? this.filterTagsList(tagsList).map((item, index) => {
+                      const {tagName, gfyId} = item;
 
-            if (!gifs[gfyId]) {
-                return null;
-            }
+                      if (!gifs[gfyId]) {
+                          return null;
+                      }
 
-            const gfyItem = gifs[gfyId];
-            const {max1mbGif, avgColor} = gfyItem;
-            const url = PostUtils.getImageSrc(max1mbGif, hasImageProxy === 'true');
-            const searchText = tagName.replace(/\s/g, '-');
-            const backgroundImage = {backgroundImage: `url(${url}`};
-            const backgroundColor = {backgroundColor: avgColor};
-            const props = this.props;
-            function callback() {
-                props.searchTextUpdate(tagName);
-                props.saveSearchBarText(tagName);
-                if (searchText === 'trending') {
-                    onTrending();
-                } else {
-                    onSearch();
-                }
-            }
-            return (
-                <a
-                    onClick={callback}
-                    key={index}
-                >
-                    <div className='category-container'>
-                        <div
-                            className='category'
-                            style={{...backgroundImage, ...backgroundColor}}
-                        >
-                            <div className='category-name'>{tagName}</div>
-                        </div>
-                    </div>
-                </a>
-            );
-        }) : [];
+                      const gfyItem = gifs[gfyId];
+                      const {max1mbGif, avgColor} = gfyItem;
+                      const url = PostUtils.getImageSrc(
+                          max1mbGif,
+                          hasImageProxy === 'true',
+                      );
+
+                      const searchText = tagName.replace(/\s/g, '-');
+                      const backgroundImage = {backgroundImage: `url(${url}`};
+                      const backgroundColor = {backgroundColor: avgColor};
+                      const props = this.props;
+                      function callback() {
+                          props.searchTextUpdate(tagName);
+                          props.saveSearchBarText(tagName);
+                          if (searchText === 'trending') {
+                              onTrending();
+                          } else {
+                              onSearch();
+                          }
+                      }
+                      return (
+                          <a onClick={callback} key={index}>
+                              <div className='category-container'>
+                                  <div
+                                      className='category'
+                                      style={{
+                                          ...backgroundImage,
+                                          ...backgroundColor,
+                                      }}
+                                  >
+                                      <div className='category-name'>
+                                          {tagName}
+                                      </div>
+                                  </div>
+                              </div>
+                          </a>
+                      );
+                  })
+                : [];
 
         return content && content.length ? (
-            <div
-                className='categories-container'
-                style={style.background}
-            >
+            <div className='categories-container' style={style.background}>
                 <InfiniteScroll
                     hasMore={hasMore}
                     loadMore={this.loadMore}
@@ -158,12 +189,12 @@ export class Categories extends PureComponent {
                 </InfiniteScroll>
             </div>
         ) : (
-            <div
-                className='categories-container'
-                style={style.background}
-            />
+            <div className='categories-container' style={style.background} />
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Categories);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Categories);

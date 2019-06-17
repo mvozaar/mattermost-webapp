@@ -32,7 +32,9 @@ describe('Delete Parent Message', () => {
             // * Add replies (randomly between 1 to 3)
             const replyCount = getRandomInt(2) + 1;
             for (var i = 0; i < replyCount; i++) {
-                cy.get('#reply_textbox').type('Reply').type('{enter}');
+                cy.get('#reply_textbox')
+                    .type('Reply')
+                    .type('{enter}');
 
                 // add wait time to ensure that a post gets posted and not on pending state
                 cy.wait(500); // eslint-disable-line
@@ -49,7 +51,9 @@ describe('Delete Parent Message', () => {
 
                 // * Modal should now be visible and warning message should match the number of replies
                 cy.get('#deletePostModal').should('be.visible');
-                cy.get('#deletePostModal').contains(`${replyCount}`).should('be.visible');
+                cy.get('#deletePostModal')
+                    .contains(`${replyCount}`)
+                    .should('be.visible');
 
                 // 4. Delete the parent message
                 cy.get('#deletePostModalButton').click({force: true});

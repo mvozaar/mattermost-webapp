@@ -9,11 +9,11 @@ import loadingGif from 'images/load.gif';
 export default class LoadingBars extends React.PureComponent {
     static propTypes = {
         text: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         text: null,
-    }
+    };
 
     render() {
         const {text} = this.props;
@@ -25,6 +25,7 @@ export default class LoadingBars extends React.PureComponent {
                     className='spinner'
                     src={loadingGif}
                 />
+
                 {text}
             </span>
         );

@@ -31,7 +31,7 @@ export default class AddGroupsToTeamModal extends React.Component {
             linkGroupSyncable: PropTypes.func.isRequired,
             getAllGroupsAssociatedToTeam: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -50,14 +50,23 @@ export default class AddGroupsToTeamModal extends React.Component {
 
     componentDidMount() {
         Promise.all([
-            this.props.actions.getGroupsNotAssociatedToTeam(this.props.currentTeamId, '', 0, GROUPS_PER_PAGE * 2),
-            this.props.actions.getAllGroupsAssociatedToTeam(this.props.currentTeamId),
+            this.props.actions.getGroupsNotAssociatedToTeam(
+                this.props.currentTeamId,
+                '',
+                0,
+                GROUPS_PER_PAGE * 2,
+            ),
+
+            this.props.actions.getAllGroupsAssociatedToTeam(
+                this.props.currentTeamId,
+            ),
         ]).then(() => {
             this.setGroupsLoadingState(false);
         });
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.searchTerm !== nextProps.searchTerm) {
             clearTimeout(this.searchTimeoutId);
 
@@ -66,27 +75,28 @@ export default class AddGroupsToTeamModal extends React.Component {
                 return;
             }
 
-            this.searchTimeoutId = setTimeout(
-                async () => {
-                    this.setGroupsLoadingState(true);
-                    await this.props.actions.getGroupsNotAssociatedToTeam(this.props.currentTeamId, searchTerm);
-                    this.setGroupsLoadingState(false);
-                },
-                Constants.SEARCH_TIMEOUT_MILLISECONDS
-            );
+            this.searchTimeoutId = setTimeout(async () => {
+                this.setGroupsLoadingState(true);
+                await this.props.actions.getGroupsNotAssociatedToTeam(
+                    this.props.currentTeamId,
+                    searchTerm,
+                );
+
+                this.setGroupsLoadingState(false);
+            }, Constants.SEARCH_TIMEOUT_MILLISECONDS);
         }
     }
 
     handleHide = () => {
         this.props.actions.setModalSearchTerm('');
         this.setState({show: false});
-    }
+    };
 
     handleExit = () => {
         if (this.props.onHide) {
             this.props.onHide();
         }
-    }
+    };
 
     handleResponse = (err) => {
         let addError = null;
@@ -98,7 +108,7 @@ export default class AddGroupsToTeamModal extends React.Component {
             saving: false,
             addError,
         });
-    }
+    };
 
     handleSubmit = async (e) => {
         if (e) {
@@ -113,13 +123,19 @@ export default class AddGroupsToTeamModal extends React.Component {
         this.setState({saving: true});
 
         groupIDs.forEach(async (groupID) => {
-            const {error} = await this.props.actions.linkGroupSyncable(groupID, this.props.currentTeamId, Groups.SYNCABLE_TYPE_TEAM, {auto_add: true});
+            const {error} = await this.props.actions.linkGroupSyncable(
+                groupID,
+                this.props.currentTeamId,
+                Groups.SYNCABLE_TYPE_TEAM,
+                {auto_add: true},
+            );
+
             this.handleResponse(error);
             if (!error) {
                 this.handleHide();
             }
         });
-    }
+    };
 
     addValue = (value) => {
         const values = Object.assign([], this.state.values);
@@ -129,30 +145,37 @@ export default class AddGroupsToTeamModal extends React.Component {
         }
 
         this.setState({values});
-    }
+    };
 
     setGroupsLoadingState = (loadingState) => {
         this.setState({
             loadingGroups: loadingState,
         });
-    }
+    };
 
     handlePageChange = (page, prevPage) => {
         if (page > prevPage) {
             this.setGroupsLoadingState(true);
-            this.props.actions.getGroupsNotAssociatedToTeam(this.props.currentTeamId, this.props.searchTerm, page + 1, GROUPS_PER_PAGE).then(() => {
-                this.setGroupsLoadingState(false);
-            });
+            this.props.actions
+                .getGroupsNotAssociatedToTeam(
+                    this.props.currentTeamId,
+                    this.props.searchTerm,
+                    page + 1,
+                    GROUPS_PER_PAGE,
+                )
+                .then(() => {
+                    this.setGroupsLoadingState(false);
+                });
         }
-    }
+    };
 
     handleDelete = (values) => {
         this.setState({values});
-    }
+    };
 
     search = (term) => {
         this.props.actions.setModalSearchTerm(term);
-    }
+    };
 
     renderOption(option, isSelected, onAdd) {
         var rowSelected = '';
@@ -174,11 +197,11 @@ export default class AddGroupsToTeamModal extends React.Component {
                     width='32'
                     height='32'
                 />
-                <div
-                    className='more-modal__details'
-                >
+
+                <div className='more-modal__details'>
                     <div className='more-modal__name'>
-                        {option.display_name} {'-'} <span>
+                        {option.display_name} {'-'}{' '}
+                        <span>
                             <FormattedMessage
                                 id='numMembers'
                                 defaultMessage='{num, number} {num, plural, one {member} other {members}}'
@@ -191,7 +214,7 @@ export default class AddGroupsToTeamModal extends React.Component {
                 </div>
                 <div className='more-modal__actions'>
                     <div className='more-modal__actions--round'>
-                        <AddIcon/>
+                        <AddIcon />
                     </div>
                 </div>
             </div>
@@ -216,7 +239,10 @@ export default class AddGroupsToTeamModal extends React.Component {
         );
 
         const buttonSubmitText = localizeMessage('multiselect.add', 'Add');
-        const buttonSubmitLoadingText = localizeMessage('multiselect.adding', 'Adding...');
+        const buttonSubmitLoadingText = localizeMessage(
+            'multiselect.adding',
+            'Adding...',
+        );
 
         let groups = [];
         if (this.props.groups) {
@@ -225,7 +251,13 @@ export default class AddGroupsToTeamModal extends React.Component {
 
         let addError = null;
         if (this.state.addError) {
-            addError = (<div className='has-error col-sm-12'><label className='control-label font-weight--normal'>{this.state.addError}</label></div>);
+            addError = (
+                <div className='has-error col-sm-12'>
+                    <label className='control-label font-weight--normal'>
+                        {this.state.addError}
+                    </label>
+                </div>
+            );
         }
 
         return (
@@ -243,7 +275,9 @@ export default class AddGroupsToTeamModal extends React.Component {
                             defaultMessage='Add New Groups To {teamName} Team'
                             values={{
                                 teamName: (
-                                    <strong>{this.props.currentTeamName}</strong>
+                                    <strong>
+                                        {this.props.currentTeamName}
+                                    </strong>
                                 ),
                             }}
                         />
@@ -269,7 +303,10 @@ export default class AddGroupsToTeamModal extends React.Component {
                         buttonSubmitLoadingText={buttonSubmitLoadingText}
                         saving={this.state.saving}
                         loading={this.state.loadingGroups}
-                        placeholderText={localizeMessage('multiselect.addGroupsPlaceholder', 'Search and add groups')}
+                        placeholderText={localizeMessage(
+                            'multiselect.addGroupsPlaceholder',
+                            'Search and add groups',
+                        )}
                     />
                 </Modal.Body>
             </Modal>

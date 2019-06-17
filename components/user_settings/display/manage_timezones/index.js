@@ -10,4 +10,7 @@ function mapDispatchToProps(dispatch) {
     return {actions: bindActionCreators({updateMe}, dispatch)};
 }
 
-export default connect(null, mapDispatchToProps)(ManageTimezones);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(ManageTimezones);

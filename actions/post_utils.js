@@ -28,7 +28,9 @@ export function completePostReceive(post, websocketMessageProps) {
 
         const rootPost = PostSelectors.getPost(state, post.root_id);
         if (post.root_id && !rootPost) {
-            const {data: posts} = await dispatch(PostActions.getPostThread(post.root_id));
+            const {data: posts} = await dispatch(
+                PostActions.getPostThread(post.root_id),
+            );
             if (posts) {
                 dispatch(lastPostActions(post, websocketMessageProps));
             }
@@ -101,10 +103,18 @@ export function setChannelReadAndView(post, websocketMessageProps) {
         }
 
         if (markAsRead) {
-            dispatch(markChannelAsRead(post.channel_id, null, markAsReadOnServer));
+            dispatch(
+                markChannelAsRead(post.channel_id, null, markAsReadOnServer),
+            );
             dispatch(markChannelAsViewed(post.channel_id));
         } else {
-            dispatch(markChannelAsUnread(websocketMessageProps.team_id, post.channel_id, websocketMessageProps.mentions));
+            dispatch(
+                markChannelAsUnread(
+                    websocketMessageProps.team_id,
+                    post.channel_id,
+                    websocketMessageProps.mentions,
+                ),
+            );
         }
     };
 }

@@ -23,9 +23,15 @@ describe('Cookie with Subpath', () => {
             cy.get('#login_section').should('be.visible');
 
             // 2. Login as user-1
-            cy.get('#loginId').should('be.visible').type('user-1');
-            cy.get('#loginPassword').should('be.visible').type('user-1');
-            cy.get('#loginButton').should('be.visible').click();
+            cy.get('#loginId')
+                .should('be.visible')
+                .type('user-1');
+            cy.get('#loginPassword')
+                .should('be.visible')
+                .type('user-1');
+            cy.get('#loginButton')
+                .should('be.visible')
+                .click();
 
             // * Check login success
             cy.get('#channel_view').should('be.visible');
@@ -35,13 +41,15 @@ describe('Cookie with Subpath', () => {
             cy.url().should('include', '/channels/town-square');
 
             // * Check cookies have correct path parameter
-            cy.getCookies().should('have.length', 3).each((cookie) => {
-                if (subpath) {
-                    expect(cookie).to.have.property('path', subpath);
-                } else {
-                    expect(cookie).to.have.property('path', '/');
-                }
-            });
+            cy.getCookies()
+                .should('have.length', 3)
+                .each((cookie) => {
+                    if (subpath) {
+                        expect(cookie).to.have.property('path', subpath);
+                    } else {
+                        expect(cookie).to.have.property('path', '/');
+                    }
+                });
         });
     });
 });

@@ -31,18 +31,21 @@ export default class Authorize extends React.Component {
         this.state = {};
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
-        const clientId = (new URLSearchParams(this.props.location.search)).get('client_id');
-        if (!((/^[a-z0-9]+$/).test(clientId))) {
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
+        const clientId = new URLSearchParams(this.props.location.search).get(
+            'client_id',
+        );
+
+        if (!/^[a-z0-9]+$/.test(clientId)) {
             return;
         }
 
-        this.props.actions.getOAuthAppInfo(clientId).then(
-            ({data}) => {
-                if (data) {
-                    this.setState({app: data});
-                }
-            });
+        this.props.actions.getOAuthAppInfo(clientId).then(({data}) => {
+            if (data) {
+                this.setState({app: data});
+            }
+        });
     }
 
     componentDidMount() {
@@ -63,20 +66,24 @@ export default class Authorize extends React.Component {
             scope: searchParams.get('store'),
         };
 
-        this.props.actions.allowOAuth2(params).then(
-            ({data, error}) => {
-                if (data && data.redirect) {
-                    window.location.href = data.redirect;
-                } else if (error) {
-                    this.setState({error: error.message});
-                }
+        this.props.actions.allowOAuth2(params).then(({data, error}) => {
+            if (data && data.redirect) {
+                window.location.href = data.redirect;
+            } else if (error) {
+                this.setState({error: error.message});
             }
-        );
+        });
     }
 
     handleDeny() {
-        const redirectUri = (new URLSearchParams(this.props.location.search)).get('redirect_uri');
-        if (redirectUri.startsWith('https://') || redirectUri.startsWith('http://')) {
+        const redirectUri = new URLSearchParams(this.props.location.search).get(
+            'redirect_uri',
+        );
+
+        if (
+            redirectUri.startsWith('https://') ||
+            redirectUri.startsWith('http://')
+        ) {
             window.location.href = redirectUri + '?error=access_denied';
             return;
         }
@@ -101,7 +108,7 @@ export default class Authorize extends React.Component {
         if (this.state.error) {
             error = (
                 <div className='prompt__error form-group'>
-                    <FormError error={this.state.error}/>
+                    <FormError error={this.state.error} />
                 </div>
             );
         }
@@ -121,7 +128,7 @@ export default class Authorize extends React.Component {
                         <div className='text'>
                             <FormattedMarkdownMessage
                                 id='authorize.title'
-                                defaultMessage='**{appName}** would like to connect to your **Mattermost** user account'
+                                defaultMessage='**{appName}** would like to connect to your **securCom** user account'
                                 values={{
                                     appName: app.name,
                                 }}

@@ -7,10 +7,9 @@ import React from 'react';
 export default class TeamPermissionGate extends React.Component {
     static defaultProps = {
         invert: false,
-    }
+    };
 
     static propTypes = {
-
         /**
          * Team to check the permission
          */

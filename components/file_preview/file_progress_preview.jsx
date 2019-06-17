@@ -20,7 +20,7 @@ export default class FileProgressPreview extends React.PureComponent {
 
     handleRemove = () => {
         this.props.handleRemove(this.props.clientId);
-    }
+    };
 
     render() {
         let percent = 0;
@@ -32,7 +32,11 @@ export default class FileProgressPreview extends React.PureComponent {
             percent = fileInfo.percent;
             const percentTxt = percent && ` (${percent.toFixed(0)}%)`;
             const fileType = getFileTypeFromMime(fileInfo.type);
-            previewImage = <div className={'file-icon ' + Utils.getIconClassName(fileType)}/>;
+            previewImage = (
+                <div
+                    className={'file-icon ' + Utils.getIconClassName(fileType)}
+                />
+            );
 
             fileNameComponent = (
                 <React.Fragment>
@@ -43,6 +47,7 @@ export default class FileProgressPreview extends React.PureComponent {
                         compactDisplay={false}
                         canDownload={false}
                     />
+
                     <span className='post-image__uploadingTxt'>
                         {percent === 100 ? (
                             <FormattedMessage
@@ -55,6 +60,7 @@ export default class FileProgressPreview extends React.PureComponent {
                                     id='admin.plugin.uploading'
                                     defaultMessage='Uploading...'
                                 />
+
                                 <span>{percentTxt}</span>
                             </React.Fragment>
                         )}
@@ -77,9 +83,7 @@ export default class FileProgressPreview extends React.PureComponent {
                 className='file-preview post-image__column'
                 data-client-id={clientId}
             >
-                <div className='post-image__thumbnail'>
-                    {previewImage}
-                </div>
+                <div className='post-image__thumbnail'>{previewImage}</div>
                 <div className='post-image__details'>
                     <div className='post-image__detail_wrapper'>
                         <div className='post-image__detail'>
@@ -91,7 +95,7 @@ export default class FileProgressPreview extends React.PureComponent {
                             className='file-preview__remove'
                             onClick={this.handleRemove}
                         >
-                            <RemoveIcon/>
+                            <RemoveIcon />
                         </a>
                     </div>
                 </div>

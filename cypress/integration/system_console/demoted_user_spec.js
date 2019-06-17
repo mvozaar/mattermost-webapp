@@ -25,9 +25,14 @@ describe('System Console', () => {
 
         // 3. Set user to be a sysadmin, so it can access the system console
         cy.get('@userId').then((userId) => {
-            cy.task('externalRequest', {user: sysadmin, method: 'put', path: `users/${userId.value}/roles`, data: {roles: 'system_user system_admin'}}).
-                its('status').
-                should('be.equal', 200);
+            cy.task('externalRequest', {
+                user: sysadmin,
+                method: 'put',
+                path: `users/${userId.value}/roles`,
+                data: {roles: 'system_user system_admin'},
+            })
+                .its('status')
+                .should('be.equal', 200);
         });
 
         // 4. Visit a page on the system console
@@ -37,9 +42,14 @@ describe('System Console', () => {
 
         // 5. Change the role of the user back to user
         cy.get('@userId').then((userId) => {
-            cy.task('externalRequest', {user: sysadmin, method: 'put', path: `users/${userId.value}/roles`, data: {roles: 'system_user'}}).
-                its('status').
-                should('be.equal', 200);
+            cy.task('externalRequest', {
+                user: sysadmin,
+                method: 'put',
+                path: `users/${userId.value}/roles`,
+                data: {roles: 'system_user'},
+            })
+                .its('status')
+                .should('be.equal', 200);
         });
 
         // 6. User should get redirected to town square

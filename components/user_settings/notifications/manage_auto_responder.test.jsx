@@ -18,7 +18,9 @@ describe('components/user_settings/notifications/ManageAutoResponder', () => {
     };
 
     test('should match snapshot, default disabled', () => {
-        const wrapper = mountWithIntl(<ManageAutoResponder {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <ManageAutoResponder {...requiredProps} />,
+        );
 
         expect(wrapper).toMatchSnapshot();
 
@@ -31,7 +33,7 @@ describe('components/user_settings/notifications/ManageAutoResponder', () => {
             <ManageAutoResponder
                 {...requiredProps}
                 autoResponderActive={true}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -47,15 +49,21 @@ describe('components/user_settings/notifications/ManageAutoResponder', () => {
                 {...requiredProps}
                 autoResponderActive={true}
                 setParentState={setParentState}
-            />
+            />,
         );
 
         expect(wrapper.find('#autoResponderActive').exists()).toBe(true);
         expect(wrapper.find('#autoResponderMessageInput').exists()).toBe(true);
 
-        wrapper.find('#autoResponderMessageInput').at(1).simulate('change');
+        wrapper
+            .find('#autoResponderMessageInput')
+            .at(1)
+            .simulate('change');
         expect(setParentState).toBeCalled();
-        expect(setParentState).toBeCalledWith('autoResponderMessage', 'Hello World!');
+        expect(setParentState).toBeCalledWith(
+            'autoResponderMessage',
+            'Hello World!',
+        );
 
         wrapper.find('#autoResponderActive').simulate('change');
         expect(setParentState).toBeCalled();

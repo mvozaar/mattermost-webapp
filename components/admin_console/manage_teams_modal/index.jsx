@@ -4,7 +4,12 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {updateTeamMemberSchemeRoles, getTeamMembersForUser, getTeamsForUser, removeUserFromTeam} from 'mattermost-redux/actions/teams';
+import {
+    updateTeamMemberSchemeRoles,
+    getTeamMembersForUser,
+    getTeamsForUser,
+    removeUserFromTeam,
+} from 'mattermost-redux/actions/teams';
 
 import {getCurrentLocale} from 'selectors/i18n';
 
@@ -18,13 +23,20 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getTeamMembersForUser,
-            getTeamsForUser,
-            updateTeamMemberSchemeRoles,
-            removeUserFromTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getTeamMembersForUser,
+                getTeamsForUser,
+                updateTeamMemberSchemeRoles,
+                removeUserFromTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageTeamsModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ManageTeamsModal);

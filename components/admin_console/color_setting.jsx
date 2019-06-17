@@ -9,7 +9,6 @@ import Setting from './setting.jsx';
 
 export default class ColorSetting extends React.PureComponent {
     static propTypes = {
-
         /*
          * The unique identifer for the admin console setting
          */
@@ -39,7 +38,7 @@ export default class ColorSetting extends React.PureComponent {
          * Set to disable the setting
          */
         disabled: PropTypes.bool,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -59,7 +58,7 @@ export default class ColorSetting extends React.PureComponent {
 
     handleChange = (color) => {
         this.props.onChange(this.props.id, color.hex);
-    }
+    };
 
     togglePicker = () => {
         if (this.props.disabled) {
@@ -67,27 +66,29 @@ export default class ColorSetting extends React.PureComponent {
         } else {
             this.setState({showPicker: !this.state.showPicker});
         }
-    }
+    };
 
     closePicker = (e) => {
         if (!e.target.closest('.' + this.getPickerClass())) {
             this.setState({showPicker: false});
         }
-    }
+    };
 
     onTextInput = (e) => {
         this.props.onChange(this.props.id, e.target.value);
-    }
+    };
 
     getPickerClass = () => {
         return this.props.id ? 'picker-' + this.props.id.replace('.', '-') : '';
-    }
+    };
 
     render() {
         let picker;
         if (this.state.showPicker) {
             picker = (
-                <div className={'color-picker__popover ' + this.getPickerClass()}>
+                <div
+                    className={'color-picker__popover ' + this.getPickerClass()}
+                >
                     <ChromePicker
                         color={this.props.value}
                         onChange={this.handleChange}
@@ -110,11 +111,12 @@ export default class ColorSetting extends React.PureComponent {
                         onChange={this.onTextInput}
                         disabled={this.props.disabled}
                     />
+
                     <span
                         className={'input-group-addon ' + this.getPickerClass()}
                         onClick={this.togglePicker}
                     >
-                        <i style={{backgroundColor: this.props.value}}/>
+                        <i style={{backgroundColor: this.props.value}} />
                     </span>
                     {picker}
                 </div>

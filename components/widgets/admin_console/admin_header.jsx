@@ -5,9 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const AdminHeader = (props) => (
-    <h3 className='admin-console-header'>
-        {props.children}
-    </h3>
+    <h3 className='admin-console-header'>{props.children}</h3>
 );
 
 AdminHeader.propTypes = {

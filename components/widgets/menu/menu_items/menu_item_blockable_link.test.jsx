@@ -9,10 +9,7 @@ import {MenuItemBlockableLinkImpl} from './menu_item_blockable_link.jsx';
 describe('components/MenuItemBlockableLink', () => {
     test('should match snapshot', () => {
         const wrapper = shallow(
-            <MenuItemBlockableLinkImpl
-                to='/wherever'
-                text='Whatever'
-            />
+            <MenuItemBlockableLinkImpl to='/wherever' text='Whatever' />,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`

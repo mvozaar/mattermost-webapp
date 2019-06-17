@@ -1,7 +1,12 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import {getChannel, selectChannel, joinChannel, getChannelStats} from 'mattermost-redux/actions/channels';
+import {
+    getChannel,
+    selectChannel,
+    joinChannel,
+    getChannelStats,
+} from 'mattermost-redux/actions/channels';
 import {getPostThread} from 'mattermost-redux/actions/posts';
 import {getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
@@ -16,7 +21,10 @@ export function focusPost(postId, returnTo = '') {
         const {data} = await dispatch(getPostThread(postId));
 
         if (!data) {
-            browserHistory.replace(`/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`);
+            browserHistory.replace(
+                `/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`,
+            );
+
             return;
         }
 
@@ -29,7 +37,10 @@ export function focusPost(postId, returnTo = '') {
             const {data: channelData} = await dispatch(getChannel(channelId));
 
             if (!channelData) {
-                browserHistory.replace(`/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`);
+                browserHistory.replace(
+                    `/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`,
+                );
+
                 return;
             }
 
@@ -40,16 +51,27 @@ export function focusPost(postId, returnTo = '') {
 
         if (!myMember) {
             // If it's a DM or GM channel and we don't have a channel member for it already, user is not a member
-            if (channel.type === Constants.DM_CHANNEL || channel.type === Constants.GM_CHANNEL) {
-                browserHistory.replace(`/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`);
+            if (
+                channel.type === Constants.DM_CHANNEL ||
+                channel.type === Constants.GM_CHANNEL
+            ) {
+                browserHistory.replace(
+                    `/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`,
+                );
+
                 return;
             }
 
-            await dispatch(joinChannel(getCurrentUserId(getState()), null, channelId));
+            await dispatch(
+                joinChannel(getCurrentUserId(getState()), null, channelId),
+            );
         }
 
         if (channel.team_id && channel.team_id !== teamId) {
-            browserHistory.replace(`/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`);
+            browserHistory.replace(
+                `/error?type=${ErrorPageTypes.PERMALINK_NOT_FOUND}&returnTo=${returnTo}`,
+            );
+
             return;
         }
 

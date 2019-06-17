@@ -12,7 +12,6 @@ import LocalizedInput from 'components/localized_input/localized_input';
 
 export default class LoginMfa extends React.PureComponent {
     static propTypes = {
-
         /*
          * User's login ID
          */
@@ -48,7 +47,7 @@ export default class LoginMfa extends React.PureComponent {
                 token,
             });
         }
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -61,15 +60,20 @@ export default class LoginMfa extends React.PureComponent {
         this.props.submit(
             this.props.loginId,
             this.props.password,
-            this.state.token
+            this.state.token,
         );
-    }
+    };
 
     render() {
         let serverError;
         let errorClass = '';
         if (this.state.serverError) {
-            serverError = <label className='control-label'>{this.state.serverError}</label>;
+            serverError = (
+                <label className='control-label'>
+                    {this.state.serverError}
+                </label>
+            );
+
             errorClass = ' has-error';
         }
 
@@ -90,7 +94,10 @@ export default class LoginMfa extends React.PureComponent {
                             type='text'
                             className='form-control'
                             name='token'
-                            placeholder={{id: t('login_mfa.token'), defaultMessage: 'MFA Token'}}
+                            placeholder={{
+                                id: t('login_mfa.token'),
+                                defaultMessage: 'MFA Token',
+                            }}
                             spellCheck='false'
                             autoComplete='off'
                             autoFocus={true}
@@ -102,8 +109,14 @@ export default class LoginMfa extends React.PureComponent {
                             saving={this.state.saving}
                             disabled={this.state.saving}
                             onClick={this.handleSubmit}
-                            defaultMessage={localizeMessage('login_mfa.submit', 'Submit')}
-                            savingMessage={localizeMessage('login_mfa.submitting', 'Submitting...')}
+                            defaultMessage={localizeMessage(
+                                'login_mfa.submit',
+                                'Submit',
+                            )}
+                            savingMessage={localizeMessage(
+                                'login_mfa.submitting',
+                                'Submitting...',
+                            )}
                         />
                     </div>
                 </div>

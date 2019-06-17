@@ -38,7 +38,7 @@ export default class EditPostModal extends React.PureComponent {
             hideEditPostModal: PropTypes.func.isRequired,
             openModal: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -51,34 +51,38 @@ export default class EditPostModal extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillUpdate(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillUpdate(nextProps) {
+        // eslint-disable-line camelcase
         if (!this.props.editingPost.show && nextProps.editingPost.show) {
             this.setState({
-                editText: nextProps.editingPost.post.message_source || nextProps.editingPost.post.message,
+                editText:
+                    nextProps.editingPost.post.message_source ||
+                    nextProps.editingPost.post.message,
             });
         }
     }
 
     getContainer = () => {
         return this.refs.editModalBody;
-    }
+    };
 
     toggleEmojiPicker = () => {
         this.setState({showEmojiPicker: !this.state.showEmojiPicker});
         if (!this.state.showEmojiPicker && this.editbox) {
             this.editbox.focus();
         }
-    }
+    };
 
     hideEmojiPicker = () => {
         this.setState({showEmojiPicker: false});
         if (this.editbox) {
             this.editbox.focus();
         }
-    }
+    };
 
     handleEmojiClick = (emoji) => {
-        const emojiAlias = emoji && (emoji.name || (emoji.aliases && emoji.aliases[0]));
+        const emojiAlias =
+            emoji && (emoji.name || (emoji.aliases && emoji.aliases[0]));
 
         if (!emojiAlias) {
             //Oops.. There went something wrong
@@ -89,8 +93,9 @@ export default class EditPostModal extends React.PureComponent {
             this.setState({editText: ':' + emojiAlias + ': '});
         } else {
             //check whether there is already a blank at the end of the current message
-            const newMessage = ((/\s+$/).test(this.state.editText)) ?
-                this.state.editText + ':' + emojiAlias + ': ' : this.state.editText + ' :' + emojiAlias + ': ';
+            const newMessage = /\s+$/.test(this.state.editText)
+                ? this.state.editText + ':' + emojiAlias + ': '
+                : this.state.editText + ' :' + emojiAlias + ': ';
 
             this.setState({editText: newMessage});
         }
@@ -100,28 +105,30 @@ export default class EditPostModal extends React.PureComponent {
         if (this.editbox) {
             this.editbox.focus();
         }
-    }
+    };
 
     handleGifClick = (gif) => {
         if (this.state.editText === '') {
             this.setState({editText: gif});
         } else {
-            const newMessage = ((/\s+$/).test(this.state.editText)) ? this.state.editText + gif : this.state.editText + ' ' + gif;
+            const newMessage = /\s+$/.test(this.state.editText)
+                ? this.state.editText + gif
+                : this.state.editText + ' ' + gif;
             this.setState({editText: newMessage});
         }
         this.setState({showEmojiPicker: false});
         this.editbox.focus();
-    }
+    };
 
     getEditPostControls = () => {
         return this.refs.editPostEmoji;
-    }
+    };
 
     handlePostError = (postError) => {
         if (this.state.postError !== postError) {
             this.setState({postError});
         }
-    }
+    };
 
     handleEdit = async () => {
         if (this.isSaveDisabled()) {
@@ -143,13 +150,17 @@ export default class EditPostModal extends React.PureComponent {
             return;
         }
 
-        if (updatedPost.message === (editingPost.post.message_source || editingPost.post.message)) {
+        if (
+            updatedPost.message ===
+            (editingPost.post.message_source || editingPost.post.message)
+        ) {
             // no changes so just close the modal
             this.handleHide();
             return;
         }
 
-        const hasAttachment = editingPost.post.file_ids && editingPost.post.file_ids.length > 0;
+        const hasAttachment =
+            editingPost.post.file_ids && editingPost.post.file_ids.length > 0;
         if (updatedPost.message.trim().length === 0 && !hasAttachment) {
             this.handleHide(false);
 
@@ -175,52 +186,69 @@ export default class EditPostModal extends React.PureComponent {
         }
 
         this.handleHide();
-    }
+    };
 
     handleChange = (e) => {
         const message = e.target.value;
         this.setState({
             editText: message,
         });
-    }
+    };
 
     handleEditKeyPress = (e) => {
-        if (!UserAgent.isMobile() && !this.props.ctrlSend && Utils.isKeyPressed(e, KeyCodes.ENTER) && !e.shiftKey && !e.altKey) {
+        if (
+            !UserAgent.isMobile() &&
+            !this.props.ctrlSend &&
+            Utils.isKeyPressed(e, KeyCodes.ENTER) &&
+            !e.shiftKey &&
+            !e.altKey
+        ) {
             e.preventDefault();
             this.editbox.blur();
             this.handleEdit();
-        } else if (this.props.ctrlSend && e.ctrlKey && Utils.isKeyPressed(e, KeyCodes.ENTER)) {
+        } else if (
+            this.props.ctrlSend &&
+            e.ctrlKey &&
+            Utils.isKeyPressed(e, KeyCodes.ENTER)
+        ) {
             e.preventDefault();
             this.editbox.blur();
             this.handleEdit();
         }
-    }
+    };
 
     handleKeyDown = (e) => {
-        if (this.props.ctrlSend && Utils.isKeyPressed(e, KeyCodes.ENTER) && e.ctrlKey === true) {
+        if (
+            this.props.ctrlSend &&
+            Utils.isKeyPressed(e, KeyCodes.ENTER) &&
+            e.ctrlKey === true
+        ) {
             this.handleEdit();
-        } else if (Utils.isKeyPressed(e, KeyCodes.ESCAPE) && !this.state.showEmojiPicker) {
+        } else if (
+            Utils.isKeyPressed(e, KeyCodes.ESCAPE) &&
+            !this.state.showEmojiPicker
+        ) {
             this.handleHide();
         }
-    }
+    };
 
     handleHide = (doRefocus = true) => {
         this.refocusId = doRefocus ? this.props.editingPost.refocusId : null;
         this.props.actions.hideEditPostModal();
-    }
+    };
 
     handleEntered = () => {
         if (this.editbox) {
             this.editbox.focus();
             this.editbox.recalculateSize();
         }
-    }
+    };
 
     handleExit = () => {
         if (this.editbox) {
             this.editbox.hidePreview();
         }
-    }
+    };
 
     handleExited = () => {
         const refocusId = this.refocusId;
@@ -234,8 +262,13 @@ export default class EditPostModal extends React.PureComponent {
         }
 
         this.refocusId = null;
-        this.setState({editText: '', postError: '', errorClass: null, showEmojiPicker: false});
-    }
+        this.setState({
+            editText: '',
+            postError: '',
+            errorClass: null,
+            showEmojiPicker: false,
+        });
+    };
 
     setEditboxRef = (ref) => {
         if (ref && ref.getWrappedInstance) {
@@ -245,11 +278,12 @@ export default class EditPostModal extends React.PureComponent {
         if (this.editbox) {
             this.editbox.focus();
         }
-    }
+    };
 
     isSaveDisabled = () => {
         const post = this.props.editingPost.post;
-        const hasAttachments = post && post.file_ids && post.file_ids.length > 0;
+        const hasAttachments =
+            post && post.file_ids && post.file_ids.length > 0;
         if (hasAttachments) {
             return !this.props.canEditPost;
         }
@@ -259,14 +293,19 @@ export default class EditPostModal extends React.PureComponent {
         }
 
         return !this.props.canDeletePost;
-    }
+    };
 
     render() {
-        const errorBoxClass = 'edit-post-footer' + (this.state.postError ? ' has-error' : '');
+        const errorBoxClass =
+            'edit-post-footer' + (this.state.postError ? ' has-error' : '');
         let postError = null;
         if (this.state.postError) {
-            const postErrorClass = 'post-error' + (this.state.errorClass ? (' ' + this.state.errorClass) : '');
-            postError = (<label className={postErrorClass}>{this.state.postError}</label>);
+            const postErrorClass =
+                'post-error' +
+                (this.state.errorClass ? ' ' + this.state.errorClass : '');
+            postError = (
+                <label className={postErrorClass}>{this.state.postError}</label>
+            );
         }
 
         let emojiPicker = null;
@@ -280,9 +319,12 @@ export default class EditPostModal extends React.PureComponent {
                         onHide={this.hideEmojiPicker}
                         onEmojiClick={this.handleEmojiClick}
                         onGifClick={this.handleGifClick}
-                        enableGifPicker={this.props.config.EnableGifPicker === 'true'}
+                        enableGifPicker={
+                            this.props.config.EnableGifPicker === 'true'
+                        }
                         topOffset={-20}
                     />
+
                     <EmojiIcon
                         className='icon icon--emoji'
                         onClick={this.toggleEmojiPicker}
@@ -306,10 +348,7 @@ export default class EditPostModal extends React.PureComponent {
                 aria-labelledby='editPostModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='editPostModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='editPostModalLabel'>
                         <FormattedMessage
                             id='edit_post.edit'
                             defaultMessage='Edit {title}'
@@ -320,7 +359,11 @@ export default class EditPostModal extends React.PureComponent {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body
-                    bsClass={`modal-body edit-modal-body${this.state.showEmojiPicker ? ' edit-modal-body--add-reaction' : ''}`}
+                    bsClass={`modal-body edit-modal-body${
+                        this.state.showEmojiPicker
+                            ? ' edit-modal-body--add-reaction'
+                            : ''
+                    }`}
                     ref='editModalBody'
                 >
                     <Textbox
@@ -329,15 +372,24 @@ export default class EditPostModal extends React.PureComponent {
                         onKeyDown={this.handleKeyDown}
                         handlePostError={this.handlePostError}
                         value={this.state.editText}
-                        channelId={this.props.editingPost.post && this.props.editingPost.post.channel_id}
-                        emojiEnabled={this.props.config.EnableEmojiPicker === 'true'}
-                        createMessage={Utils.localizeMessage('edit_post.editPost', 'Edit the post...')}
+                        channelId={
+                            this.props.editingPost.post &&
+                            this.props.editingPost.post.channel_id
+                        }
+                        emojiEnabled={
+                            this.props.config.EnableEmojiPicker === 'true'
+                        }
+                        createMessage={Utils.localizeMessage(
+                            'edit_post.editPost',
+                            'Edit the post...',
+                        )}
                         supportsCommands={false}
                         suggestionListStyle='bottom'
                         id='edit_textbox'
                         ref={this.setEditboxRef}
                         characterLimit={this.props.maxPostSize}
                     />
+
                     <span
                         id='editPostEmoji'
                         ref='editPostEmoji'
@@ -345,9 +397,7 @@ export default class EditPostModal extends React.PureComponent {
                     >
                         {emojiPicker}
                     </span>
-                    <div className={errorBoxClass}>
-                        {postError}
-                    </div>
+                    <div className={errorBoxClass}>{postError}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     <button

@@ -16,7 +16,14 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
         user: {
             id: 'user_id',
         },
-        channel: {type: 'O', id: 'channel_id', display_name: 'display_name', team_id: 'team_id'},
+
+        channel: {
+            type: 'O',
+            id: 'channel_id',
+            display_name: 'display_name',
+            team_id: 'team_id',
+        },
+
         member: {id: 'member_id'},
         teamDisplayName: 'team_display_name',
         isPinnedPosts: true,
@@ -33,14 +40,13 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
             updateChannelNotifyProps: jest.fn(),
             updateRhsState: jest.fn(),
         },
+
         isLicensed: true,
         isFavoriteChannel: false,
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <ChannelHeaderMobile {...baseProps}/>
-        );
+        const wrapper = shallow(<ChannelHeaderMobile {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -48,21 +54,23 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
     test('should match snapshot, for default channel', () => {
         const props = {
             ...baseProps,
-            channel: {type: 'O', id: '123', name: 'town-square', display_name: 'Town Square', team_id: 'team_id'},
+            channel: {
+                type: 'O',
+                id: '123',
+                name: 'town-square',
+                display_name: 'Town Square',
+                team_id: 'team_id',
+            },
         };
-        const wrapper = shallow(
-            <ChannelHeaderMobile {...props}/>
-        );
+
+        const wrapper = shallow(<ChannelHeaderMobile {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, if not licensed', () => {
         const wrapper = shallow(
-            <ChannelHeaderMobile
-                {...baseProps}
-                isLicensed={false}
-            />
+            <ChannelHeaderMobile {...baseProps} isLicensed={false} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -71,10 +79,18 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
     test('should match snapshot, if enabled WebRTC and DM channel', () => {
         const props = {
             ...baseProps,
-            channel: {type: 'D', id: 'channel_id', name: 'user_id_1__user_id_2', display_name: 'display_name', team_id: 'team_id'},
+            channel: {
+                type: 'D',
+                id: 'channel_id',
+                name: 'user_id_1__user_id_2',
+                display_name: 'display_name',
+                team_id: 'team_id',
+            },
+
             enableWebrtc: true,
         };
-        const wrapper = shallow(<ChannelHeaderMobile {...props}/>);
+
+        const wrapper = shallow(<ChannelHeaderMobile {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -84,7 +100,8 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
             ...baseProps,
             enableWebrtc: false,
         };
-        const wrapper = shallow(<ChannelHeaderMobile {...props}/>);
+
+        const wrapper = shallow(<ChannelHeaderMobile {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -92,9 +109,15 @@ describe('components/ChannelHeaderMobile/ChannelHeaderMobile', () => {
     test('should match snapshot, for private channel', () => {
         const props = {
             ...baseProps,
-            channel: {type: 'P', id: 'channel_id', display_name: 'display_name', team_id: 'team_id'},
+            channel: {
+                type: 'P',
+                id: 'channel_id',
+                display_name: 'display_name',
+                team_id: 'team_id',
+            },
         };
-        const wrapper = shallow(<ChannelHeaderMobile {...props}/>);
+
+        const wrapper = shallow(<ChannelHeaderMobile {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

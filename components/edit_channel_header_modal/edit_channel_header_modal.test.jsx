@@ -33,7 +33,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
         expect(wrapper).toMatchSnapshot();
     });
@@ -50,7 +50,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         expect(wrapper).toMatchSnapshot();
@@ -64,7 +64,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         expect(wrapper).toMatchSnapshot();
@@ -83,7 +83,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.setProps({
@@ -111,7 +111,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.setProps({
@@ -139,7 +139,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.setProps({
@@ -150,6 +150,7 @@ describe('components/EditChannelHeaderModal', () => {
             onHide: emptyFunction,
             actions: {patchChannel: emptyFunction},
         });
+
         wrapper.setProps({
             channel,
             serverError,
@@ -170,7 +171,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.setProps({
@@ -181,9 +182,7 @@ describe('components/EditChannelHeaderModal', () => {
             actions: {patchChannel: emptyFunction},
         });
 
-        expect(
-            wrapper.state('show')
-        ).toBeFalsy();
+        expect(wrapper.state('show')).toBeFalsy();
     });
 
     test('change header', () => {
@@ -194,14 +193,12 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel: emptyFunction}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.find(Textbox).simulate('change', {target: {value: 'header'}});
 
-        expect(
-            wrapper.state('header')
-        ).toBe('header');
+        expect(wrapper.state('header')).toBe('header');
     });
 
     test('patch on save button click', () => {
@@ -213,12 +210,14 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.find('.save-button').simulate('click');
 
-        expect(patchChannel).toBeCalledWith('fake-id', {header: 'Fake Channel'});
+        expect(patchChannel).toBeCalledWith('fake-id', {
+            header: 'Fake Channel',
+        });
     });
 
     test('patch on enter keypress event with ctrl', () => {
@@ -230,7 +229,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.find(Textbox).simulate('keypress', {
@@ -242,7 +241,9 @@ describe('components/EditChannelHeaderModal', () => {
             ctrlKey: true,
         });
 
-        expect(patchChannel).toBeCalledWith('fake-id', {header: 'Fake Channel'});
+        expect(patchChannel).toBeCalledWith('fake-id', {
+            header: 'Fake Channel',
+        });
     });
 
     test('patch on enter keypress', () => {
@@ -254,7 +255,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.find(Textbox).simulate('keypress', {
@@ -266,7 +267,9 @@ describe('components/EditChannelHeaderModal', () => {
             ctrlKey: false,
         });
 
-        expect(patchChannel).toBeCalledWith('fake-id', {header: 'Fake Channel'});
+        expect(patchChannel).toBeCalledWith('fake-id', {
+            header: 'Fake Channel',
+        });
     });
 
     test('patch on enter keydown', () => {
@@ -278,7 +281,7 @@ describe('components/EditChannelHeaderModal', () => {
                 requestStatus={RequestStatus.NOT_STARTED}
                 onHide={emptyFunction}
                 actions={{patchChannel}}
-            />
+            />,
         ).dive({disableLifecycleMethods: true});
 
         wrapper.find(Textbox).simulate('keydown', {
@@ -291,6 +294,8 @@ describe('components/EditChannelHeaderModal', () => {
             ctrlKey: true,
         });
 
-        expect(patchChannel).toBeCalledWith('fake-id', {header: 'Fake Channel'});
+        expect(patchChannel).toBeCalledWith('fake-id', {
+            header: 'Fake Channel',
+        });
     });
 });

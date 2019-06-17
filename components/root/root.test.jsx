@@ -49,17 +49,20 @@ describe('components/Root', () => {
                 ...baseProps.actions,
                 loadMeAndConfig: jest.fn(async () => [{}, {}, {}]),
             },
+
             history: {
                 push: jest.fn(),
             },
         };
 
-        const wrapper = shallow(<Root {...props}/>);
+        const wrapper = shallow(<Root {...props} />);
 
         expect(props.actions.loadMeAndConfig).toHaveBeenCalledTimes(1);
 
         wrapper.instance().onConfigLoaded();
-        expect(props.history.push).toHaveBeenCalledWith('/signup_user_complete');
+        expect(props.history.push).toHaveBeenCalledWith(
+            '/signup_user_complete',
+        );
     });
 
     test('should load user, config, and license on mount and redirect to defaultTeam on success', (done) => {
@@ -75,12 +78,14 @@ describe('components/Root', () => {
         class MockedRoot extends Root {
             onConfigLoaded = jest.fn(() => {
                 expect(this.onConfigLoaded).toHaveBeenCalledTimes(1);
-                expect(GlobalActions.redirectUserToDefaultTeam).toHaveBeenCalledTimes(1);
+                expect(
+                    GlobalActions.redirectUserToDefaultTeam,
+                ).toHaveBeenCalledTimes(1);
                 done();
             });
         }
 
-        shallow(<MockedRoot {...props}/>);
+        shallow(<MockedRoot {...props} />);
 
         expect(props.actions.loadMeAndConfig).toHaveBeenCalledTimes(1);
     });
@@ -97,12 +102,14 @@ describe('components/Root', () => {
         class MockedRoot extends Root {
             onConfigLoaded = jest.fn(() => {
                 expect(this.onConfigLoaded).toHaveBeenCalledTimes(1);
-                expect(GlobalActions.redirectUserToDefaultTeam).not.toHaveBeenCalled();
+                expect(
+                    GlobalActions.redirectUserToDefaultTeam,
+                ).not.toHaveBeenCalled();
                 done();
             });
         }
 
-        shallow(<MockedRoot {...props}/>);
+        shallow(<MockedRoot {...props} />);
     });
 
     test('should load config and enable dev mode features', () => {
@@ -113,9 +120,10 @@ describe('components/Root', () => {
                 loadMeAndConfig: jest.fn(async () => [{}, {}, {}]),
             },
         };
+
         Utils.isDevMode.mockReturnValue(true);
 
-        const wrapper = shallow(<Root {...props}/>);
+        const wrapper = shallow(<Root {...props} />);
 
         expect(props.actions.loadMeAndConfig).toHaveBeenCalledTimes(1);
 
@@ -136,9 +144,10 @@ describe('components/Root', () => {
                 loadMeAndConfig: jest.fn(async () => [{}, {}, {}]),
             },
         };
+
         Utils.isDevMode.mockReturnValue(false);
 
-        const wrapper = shallow(<Root {...props}/>);
+        const wrapper = shallow(<Root {...props} />);
 
         expect(props.actions.loadMeAndConfig).toHaveBeenCalledTimes(1);
 

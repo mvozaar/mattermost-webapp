@@ -14,7 +14,7 @@ import CombinedSystemMessage from 'components/post_view/combined_system_message'
 import PostAddChannelMember from 'components/post_view/post_add_channel_member';
 
 function renderUsername(value) {
-    const username = (value[0] === '@') ? value : `@${value}`;
+    const username = value[0] === '@' ? value : `@${value}`;
 
     const options = {
         markdown: false,
@@ -24,12 +24,7 @@ function renderUsername(value) {
 }
 
 function renderFormattedText(value, options) {
-    return (
-        <Markdown
-            message={value}
-            options={options}
-        />
-    );
+    return <Markdown message={value} options={options} />;
 }
 
 function renderJoinChannelMessage(post) {
@@ -151,8 +146,12 @@ function renderHeaderChangeMessage(post) {
     };
 
     const username = renderUsername(post.props.username);
-    const oldHeader = post.props.old_header ? renderFormattedText(post.props.old_header, headerOptions) : null;
-    const newHeader = post.props.new_header ? renderFormattedText(post.props.new_header, headerOptions) : null;
+    const oldHeader = post.props.old_header
+        ? renderFormattedText(post.props.old_header, headerOptions)
+        : null;
+    const newHeader = post.props.new_header
+        ? renderFormattedText(post.props.new_header, headerOptions)
+        : null;
 
     if (post.props.new_header) {
         if (post.props.old_header) {
@@ -196,7 +195,13 @@ function renderHeaderChangeMessage(post) {
 }
 
 function renderDisplayNameChangeMessage(post) {
-    if (!(post.props.username && post.props.old_displayname && post.props.new_displayname)) {
+    if (
+        !(
+            post.props.username &&
+            post.props.old_displayname &&
+            post.props.new_displayname
+        )
+    ) {
         return null;
     }
 
@@ -218,7 +223,7 @@ function renderDisplayNameChangeMessage(post) {
 }
 
 function renderConvertChannelToPrivateMessage(post) {
-    if (!(post.props.username)) {
+    if (!post.props.username) {
         return null;
     }
 
@@ -322,7 +327,9 @@ export function renderSystemMessage(post, channel) {
         const isUserCanManageMembers = canManageMembers(channel);
         const isEphemeral = Utils.isPostEphemeral(post);
 
-        if ((channel.type === General.PRIVATE_CHANNEL || channel.type === General.OPEN_CHANNEL) &&
+        if (
+            (channel.type === General.PRIVATE_CHANNEL ||
+                channel.type === General.OPEN_CHANNEL) &&
             isUserCanManageMembers &&
             isEphemeral
         ) {
@@ -343,7 +350,11 @@ export function renderSystemMessage(post, channel) {
     } else if (post.type === Posts.POST_TYPES.EPHEMERAL_ADD_TO_CHANNEL) {
         return renderAddToChannelMessage(post);
     } else if (post.type === Posts.POST_TYPES.COMBINED_USER_ACTIVITY) {
-        const {allUserIds, allUsernames, messageData} = post.props.user_activity;
+        const {
+            allUserIds,
+            allUsernames,
+            messageData,
+        } = post.props.user_activity;
 
         return (
             <CombinedSystemMessage

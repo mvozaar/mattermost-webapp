@@ -14,17 +14,15 @@ describe('components/UserProfile', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<UserProfile {...baseProps}/>);
+        const wrapper = shallow(<UserProfile {...baseProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, when popover is disabled', () => {
         const wrapper = shallow(
-            <UserProfile
-                {...baseProps}
-                disablePopover={true}
-            />
+            <UserProfile {...baseProps} disablePopover={true} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

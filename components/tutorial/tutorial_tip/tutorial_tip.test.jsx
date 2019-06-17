@@ -19,12 +19,13 @@ describe('components/tutorial/tutorial_tip/tutorial_tip.jsx', () => {
             closeRhsMenu: jest.fn(),
             savePreferences: jest.fn(),
         },
+
         screens: [1, 2, 3],
         placement: 'right',
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<TutorialTip {...requiredProps}/>);
+        const wrapper = shallow(<TutorialTip {...requiredProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -32,8 +33,12 @@ describe('components/tutorial/tutorial_tip/tutorial_tip.jsx', () => {
         const savePreferences = jest.fn();
         const closeRhsMenu = jest.fn();
 
-        const props = {...requiredProps, actions: {closeRhsMenu, savePreferences}};
-        const wrapper = shallow(<TutorialTip {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {closeRhsMenu, savePreferences},
+        };
+
+        const wrapper = shallow(<TutorialTip {...props} />);
 
         wrapper.instance().handleNext();
         expect(closeRhsMenu).toHaveBeenCalledTimes(0);
@@ -48,30 +53,39 @@ describe('components/tutorial/tutorial_tip/tutorial_tip.jsx', () => {
         const savePreferences = jest.fn();
         const closeRhsMenu = jest.fn();
 
-        const props = {...requiredProps, actions: {closeRhsMenu, savePreferences}};
-        const wrapper = shallow(<TutorialTip {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {closeRhsMenu, savePreferences},
+        };
+
+        const wrapper = shallow(<TutorialTip {...props} />);
 
         wrapper.instance().handleNext();
         wrapper.instance().handleNext();
         wrapper.instance().handleNext();
 
-        const expectedPref = [{
-            user_id: currentUserId,
-            category: Preferences.TUTORIAL_STEP,
-            name: currentUserId,
-            value: (requiredProps.step + 1).toString(),
-        }];
+        const expectedPref = [
+            {
+                user_id: currentUserId,
+                category: Preferences.TUTORIAL_STEP,
+                name: currentUserId,
+                value: (requiredProps.step + 1).toString(),
+            },
+        ];
 
         expect(closeRhsMenu).toHaveBeenCalledTimes(1);
         expect(savePreferences).toHaveBeenCalledTimes(1);
-        expect(savePreferences).toHaveBeenCalledWith(currentUserId, expectedPref);
+        expect(savePreferences).toHaveBeenCalledWith(
+            currentUserId,
+            expectedPref,
+        );
     });
 
     test('should have called mockEvent.preventDefault when skipTutorial', () => {
         const mockEvent = {preventDefault: jest.fn()};
 
         const props = {...requiredProps};
-        const wrapper = shallow(<TutorialTip {...props}/>);
+        const wrapper = shallow(<TutorialTip {...props} />);
 
         wrapper.instance().skipTutorial(mockEvent);
         expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
@@ -82,19 +96,28 @@ describe('components/tutorial/tutorial_tip/tutorial_tip.jsx', () => {
         const closeRhsMenu = jest.fn();
         const mockEvent = {preventDefault: jest.fn()};
 
-        const props = {...requiredProps, actions: {closeRhsMenu, savePreferences}};
-        const wrapper = shallow(<TutorialTip {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {closeRhsMenu, savePreferences},
+        };
+
+        const wrapper = shallow(<TutorialTip {...props} />);
 
         wrapper.instance().skipTutorial(mockEvent);
 
-        const expectedPref = [{
-            user_id: currentUserId,
-            category: Preferences.TUTORIAL_STEP,
-            name: currentUserId,
-            value: Constants.TutorialSteps.FINISHED.toString(),
-        }];
+        const expectedPref = [
+            {
+                user_id: currentUserId,
+                category: Preferences.TUTORIAL_STEP,
+                name: currentUserId,
+                value: Constants.TutorialSteps.FINISHED.toString(),
+            },
+        ];
 
         expect(savePreferences).toHaveBeenCalledTimes(1);
-        expect(savePreferences).toHaveBeenCalledWith(currentUserId, expectedPref);
+        expect(savePreferences).toHaveBeenCalledWith(
+            currentUserId,
+            expectedPref,
+        );
     });
 });

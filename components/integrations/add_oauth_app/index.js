@@ -15,10 +15,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addOAuthApp,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addOAuthApp,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddOAuthApp);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddOAuthApp);

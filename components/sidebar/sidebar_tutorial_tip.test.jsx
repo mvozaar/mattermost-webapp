@@ -8,25 +8,23 @@ import SidebarTutorialTip from 'components/sidebar/sidebar_tutorial_tip.jsx';
 
 describe('component/sidebar/SidebarTutorialTip', () => {
     test('should match snapshot, without townSquare and without offTopic', () => {
-        const wrapper = shallow(<SidebarTutorialTip/>);
+        const wrapper = shallow(<SidebarTutorialTip />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, with townSquare and without offTopic', () => {
         const wrapper = shallow(
-            <SidebarTutorialTip
-                townSquareDisplayName={'TestTownSquare'}
-            />
+            <SidebarTutorialTip townSquareDisplayName={'TestTownSquare'} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, without townSquare and with offTopic', () => {
         const wrapper = shallow(
-            <SidebarTutorialTip
-                offTopicDisplayName={'TestOffTopic'}
-            />
+            <SidebarTutorialTip offTopicDisplayName={'TestOffTopic'} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -35,8 +33,9 @@ describe('component/sidebar/SidebarTutorialTip', () => {
             <SidebarTutorialTip
                 townSquareDisplayName={'TestTownSquare'}
                 offTopicDisplayName={'TestOffTopic'}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

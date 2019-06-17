@@ -3,7 +3,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {
+    defineMessages,
+    FormattedMessage,
+    injectIntl,
+    intlShape,
+} from 'react-intl';
 
 import * as utils from 'utils/utils.jsx';
 import {t} from 'utils/i18n';
@@ -41,7 +46,12 @@ class TeamImportTab extends React.Component {
     }
 
     onImportSuccess(data) {
-        this.setState({status: 'done', link: 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(atob(data.results))});
+        this.setState({
+            status: 'done',
+            link:
+                'data:application/octet-stream;charset=utf-8,' +
+                encodeURIComponent(atob(data.results)),
+        });
     }
 
     doImportSlack(file) {
@@ -53,7 +63,7 @@ class TeamImportTab extends React.Component {
         const {formatMessage} = this.props.intl;
         const uploadDocsLink = (
             <a
-                href='https://docs.mattermost.com/administration/migrating.html#migrating-from-slack'
+                href='https://docs.securCom.me/administration/migrating.html#migrating-from-slack'
                 target='_blank'
                 rel='noopener noreferrer'
             >
@@ -88,7 +98,7 @@ class TeamImportTab extends React.Component {
 
         const importCliLink = (
             <a
-                href='https://docs.mattermost.com/administration/migrating.html#migrating-from-slack-using-the-mattermost-cli'
+                href='https://docs.securCom.me/administration/migrating.html#migrating-from-slack-using-the-scc-cli'
                 target='_blank'
                 rel='noopener noreferrer'
             >
@@ -104,7 +114,7 @@ class TeamImportTab extends React.Component {
                 <p>
                     <FormattedMessage
                         id='team_import_tab.importHelpLine1'
-                        defaultMessage="Slack import to Mattermost supports importing of messages in your Slack team's public channels."
+                        defaultMessage="Slack import to SCC supports importing of messages in your Slack team's public channels."
                     />
                 </p>
                 <p>
@@ -149,56 +159,66 @@ class TeamImportTab extends React.Component {
 
         let messageSection;
         switch (this.state.status) {
-        case 'ready':
-            messageSection = '';
-            break;
-        case 'in-progress':
-            messageSection = (
-                <p className='confirm-import alert alert-warning'>
-                    <LoadingSpinner text={utils.localizeMessage('team_import_tab.importing', 'Importing...')}/>
-                </p>
-            );
-            break;
-        case 'done':
-            messageSection = (
-                <p className='confirm-import alert alert-success'>
-                    <SuccessIcon/>
-                    <FormattedMessage
-                        id='team_import_tab.successful'
-                        defaultMessage=' Import successful: '
-                    />
-                    <a
-                        href={this.state.link}
-                        download='MattermostImportSummary.txt'
-                    >
-                        <FormattedMessage
-                            id='team_import_tab.summary'
-                            defaultMessage='View Summary'
+            case 'ready':
+                messageSection = '';
+                break;
+            case 'in-progress':
+                messageSection = (
+                    <p className='confirm-import alert alert-warning'>
+                        <LoadingSpinner
+                            text={utils.localizeMessage(
+                                'team_import_tab.importing',
+                                'Importing...',
+                            )}
                         />
-                    </a>
-                </p>
-            );
-            break;
-        case 'fail':
-            messageSection = (
-                <p className='confirm-import alert alert-warning'>
-                    <WarningIcon/>
-                    <FormattedMessage
-                        id='team_import_tab.failure'
-                        defaultMessage=' Import failure: '
-                    />
-                    <a
-                        href={this.state.link}
-                        download='MattermostImportSummary.txt'
-                    >
+                    </p>
+                );
+
+                break;
+            case 'done':
+                messageSection = (
+                    <p className='confirm-import alert alert-success'>
+                        <SuccessIcon />
                         <FormattedMessage
-                            id='team_import_tab.summary'
-                            defaultMessage='View Summary'
+                            id='team_import_tab.successful'
+                            defaultMessage=' Import successful: '
                         />
-                    </a>
-                </p>
-            );
-            break;
+
+                        <a
+                            href={this.state.link}
+                            download='MattermostImportSummary.txt'
+                        >
+                            <FormattedMessage
+                                id='team_import_tab.summary'
+                                defaultMessage='View Summary'
+                            />
+                        </a>
+                    </p>
+                );
+
+                break;
+            case 'fail':
+                messageSection = (
+                    <p className='confirm-import alert alert-warning'>
+                        <WarningIcon />
+                        <FormattedMessage
+                            id='team_import_tab.failure'
+                            defaultMessage=' Import failure: '
+                        />
+
+                        <a
+                            href={this.state.link}
+                            download='MattermostImportSummary.txt'
+                        >
+                            <FormattedMessage
+                                id='team_import_tab.summary'
+                                defaultMessage='View Summary'
+                            />
+                        </a>
+                    </p>
+                );
+
+                break;
         }
 
         return (
@@ -213,13 +233,10 @@ class TeamImportTab extends React.Component {
                     >
                         <span aria-hidden='true'>{'×'}</span>
                     </button>
-                    <h4
-                        className='modal-title'
-                        ref='title'
-                    >
+                    <h4 className='modal-title' ref='title'>
                         <div className='modal-back'>
                             <span onClick={this.props.collapseModal}>
-                                <BackIcon/>
+                                <BackIcon />
                             </span>
                         </div>
                         <FormattedMessage
@@ -228,19 +245,16 @@ class TeamImportTab extends React.Component {
                         />
                     </h4>
                 </div>
-                <div
-                    ref='wrapper'
-                    className='user-settings'
-                >
+                <div ref='wrapper' className='user-settings'>
                     <h3 className='tab-header'>
                         <FormattedMessage
                             id='team_import_tab.import'
                             defaultMessage='Import'
                         />
                     </h3>
-                    <div className='divider-dark first'/>
+                    <div className='divider-dark first' />
                     {uploadSection}
-                    <div className='divider-dark'/>
+                    <div className='divider-dark' />
                     {messageSection}
                 </div>
             </div>

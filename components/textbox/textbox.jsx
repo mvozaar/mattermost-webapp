@@ -66,8 +66,13 @@ export default class Textbox extends React.Component {
                 currentUserId: this.props.currentUserId,
                 profilesInChannel: this.props.profilesInChannel,
                 profilesNotInChannel: this.props.profilesNotInChannel,
-                autocompleteUsersInChannel: (prefix) => this.props.actions.autocompleteUsersInChannel(prefix, props.channelId),
+                autocompleteUsersInChannel: (prefix) =>
+                    this.props.actions.autocompleteUsersInChannel(
+                        prefix,
+                        props.channelId,
+                    ),
             }),
+
             new ChannelMentionProvider(),
             new EmoticonProvider(),
         ];
@@ -81,7 +86,7 @@ export default class Textbox extends React.Component {
 
     handleChange = (e) => {
         this.props.onChange(e);
-    }
+    };
 
     checkMessageLength = (message) => {
         if (this.props.handlePostError) {
@@ -94,25 +99,27 @@ export default class Textbox extends React.Component {
                             length: message.length,
                             limit: this.props.characterLimit,
                         }}
-                    />);
+                    />
+                );
+
                 this.props.handlePostError(errorMessage);
             } else {
                 this.props.handlePostError(null);
             }
         }
-    }
+    };
 
     handleKeyDown = (e) => {
         if (this.props.onKeyDown) {
             this.props.onKeyDown(e);
         }
-    }
+    };
 
     handleBlur = (e) => {
         if (this.props.onBlur) {
             this.props.onBlur(e);
         }
-    }
+    };
 
     handleHeightChange = (height, maxHeight) => {
         if (this.props.onHeightChange) {
@@ -121,7 +128,7 @@ export default class Textbox extends React.Component {
         if (Utils.disableVirtList()) {
             this.props.actions.scrollPostList();
         }
-    }
+    };
 
     focus = () => {
         const textbox = this.refs.message.getTextbox();
@@ -131,7 +138,7 @@ export default class Textbox extends React.Component {
 
         // reset character count warning
         this.checkMessageLength(textbox.value);
-    }
+    };
 
     blur = () => {
         const textbox = this.refs.message.getTextbox();
@@ -140,7 +147,7 @@ export default class Textbox extends React.Component {
 
     recalculateSize = () => {
         this.refs.message.recalculateSize();
-    }
+    };
 
     togglePreview = (e) => {
         e.preventDefault();
@@ -148,17 +155,20 @@ export default class Textbox extends React.Component {
         this.setState((prevState) => {
             return {preview: !prevState.preview};
         });
-    }
+    };
 
     hidePreview = () => {
         this.setState({preview: false});
-    }
+    };
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-        if (nextProps.channelId !== this.props.channelId ||
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
+        if (
+            nextProps.channelId !== this.props.channelId ||
             nextProps.currentUserId !== this.props.currentUserId ||
             nextProps.profilesInChannel !== this.props.profilesInChannel ||
-            nextProps.profilesNotInChannel !== this.props.profilesNotInChannel) {
+            nextProps.profilesNotInChannel !== this.props.profilesNotInChannel
+        ) {
             // Update channel id for AtMentionProvider.
             const providers = this.suggestionProviders;
             for (let i = 0; i < providers.length; i++) {
@@ -167,7 +177,11 @@ export default class Textbox extends React.Component {
                         currentUserId: nextProps.currentUserId,
                         profilesInChannel: nextProps.profilesInChannel,
                         profilesNotInChannel: nextProps.profilesNotInChannel,
-                        autocompleteUsersInChannel: (prefix) => nextProps.actions.autocompleteUsersInChannel(prefix, nextProps.channelId),
+                        autocompleteUsersInChannel: (prefix) =>
+                            nextProps.actions.autocompleteUsersInChannel(
+                                prefix,
+                                nextProps.channelId,
+                            ),
                     });
                 }
             }
@@ -183,16 +197,15 @@ export default class Textbox extends React.Component {
         let editHeader;
         let helpTextClass = '';
 
-        if (this.props.value && this.props.value.length > this.props.characterLimit) {
+        if (
+            this.props.value &&
+            this.props.value.length > this.props.characterLimit
+        ) {
             helpTextClass = 'hidden';
         }
 
         if (this.props.previewMessageLink) {
-            editHeader = (
-                <span>
-                    {this.props.previewMessageLink}
-                </span>
-            );
+            editHeader = <span>{this.props.previewMessageLink}</span>;
         } else {
             editHeader = (
                 <FormattedMessage
@@ -225,7 +238,10 @@ export default class Textbox extends React.Component {
         const helpText = (
             <div
                 id='helpText'
-                style={{visibility: hasText ? 'visible' : 'hidden', opacity: hasText ? '0.45' : '0'}}
+                style={{
+                    visibility: hasText ? 'visible' : 'hidden',
+                    opacity: hasText ? '0.45' : '0',
+                }}
                 className='help__format-text'
             >
                 <b>
@@ -299,10 +315,7 @@ export default class Textbox extends React.Component {
         }
 
         return (
-            <div
-                ref='wrapper'
-                className={textWrapperClass}
-            >
+            <div ref='wrapper' className={textWrapperClass}>
                 <SuggestionBox
                     id={this.props.id}
                     ref='message'
@@ -315,7 +328,9 @@ export default class Textbox extends React.Component {
                     onComposition={this.props.onComposition}
                     onBlur={this.handleBlur}
                     onHeightChange={this.handleHeightChange}
-                    style={{visibility: this.state.preview ? 'hidden' : 'visible'}}
+                    style={{
+                        visibility: this.state.preview ? 'hidden' : 'visible',
+                    }}
                     inputComponent={AutosizeTextarea}
                     listComponent={SuggestionList}
                     listStyle={this.props.suggestionListStyle}
@@ -326,8 +341,11 @@ export default class Textbox extends React.Component {
                     isRHS={this.props.isRHS}
                     disabled={this.props.disabled}
                     contextId={this.props.channelId}
-                    listenForMentionKeyClick={this.props.listenForMentionKeyClick}
+                    listenForMentionKeyClick={
+                        this.props.listenForMentionKeyClick
+                    }
                 />
+
                 {preview}
                 <div className={'help__text ' + helpTextClass}>
                     {helpText}

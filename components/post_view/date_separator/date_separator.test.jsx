@@ -12,8 +12,9 @@ describe('components/post_view/DateSeparator', () => {
         const wrapper = mountWithIntl(
             <DateSeparator
                 date={new Date('Fri Jan 12 2018 20:15:13 GMT+0800 (+08)')}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         expect(wrapper.find('span').text()).toBe('Fri, Jan 12, 2018');
@@ -25,8 +26,9 @@ describe('components/post_view/DateSeparator', () => {
                 date={new Date('Fri Jan 12 2018 20:15:13 GMT+0800 (+08)')}
                 enableTimezone={false}
                 timeZone={'Australia/Sydney'}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         expect(wrapper.find('span').text()).toBe('Fri, Jan 12, 2018');
@@ -38,8 +40,9 @@ describe('components/post_view/DateSeparator', () => {
                 date={new Date('Fri Jan 12 2018 20:15:13 GMT+0000 (+00)')}
                 enableTimezone={true}
                 timeZone={'Australia/Sydney'}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
 
         expect(wrapper.find('span').text()).toBe('Sat, Jan 13, 2018');

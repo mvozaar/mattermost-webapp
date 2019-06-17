@@ -8,7 +8,6 @@ import UnreadBelowIcon from 'components/svg/unread_below_icon';
 
 export default class UnreadChannelIndicator extends React.PureComponent {
     static propTypes = {
-
         /**
          * Function to call when the indicator is clicked
          */
@@ -50,12 +49,14 @@ export default class UnreadChannelIndicator extends React.PureComponent {
         return (
             <div
                 id={'unreadIndicator' + this.props.name}
-                className={'nav-pills__unread-indicator ' + this.props.extraClass}
+                className={
+                    'nav-pills__unread-indicator ' + this.props.extraClass
+                }
                 style={{display: displayValue}}
                 onClick={this.props.onClick}
             >
                 {this.props.content}
-                <UnreadBelowIcon className='icon icon__unread'/>
+                <UnreadBelowIcon className='icon icon__unread' />
             </div>
         );
     }

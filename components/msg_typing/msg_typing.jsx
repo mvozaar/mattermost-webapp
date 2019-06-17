@@ -8,7 +8,7 @@ import {FormattedMessage} from 'react-intl';
 export default class MsgTyping extends React.Component {
     static propTypes = {
         typingUsers: PropTypes.array.isRequired,
-    }
+    };
 
     getTypingText = () => {
         let users = [];
@@ -38,16 +38,14 @@ export default class MsgTyping extends React.Component {
                 id='msg_typing.areTyping'
                 defaultMessage='{users} and {last} are typing...'
                 values={{
-                    users: (users.join(', ')),
+                    users: users.join(', '),
                     last,
                 }}
             />
         );
-    }
+    };
 
     render() {
-        return (
-            <span className='msg-typing'>{this.getTypingText()}</span>
-        );
+        return <span className='msg-typing'>{this.getTypingText()}</span>;
     }
 }

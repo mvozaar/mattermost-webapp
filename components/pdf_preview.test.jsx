@@ -7,40 +7,39 @@ import {shallow} from 'enzyme';
 import PDFPreview from 'components/pdf_preview.jsx';
 
 jest.mock('pdfjs-dist', () => ({
-    getDocument: () => Promise.resolve({
-        numPages: 3,
-        getPage: (i) => Promise.resolve({
-            pageIndex: i,
-            getContext: (s) => Promise.resolve({s}),
+    getDocument: () =>
+        Promise.resolve({
+            numPages: 3,
+            getPage: (i) =>
+                Promise.resolve({
+                    pageIndex: i,
+                    getContext: (s) => Promise.resolve({s}),
+                }),
         }),
-    }),
 }));
 
 describe('component/PDFPreview', () => {
     const requiredProps = {
         fileInfo: {extension: 'pdf'},
-        fileUrl: 'https://pre-release.mattermost.com/api/v4/files/ips59w4w9jnfbrs3o94m1dbdie',
+        fileUrl:
+            'https://pre-release.securCom.me/api/v4/files/ips59w4w9jnfbrs3o94m1dbdie',
     };
 
     test('should match snapshot, loading', () => {
-        const wrapper = shallow(
-            <PDFPreview {...requiredProps}/>
-        );
+        const wrapper = shallow(<PDFPreview {...requiredProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, not successful', () => {
-        const wrapper = shallow(
-            <PDFPreview {...requiredProps}/>
-        );
+        const wrapper = shallow(<PDFPreview {...requiredProps} />);
+
         wrapper.setState({loading: false});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should return correct state when updateStateFromProps is called', () => {
-        const wrapper = shallow(
-            <PDFPreview {...requiredProps}/>
-        );
+        const wrapper = shallow(<PDFPreview {...requiredProps} />);
 
         wrapper.instance().updateStateFromProps(requiredProps);
         expect(wrapper.state('pdf')).toBe(null);
@@ -52,9 +51,7 @@ describe('component/PDFPreview', () => {
     });
 
     test('should return correct state when onDocumentLoad is called', () => {
-        const wrapper = shallow(
-            <PDFPreview {...requiredProps}/>
-        );
+        const wrapper = shallow(<PDFPreview {...requiredProps} />);
 
         let pdf = {numPages: 0};
         wrapper.instance().onDocumentLoad(pdf);
@@ -66,6 +63,7 @@ describe('component/PDFPreview', () => {
             numPages: 6,
             getPage: (i) => Promise.resolve(i),
         };
+
         wrapper.instance().onDocumentLoad(pdf);
         expect(wrapper.state('pdf')).toEqual(pdf);
         expect(wrapper.state('numPages')).toEqual(MAX_PDF_PAGES);

@@ -32,12 +32,9 @@ describe('components/Menu', () => {
 
     test('should match snapshot with id', () => {
         const wrapper = shallow(
-            <Menu
-                id='test-id'
-                ariaLabel='test-label'
-            >
+            <Menu id='test-id' ariaLabel='test-label'>
                 {'text'}
-            </Menu>
+            </Menu>,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`
@@ -58,13 +55,9 @@ describe('components/Menu', () => {
         utils.isMobile.mockReturnValue(true);
 
         const wrapper = shallow(
-            <Menu
-                openLeft={true}
-                openUp={true}
-                ariaLabel='test-label'
-            >
+            <Menu openLeft={true} openUp={true} ariaLabel='test-label'>
                 {'text'}
-            </Menu>
+            </Menu>,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`
@@ -84,13 +77,9 @@ describe('components/Menu', () => {
         utils.isMobile.mockReturnValue(false);
 
         const wrapper = shallow(
-            <Menu
-                openLeft={true}
-                openUp={true}
-                ariaLabel='test-label'
-            >
+            <Menu openLeft={true} openUp={true} ariaLabel='test-label'>
                 {'text'}
-            </Menu>
+            </Menu>,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`

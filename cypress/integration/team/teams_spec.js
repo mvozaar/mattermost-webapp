@@ -25,10 +25,14 @@ describe('Teams Suite', () => {
         cy.url().should('include', '/ad-1/channels/town-square');
 
         // 2. open the drop down menu
-        cy.get('#sidebarHeaderDropdownButton').should('be.visible').click();
+        cy.get('#sidebarHeaderDropdownButton')
+            .should('be.visible')
+            .click();
 
         // 3. click the leave team
-        cy.get('#sidebarDropdownMenu #leaveTeam').should('be.visible').click();
+        cy.get('#sidebarDropdownMenu #leaveTeam')
+            .should('be.visible')
+            .click();
 
         // * Check that the "leave team modal" opened up
         cy.get('#leaveTeamModal').should('be.visible');
@@ -65,8 +69,12 @@ describe('Teams Suite', () => {
         cy.createNewTeam(teamName, teamURL);
 
         // 3. Click hamburger menu > “Add Members to Team”
-        cy.get('#sidebarHeaderDropdownButton').should('be.visible').click();
-        cy.get('#sidebarDropdownMenu #addUsersToTeam').should('be.visible').click();
+        cy.get('#sidebarHeaderDropdownButton')
+            .should('be.visible')
+            .click();
+        cy.get('#sidebarDropdownMenu #addUsersToTeam')
+            .should('be.visible')
+            .click();
 
         // * Check that the "add new members modal" opened up
         cy.get('#addUsersToTeamModal').should('be.visible');
@@ -80,16 +88,23 @@ describe('Teams Suite', () => {
         // 5. Select a user from the list, verify number of users who can be added decrements from 20 to 19
         cy.get('#numPeopleRemaining').should('contain', maxSelectableValues);
         cy.focused().type('{enter}');
-        cy.get('#numPeopleRemaining').should('contain', maxSelectableValues - 1);
+        cy.get('#numPeopleRemaining').should(
+            'contain',
+            maxSelectableValues - 1,
+        );
 
         // 6. Click Add
         cy.get('#saveItems').click();
 
         // * System message posts in Town Square and Off-Topic "[user2] added to the channel by [user1]"
         cy.visit(townSquareURL);
-        cy.getLastPost().should('contain', 'System').and('contain', `${user.username} added to the team by you.`);
+        cy.getLastPost()
+            .should('contain', 'System')
+            .and('contain', `${user.username} added to the team by you.`);
         cy.visit(offTopicURL);
-        cy.getLastPost().should('contain', 'System').and('contain', `${user.username} added to the channel by you.`);
+        cy.getLastPost()
+            .should('contain', 'System')
+            .and('contain', `${user.username} added to the channel by you.`);
 
         // 7. Logout
         cy.apiLogout();
@@ -98,13 +113,19 @@ describe('Teams Suite', () => {
         cy.apiLogin(user.username);
 
         // * The added user sees the new team added to the team sidebar
-        cy.get(`#${teamURL}TeamButton`).should('have.attr', 'href').should('contain', teamURL);
+        cy.get(`#${teamURL}TeamButton`)
+            .should('have.attr', 'href')
+            .should('contain', teamURL);
 
         // * System message posts in Town Square and Off-Topic "[user2] added to the channel by [user1]"
         cy.visit(townSquareURL);
-        cy.getLastPost().should('contain', 'System').and('contain', 'You were added to the team by @sysadmin.');
+        cy.getLastPost()
+            .should('contain', 'System')
+            .and('contain', 'You were added to the team by @sysadmin.');
         cy.visit(offTopicURL);
-        cy.getLastPost().should('contain', 'System').and('contain', 'You were added to the channel by @sysadmin.');
+        cy.getLastPost()
+            .should('contain', 'System')
+            .and('contain', 'You were added to the channel by @sysadmin.');
 
         // 9. Remove user from team
         cy.removeTeamMember(teamURL, user.username);

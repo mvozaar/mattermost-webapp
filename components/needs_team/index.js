@@ -5,12 +5,26 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router-dom';
 
-import {fetchMyChannelsAndMembers, markChannelAsRead, viewChannel} from 'mattermost-redux/actions/channels';
-import {getMyTeamUnreads, getTeamByName, selectTeam} from 'mattermost-redux/actions/teams';
+import {
+    fetchMyChannelsAndMembers,
+    markChannelAsRead,
+    viewChannel,
+} from 'mattermost-redux/actions/channels';
+import {
+    getMyTeamUnreads,
+    getTeamByName,
+    selectTeam,
+} from 'mattermost-redux/actions/teams';
 import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
-import {getLicense, getConfig} from 'mattermost-redux/selectors/entities/general';
+import {
+    getLicense,
+    getConfig,
+} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
-import {getCurrentTeamId, getMyTeams} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getCurrentTeamId,
+    getMyTeams,
+} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentChannelId} from 'mattermost-redux/selectors/entities/channels';
 
 import {loadStatusesForChannelAndSidebar} from 'actions/status_actions';
@@ -27,7 +41,13 @@ function mapStateToProps(state, ownProps) {
 
     return {
         theme: getTheme(state),
-        mfaRequired: checkIfMFARequired(currentUser, license, config, ownProps.match.url),
+        mfaRequired: checkIfMFARequired(
+            currentUser,
+            license,
+            config,
+            ownProps.match.url,
+        ),
+
         currentUser,
         currentTeamId: getCurrentTeamId(state),
         teamsList: getMyTeams(state),
@@ -37,18 +57,27 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            fetchMyChannelsAndMembers,
-            getMyTeamUnreads,
-            viewChannel,
-            markChannelAsRead,
-            getTeamByName,
-            addUserToTeam,
-            setPreviousTeamId,
-            selectTeam,
-            loadStatusesForChannelAndSidebar,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                fetchMyChannelsAndMembers,
+                getMyTeamUnreads,
+                viewChannel,
+                markChannelAsRead,
+                getTeamByName,
+                addUserToTeam,
+                setPreviousTeamId,
+                selectTeam,
+                loadStatusesForChannelAndSidebar,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NeedsTeam));
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    )(NeedsTeam),
+);

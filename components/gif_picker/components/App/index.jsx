@@ -9,9 +9,9 @@ import {saveAppProps} from 'mattermost-redux/actions/gifs';
 
 import Header from 'components/gif_picker/components/Header';
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     saveAppProps,
-});
+};
 
 export class App extends PureComponent {
     static propTypes = {
@@ -23,7 +23,7 @@ export class App extends PureComponent {
         children: PropTypes.object,
         saveAppProps: PropTypes.func,
         authenticateSdk: PropTypes.func,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -50,12 +50,14 @@ export class App extends PureComponent {
                     onSearch={onSearch}
                     onTrending={onTrending}
                 />
-                <div className='component-container'>
-                    {children}
-                </div>
+
+                <div className='component-container'>{children}</div>
             </div>
         );
     }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(App);

@@ -13,7 +13,6 @@ import LoadingScreen from 'components/loading_screen.jsx';
 
 export default class ActivityLogModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * The current user id
          */
@@ -22,10 +21,8 @@ export default class ActivityLogModal extends React.PureComponent {
         /**
          * Current user's sessions
          */
-        sessions: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.object,
-        ]).isRequired,
+        sessions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+            .isRequired,
 
         /**
          * Current user's locale
@@ -37,7 +34,6 @@ export default class ActivityLogModal extends React.PureComponent {
          */
         onHide: PropTypes.func.isRequired,
         actions: PropTypes.shape({
-
             /**
              * Function to refresh sessions from server
              */
@@ -48,7 +44,7 @@ export default class ActivityLogModal extends React.PureComponent {
              */
             revokeSession: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -65,21 +61,23 @@ export default class ActivityLogModal extends React.PureComponent {
         setTimeout(() => {
             modalContent.removeClass('animation--highlight');
         }, 1500);
-        this.props.actions.revokeSession(this.props.currentUserId, altId).then(() => {
-            this.props.actions.getSessions(this.props.currentUserId);
-        });
-    }
+        this.props.actions
+            .revokeSession(this.props.currentUserId, altId)
+            .then(() => {
+                this.props.actions.getSessions(this.props.currentUserId);
+            });
+    };
 
     onShow = () => {
         this.props.actions.getSessions(this.props.currentUserId);
         if (!isMobile()) {
             $('.modal-body').perfectScrollbar();
         }
-    }
+    };
 
     onHide = () => {
         this.setState({show: false});
-    }
+    };
 
     componentDidMount() {
         this.onShow();
@@ -88,24 +86,28 @@ export default class ActivityLogModal extends React.PureComponent {
     render() {
         let content;
         if (this.props.sessions.loading) {
-            content = <LoadingScreen/>;
+            content = <LoadingScreen />;
         } else {
-            const activityList = this.props.sessions.reduce((array, currentSession, index) => {
-                if (currentSession.props.type === 'UserAccessToken') {
-                    return array;
-                }
+            const activityList = this.props.sessions.reduce(
+                (array, currentSession, index) => {
+                    if (currentSession.props.type === 'UserAccessToken') {
+                        return array;
+                    }
 
-                array.push(
-                    <ActivityLog
-                        key={currentSession.id}
-                        index={index}
-                        locale={this.props.locale}
-                        currentSession={currentSession}
-                        submitRevoke={this.submitRevoke}
-                    />
-                );
-                return array;
-            }, []);
+                    array.push(
+                        <ActivityLog
+                            key={currentSession.id}
+                            index={index}
+                            locale={this.props.locale}
+                            currentSession={currentSession}
+                            submitRevoke={this.submitRevoke}
+                        />,
+                    );
+
+                    return array;
+                },
+                [],
+            );
 
             content = <form role='form'>{activityList}</form>;
         }
@@ -121,10 +123,7 @@ export default class ActivityLogModal extends React.PureComponent {
                 aria-labelledby='activityLogModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='activityLogModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='activityLogModalLabel'>
                         <FormattedMessage
                             id='activity_log.activeSessions'
                             defaultMessage='Active Sessions'
@@ -135,7 +134,7 @@ export default class ActivityLogModal extends React.PureComponent {
                     <p className='session-help-text'>
                         <FormattedMessage
                             id='activity_log.sessionsDescription'
-                            defaultMessage="Sessions are created when you log in to a new browser on a device. Sessions let you use Mattermost without having to log in again for a time period specified by the System Admin. If you want to log out sooner, use the 'Logout' button below to end a session."
+                            defaultMessage="Sessions are created when you log in to a new browser on a device. Sessions let you use SCC without having to log in again for a time period specified by the System Admin. If you want to log out sooner, use the 'Logout' button below to end a session."
                         />
                     </p>
                     {content}

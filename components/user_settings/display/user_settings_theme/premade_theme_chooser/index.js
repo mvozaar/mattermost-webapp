@@ -9,7 +9,8 @@ import PremadeThemeChooser from './premade_theme_chooser.jsx';
 function mapStateToProps(state) {
     const config = getConfig(state);
 
-    const allowedThemes = (config.AllowedThemes && config.AllowedThemes.split(',')) || [];
+    const allowedThemes =
+        (config.AllowedThemes && config.AllowedThemes.split(',')) || [];
 
     return {
         allowedThemes,

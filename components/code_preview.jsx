@@ -31,16 +31,22 @@ export default class CodePreview extends React.Component {
         this.updateStateFromProps(this.props);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.fileUrl !== nextProps.fileUrl) {
             this.updateStateFromProps(nextProps);
         }
     }
 
     updateStateFromProps(props) {
-        const usedLanguage = SyntaxHighlighting.getLanguageFromFileExtension(props.fileInfo.extension);
+        const usedLanguage = SyntaxHighlighting.getLanguageFromFileExtension(
+            props.fileInfo.extension,
+        );
 
-        if (!usedLanguage || props.fileInfo.size > Constants.CODE_PREVIEW_MAX_FILE_SIZE) {
+        if (
+            !usedLanguage ||
+            props.fileInfo.size > Constants.CODE_PREVIEW_MAX_FILE_SIZE
+        ) {
             this.setState({code: '', lang: '', loading: false, success: false});
             return;
         }
@@ -74,14 +80,16 @@ export default class CodePreview extends React.Component {
     }
 
     static supports(fileInfo) {
-        return Boolean(SyntaxHighlighting.getLanguageFromFileExtension(fileInfo.extension));
+        return Boolean(
+            SyntaxHighlighting.getLanguageFromFileExtension(fileInfo.extension),
+        );
     }
 
     render() {
         if (this.state.loading) {
             return (
                 <div className='view-image__loading'>
-                    <LoadingBars/>
+                    <LoadingBars />
                 </div>
             );
         }
@@ -108,7 +116,10 @@ export default class CodePreview extends React.Component {
 
         const language = SyntaxHighlighting.getLanguageName(this.state.lang);
 
-        const highlighted = SyntaxHighlighting.highlight(this.state.lang, this.state.code);
+        const highlighted = SyntaxHighlighting.highlight(
+            this.state.lang,
+            this.state.code,
+        );
 
         return (
             <div className='post-code'>
@@ -120,8 +131,14 @@ export default class CodePreview extends React.Component {
                         <table>
                             <tbody>
                                 <tr>
-                                    <td className='post-code__lineno'>{strlines}</td>
-                                    <td dangerouslySetInnerHTML={{__html: highlighted}}/>
+                                    <td className='post-code__lineno'>
+                                        {strlines}
+                                    </td>
+                                    <td
+                                        dangerouslySetInnerHTML={{
+                                            __html: highlighted,
+                                        }}
+                                    />
                                 </tr>
                             </tbody>
                         </table>

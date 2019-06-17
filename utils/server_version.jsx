@@ -18,8 +18,14 @@ export function equalServerVersions(a, b) {
     }
 
     const ignoredComponents = 2;
-    const aIgnoringComponents = (a || '').split('.').slice(0, -ignoredComponents).join('.');
-    const bIgnoringComponents = (b || '').split('.').slice(0, -ignoredComponents).join('.');
+    const aIgnoringComponents = (a || '')
+        .split('.')
+        .slice(0, -ignoredComponents)
+        .join('.');
+    const bIgnoringComponents = (b || '')
+        .split('.')
+        .slice(0, -ignoredComponents)
+        .join('.');
     if (aIgnoringComponents === bIgnoringComponents) {
         return true;
     }

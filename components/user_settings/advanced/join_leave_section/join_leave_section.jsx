@@ -23,7 +23,7 @@ export default class JoinLeaveSection extends React.PureComponent {
         actions: PropTypes.shape({
             savePreferences: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -37,7 +37,7 @@ export default class JoinLeaveSection extends React.PureComponent {
         const value = e.currentTarget.value;
 
         this.setState({joinLeaveState: value});
-    }
+    };
 
     handleUpdateSection = (section) => {
         if (!section) {
@@ -45,15 +45,21 @@ export default class JoinLeaveSection extends React.PureComponent {
         }
 
         this.props.onUpdateSection(section);
-    }
+    };
 
     handleSubmit = () => {
         const {actions, currentUserId, onUpdateSection} = this.props;
-        const joinLeavePreference = {category: Preferences.CATEGORY_ADVANCED_SETTINGS, user_id: currentUserId, name: Preferences.ADVANCED_FILTER_JOIN_LEAVE, value: this.state.joinLeaveState};
+        const joinLeavePreference = {
+            category: Preferences.CATEGORY_ADVANCED_SETTINGS,
+            user_id: currentUserId,
+            name: Preferences.ADVANCED_FILTER_JOIN_LEAVE,
+            value: this.state.joinLeaveState,
+        };
+
         actions.savePreferences(currentUserId, [joinLeavePreference]);
 
         onUpdateSection();
-    }
+    };
 
     render() {
         const {joinLeaveState} = this.state;
@@ -78,12 +84,13 @@ export default class JoinLeaveSection extends React.PureComponent {
                                         checked={joinLeaveState === 'true'}
                                         onChange={this.handleOnChange}
                                     />
+
                                     <FormattedMessage
                                         id='user.settings.advance.on'
                                         defaultMessage='On'
                                     />
                                 </label>
-                                <br/>
+                                <br />
                             </div>
                             <div className='radio'>
                                 <label>
@@ -95,18 +102,19 @@ export default class JoinLeaveSection extends React.PureComponent {
                                         checked={joinLeaveState === 'false'}
                                         onChange={this.handleOnChange}
                                     />
+
                                     <FormattedMessage
                                         id='user.settings.advance.off'
                                         defaultMessage='Off'
                                     />
                                 </label>
-                                <br/>
+                                <br />
                             </div>
                             <div>
-                                <br/>
+                                <br />
                                 <FormattedMessage
                                     id='user.settings.advance.joinLeaveDesc'
-                                    defaultMessage='When "On", System Messages saying a user has joined or left a channel will be visible. When "Off", the System Messages about joining or leaving a channel will be hidden. A message will still show up when you are added to a channel, so you can receive a notification.'
+                                    defaultMessage="When 'On', System Messages saying a user has joined or left a channel will be visible. When 'Off', the System Messages about joining or leaving a channel will be hidden. A message will still show up when you are added to a channel, so you can receive a notification."
                                 />
                             </div>
                         </div>,
@@ -129,7 +137,9 @@ export default class JoinLeaveSection extends React.PureComponent {
                     />
                 }
                 describe={this.props.renderOnOffLabel(joinLeaveState)}
-                focused={this.props.prevActiveSection === AdvancedSections.JOIN_LEAVE}
+                focused={
+                    this.props.prevActiveSection === AdvancedSections.JOIN_LEAVE
+                }
                 section={AdvancedSections.JOIN_LEAVE}
                 updateSection={this.handleUpdateSection}
             />

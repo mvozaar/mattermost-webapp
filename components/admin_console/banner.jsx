@@ -7,10 +7,7 @@ import {FormattedMessage} from 'react-intl';
 
 export default function Banner(props) {
     let title = (
-        <FormattedMessage
-            id='admin.banner.heading'
-            defaultMessage='Note:'
-        />
+        <FormattedMessage id='admin.banner.heading' defaultMessage='Note:' />
     );
 
     if (props.title) {
@@ -20,19 +17,15 @@ export default function Banner(props) {
     return (
         <div className='banner'>
             <div className='banner__content'>
-                <h4 className='banner__heading'>
-                    {title}
-                </h4>
-                <p>
-                    {props.description}
-                </p>
+                <h4 className='banner__heading'>{title}</h4>
+                <p>{props.description}</p>
             </div>
         </div>
     );
 }
 
-Banner.defaultProps = {
-};
+Banner.defaultProps = {};
+
 Banner.propTypes = {
     title: PropTypes.node,
     description: PropTypes.node.isRequired,

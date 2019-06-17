@@ -19,10 +19,17 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            selectAttachmentMenuAction,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                selectAttachmentMenuAction,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionMenu);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ActionMenu);

@@ -12,11 +12,11 @@ export default class ShowSearchButton extends React.PureComponent {
         actions: PropTypes.shape({
             updateRhsState: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     handleClick = () => {
         this.props.actions.updateRhsState(RHSStates.SEARCH);
-    }
+    };
 
     render() {
         return (
@@ -25,10 +25,7 @@ export default class ShowSearchButton extends React.PureComponent {
                 className='navbar-toggle navbar-right__icon navbar-search pull-right'
                 onClick={this.handleClick}
             >
-                <SearchIcon
-                    className='icon icon__search'
-                    aria-hidden='true'
-                />
+                <SearchIcon className='icon icon__search' aria-hidden='true' />
             </button>
         );
     }

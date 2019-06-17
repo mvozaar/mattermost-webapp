@@ -7,7 +7,10 @@ import {connect} from 'react-redux';
 
 import {saveSearchScrollPosition} from 'mattermost-redux/actions/gifs';
 import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
-import {changeOpacity, makeStyleFromTheme} from 'mattermost-redux/utils/theme_utils';
+import {
+    changeOpacity,
+    makeStyleFromTheme,
+} from 'mattermost-redux/utils/theme_utils';
 
 import {trackEvent} from 'actions/diagnostics_actions.jsx';
 
@@ -30,9 +33,9 @@ function mapStateToProps(state) {
     };
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     saveSearchScrollPosition,
-});
+};
 
 const getStyle = makeStyleFromTheme((theme) => {
     return {
@@ -56,13 +59,14 @@ export class SearchGrid extends PureComponent {
         scrollPosition: PropTypes.number,
         saveSearchScrollPosition: PropTypes.func,
         theme: PropTypes.object.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
         this.state = {
             containerWidth: null,
         };
+
         this.scrollPosition = this.props.scrollPosition;
         this.setNumberOfColumns();
 
@@ -84,6 +88,7 @@ export class SearchGrid extends PureComponent {
             ...this.state,
             containerWidth: this.container.offsetWidth - WEBKIT_SCROLLBAR_WIDTH,
         });
+
         window.addEventListener('resize', this.resizeHandler);
         window.addEventListener('scroll', this.scrollHandler);
     }
@@ -110,7 +115,7 @@ export class SearchGrid extends PureComponent {
         } else {
             this.numberOfColumns = NUMBER_OF_COLUMNS_LANDSCAPE;
         }
-    }
+    };
 
     itemClickHandler = (gfyItem) => {
         const {keyword, handleItemClick} = this.props;
@@ -118,34 +123,39 @@ export class SearchGrid extends PureComponent {
 
         trackEvent('gfycat', 'shares', {gfyid: gfyItem.gfyId, keyword});
         handleItemClick(gfyItem);
-    }
+    };
 
     minHeightColumnIndex = () => {
         return this.columnsHeights.indexOf(Math.min(...this.columnsHeights));
-    }
+    };
 
     maxHeightColumnIndex = () => {
         return this.columnsHeights.indexOf(Math.max(...this.columnsHeights));
-    }
+    };
 
     maxColumnHeight = () => {
         return Math.max(...this.columnsHeights);
-    }
+    };
 
     resizeHandler = () => {
-        if (this.state.containerWidth !== this.container.offsetWidth - WEBKIT_SCROLLBAR_WIDTH) {
+        if (
+            this.state.containerWidth !==
+            this.container.offsetWidth - WEBKIT_SCROLLBAR_WIDTH
+        ) {
             this.setNumberOfColumns();
             this.setState({
                 ...this.state,
-                containerWidth: this.container.offsetWidth - WEBKIT_SCROLLBAR_WIDTH,
+                containerWidth:
+                    this.container.offsetWidth - WEBKIT_SCROLLBAR_WIDTH,
             });
+
             this.columnsHeights = Array(this.numberOfColumns).fill(0);
         }
-    }
+    };
 
     scrollHandler = () => {
         this.scrollPosition = window.scrollY;
-    }
+    };
 
     render() {
         const style = getStyle(this.props.theme);
@@ -160,13 +170,21 @@ export class SearchGrid extends PureComponent {
         } = this.props;
 
         const {containerWidth} = this.state;
-        const {moreRemaining, items = [], isEmpty} = resultsByTerm[keyword] ? resultsByTerm[keyword] : {};
+        const {moreRemaining, items = [], isEmpty} = resultsByTerm[keyword]
+            ? resultsByTerm[keyword]
+            : {};
 
         /**
          * Columns 'left' values
          */
         const columnWidth = parseInt(containerWidth / this.numberOfColumns, 10);
-        const leftPosition = Array(this.numberOfColumns).fill(0).map((item, index) => this.padding + ((index * columnWidth) - (index * (this.padding / 2))));
+        const leftPosition = Array(this.numberOfColumns)
+            .fill(0)
+            .map(
+                (item, index) =>
+                    this.padding +
+                    (index * columnWidth - index * (this.padding / 2)),
+            );
 
         this.columnsHeights = Array(this.numberOfColumns).fill(this.padding);
 
@@ -174,29 +192,33 @@ export class SearchGrid extends PureComponent {
         //const itemWidth = this.numberOfColumns === NUMBER_OF_COLUMNS_PORTRAIT ? 100 / NUMBER_OF_COLUMNS_PORTRAIT : 100 / this.numberOfColumns;
         const itemWidth = 140;
 
-        const searchItems = containerWidth && items.length ?
-            items.map((item, index) => {
-                const gfyItem = gifs[item];
-                const {gfyId} = gfyItem;
+        const searchItems =
+            containerWidth && items.length
+                ? items.map((item, index) => {
+                      const gfyItem = gifs[item];
+                      const {gfyId} = gfyItem;
 
-                // Position calculation
-                const colIndex = this.minHeightColumnIndex();
-                const top = this.columnsHeights[colIndex] + 'px';
-                const left = leftPosition[colIndex] + 'px';
-                const itemHeight = ((itemWidth / gfyItem.width) * gfyItem.height) + this.padding;
-                this.columnsHeights[colIndex] += itemHeight;
+                      // Position calculation
+                      const colIndex = this.minHeightColumnIndex();
+                      const top = this.columnsHeights[colIndex] + 'px';
+                      const left = leftPosition[colIndex] + 'px';
+                      const itemHeight =
+                          (itemWidth / gfyItem.width) * gfyItem.height +
+                          this.padding;
+                      this.columnsHeights[colIndex] += itemHeight;
 
-                return (
-                    <SearchItem
-                        gfyItem={gfyItem}
-                        top={top}
-                        left={left}
-                        itemWidth={itemWidth}
-                        itemClickHandler={this.itemClickHandler}
-                        key={`${index}-${gfyId}`}
-                    />
-                );
-            }) : null;
+                      return (
+                          <SearchItem
+                              gfyItem={gfyItem}
+                              top={top}
+                              left={left}
+                              itemWidth={itemWidth}
+                              itemClickHandler={this.itemClickHandler}
+                              key={`${index}-${gfyId}`}
+                          />
+                      );
+                  })
+                : null;
 
         this.containerHeight = this.maxColumnHeight();
 
@@ -218,10 +240,15 @@ export class SearchGrid extends PureComponent {
 
         const emptySearch = isEmpty ? (
             <div className='empty-search'>
-                <div className='empty-search-image'/>
-                <p>{'0 Gifs found for '}<strong>{keyword}</strong></p>
+                <div className='empty-search-image' />
+                <p>
+                    {'0 Gifs found for '}
+                    <strong>{keyword}</strong>
+                </p>
                 <a onClick={onCategories}>
-                    <div className='empty-search-button'>{'Go to Reactions'}</div>
+                    <div className='empty-search-button'>
+                        {'Go to Reactions'}
+                    </div>
                 </a>
             </div>
         ) : null;
@@ -239,4 +266,7 @@ export class SearchGrid extends PureComponent {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchGrid);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SearchGrid);

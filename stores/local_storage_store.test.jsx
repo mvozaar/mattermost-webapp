@@ -28,16 +28,25 @@ describe('stores/LocalStorageStore', () => {
         LocalStorageStore.setPreviousChannelName(userId1, teamId1, channel1);
         LocalStorageStore.setPreviousChannelName(userId2, teamId1, channel2);
         LocalStorageStore.setPreviousChannelName(userId2, teamId2, channel3);
-        assert.equal(LocalStorageStore.getPreviousChannelName(userId1, teamId1), channel1);
-        assert.equal(LocalStorageStore.getPreviousChannelName(userId2, teamId1), channel2);
-        assert.equal(LocalStorageStore.getPreviousChannelName(userId2, teamId2), channel3);
+        assert.equal(
+            LocalStorageStore.getPreviousChannelName(userId1, teamId1),
+            channel1,
+        );
+        assert.equal(
+            LocalStorageStore.getPreviousChannelName(userId2, teamId1),
+            channel2,
+        );
+        assert.equal(
+            LocalStorageStore.getPreviousChannelName(userId2, teamId2),
+            channel3,
+        );
     });
 
     test('should persist recent emojis per user', () => {
         const userId1 = 'userId1';
         const userId2 = 'userId2';
         const recentEmojis1 = ['smile', 'joy', 'grin'];
-        const recentEmojis2 = ['customEmoji', '+1', 'mattermost'];
+        const recentEmojis2 = ['customEmoji', '+1', 'securcom'];
 
         assert.equal(LocalStorageStore.getRecentEmojis(userId1), null);
         assert.equal(LocalStorageStore.getRecentEmojis(userId2), null);
@@ -95,28 +104,40 @@ describe('stores/LocalStorageStore', () => {
 
             const userId = 'userId';
             const recentEmojis1 = ['smile', 'joy', 'grin'];
-            const recentEmojis2 = ['customEmoji', '+1', 'mattermost'];
+            const recentEmojis2 = ['customEmoji', '+1', 'securcom'];
 
             // Initially empty
             assert.equal(LocalStorageStore.getRecentEmojis(userId), null);
 
             // After set
             LocalStorageStore.setRecentEmojis(userId, recentEmojis1);
-            assert.deepEqual(LocalStorageStore.getRecentEmojis(userId), recentEmojis1);
+            assert.deepEqual(
+                LocalStorageStore.getRecentEmojis(userId),
+                recentEmojis1,
+            );
 
             // Still set when basename explicitly set
             window.basename = '/';
-            assert.deepEqual(LocalStorageStore.getRecentEmojis(userId), recentEmojis1);
+            assert.deepEqual(
+                LocalStorageStore.getRecentEmojis(userId),
+                recentEmojis1,
+            );
 
             // Different with different basename
             window.basename = '/subpath';
             assert.equal(LocalStorageStore.getRecentEmojis(userId), null);
             LocalStorageStore.setRecentEmojis(userId, recentEmojis2);
-            assert.deepEqual(LocalStorageStore.getRecentEmojis(userId), recentEmojis2);
+            assert.deepEqual(
+                LocalStorageStore.getRecentEmojis(userId),
+                recentEmojis2,
+            );
 
             // Back to old value with original basename
             window.basename = '/';
-            assert.deepEqual(LocalStorageStore.getRecentEmojis(userId), recentEmojis1);
+            assert.deepEqual(
+                LocalStorageStore.getRecentEmojis(userId),
+                recentEmojis1,
+            );
         });
     });
 });

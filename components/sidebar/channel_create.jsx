@@ -35,7 +35,7 @@ export default class ChannelCreate extends React.PureComponent {
         const tooltipTriggers = this.getTooltipTriggers();
 
         const tooltip = (
-            <Tooltip id='new-channel-tooltip' >
+            <Tooltip id='new-channel-tooltip'>
                 <FormattedMessage
                     id='sidebar.createChannel'
                     defaultMessage='Create new public channel'
@@ -97,10 +97,7 @@ export default class ChannelCreate extends React.PureComponent {
 
     renderDirect = () => {
         const tooltip = (
-            <Tooltip
-                id='new-group-tooltip'
-                className='hidden-xs'
-            >
+            <Tooltip id='new-group-tooltip' className='hidden-xs'>
                 <FormattedMessage
                     id='sidebar.createDirectMessage'
                     defaultMessage='Create new direct message'
@@ -141,10 +138,7 @@ export default class ChannelCreate extends React.PureComponent {
         }
 
         const tooltip = (
-            <Tooltip
-                id='new-group-tooltip'
-                className='hidden-xs'
-            >
+            <Tooltip id='new-group-tooltip' className='hidden-xs'>
                 <FormattedMessage
                     id='sidebar.createPublicPrivateChannel'
                     defaultMessage='Create new public or private channel'
@@ -173,15 +167,15 @@ export default class ChannelCreate extends React.PureComponent {
         const {sectionType} = this.props;
 
         switch (sectionType) {
-        case 'public':
-            return this.renderPublic();
-        case 'private':
-            return this.renderPrivate();
-        case 'direct':
-            return this.renderDirect();
-        case 'recent':
-        case 'alpha':
-            return this.renderCombined();
+            case 'public':
+                return this.renderPublic();
+            case 'private':
+                return this.renderPrivate();
+            case 'direct':
+                return this.renderDirect();
+            case 'recent':
+            case 'alpha':
+                return this.renderCombined();
         }
 
         return null;

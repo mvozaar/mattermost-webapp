@@ -6,29 +6,28 @@ import React from 'react';
 
 import LoadingSpinner from 'components/widgets/loading/loading_spinner.jsx';
 
-export default function LoadingImagePreview({loading, progress, containerClass}) {
-    let progressView = (
-        <span className='loader-percent'/>
-    );
+export default function LoadingImagePreview({
+    loading,
+    progress,
+    containerClass,
+}) {
+    let progressView = <span className='loader-percent' />;
 
     if (progress) {
         progressView = (
-            <span className='loader-percent'>
-                {`${loading} ${progress}%`}
-            </span>
+            <span className='loader-percent'>{`${loading} ${progress}%`}</span>
         );
     }
 
     return (
         <div className={containerClass}>
-            <LoadingSpinner/>
+            <LoadingSpinner />
             {progressView}
         </div>
     );
 }
 
 LoadingImagePreview.propTypes = {
-
     /**
      * The percent number of the progress
      */

@@ -8,7 +8,6 @@ import React from 'react';
 // is built to support redux-persist v4 which we use
 export default class PersistGate extends React.PureComponent {
     static propTypes = {
-
         /**
          * Whether or not the local storage has been initialized
          */

@@ -8,7 +8,10 @@ import {isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/user
 import {getBool} from 'mattermost-redux/selectors/entities/preferences';
 import {getAllChannelStats} from 'mattermost-redux/selectors/entities/channels';
 import {makeGetMessageInHistoryItem} from 'mattermost-redux/selectors/entities/posts';
-import {resetCreatePostRequest, resetHistoryIndex} from 'mattermost-redux/actions/posts';
+import {
+    resetCreatePostRequest,
+    resetHistoryIndex,
+} from 'mattermost-redux/actions/posts';
 import {getChannelTimezones} from 'mattermost-redux/actions/channels';
 import {Preferences, Posts} from 'mattermost-redux/constants';
 
@@ -29,21 +32,35 @@ import {getPostDraft, getIsRhsExpanded} from 'selectors/rhs';
 import CreateComment from './create_comment.jsx';
 
 function makeMapStateToProps() {
-    const getMessageInHistoryItem = makeGetMessageInHistoryItem(Posts.MESSAGE_TYPES.COMMENT);
+    const getMessageInHistoryItem = makeGetMessageInHistoryItem(
+        Posts.MESSAGE_TYPES.COMMENT,
+    );
 
     return (state, ownProps) => {
         const err = state.requests.posts.createPost.error || {};
 
-        const draft = getPostDraft(state, StoragePrefixes.COMMENT_DRAFT, ownProps.rootId);
-        const enableAddButton = draft.message.trim().length !== 0 || draft.fileInfos.length !== 0;
+        const draft = getPostDraft(
+            state,
+            StoragePrefixes.COMMENT_DRAFT,
+            ownProps.rootId,
+        );
 
-        const channelMembersCount = getAllChannelStats(state)[ownProps.channelId] ? getAllChannelStats(state)[ownProps.channelId].member_count : 1;
+        const enableAddButton =
+            draft.message.trim().length !== 0 || draft.fileInfos.length !== 0;
+
+        const channelMembersCount = getAllChannelStats(state)[
+            ownProps.channelId
+        ]
+            ? getAllChannelStats(state)[ownProps.channelId].member_count
+            : 1;
         const messageInHistory = getMessageInHistoryItem(state);
 
-        const channel = state.entities.channels.channels[ownProps.channelId] || {};
+        const channel =
+            state.entities.channels.channels[ownProps.channelId] || {};
 
         const config = getConfig(state);
-        const enableConfirmNotificationsToChannel = config.EnableConfirmNotificationsToChannel === 'true';
+        const enableConfirmNotificationsToChannel =
+            config.EnableConfirmNotificationsToChannel === 'true';
         const enableEmojiPicker = config.EnableEmojiPicker === 'true';
         const enableGifPicker = config.EnableGifPicker === 'true';
         const badConnection = connectionErrorCount(state) > 1;
@@ -54,15 +71,31 @@ function makeMapStateToProps() {
             messageInHistory,
             enableAddButton,
             channelMembersCount,
-            codeBlockOnCtrlEnter: getBool(state, Preferences.CATEGORY_ADVANCED_SETTINGS, 'code_block_ctrl_enter', true),
-            ctrlSend: getBool(state, Preferences.CATEGORY_ADVANCED_SETTINGS, 'send_on_ctrl_enter'),
+            codeBlockOnCtrlEnter: getBool(
+                state,
+                Preferences.CATEGORY_ADVANCED_SETTINGS,
+                'code_block_ctrl_enter',
+                true,
+            ),
+
+            ctrlSend: getBool(
+                state,
+                Preferences.CATEGORY_ADVANCED_SETTINGS,
+                'send_on_ctrl_enter',
+            ),
+
             createPostErrorId: err.server_error_id,
-            readOnlyChannel: !isCurrentUserSystemAdmin(state) && config.ExperimentalTownSquareIsReadOnly === 'true' && channel.name === Constants.DEFAULT_CHANNEL,
+            readOnlyChannel:
+                !isCurrentUserSystemAdmin(state) &&
+                config.ExperimentalTownSquareIsReadOnly === 'true' &&
+                channel.name === Constants.DEFAULT_CHANNEL,
             enableConfirmNotificationsToChannel,
             enableEmojiPicker,
             enableGifPicker,
             locale: getCurrentLocale(state),
-            maxPostSize: parseInt(config.MaxPostSize, 10) || Constants.DEFAULT_CHARACTER_LIMIT,
+            maxPostSize:
+                parseInt(config.MaxPostSize, 10) ||
+                Constants.DEFAULT_CHARACTER_LIMIT,
             rhsExpanded: getIsRhsExpanded(state),
             badConnection,
             isTimezoneEnabled,
@@ -92,35 +125,60 @@ function makeMapDispatchToProps() {
     return (dispatch, ownProps) => {
         if (rootId !== ownProps.rootId) {
             onUpdateCommentDraft = makeOnUpdateCommentDraft(ownProps.rootId);
-            onMoveHistoryIndexBack = makeOnMoveHistoryIndex(ownProps.rootId, -1);
-            onMoveHistoryIndexForward = makeOnMoveHistoryIndex(ownProps.rootId, 1);
+            onMoveHistoryIndexBack = makeOnMoveHistoryIndex(
+                ownProps.rootId,
+                -1,
+            );
+
+            onMoveHistoryIndexForward = makeOnMoveHistoryIndex(
+                ownProps.rootId,
+                1,
+            );
         }
 
         if (rootId !== ownProps.rootId || channelId !== ownProps.channelId) {
-            onEditLatestPost = makeOnEditLatestPost(ownProps.channelId, ownProps.rootId);
+            onEditLatestPost = makeOnEditLatestPost(
+                ownProps.channelId,
+                ownProps.rootId,
+            );
         }
 
-        if (rootId !== ownProps.rootId || channelId !== ownProps.channelId || latestPostId !== ownProps.latestPostId) {
-            onSubmit = makeOnSubmit(ownProps.channelId, ownProps.rootId, ownProps.latestPostId);
+        if (
+            rootId !== ownProps.rootId ||
+            channelId !== ownProps.channelId ||
+            latestPostId !== ownProps.latestPostId
+        ) {
+            onSubmit = makeOnSubmit(
+                ownProps.channelId,
+                ownProps.rootId,
+                ownProps.latestPostId,
+            );
         }
 
         rootId = ownProps.rootId;
         channelId = ownProps.channelId;
         latestPostId = ownProps.latestPostId;
 
-        return bindActionCreators({
-            clearCommentDraftUploads,
-            onUpdateCommentDraft,
-            updateCommentDraftWithRootId: updateCommentDraft,
-            onSubmit,
-            onResetHistoryIndex,
-            onMoveHistoryIndexBack,
-            onMoveHistoryIndexForward,
-            onEditLatestPost,
-            resetCreatePostRequest,
-            getChannelTimezones,
-        }, dispatch);
+        return bindActionCreators(
+            {
+                clearCommentDraftUploads,
+                onUpdateCommentDraft,
+                updateCommentDraftWithRootId: updateCommentDraft,
+                onSubmit,
+                onResetHistoryIndex,
+                onMoveHistoryIndexBack,
+                onMoveHistoryIndexForward,
+                onEditLatestPost,
+                resetCreatePostRequest,
+                getChannelTimezones,
+            },
+
+            dispatch,
+        );
     };
 }
 
-export default connect(makeMapStateToProps, makeMapDispatchToProps)(CreateComment);
+export default connect(
+    makeMapStateToProps,
+    makeMapDispatchToProps,
+)(CreateComment);

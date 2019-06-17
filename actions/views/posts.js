@@ -12,15 +12,34 @@ export function editPost(post) {
         const result = await PostActions.editPost(post)(dispatch, getState);
 
         // Send to error bar if it's an edit post error about time limit.
-        if (result.error && result.error.server_error_id === 'api.post.update_post.permissions_time_limit.app_error') {
-            dispatch(logError({type: AnnouncementBarTypes.ANNOUNCEMENT, message: result.error.message}, true));
+        if (
+            result.error &&
+            result.error.server_error_id ===
+                'api.post.update_post.permissions_time_limit.app_error'
+        ) {
+            dispatch(
+                logError(
+                    {
+                        type: AnnouncementBarTypes.ANNOUNCEMENT,
+                        message: result.error.message,
+                    },
+                    true,
+                ),
+            );
         }
 
         return result;
     };
 }
 
-export function selectAttachmentMenuAction(postId, actionId, cookie, dataSource, text, value) {
+export function selectAttachmentMenuAction(
+    postId,
+    actionId,
+    cookie,
+    dataSource,
+    text,
+    value,
+) {
     return async (dispatch) => {
         dispatch({
             type: ActionTypes.SELECT_ATTACHMENT_MENU_ACTION,
@@ -33,6 +52,8 @@ export function selectAttachmentMenuAction(postId, actionId, cookie, dataSource,
             },
         });
 
-        dispatch(PostActions.doPostActionWithCookie(postId, actionId, cookie, value));
+        dispatch(
+            PostActions.doPostActionWithCookie(postId, actionId, cookie, value),
+        );
     };
 }

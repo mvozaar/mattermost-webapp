@@ -7,10 +7,10 @@ import {ActionTypes} from 'utils/constants.jsx';
 
 function hasBeenDismissed(state = {}, action) {
     switch (action.type) {
-    case ActionTypes.DISMISS_NOTICE:
-        return {...state, [action.data]: true};
-    default:
-        return state;
+        case ActionTypes.DISMISS_NOTICE:
+            return {...state, [action.data]: true};
+        default:
+            return state;
     }
 }
 

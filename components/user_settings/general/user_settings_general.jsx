@@ -3,7 +3,13 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import {defineMessages, FormattedDate, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {
+    defineMessages,
+    FormattedDate,
+    FormattedMessage,
+    injectIntl,
+    intlShape,
+} from 'react-intl';
 
 import {isEmail} from 'mattermost-redux/utils/helpers';
 
@@ -23,62 +29,79 @@ const holders = defineMessages({
         id: t('user.settings.general.usernameReserved'),
         defaultMessage: 'This username is reserved, please choose a new one.',
     },
+
     usernameRestrictions: {
         id: t('user.settings.general.usernameRestrictions'),
-        defaultMessage: "Username must begin with a letter, and contain between {min} to {max} lowercase characters made up of numbers, letters, and the symbols '.', '-', and '_'.",
+        defaultMessage:
+            "Username must begin with a letter, and contain between {min} to {max} lowercase characters made up of numbers, letters, and the symbols '.', '-', and '_'.",
     },
+
     validEmail: {
         id: t('user.settings.general.validEmail'),
         defaultMessage: 'Please enter a valid email address.',
     },
+
     emailMatch: {
         id: t('user.settings.general.emailMatch'),
         defaultMessage: 'The new emails you entered do not match.',
     },
+
     incorrectPassword: {
         id: t('user.settings.general.incorrectPassword'),
         defaultMessage: 'Your password is incorrect.',
     },
+
     emptyPassword: {
         id: t('user.settings.general.emptyPassword'),
         defaultMessage: 'Please enter your current password.',
     },
+
     validImage: {
         id: t('user.settings.general.validImage'),
-        defaultMessage: 'Only BMP, JPG or PNG images may be used for profile pictures',
+        defaultMessage:
+            'Only BMP, JPG or PNG images may be used for profile pictures',
     },
+
     imageTooLarge: {
         id: t('user.settings.general.imageTooLarge'),
         defaultMessage: 'Unable to upload profile image. File is too large.',
     },
+
     uploadImage: {
         id: t('user.settings.general.uploadImage'),
         defaultMessage: "Click 'Edit' to upload an image.",
     },
+
     uploadImageMobile: {
         id: t('user.settings.general.mobile.uploadImage'),
         defaultMessage: 'Click to upload an image.',
     },
+
     fullName: {
         id: t('user.settings.general.fullName'),
         defaultMessage: 'Full Name',
     },
+
     nickname: {
         id: t('user.settings.general.nickname'),
         defaultMessage: 'Nickname',
     },
+
     username: {
         id: t('user.settings.general.username'),
         defaultMessage: 'Username',
     },
+
     profilePicture: {
         id: t('user.settings.general.profilePicture'),
         defaultMessage: 'Profile Picture',
     },
+
     close: {
         id: t('user.settings.general.close'),
         defaultMessage: 'Close',
     },
+
     position: {
         id: t('user.settings.general.position'),
         defaultMessage: 'Position',
@@ -123,7 +146,7 @@ class UserSettingsGeneralTab extends React.Component {
         ldapNicknameAttributeSet: PropTypes.bool,
         samlNicknameAttributeSet: PropTypes.bool,
         positionAttributeSet: PropTypes.bool,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -134,21 +157,26 @@ class UserSettingsGeneralTab extends React.Component {
 
     handleEmailResend = (email) => {
         this.setState({resendStatus: 'sending', showSpinner: true});
-        this.props.actions.sendVerificationEmail(email).then(({data, error: err}) => {
-            if (data) {
-                this.setState({resendStatus: 'success'});
-            } else if (err) {
-                this.setState({resendStatus: 'failure'});
-            }
-        });
-    }
+        this.props.actions
+            .sendVerificationEmail(email)
+            .then(({data, error: err}) => {
+                if (data) {
+                    this.setState({resendStatus: 'success'});
+                } else if (err) {
+                    this.setState({resendStatus: 'failure'});
+                }
+            });
+    };
 
     createEmailResendLink = (email) => {
         return (
             <span className='resend-verification-wrapper'>
                 <LoadingWrapper
                     loading={this.state.showSpinner}
-                    text={Utils.localizeMessage('user.settings.general.sending', 'Sending')}
+                    text={Utils.localizeMessage(
+                        'user.settings.general.sending',
+                        'Sending',
+                    )}
                 >
                     <a
                         onClick={() => {
@@ -168,7 +196,7 @@ class UserSettingsGeneralTab extends React.Component {
                 </LoadingWrapper>
             </span>
         );
-    }
+    };
 
     submitUsername = () => {
         const user = Object.assign({}, this.props.user);
@@ -177,10 +205,22 @@ class UserSettingsGeneralTab extends React.Component {
         const {formatMessage} = this.props.intl;
         const usernameError = Utils.isValidUsername(username);
         if (usernameError === 'Cannot use a reserved word as a username.') {
-            this.setState({clientError: formatMessage(holders.usernameReserved), serverError: ''});
+            this.setState({
+                clientError: formatMessage(holders.usernameReserved),
+                serverError: '',
+            });
+
             return;
         } else if (usernameError) {
-            this.setState({clientError: formatMessage(holders.usernameRestrictions, {min: Constants.MIN_USERNAME_LENGTH, max: Constants.MAX_USERNAME_LENGTH}), serverError: ''});
+            this.setState({
+                clientError: formatMessage(holders.usernameRestrictions, {
+                    min: Constants.MIN_USERNAME_LENGTH,
+                    max: Constants.MAX_USERNAME_LENGTH,
+                }),
+
+                serverError: '',
+            });
+
             return;
         }
 
@@ -194,7 +234,7 @@ class UserSettingsGeneralTab extends React.Component {
         trackEvent('settings', 'user_settings_update', {field: 'username'});
 
         this.submitUser(user, false);
-    }
+    };
 
     submitNickname = () => {
         const user = Object.assign({}, this.props.user);
@@ -210,7 +250,7 @@ class UserSettingsGeneralTab extends React.Component {
         trackEvent('settings', 'user_settings_update', {field: 'nickname'});
 
         this.submitUser(user, false);
-    }
+    };
 
     submitName = () => {
         const user = Object.assign({}, this.props.user);
@@ -228,7 +268,7 @@ class UserSettingsGeneralTab extends React.Component {
         trackEvent('settings', 'user_settings_update', {field: 'fullname'});
 
         this.submitUser(user, false);
-    }
+    };
 
     submitEmail = () => {
         const user = Object.assign({}, this.props.user);
@@ -238,23 +278,41 @@ class UserSettingsGeneralTab extends React.Component {
 
         const {formatMessage} = this.props.intl;
 
-        if (email === user.email && (confirmEmail === '' || confirmEmail === user.email)) {
+        if (
+            email === user.email &&
+            (confirmEmail === '' || confirmEmail === user.email)
+        ) {
             this.updateSection('');
             return;
         }
 
         if (email === '' || !isEmail(email)) {
-            this.setState({emailError: formatMessage(holders.validEmail), clientError: '', serverError: ''});
+            this.setState({
+                emailError: formatMessage(holders.validEmail),
+                clientError: '',
+                serverError: '',
+            });
+
             return;
         }
 
         if (email !== confirmEmail) {
-            this.setState({emailError: formatMessage(holders.emailMatch), clientError: '', serverError: ''});
+            this.setState({
+                emailError: formatMessage(holders.emailMatch),
+                clientError: '',
+                serverError: '',
+            });
+
             return;
         }
 
         if (currentPassword === '') {
-            this.setState({emailError: formatMessage(holders.emptyPassword), clientError: '', serverError: ''});
+            this.setState({
+                emailError: formatMessage(holders.emptyPassword),
+                clientError: '',
+                serverError: '',
+            });
+
             return;
         }
 
@@ -262,39 +320,54 @@ class UserSettingsGeneralTab extends React.Component {
         user.password = currentPassword;
         trackEvent('settings', 'user_settings_update', {field: 'email'});
         this.submitUser(user, true);
-    }
+    };
 
     submitUser = (user, emailUpdated) => {
         const {formatMessage} = this.props.intl;
         this.setState({sectionIsSaving: true});
 
-        this.props.actions.updateMe(user).
-            then(({data, error: err}) => {
-                if (data) {
-                    this.updateSection('');
-                    this.props.actions.getMe();
-                    const verificationEnabled = this.props.sendEmailNotifications && this.props.requireEmailVerification && emailUpdated;
-                    if (verificationEnabled) {
-                        this.props.actions.clearErrors();
-                        this.props.actions.logError({
-                            message: AnnouncementBarMessages.EMAIL_VERIFICATION_REQUIRED,
+        this.props.actions.updateMe(user).then(({data, error: err}) => {
+            if (data) {
+                this.updateSection('');
+                this.props.actions.getMe();
+                const verificationEnabled =
+                    this.props.sendEmailNotifications &&
+                    this.props.requireEmailVerification &&
+                    emailUpdated;
+                if (verificationEnabled) {
+                    this.props.actions.clearErrors();
+                    this.props.actions.logError(
+                        {
+                            message:
+                                AnnouncementBarMessages.EMAIL_VERIFICATION_REQUIRED,
                             type: AnnouncementBarTypes.SUCCESS,
-                        }, true);
-                    }
-                } else if (err) {
-                    let serverError;
-                    if (err.server_error_id &&
-                        err.server_error_id === 'api.user.check_user_password.invalid.app_error') {
-                        serverError = formatMessage(holders.incorrectPassword);
-                    } else if (err.message) {
-                        serverError = err.message;
-                    } else {
-                        serverError = err;
-                    }
-                    this.setState({serverError, emailError: '', clientError: '', sectionIsSaving: false});
+                        },
+
+                        true,
+                    );
                 }
-            });
-    }
+            } else if (err) {
+                let serverError;
+                if (
+                    err.server_error_id &&
+                    err.server_error_id ===
+                        'api.user.check_user_password.invalid.app_error'
+                ) {
+                    serverError = formatMessage(holders.incorrectPassword);
+                } else if (err.message) {
+                    serverError = err.message;
+                } else {
+                    serverError = err;
+                }
+                this.setState({
+                    serverError,
+                    emailError: '',
+                    clientError: '',
+                    sectionIsSaving: false,
+                });
+            }
+        });
+    };
 
     setDefaultProfilePicture = async () => {
         try {
@@ -308,9 +381,14 @@ class UserSettingsGeneralTab extends React.Component {
             } else {
                 serverError = err;
             }
-            this.setState({serverError, emailError: '', clientError: '', sectionIsSaving: false});
+            this.setState({
+                serverError,
+                emailError: '',
+                clientError: '',
+                sectionIsSaving: false,
+            });
         }
-    }
+    };
 
     submitPicture = () => {
         if (!this.state.pictureFile) {
@@ -327,17 +405,26 @@ class UserSettingsGeneralTab extends React.Component {
         const file = this.state.pictureFile;
 
         if (!AcceptedProfileImageTypes.includes(file.type)) {
-            this.setState({clientError: formatMessage(holders.validImage), serverError: ''});
+            this.setState({
+                clientError: formatMessage(holders.validImage),
+                serverError: '',
+            });
+
             return;
         } else if (file.size > this.props.maxFileSize) {
-            this.setState({clientError: formatMessage(holders.imageTooLarge), serverError: ''});
+            this.setState({
+                clientError: formatMessage(holders.imageTooLarge),
+                serverError: '',
+            });
+
             return;
         }
 
         this.setState({loadingPicture: true});
 
-        this.props.actions.uploadProfileImage(this.props.user.id, file).
-            then(({data, error: err}) => {
+        this.props.actions
+            .uploadProfileImage(this.props.user.id, file)
+            .then(({data, error: err}) => {
                 if (data) {
                     this.updateSection('');
                     this.submitActive = false;
@@ -347,7 +434,7 @@ class UserSettingsGeneralTab extends React.Component {
                     this.setState(state);
                 }
             });
-    }
+    };
 
     submitPosition = () => {
         const user = Object.assign({}, this.props.user);
@@ -363,39 +450,39 @@ class UserSettingsGeneralTab extends React.Component {
         trackEvent('settings', 'user_settings_update', {field: 'position'});
 
         this.submitUser(user, false);
-    }
+    };
 
     updateUsername = (e) => {
         this.setState({username: e.target.value});
-    }
+    };
 
     updateFirstName = (e) => {
         this.setState({firstName: e.target.value});
-    }
+    };
 
     updateLastName = (e) => {
         this.setState({lastName: e.target.value});
-    }
+    };
 
     updateNickname = (e) => {
         this.setState({nickname: e.target.value});
-    }
+    };
 
     updatePosition = (e) => {
         this.setState({position: e.target.value});
-    }
+    };
 
     updateEmail = (e) => {
         this.setState({email: e.target.value});
-    }
+    };
 
     updateConfirmEmail = (e) => {
         this.setState({confirmEmail: e.target.value});
-    }
+    };
 
     updateCurrentPassword = (e) => {
         this.setState({currentPassword: e.target.value});
-    }
+    };
 
     updatePicture = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -406,13 +493,21 @@ class UserSettingsGeneralTab extends React.Component {
         } else {
             this.setState({pictureFile: null});
         }
-    }
+    };
 
     updateSection = (section) => {
-        this.setState(Object.assign({}, this.setupInitialState(this.props), {clientError: '', serverError: '', emailError: '', sectionIsSaving: false}));
+        this.setState(
+            Object.assign({}, this.setupInitialState(this.props), {
+                clientError: '',
+                serverError: '',
+                emailError: '',
+                sectionIsSaving: false,
+            }),
+        );
+
         this.submitActive = false;
         this.props.updateSection(section);
-    }
+    };
 
     setupInitialState(props) {
         const user = props.user;
@@ -438,7 +533,8 @@ class UserSettingsGeneralTab extends React.Component {
         let emailSection;
         if (this.props.activeSection === 'email') {
             const emailEnabled = this.props.sendEmailNotifications;
-            const emailVerificationEnabled = this.props.requireEmailVerification;
+            const emailVerificationEnabled = this.props
+                .requireEmailVerification;
             const inputs = [];
 
             let helpText = (
@@ -479,10 +575,12 @@ class UserSettingsGeneralTab extends React.Component {
                                 />
                             </label>
                             <div className='col-sm-7'>
-                                <label className='control-label word-break--all text-left'>{this.state.originalEmail}</label>
+                                <label className='control-label word-break--all text-left'>
+                                    {this.state.originalEmail}
+                                </label>
                             </div>
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 inputs.push(
@@ -505,7 +603,7 @@ class UserSettingsGeneralTab extends React.Component {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 inputs.push(
@@ -527,7 +625,7 @@ class UserSettingsGeneralTab extends React.Component {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 inputs.push(
@@ -550,16 +648,15 @@ class UserSettingsGeneralTab extends React.Component {
                             </div>
                         </div>
                         {helpText}
-                    </div>
+                    </div>,
                 );
 
                 submit = this.submitEmail;
-            } else if (this.props.user.auth_service === Constants.GITLAB_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.GITLAB_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='setting-list__hint padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.general.emailGitlabCantUpdate'
@@ -570,14 +667,13 @@ class UserSettingsGeneralTab extends React.Component {
                             />
                         </div>
                         {helpText}
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.GOOGLE_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='setting-list__hint padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.general.emailGoogleCantUpdate'
@@ -588,14 +684,13 @@ class UserSettingsGeneralTab extends React.Component {
                             />
                         </div>
                         {helpText}
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.OFFICE365_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.OFFICE365_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='setting-list__hint padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.general.emailOffice365CantUpdate'
@@ -606,14 +701,13 @@ class UserSettingsGeneralTab extends React.Component {
                             />
                         </div>
                         {helpText}
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.LDAP_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.LDAP_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='padding-bottom'
-                    >
+                    <div key='oauthEmailInfo' className='padding-bottom'>
                         <div className='setting-list__hint padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.general.emailLdapCantUpdate'
@@ -623,14 +717,13 @@ class UserSettingsGeneralTab extends React.Component {
                                 }}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.SAML_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.SAML_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='padding-bottom'
-                    >
+                    <div key='oauthEmailInfo' className='padding-bottom'>
                         <div className='setting-list__hint padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.general.emailSamlCantUpdate'
@@ -641,7 +734,7 @@ class UserSettingsGeneralTab extends React.Component {
                             />
                         </div>
                         {helpText}
-                    </div>
+                    </div>,
                 );
             }
 
@@ -665,7 +758,9 @@ class UserSettingsGeneralTab extends React.Component {
             let describe = '';
             if (this.props.user.auth_service === '') {
                 describe = this.props.user.email;
-            } else if (this.props.user.auth_service === Constants.GITLAB_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.GITLAB_SERVICE
+            ) {
                 describe = (
                     <FormattedMessage
                         id='user.settings.general.loginGitlab'
@@ -675,7 +770,9 @@ class UserSettingsGeneralTab extends React.Component {
                         }}
                     />
                 );
-            } else if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.GOOGLE_SERVICE
+            ) {
                 describe = (
                     <FormattedMessage
                         id='user.settings.general.loginGoogle'
@@ -685,7 +782,9 @@ class UserSettingsGeneralTab extends React.Component {
                         }}
                     />
                 );
-            } else if (this.props.user.auth_service === Constants.OFFICE365_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.OFFICE365_SERVICE
+            ) {
                 describe = (
                     <FormattedMessage
                         id='user.settings.general.loginOffice365'
@@ -695,7 +794,9 @@ class UserSettingsGeneralTab extends React.Component {
                         }}
                     />
                 );
-            } else if (this.props.user.auth_service === Constants.LDAP_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.LDAP_SERVICE
+            ) {
                 describe = (
                     <FormattedMessage
                         id='user.settings.general.loginLdap'
@@ -705,7 +806,9 @@ class UserSettingsGeneralTab extends React.Component {
                         }}
                     />
                 );
-            } else if (this.props.user.auth_service === Constants.SAML_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.SAML_SERVICE
+            ) {
                 describe = (
                     <FormattedMessage
                         id='user.settings.general.loginSaml'
@@ -726,7 +829,9 @@ class UserSettingsGeneralTab extends React.Component {
                         />
                     }
                     describe={describe}
-                    focused={this.props.prevActiveSection === prevSections.email}
+                    focused={
+                        this.props.prevActiveSection === prevSections.email
+                    }
                     section={'email'}
                     updateSection={this.updateSection}
                 />
@@ -757,9 +862,11 @@ class UserSettingsGeneralTab extends React.Component {
             let submit = null;
             if (
                 (this.props.user.auth_service === 'ldap' &&
-                    (this.props.ldapFirstNameAttributeSet || this.props.ldapLastNameAttributeSet)) ||
+                    (this.props.ldapFirstNameAttributeSet ||
+                        this.props.ldapLastNameAttributeSet)) ||
                 (this.props.user.auth_service === Constants.SAML_SERVICE &&
-                    (this.props.samlFirstNameAttributeSet || this.props.samlLastNameAttributeSet))
+                    (this.props.samlFirstNameAttributeSet ||
+                        this.props.samlLastNameAttributeSet))
             ) {
                 extraInfo = (
                     <span>
@@ -771,10 +878,7 @@ class UserSettingsGeneralTab extends React.Component {
                 );
             } else {
                 inputs.push(
-                    <div
-                        key='firstNameSetting'
-                        className='form-group'
-                    >
+                    <div key='firstNameSetting' className='form-group'>
                         <label className='col-sm-5 control-label'>
                             <FormattedMessage
                                 id='user.settings.general.firstName'
@@ -792,14 +896,11 @@ class UserSettingsGeneralTab extends React.Component {
                                 onFocus={Utils.moveCursorToEnd}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 inputs.push(
-                    <div
-                        key='lastNameSetting'
-                        className='form-group'
-                    >
+                    <div key='lastNameSetting' className='form-group'>
                         <label className='col-sm-5 control-label'>
                             <FormattedMessage
                                 id='user.settings.general.lastName'
@@ -815,7 +916,7 @@ class UserSettingsGeneralTab extends React.Component {
                                 value={this.state.lastName}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 function notifClick(e) {
@@ -825,10 +926,7 @@ class UserSettingsGeneralTab extends React.Component {
                 }
 
                 const notifLink = (
-                    <a
-                        href='#'
-                        onClick={notifClick.bind(this)}
-                    >
+                    <a href='#' onClick={notifClick.bind(this)}>
                         <FormattedMessage
                             id='user.settings.general.notificationsLink'
                             defaultMessage='Notifications'
@@ -842,7 +940,7 @@ class UserSettingsGeneralTab extends React.Component {
                             id='user.settings.general.notificationsExtra'
                             defaultMessage='By default, you will receive mention notifications when someone types your first name. Go to {notify} settings to change this default.'
                             values={{
-                                notify: (notifLink),
+                                notify: notifLink,
                             }}
                         />
                     </span>
@@ -879,6 +977,7 @@ class UserSettingsGeneralTab extends React.Component {
                         defaultMessage="Click 'Edit' to add your full name"
                     />
                 );
+
                 if (Utils.isMobile()) {
                     describe = (
                         <FormattedMessage
@@ -904,7 +1003,12 @@ class UserSettingsGeneralTab extends React.Component {
         if (this.props.activeSection === 'nickname') {
             let extraInfo;
             let submit = null;
-            if ((this.props.user.auth_service === 'ldap' && this.props.ldapNicknameAttributeSet) || (this.props.user.auth_service === Constants.SAML_SERVICE && this.props.samlNicknameAttributeSet)) {
+            if (
+                (this.props.user.auth_service === 'ldap' &&
+                    this.props.ldapNicknameAttributeSet) ||
+                (this.props.user.auth_service === Constants.SAML_SERVICE &&
+                    this.props.samlNicknameAttributeSet)
+            ) {
                 extraInfo = (
                     <span>
                         <FormattedMessage
@@ -920,16 +1024,16 @@ class UserSettingsGeneralTab extends React.Component {
                         defaultMessage='Nickname'
                     />
                 );
+
                 if (Utils.isMobile()) {
                     nicknameLabel = '';
                 }
 
                 inputs.push(
-                    <div
-                        key='nicknameSetting'
-                        className='form-group'
-                    >
-                        <label className='col-sm-5 control-label'>{nicknameLabel}</label>
+                    <div key='nicknameSetting' className='form-group'>
+                        <label className='col-sm-5 control-label'>
+                            {nicknameLabel}
+                        </label>
                         <div className='col-sm-7'>
                             <input
                                 id='nickname'
@@ -942,7 +1046,7 @@ class UserSettingsGeneralTab extends React.Component {
                                 autoCapitalize='off'
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 extraInfo = (
@@ -980,6 +1084,7 @@ class UserSettingsGeneralTab extends React.Component {
                         defaultMessage="Click 'Edit' to add a nickname"
                     />
                 );
+
                 if (Utils.isMobile()) {
                     describe = (
                         <FormattedMessage
@@ -994,7 +1099,9 @@ class UserSettingsGeneralTab extends React.Component {
                 <SettingItemMin
                     title={formatMessage(holders.nickname)}
                     describe={describe}
-                    focused={this.props.prevActiveSection === prevSections.nickname}
+                    focused={
+                        this.props.prevActiveSection === prevSections.nickname
+                    }
                     section={'nickname'}
                     updateSection={this.updateSection}
                 />
@@ -1012,16 +1119,16 @@ class UserSettingsGeneralTab extends React.Component {
                         defaultMessage='Username'
                     />
                 );
+
                 if (Utils.isMobile()) {
                     usernameLabel = '';
                 }
 
                 inputs.push(
-                    <div
-                        key='usernameSetting'
-                        className='form-group'
-                    >
-                        <label className='col-sm-5 control-label'>{usernameLabel}</label>
+                    <div key='usernameSetting' className='form-group'>
+                        <label className='col-sm-5 control-label'>
+                            {usernameLabel}
+                        </label>
                         <div className='col-sm-7'>
                             <input
                                 id='username'
@@ -1035,7 +1142,7 @@ class UserSettingsGeneralTab extends React.Component {
                                 onFocus={Utils.moveCursorToEnd}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 extraInfo = (
@@ -1076,7 +1183,9 @@ class UserSettingsGeneralTab extends React.Component {
                 <SettingItemMin
                     title={formatMessage(holders.username)}
                     describe={this.props.user.username}
-                    focused={this.props.prevActiveSection === prevSections.username}
+                    focused={
+                        this.props.prevActiveSection === prevSections.username
+                    }
                     section={'username'}
                     updateSection={this.updateSection}
                 />
@@ -1087,7 +1196,11 @@ class UserSettingsGeneralTab extends React.Component {
         if (this.props.activeSection === 'position') {
             let extraInfo;
             let submit = null;
-            if ((this.props.user.auth_service === 'ldap' || this.props.user.auth_service === Constants.SAML_SERVICE) && this.props.positionAttributeSet) {
+            if (
+                (this.props.user.auth_service === 'ldap' ||
+                    this.props.user.auth_service === Constants.SAML_SERVICE) &&
+                this.props.positionAttributeSet
+            ) {
                 extraInfo = (
                     <span>
                         <FormattedMessage
@@ -1103,16 +1216,16 @@ class UserSettingsGeneralTab extends React.Component {
                         defaultMessage='Position'
                     />
                 );
+
                 if (Utils.isMobile()) {
                     positionLabel = '';
                 }
 
                 inputs.push(
-                    <div
-                        key='positionSetting'
-                        className='form-group'
-                    >
-                        <label className='col-sm-5 control-label'>{positionLabel}</label>
+                    <div key='positionSetting' className='form-group'>
+                        <label className='col-sm-5 control-label'>
+                            {positionLabel}
+                        </label>
                         <div className='col-sm-7'>
                             <input
                                 id='position'
@@ -1126,7 +1239,7 @@ class UserSettingsGeneralTab extends React.Component {
                                 onFocus={Utils.moveCursorToEnd}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
 
                 extraInfo = (
@@ -1164,6 +1277,7 @@ class UserSettingsGeneralTab extends React.Component {
                         defaultMessage="Click 'Edit' to add your job title / position"
                     />
                 );
+
                 if (Utils.isMobile()) {
                     describe = (
                         <FormattedMessage
@@ -1178,7 +1292,9 @@ class UserSettingsGeneralTab extends React.Component {
                 <SettingItemMin
                     title={formatMessage(holders.position)}
                     describe={describe}
-                    focused={this.props.prevActiveSection === prevSections.position}
+                    focused={
+                        this.props.prevActiveSection === prevSections.position
+                    }
                     section={'position'}
                     updateSection={this.updateSection}
                 />
@@ -1193,7 +1309,11 @@ class UserSettingsGeneralTab extends React.Component {
                 <SettingPicture
                     title={formatMessage(holders.profilePicture)}
                     onSubmit={this.submitPicture}
-                    onSetDefault={user.last_picture_update > 0 ? this.setDefaultProfilePicture : null}
+                    onSetDefault={
+                        user.last_picture_update > 0
+                            ? this.setDefaultProfilePicture
+                            : null
+                    }
                     src={Utils.imageURLForUser(user)}
                     defaultImageSrc={Utils.defaultImageURLForUser(user.id)}
                     serverError={serverError}
@@ -1236,7 +1356,9 @@ class UserSettingsGeneralTab extends React.Component {
                 <SettingItemMin
                     title={formatMessage(holders.profilePicture)}
                     describe={minMessage}
-                    focused={this.props.prevActiveSection === prevSections.picture}
+                    focused={
+                        this.props.prevActiveSection === prevSections.picture
+                    }
                     section={'picture'}
                     updateSection={this.updateSection}
                 />
@@ -1256,10 +1378,7 @@ class UserSettingsGeneralTab extends React.Component {
                     >
                         <span aria-hidden='true'>{'×'}</span>
                     </button>
-                    <h4
-                        className='modal-title'
-                        ref='title'
-                    >
+                    <h4 className='modal-title' ref='title'>
                         <div className='modal-back'>
                             <FormattedMessage
                                 id='generic_icons.collapse'
@@ -1281,28 +1400,25 @@ class UserSettingsGeneralTab extends React.Component {
                     </h4>
                 </div>
                 <div className='user-settings'>
-                    <h3
-                        id='generalSettingsTitle'
-                        className='tab-header'
-                    >
+                    <h3 id='generalSettingsTitle' className='tab-header'>
                         <FormattedMessage
                             id='user.settings.general.title'
                             defaultMessage='General Settings'
                         />
                     </h3>
-                    <div className='divider-dark first'/>
+                    <div className='divider-dark first' />
                     {nameSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {usernameSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {nicknameSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {positionSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {emailSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {pictureSection}
-                    <div className='divider-dark'/>
+                    <div className='divider-dark' />
                 </div>
             </div>
         );

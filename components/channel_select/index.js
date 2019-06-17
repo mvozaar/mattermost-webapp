@@ -14,8 +14,10 @@ const getMyChannelsSorted = createSelector(
     getMyChannels,
     getCurrentUserLocale,
     (channels, locale) => {
-        return [...channels].sort(sortChannelsByTypeAndDisplayName.bind(null, locale));
-    }
+        return [...channels].sort(
+            sortChannelsByTypeAndDisplayName.bind(null, locale),
+        );
+    },
 );
 
 function mapStateToProps(state) {

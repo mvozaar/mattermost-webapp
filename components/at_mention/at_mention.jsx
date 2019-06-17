@@ -26,7 +26,7 @@ export default class AtMention extends React.PureComponent {
     static defaultProps = {
         isRHS: false,
         hasMention: false,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -39,8 +39,12 @@ export default class AtMention extends React.PureComponent {
         this.overlayRef = React.createRef();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-        if (nextProps.mentionName !== this.props.mentionName || nextProps.usersByUsername !== this.props.usersByUsername) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
+        if (
+            nextProps.mentionName !== this.props.mentionName ||
+            nextProps.usersByUsername !== this.props.usersByUsername
+        ) {
             this.setState({
                 user: this.getUserFromMentionName(nextProps),
             });
@@ -49,14 +53,18 @@ export default class AtMention extends React.PureComponent {
 
     handleClick = (e) => {
         const targetBounds = this.overlayRef.current.getBoundingClientRect();
-        const placement = popOverOverlayPosition(targetBounds, window.innerHeight, {above: spaceRequiredForPopOver});
+        const placement = popOverOverlayPosition(
+            targetBounds,
+            window.innerHeight,
+            {above: spaceRequiredForPopOver},
+        );
 
         this.setState({target: e.target, show: !this.state.show, placement});
-    }
+    };
 
     hideOverlay = () => {
         this.setState({show: false});
-    }
+    };
 
     getUserFromMentionName(props) {
         const usersByUsername = props.usersByUsername;
@@ -68,7 +76,7 @@ export default class AtMention extends React.PureComponent {
             }
 
             // Repeatedly trim off trailing punctuation in case this is at the end of a sentence
-            if ((/[._-]$/).test(mentionName)) {
+            if (/[._-]$/.test(mentionName)) {
                 mentionName = mentionName.substring(0, mentionName.length - 1);
             } else {
                 break;
@@ -102,7 +110,10 @@ export default class AtMention extends React.PureComponent {
                 >
                     <ProfilePopover
                         userId={user.id}
-                        src={Client4.getProfilePictureUrl(user.id, user.last_picture_update)}
+                        src={Client4.getProfilePictureUrl(
+                            user.id,
+                            user.last_picture_update,
+                        )}
                         isRHS={this.props.isRHS}
                         hasMention={this.props.hasMention}
                         hide={this.hideOverlay}
@@ -113,7 +124,8 @@ export default class AtMention extends React.PureComponent {
                     onClick={this.handleClick}
                     ref={this.overlayRef}
                 >
-                    {'@' + displayUsername(user, this.props.teammateNameDisplay)}
+                    {'@' +
+                        displayUsername(user, this.props.teammateNameDisplay)}
                 </a>
                 {suffix}
             </span>

@@ -7,7 +7,11 @@ import {FormattedMessage} from 'react-intl';
 
 import {trackEvent} from 'actions/diagnostics_actions.jsx';
 import {browserHistory} from 'utils/browser_history';
-import {AnnouncementBarTypes, AnnouncementBarMessages, VerifyEmailErrors} from 'utils/constants.jsx';
+import {
+    AnnouncementBarTypes,
+    AnnouncementBarMessages,
+    VerifyEmailErrors,
+} from 'utils/constants.jsx';
 import logoImage from 'images/logo.png';
 import BackButton from 'components/common/back_button.jsx';
 import LoadingScreen from 'components/loading_screen.jsx';
@@ -16,7 +20,6 @@ import * as GlobalActions from 'actions/global_actions.jsx';
 
 export default class DoVerifyEmail extends React.PureComponent {
     static propTypes = {
-
         /**
          * Object with validation parameters given in link
          */
@@ -31,7 +34,6 @@ export default class DoVerifyEmail extends React.PureComponent {
          * Object with redux action creators
          */
         actions: PropTypes.shape({
-
             /*
              * Action creator to verify the user's email
              */
@@ -53,7 +55,7 @@ export default class DoVerifyEmail extends React.PureComponent {
         }),
 
         isLoggedIn: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -64,7 +66,8 @@ export default class DoVerifyEmail extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         this.verifyEmail();
     }
 
@@ -72,7 +75,14 @@ export default class DoVerifyEmail extends React.PureComponent {
         if (this.props.isLoggedIn) {
             GlobalActions.redirectUserToDefaultTeam();
         } else {
-            browserHistory.push('/login?extra=verified&email=' + encodeURIComponent((new URLSearchParams(this.props.location.search)).get('email')));
+            browserHistory.push(
+                '/login?extra=verified&email=' +
+                    encodeURIComponent(
+                        new URLSearchParams(this.props.location.search).get(
+                            'email',
+                        ),
+                    ),
+            );
         }
     }
 
@@ -80,10 +90,15 @@ export default class DoVerifyEmail extends React.PureComponent {
         this.setState({verifyStatus: 'success'});
         this.props.actions.clearErrors();
         if (this.props.isLoggedIn) {
-            this.props.actions.logError({
-                message: AnnouncementBarMessages.EMAIL_VERIFIED,
-                type: AnnouncementBarTypes.SUCCESS,
-            }, true);
+            this.props.actions.logError(
+                {
+                    message: AnnouncementBarMessages.EMAIL_VERIFIED,
+                    type: AnnouncementBarTypes.SUCCESS,
+                },
+
+                true,
+            );
+
             trackEvent('settings', 'verify_email');
             this.props.actions.getMe().then(({data, error: err}) => {
                 if (data) {
@@ -121,33 +136,39 @@ export default class DoVerifyEmail extends React.PureComponent {
     }
 
     verifyEmail = async () => {
-        const {actions: {verifyUserEmail}} = this.props;
-        const verify = await verifyUserEmail((new URLSearchParams(this.props.location.search)).get('token'));
+        const {
+            actions: {verifyUserEmail},
+        } = this.props;
+        const verify = await verifyUserEmail(
+            new URLSearchParams(this.props.location.search).get('token'),
+        );
 
         if (verify && verify.data) {
             this.handleSuccess();
         } else if (verify && verify.error) {
             this.handleError(VerifyEmailErrors.FAILED_EMAIL_VERIFICATION);
         }
-    }
+    };
 
     render() {
         if (this.state.verifyStatus !== 'failure') {
-            return (<LoadingScreen/>);
+            return <LoadingScreen />;
         }
 
         let serverError = null;
         if (this.state.serverError) {
             serverError = (
                 <div className={'form-group has-error'}>
-                    <label className='control-label'>{this.state.serverError}</label>
+                    <label className='control-label'>
+                        {this.state.serverError}
+                    </label>
                 </div>
             );
         }
 
         return (
             <div>
-                <BackButton/>
+                <BackButton />
                 <div className='col-sm-12'>
                     <div className='signup-team__container'>
                         <img
@@ -155,6 +176,7 @@ export default class DoVerifyEmail extends React.PureComponent {
                             className='signup-team-logo'
                             src={logoImage}
                         />
+
                         <div className='signup__content'>
                             <h1>{this.props.siteName}</h1>
                             <h4 className='color--light'>

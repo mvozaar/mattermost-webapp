@@ -31,8 +31,16 @@ export default class ClusterSettings extends AdminSettings {
         config.ClusterSettings.OverrideHostname = this.state.OverrideHostname;
         config.ClusterSettings.UseIpAddress = this.state.UseIpAddress;
         config.ClusterSettings.UseExperimentalGossip = this.state.UseExperimentalGossip;
-        config.ClusterSettings.GossipPort = this.parseIntNonZero(this.state.GossipPort, 8074);
-        config.ClusterSettings.StreamingPort = this.parseIntNonZero(this.state.StreamingPort, 8075);
+        config.ClusterSettings.GossipPort = this.parseIntNonZero(
+            this.state.GossipPort,
+            8074,
+        );
+
+        config.ClusterSettings.StreamingPort = this.parseIntNonZero(
+            this.state.StreamingPort,
+            8075,
+        );
+
         return config;
     }
 
@@ -69,7 +77,9 @@ export default class ClusterSettings extends AdminSettings {
     }
 
     renderSettings() {
-        const licenseEnabled = this.props.license.IsLicensed === 'true' && this.props.license.Cluster === 'true';
+        const licenseEnabled =
+            this.props.license.IsLicensed === 'true' &&
+            this.props.license.Cluster === 'true';
         if (!licenseEnabled) {
             return null;
         }
@@ -82,10 +92,10 @@ export default class ClusterSettings extends AdminSettings {
                     style={style.configLoadedFromCluster}
                     className='alert alert-warning'
                 >
-                    <WarningIcon/>
+                    <WarningIcon />
                     <FormattedMarkdownMessage
                         id='admin.cluster.loadedFrom'
-                        defaultMessage='This configuration file was loaded from Node ID {clusterId}. Please see the Troubleshooting Guide in our [documentation](!http://docs.mattermost.com/deployment/cluster.html) if you are accessing the System Console through a load balancer and experiencing issues.'
+                        defaultMessage='This configuration file was loaded from Node ID {clusterId}. Please see the Troubleshooting Guide in our [documentation](!http://docs.securCom.me/deployment/cluster.html) if you are accessing the System Console through a load balancer and experiencing issues.'
                         values={{
                             clusterId: Client4.clusterId,
                         }}
@@ -98,14 +108,11 @@ export default class ClusterSettings extends AdminSettings {
 
         if (this.state.showWarning) {
             warning = (
-                <div
-                    style={style.warning}
-                    className='alert alert-warning'
-                >
-                    <WarningIcon/>
+                <div style={style.warning} className='alert alert-warning'>
+                    <WarningIcon />
                     <FormattedMarkdownMessage
                         id='admin.cluster.should_not_change'
-                        defaultMessage='WARNING: These settings may not sync with the other servers in the cluster. High Availability inter-node communication will not start until you modify the config.json to be identical on all servers and restart Mattermost. Please see the [documentation](!http://docs.mattermost.com/deployment/cluster.html) on how to add or remove a server from the cluster. If you are accessing the System Console through a load balancer and experiencing issues, please see the Troubleshooting Guide in our [documentation](!http://docs.mattermost.com/deployment/cluster.html).'
+                        defaultMessage='WARNING: These settings may not sync with the other servers in the cluster. High Availability inter-node communication will not start until you modify the config.json to be identical on all servers and restart SCC. Please see the [documentation](!http://docs.securCom.me/deployment/cluster.html) on how to add or remove a server from the cluster. If you are accessing the System Console through a load balancer and experiencing issues, please see the Troubleshooting Guide in our [documentation](!http://docs.securCom.me/deployment/cluster.html).'
                     />
                 </div>
             );
@@ -113,7 +120,7 @@ export default class ClusterSettings extends AdminSettings {
 
         var clusterTableContainer = null;
         if (this.state.Enable) {
-            clusterTableContainer = (<ClusterTableContainer/>);
+            clusterTableContainer = <ClusterTableContainer />;
         }
 
         return (
@@ -138,13 +145,14 @@ export default class ClusterSettings extends AdminSettings {
                     helpText={
                         <FormattedMarkdownMessage
                             id='admin.cluster.enableDescription'
-                            defaultMessage='When true, Mattermost will run in High Availability mode. Please see [documentation](!http://docs.mattermost.com/deployment/cluster.html) to learn more about configuring High Availability for Mattermost.'
+                            defaultMessage='When true, SCC will run in High Availability mode. Please see [documentation](!http://docs.securCom.me/deployment/cluster.html) to learn more about configuring High Availability for SCC.'
                         />
                     }
                     value={this.state.Enable}
                     onChange={this.overrideHandleChange}
                     setByEnv={this.isSetByEnv('ClusterSettings.Enable')}
                 />
+
                 <TextSetting
                     id='ClusterName'
                     label={
@@ -153,7 +161,10 @@ export default class ClusterSettings extends AdminSettings {
                             defaultMessage='Cluster Name:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.cluster.ClusterNameEx', 'E.g.: "Production" or "Staging"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.cluster.ClusterNameEx',
+                        "E.g.: 'Production' or 'Staging'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.cluster.ClusterNameDesc'
@@ -164,6 +175,7 @@ export default class ClusterSettings extends AdminSettings {
                     onChange={this.overrideHandleChange}
                     setByEnv={this.isSetByEnv('ClusterSettings.ClusterName')}
                 />
+
                 <TextSetting
                     id='OverrideHostname'
                     label={
@@ -172,7 +184,10 @@ export default class ClusterSettings extends AdminSettings {
                             defaultMessage='Override Hostname:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.cluster.OverrideHostnameEx', 'E.g.: "app-server-01"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.cluster.OverrideHostnameEx',
+                        "E.g.: 'app-server-01'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.cluster.OverrideHostnameDesc'
@@ -181,8 +196,11 @@ export default class ClusterSettings extends AdminSettings {
                     }
                     value={this.state.OverrideHostname}
                     onChange={this.overrideHandleChange}
-                    setByEnv={this.isSetByEnv('ClusterSettings.OverrideHostname')}
+                    setByEnv={this.isSetByEnv(
+                        'ClusterSettings.OverrideHostname',
+                    )}
                 />
+
                 <BooleanSetting
                     id='UseIpAddress'
                     label={
@@ -201,6 +219,7 @@ export default class ClusterSettings extends AdminSettings {
                     onChange={this.overrideHandleChange}
                     setByEnv={this.isSetByEnv('ClusterSettings.UseIpAddress')}
                 />
+
                 <BooleanSetting
                     id='UseExperimentalGossip'
                     label={
@@ -217,8 +236,11 @@ export default class ClusterSettings extends AdminSettings {
                     }
                     value={this.state.UseExperimentalGossip}
                     onChange={this.overrideHandleChange}
-                    setByEnv={this.isSetByEnv('ClusterSettings.UseExperimentalGossip')}
+                    setByEnv={this.isSetByEnv(
+                        'ClusterSettings.UseExperimentalGossip',
+                    )}
                 />
+
                 <TextSetting
                     id='GossipPort'
                     label={
@@ -227,7 +249,10 @@ export default class ClusterSettings extends AdminSettings {
                             defaultMessage='Gossip Port:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.cluster.GossipPortEx', 'E.g.: "8074"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.cluster.GossipPortEx',
+                        "E.g.: '8074'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.cluster.GossipPortDesc'
@@ -238,6 +263,7 @@ export default class ClusterSettings extends AdminSettings {
                     onChange={this.overrideHandleChange}
                     setByEnv={this.isSetByEnv('ClusterSettings.GossipPort')}
                 />
+
                 <TextSetting
                     id='StreamingPort'
                     label={
@@ -246,7 +272,10 @@ export default class ClusterSettings extends AdminSettings {
                             defaultMessage='Streaming Port:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.cluster.StreamingPortEx', 'E.g.: "8075"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.cluster.StreamingPortEx',
+                        "E.g.: '8075'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.cluster.StreamingPortDesc'

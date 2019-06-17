@@ -17,9 +17,7 @@ describe('components/admin_console/email_connection_test/email_connection_test',
             },
         };
 
-        const wrapper = shallow(
-            <EmailConnectionTestButton {...baseProps}/>
-        );
+        const wrapper = shallow(<EmailConnectionTestButton {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -34,9 +32,7 @@ describe('components/admin_console/email_connection_test/email_connection_test',
             },
         };
 
-        const wrapper = shallow(
-            <EmailConnectionTestButton {...baseProps}/>
-        );
+        const wrapper = shallow(<EmailConnectionTestButton {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -51,13 +47,14 @@ describe('components/admin_console/email_connection_test/email_connection_test',
             },
         };
 
-        const wrapper = shallow(
-            <EmailConnectionTestButton {...baseProps}/>
-        );
+        const wrapper = shallow(<EmailConnectionTestButton {...baseProps} />);
 
         const preventDefault = jest.fn();
 
-        wrapper.find('button').first().simulate('click', {preventDefault});
+        wrapper
+            .find('button')
+            .first()
+            .simulate('click', {preventDefault});
         expect(baseProps.actions.testEmail).toHaveBeenCalledTimes(1);
     });
 });

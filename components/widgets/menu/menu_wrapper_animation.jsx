@@ -18,13 +18,21 @@ export default class MenuWrapperAnimation extends React.PureComponent {
 
     onEntering = (node) => {
         const nodeStyler = styler(node);
-        tween({from: {opacity: 0}, to: {opacity: 1}, duration: ANIMATION_DURATION}).start(nodeStyler.set);
-    }
+        tween({
+            from: {opacity: 0},
+            to: {opacity: 1},
+            duration: ANIMATION_DURATION,
+        }).start(nodeStyler.set);
+    };
 
     onExiting = (node) => {
         const nodeStyler = styler(node);
-        tween({from: {opacity: 1}, to: {opacity: 0}, duration: ANIMATION_DURATION}).start(nodeStyler.set);
-    }
+        tween({
+            from: {opacity: 1},
+            to: {opacity: 0},
+            duration: ANIMATION_DURATION,
+        }).start(nodeStyler.set);
+    };
 
     render() {
         return (
@@ -47,4 +55,3 @@ export default class MenuWrapperAnimation extends React.PureComponent {
         );
     }
 }
-

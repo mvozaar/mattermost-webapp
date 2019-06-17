@@ -17,7 +17,7 @@ export default class ViewPinnedPosts extends React.PureComponent {
             closeRightHandSide: PropTypes.func.isRequired,
             showPinnedPosts: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     handleClick = (e) => {
         e.preventDefault();
@@ -25,10 +25,7 @@ export default class ViewPinnedPosts extends React.PureComponent {
         const {
             channel,
             hasPinnedPosts,
-            actions: {
-                closeRightHandSide,
-                showPinnedPosts,
-            },
+            actions: {closeRightHandSide, showPinnedPosts},
         } = this.props;
 
         if (hasPinnedPosts) {
@@ -36,14 +33,17 @@ export default class ViewPinnedPosts extends React.PureComponent {
         } else {
             showPinnedPosts(channel.id);
         }
-    }
+    };
 
     render() {
         return (
             <MenuItemAction
                 show={this.props.show}
                 onClick={this.handleClick}
-                text={localizeMessage('navbar.viewPinnedPosts', 'View Pinned Posts')}
+                text={localizeMessage(
+                    'navbar.viewPinnedPosts',
+                    'View Pinned Posts',
+                )}
             />
         );
     }

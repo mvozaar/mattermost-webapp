@@ -20,9 +20,8 @@ describe('components/Markdown', () => {
     };
 
     test('should render properly', () => {
-        const wrapper = shallow(
-            <Markdown {...baseProps}/>
-        );
+        const wrapper = shallow(<Markdown {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -32,9 +31,8 @@ describe('components/Markdown', () => {
             enableFormatting: false,
         };
 
-        const wrapper = shallow(
-            <Markdown {...props}/>
-        );
+        const wrapper = shallow(<Markdown {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

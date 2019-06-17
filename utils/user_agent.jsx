@@ -53,11 +53,17 @@ export function isChrome() {
 }
 
 export function isSafari() {
-    return userAgent.indexOf('Safari') !== -1 && userAgent.indexOf('Chrome') === -1;
+    return (
+        userAgent.indexOf('Safari') !== -1 && userAgent.indexOf('Chrome') === -1
+    );
 }
 
 export function isIosSafari() {
-    return userAgent.indexOf('iPhone') !== -1 && userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('CriOS') === -1;
+    return (
+        userAgent.indexOf('iPhone') !== -1 &&
+        userAgent.indexOf('Safari') !== -1 &&
+        navigator.userAgent.indexOf('CriOS') === -1
+    );
 }
 
 export function isIosChrome() {
@@ -69,7 +75,9 @@ export function isIosWeb() {
 }
 
 export function isIos() {
-    return userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPad') !== -1;
+    return (
+        userAgent.indexOf('iPhone') !== -1 || userAgent.indexOf('iPad') !== -1
+    );
 }
 
 export function isAndroid() {
@@ -77,11 +85,18 @@ export function isAndroid() {
 }
 
 export function isAndroidChrome() {
-    return userAgent.indexOf('Android') !== -1 && userAgent.indexOf('Chrome') !== -1 && userAgent.indexOf('Version') === -1;
+    return (
+        userAgent.indexOf('Android') !== -1 &&
+        userAgent.indexOf('Chrome') !== -1 &&
+        userAgent.indexOf('Version') === -1
+    );
 }
 
 export function isAndroidFirefox() {
-    return userAgent.indexOf('Android') !== -1 && userAgent.indexOf('Firefox') !== -1;
+    return (
+        userAgent.indexOf('Android') !== -1 &&
+        userAgent.indexOf('Firefox') !== -1
+    );
 }
 
 export function isAndroidWeb() {
@@ -116,7 +131,10 @@ export function isEdge() {
 }
 
 export function isDesktopApp() {
-    return userAgent.indexOf('Mattermost') !== -1 && userAgent.indexOf('Electron') !== -1;
+    return (
+        userAgent.indexOf('securCom') !== -1 &&
+        userAgent.indexOf('Electron') !== -1
+    );
 }
 
 export function isWindowsApp() {
@@ -134,5 +152,5 @@ export function isWindows7() {
         return false;
     }
 
-    return (/\bWindows NT 6\.1\b/).test(appVersion);
+    return /\bWindows NT 6\.1\b/.test(appVersion);
 }

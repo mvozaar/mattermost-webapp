@@ -30,11 +30,18 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addChannelMember,
-            removePost,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addChannelMember,
+                removePost,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostAddChannelMember);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PostAddChannelMember);

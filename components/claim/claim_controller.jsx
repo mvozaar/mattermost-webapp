@@ -32,13 +32,21 @@ export default class ClaimController extends React.PureComponent {
     };
 
     render() {
-        const email = (new URLSearchParams(this.props.location.search)).get('email');
-        const newType = (new URLSearchParams(this.props.location.search)).get('new_type');
-        const currentType = (new URLSearchParams(this.props.location.search)).get('old_type');
+        const email = new URLSearchParams(this.props.location.search).get(
+            'email',
+        );
+
+        const newType = new URLSearchParams(this.props.location.search).get(
+            'new_type',
+        );
+
+        const currentType = new URLSearchParams(this.props.location.search).get(
+            'old_type',
+        );
 
         return (
             <div>
-                <BackButton/>
+                <BackButton />
                 <div className='col-sm-12'>
                     <div className='signup-team__container'>
                         <img
@@ -46,6 +54,7 @@ export default class ClaimController extends React.PureComponent {
                             className='signup-team-logo'
                             src={logoImage}
                         />
+
                         <div id='claim'>
                             <Switch>
                                 <Route
@@ -55,10 +64,13 @@ export default class ClaimController extends React.PureComponent {
                                             currentType={currentType}
                                             email={email}
                                             siteName={this.props.siteName}
-                                            passwordConfig={this.props.passwordConfig}
+                                            passwordConfig={
+                                                this.props.passwordConfig
+                                            }
                                         />
                                     )}
                                 />
+
                                 <Route
                                     path={`${this.props.match.url}/email_to_oauth`}
                                     render={() => (
@@ -69,23 +81,32 @@ export default class ClaimController extends React.PureComponent {
                                         />
                                     )}
                                 />
+
                                 <Route
                                     path={`${this.props.match.url}/ldap_to_email`}
                                     render={() => (
                                         <LDAPToEmail
                                             email={email}
-                                            passwordConfig={this.props.passwordConfig}
-                                            switchLdapToEmail={this.props.actions.switchLdapToEmail}
+                                            passwordConfig={
+                                                this.props.passwordConfig
+                                            }
+                                            switchLdapToEmail={
+                                                this.props.actions
+                                                    .switchLdapToEmail
+                                            }
                                         />
                                     )}
                                 />
+
                                 <Route
                                     path={`${this.props.match.url}/email_to_ldap`}
                                     render={() => (
                                         <EmailToLDAP
                                             email={email}
                                             siteName={this.props.siteName}
-                                            ldapLoginFieldName={this.props.ldapLoginFieldName}
+                                            ldapLoginFieldName={
+                                                this.props.ldapLoginFieldName
+                                            }
                                         />
                                     )}
                                 />

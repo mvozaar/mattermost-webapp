@@ -13,7 +13,10 @@ import React from 'react';
  * Based on this Twitter built component
  * https://gist.github.com/paularmstrong/cc2ead7e2a0dec37d8b2096fc8d85759#file-defercomponentrender-js
  */
-export default function deferComponentRender(WrappedComponent, PreRenderComponent = null) {
+export default function deferComponentRender(
+    WrappedComponent,
+    PreRenderComponent = null,
+) {
     class DeferredRenderWrapper extends React.Component {
         constructor(props, context) {
             super(props, context);
@@ -25,12 +28,18 @@ export default function deferComponentRender(WrappedComponent, PreRenderComponen
 
         componentDidMount() {
             window.requestAnimationFrame(() => {
-                window.requestAnimationFrame(() => this.setState({shouldRender: true}));
+                window.requestAnimationFrame(() =>
+                    this.setState({shouldRender: true}),
+                );
             });
         }
 
         render() {
-            return this.state.shouldRender ? <WrappedComponent {...this.props}/> : PreRenderComponent;
+            return this.state.shouldRender ? (
+                <WrappedComponent {...this.props} />
+            ) : (
+                PreRenderComponent
+            );
         }
     }
 

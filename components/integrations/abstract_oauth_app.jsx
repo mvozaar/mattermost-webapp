@@ -15,25 +15,24 @@ import SystemPermissionGate from 'components/permissions_gates/system_permission
 
 export default class AbstractOAuthApp extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The current team
-        */
+         * The current team
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        * The header text to render, has id and defaultMessage
-        */
+         * The header text to render, has id and defaultMessage
+         */
         header: PropTypes.object.isRequired,
 
         /**
-        * The footer text to render, has id and defaultMessage
-        */
+         * The footer text to render, has id and defaultMessage
+         */
         footer: PropTypes.object.isRequired,
 
         /**
-        * The spinner loading text to render, has id and defaultMessage
-        */
+         * The spinner loading text to render, has id and defaultMessage
+         */
         loading: PropTypes.object.isRequired,
 
         /**
@@ -42,20 +41,20 @@ export default class AbstractOAuthApp extends React.PureComponent {
         renderExtra: PropTypes.node.isRequired,
 
         /**
-        * The server error text after a failed action
-        */
+         * The server error text after a failed action
+         */
         serverError: PropTypes.string.isRequired,
 
         /**
-        * The OAuthApp used to set the initial state
-        */
+         * The OAuthApp used to set the initial state
+         */
         initialApp: PropTypes.object,
 
         /**
-        * The async function to run when the action button is pressed
-        */
+         * The async function to run when the action button is pressed
+         */
         action: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -77,14 +76,14 @@ export default class AbstractOAuthApp extends React.PureComponent {
             saving: false,
             clientError: null,
         };
-    }
+    };
 
     imageLoaded = () => {
         this.setState({
             has_icon: true,
             icon_url: this.refs.icon_url.value,
         });
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -173,45 +172,46 @@ export default class AbstractOAuthApp extends React.PureComponent {
         };
 
         this.props.action(app).then(() => this.setState({saving: false}));
-    }
+    };
 
     updateName = (e) => {
         this.setState({
             name: e.target.value,
         });
-    }
+    };
 
     updateTrusted = (e) => {
         this.setState({
             is_trusted: e.target.value === 'true',
         });
-    }
+    };
 
     updateDescription = (e) => {
         this.setState({
             description: e.target.value,
         });
-    }
+    };
 
     updateHomepage = (e) => {
         this.setState({
             homepage: e.target.value,
         });
-    }
+    };
 
     updateIconUrl = (e) => {
         this.setState({
             has_icon: false,
             icon_url: e.target.value,
         });
+
         this.image.src = e.target.value;
-    }
+    };
 
     updateCallbackUrls = (e) => {
         this.setState({
             callbackUrls: e.target.value,
         });
-    }
+    };
 
     render() {
         const headerToRender = this.props.header;
@@ -222,10 +222,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
         if (this.state.has_icon) {
             icon = (
                 <div className='integration__icon'>
-                    <img
-                        alt={'integration icon'}
-                        src={this.state.icon_url}
-                    />
+                    <img alt={'integration icon'} src={this.state.icon_url} />
                 </div>
             );
         }
@@ -251,6 +248,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                 checked={this.state.is_trusted}
                                 onChange={this.updateTrusted}
                             />
+
                             <FormattedMessage
                                 id='installed_oauth_apps.trusted.yes'
                                 defaultMessage='Yes'
@@ -264,6 +262,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                 checked={!this.state.is_trusted}
                                 onChange={this.updateTrusted}
                             />
+
                             <FormattedMessage
                                 id='installed_oauth_apps.trusted.no'
                                 defaultMessage='No'
@@ -272,7 +271,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                         <div className='form__help'>
                             <FormattedMessage
                                 id='add_oauth_app.trusted.help'
-                                defaultMessage="When true, the OAuth 2.0 application is considered trusted by the Mattermost server and doesn't require the user to accept authorization. When false, an additional window will appear, asking the user to accept or deny the authorization."
+                                defaultMessage="When true, the OAuth 2.0 application is considered trusted by the SCC server and doesn't require the user to accept authorization. When false, an additional window will appear, asking the user to accept or deny the authorization."
                             />
                         </div>
                     </div>
@@ -283,7 +282,9 @@ export default class AbstractOAuthApp extends React.PureComponent {
         return (
             <div className='backstage-content'>
                 <BackstageHeader>
-                    <Link to={`/${this.props.team.name}/integrations/oauth2-apps`}>
+                    <Link
+                        to={`/${this.props.team.name}/integrations/oauth2-apps`}
+                    >
                         <FormattedMessage
                             id='installed_oauth_apps.header'
                             defaultMessage='Installed OAuth2 Apps'
@@ -317,6 +318,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                     value={this.state.name}
                                     onChange={this.updateName}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_oauth_app.name.help'
@@ -344,6 +346,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                     value={this.state.description}
                                     onChange={this.updateDescription}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_oauth_app.description.help'
@@ -371,6 +374,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                     value={this.state.homepage}
                                     onChange={this.updateHomepage}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_oauth_app.homepage.help'
@@ -399,6 +403,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                     value={this.state.icon_url}
                                     onChange={this.updateIconUrl}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_oauth_app.icon.help'
@@ -426,6 +431,7 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                     value={this.state.callbackUrls}
                                     onChange={this.updateCallbackUrls}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_oauth_app.callbackUrls.help'
@@ -437,8 +443,12 @@ export default class AbstractOAuthApp extends React.PureComponent {
                         <div className='backstage-form__footer'>
                             <FormError
                                 type='backstage'
-                                errors={[this.props.serverError, this.state.clientError]}
+                                errors={[
+                                    this.props.serverError,
+                                    this.state.clientError,
+                                ]}
                             />
+
                             <Link
                                 className='btn btn-link btn-sm'
                                 to={`/${this.props.team.name}/integrations/oauth2-apps`}
@@ -452,13 +462,18 @@ export default class AbstractOAuthApp extends React.PureComponent {
                                 className='btn btn-primary'
                                 type='submit'
                                 spinning={this.state.saving}
-                                spinningText={localizeMessage(this.props.loading.id, this.props.loading.defaultMessage)}
+                                spinningText={localizeMessage(
+                                    this.props.loading.id,
+                                    this.props.loading.defaultMessage,
+                                )}
                                 onClick={this.handleSubmit}
                                 id='saveOauthApp'
                             >
                                 <FormattedMessage
                                     id={footerToRender.id}
-                                    defaultMessage={footerToRender.defaultMessage}
+                                    defaultMessage={
+                                        footerToRender.defaultMessage
+                                    }
                                 />
                             </SpinnerButton>
                             {renderExtra}

@@ -14,7 +14,13 @@ let requestedNotificationPermission = false;
 // notification. Notifications that do not require interaction will be closed automatically after
 // the Constants.DEFAULT_NOTIFICATION_DURATION. Not all platforms support all features, and may
 // choose different semantics for the notifications.
-export async function showNotification({title, body, requireInteraction, silent, onClick} = {}) {
+export async function showNotification({
+    title,
+    body,
+    requireInteraction,
+    silent,
+    onClick,
+} = {}) {
     let icon = icon50;
     if (UserAgent.isEdge()) {
         icon = iconWS;
@@ -28,7 +34,10 @@ export async function showNotification({title, body, requireInteraction, silent,
         throw new Error('Notification.requestPermission not supported');
     }
 
-    if (Notification.permission !== 'granted' && requestedNotificationPermission) {
+    if (
+        Notification.permission !== 'granted' &&
+        requestedNotificationPermission
+    ) {
         throw new Error('Notifications already requested but not granted');
     }
 

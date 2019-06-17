@@ -39,8 +39,16 @@ export default class Integrations extends React.Component {
 
     updateTitle = () => {
         const currentSiteName = this.props.siteName || '';
-        document.title = Utils.localizeMessage('admin.sidebar.integrations', 'Integrations') + ' - ' + this.props.team.display_name + ' ' + currentSiteName;
-    }
+        document.title =
+            Utils.localizeMessage(
+                'admin.sidebar.integrations',
+                'Integrations',
+            ) +
+            ' - ' +
+            this.props.team.display_name +
+            ' ' +
+            currentSiteName;
+    };
 
     render() {
         const options = [];
@@ -67,9 +75,13 @@ export default class Integrations extends React.Component {
                                 defaultMessage='Incoming webhooks allow external integrations to send messages'
                             />
                         }
-                        link={'/' + this.props.team.name + '/integrations/incoming_webhooks'}
+                        link={
+                            '/' +
+                            this.props.team.name +
+                            '/integrations/incoming_webhooks'
+                        }
                     />
-                </TeamPermissionGate>
+                </TeamPermissionGate>,
             );
         }
 
@@ -95,9 +107,13 @@ export default class Integrations extends React.Component {
                                 defaultMessage='Outgoing webhooks allow external integrations to receive and respond to messages'
                             />
                         }
-                        link={'/' + this.props.team.name + '/integrations/outgoing_webhooks'}
+                        link={
+                            '/' +
+                            this.props.team.name +
+                            '/integrations/outgoing_webhooks'
+                        }
                     />
-                </TeamPermissionGate>
+                </TeamPermissionGate>,
             );
         }
 
@@ -123,9 +139,13 @@ export default class Integrations extends React.Component {
                                 defaultMessage='Slash commands send events to an external integration'
                             />
                         }
-                        link={'/' + this.props.team.name + '/integrations/commands'}
+                        link={
+                            '/' +
+                            this.props.team.name +
+                            '/integrations/commands'
+                        }
                     />
-                </TeamPermissionGate>
+                </TeamPermissionGate>,
             );
         }
 
@@ -147,12 +167,16 @@ export default class Integrations extends React.Component {
                         description={
                             <FormattedMessage
                                 id='integrations.oauthApps.description'
-                                defaultMessage='Auth 2.0 allows external applications to make authorized requests to the Mattermost API'
+                                defaultMessage='Auth 2.0 allows external applications to make authorized requests to the SCC API'
                             />
                         }
-                        link={'/' + this.props.team.name + '/integrations/oauth2-apps'}
+                        link={
+                            '/' +
+                            this.props.team.name +
+                            '/integrations/oauth2-apps'
+                        }
                     />
-                </SystemPermissionGate>
+                </SystemPermissionGate>,
             );
         }
 
@@ -172,12 +196,12 @@ export default class Integrations extends React.Component {
                     description={
                         <FormattedMessage
                             id='bots.manage.description'
-                            defaultMessage='Use bot accounts to integrate with Mattermost through plugins or the API'
+                            defaultMessage='Use bot accounts to integrate with SCC through plugins or the API'
                         />
                     }
                     link={'/' + this.props.team.name + '/integrations/bots'}
                 />
-            </SystemPermissionGate>
+            </SystemPermissionGate>,
         );
 
         return (
@@ -193,13 +217,13 @@ export default class Integrations extends React.Component {
                 <div className='backstage-list__help'>
                     <FormattedMessage
                         id='integrations.help'
-                        defaultMessage='Visit the {appDirectory} to find self-hosted, third-party apps and integrations for Mattermost.'
+                        defaultMessage='Visit the {appDirectory} to find self-hosted, third-party apps and integrations for SCC.'
                         values={{
                             appDirectory: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='https://about.mattermost.com/default-app-directory/'
+                                    href='https://about.securCom.me/default-app-directory/'
                                 >
                                     <FormattedMessage
                                         id='integrations.help.appDirectory'

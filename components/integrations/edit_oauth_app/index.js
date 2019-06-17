@@ -10,8 +10,9 @@ import EditOAuthApp from './edit_oauth_app.jsx';
 
 function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
-    const oauthAppId = (new URLSearchParams(ownProps.location.search)).get('id');
-    const enableOAuthServiceProvider = config.EnableOAuthServiceProvider === 'true';
+    const oauthAppId = new URLSearchParams(ownProps.location.search).get('id');
+    const enableOAuthServiceProvider =
+        config.EnableOAuthServiceProvider === 'true';
 
     return {
         oauthAppId,
@@ -22,11 +23,18 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getOAuthApp,
-            editOAuthApp,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getOAuthApp,
+                editOAuthApp,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditOAuthApp);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(EditOAuthApp);

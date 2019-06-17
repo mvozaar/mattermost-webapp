@@ -16,7 +16,7 @@ export default function HelpComposing() {
                     defaultMessage='Sending Messages'
                 />
             </h1>
-            <hr/>
+            <hr />
             <h2 className='markdown__heading'>
                 <FormattedMessage
                     id='help.composing.types.title'
@@ -80,7 +80,9 @@ export default function HelpComposing() {
             <p>
                 <FormattedMarkdownMessage
                     id='help.composing.editing.description'
-                    defaultMessage={'Edit a message by clicking the **[...]** icon next to any message text that you\'ve composed, then click **Edit**. After making modifications to the message text, press **ENTER** to save the modifications. Message edits do not trigger new @mention notifications, desktop notifications or notification sounds.'}
+                    defaultMessage={
+                        "Edit a message by clicking the **[...]** icon next to any message text that you've composed, then click **Edit**. After making modifications to the message text, press **ENTER** to save the modifications. Message edits do not trigger new @mention notifications, desktop notifications or notification sounds."
+                    }
                 />
             </p>
             <h2 className='markdown__heading'>
@@ -92,7 +94,9 @@ export default function HelpComposing() {
             <p>
                 <FormattedMarkdownMessage
                     id='help.composing.deleting.description'
-                    defaultMessage={'Delete a message by clicking the **[...]** icon next to any message text that you\'ve composed, then click **Delete**. System and Team Admins can delete any message on their system or team.'}
+                    defaultMessage={
+                        "Delete a message by clicking the **[...]** icon next to any message text that you've composed, then click **Delete**. System and Team Admins can delete any message on their system or team."
+                    }
                 />
             </p>
             <h2 className='markdown__heading'>

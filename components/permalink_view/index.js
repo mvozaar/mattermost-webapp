@@ -37,10 +37,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            focusPost,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                focusPost,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PermalinkView);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PermalinkView);

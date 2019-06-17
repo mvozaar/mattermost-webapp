@@ -22,10 +22,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            deferNavigation,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                deferNavigation,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbarDropdown);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AdminNavbarDropdown);

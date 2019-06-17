@@ -15,20 +15,21 @@ describe('components/admin_console/permission_schemes_settings/permissions_schem
             display_name: 'Test',
             description: 'Test description',
         },
+
         teams: [
             {id: 'xxx', name: 'team-1', display_name: 'Team 1'},
             {id: 'yyy', name: 'team-2', display_name: 'Team 2'},
             {id: 'zzz', name: 'team-3', display_name: 'Team 3'},
         ],
+
         actions: {
             deleteScheme: jest.fn().mockResolvedValue({data: true}),
         },
     };
 
     test('should match snapshot on default data', () => {
-        const wrapper = shallow(
-            <PermissionsSchemeSummary {...defaultProps}/>
-        );
+        const wrapper = shallow(<PermissionsSchemeSummary {...defaultProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -48,18 +49,17 @@ describe('components/admin_console/permission_schemes_settings/permissions_schem
                     {id: 'iii', name: 'team-9', display_name: 'Team 9'},
                     {id: 'jjj', name: 'team-9', display_name: 'Team 10'},
                 ]}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot on no teams', () => {
         const wrapper = shallow(
-            <PermissionsSchemeSummary
-                {...defaultProps}
-                teams={[]}
-            />
+            <PermissionsSchemeSummary {...defaultProps} teams={[]} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -71,16 +71,29 @@ describe('components/admin_console/permission_schemes_settings/permissions_schem
                 actions={{
                     deleteScheme,
                 }}
-            />
+            />,
         );
+
         expect(deleteScheme).not.toBeCalled();
-        wrapper.find('.delete-button').first().simulate('click', {stopPropagation: jest.fn()});
+        wrapper
+            .find('.delete-button')
+            .first()
+            .simulate('click', {stopPropagation: jest.fn()});
         expect(deleteScheme).not.toBeCalled();
-        wrapper.find(ConfirmModal).first().prop('onCancel')();
+        wrapper
+            .find(ConfirmModal)
+            .first()
+            .prop('onCancel')();
         expect(deleteScheme).not.toBeCalled();
 
-        wrapper.find('.delete-button').first().simulate('click', {stopPropagation: jest.fn()});
-        wrapper.find(ConfirmModal).first().prop('onConfirm')();
+        wrapper
+            .find('.delete-button')
+            .first()
+            .simulate('click', {stopPropagation: jest.fn()});
+        wrapper
+            .find(ConfirmModal)
+            .first()
+            .prop('onConfirm')();
         expect(deleteScheme).toBeCalledWith('id');
     });
 });

@@ -12,44 +12,45 @@ import AbstractOAuthApp from '../abstract_oauth_app.jsx';
 
 const HEADER = {id: 'integrations.edit', defaultMessage: 'Edit'};
 const FOOTER = {id: 'update_incoming_webhook.update', defaultMessage: 'Update'};
-const LOADING = {id: 'update_incoming_webhook.updating', defaultMessage: 'Updating...'};
+const LOADING = {
+    id: 'update_incoming_webhook.updating',
+    defaultMessage: 'Updating...',
+};
 
 export default class EditOAuthApp extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The current team
-        */
+         * The current team
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        * The id of the OAuthApp to edit
-        */
+         * The id of the OAuthApp to edit
+         */
         oauthAppId: PropTypes.string.isRequired,
 
         /**
-        * The OAuthApp data
-        */
+         * The OAuthApp data
+         */
         oauthApp: PropTypes.object,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call to get OAuthApp
-            */
+             * The function to call to get OAuthApp
+             */
             getOAuthApp: PropTypes.func.isRequired,
 
             /**
-            * The function to call to edit OAuthApp
-            */
+             * The function to call to edit OAuthApp
+             */
             editOAuthApp: PropTypes.func.isRequired,
         }).isRequired,
 
         /**
-        * Whether or not OAuth applications are enabled.
-        */
+         * Whether or not OAuth applications are enabled.
+         */
         enableOAuthServiceProvider: PropTypes.bool,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -77,31 +78,40 @@ export default class EditOAuthApp extends React.PureComponent {
             app.token = this.props.oauthApp.token;
         }
 
-        const callbackUrlsSame = (this.props.oauthApp.callback_urls.length === app.callback_urls.length) &&
-            this.props.oauthApp.callback_urls.every((v, i) => v === app.callback_urls[i]);
+        const callbackUrlsSame =
+            this.props.oauthApp.callback_urls.length ===
+                app.callback_urls.length &&
+            this.props.oauthApp.callback_urls.every(
+                (v, i) => v === app.callback_urls[i],
+            );
 
         if (callbackUrlsSame === false) {
             this.handleConfirmModal();
         } else {
             await this.submitOAuthApp();
         }
-    }
+    };
 
     handleConfirmModal = () => {
         this.setState({showConfirmModal: true});
-    }
+    };
 
     confirmModalDismissed = () => {
         this.setState({showConfirmModal: false});
-    }
+    };
 
     submitOAuthApp = async () => {
         this.setState({serverError: ''});
 
-        const {data, error} = await this.props.actions.editOAuthApp(this.newApp);
+        const {data, error} = await this.props.actions.editOAuthApp(
+            this.newApp,
+        );
 
         if (data) {
-            browserHistory.push(`/${this.props.team.name}/integrations/oauth2-apps`);
+            browserHistory.push(
+                `/${this.props.team.name}/integrations/oauth2-apps`,
+            );
+
             return;
         }
 
@@ -110,7 +120,7 @@ export default class EditOAuthApp extends React.PureComponent {
         if (error) {
             this.setState({serverError: error.message});
         }
-    }
+    };
 
     renderExtra = () => {
         const confirmButton = (
@@ -144,11 +154,11 @@ export default class EditOAuthApp extends React.PureComponent {
                 onCancel={this.confirmModalDismissed}
             />
         );
-    }
+    };
 
     render() {
         if (!this.props.oauthApp) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
 
         return (

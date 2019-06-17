@@ -20,7 +20,7 @@ describe('components/TeamInfo', () => {
     test('should match snapshot, without icon', () => {
         const utilsMock = require.requireMock('utils/utils.jsx');
         utilsMock.imageURLForTeam.mockImplementation(() => null);
-        const wrapper = shallow(<TeamInfo {...defaultProps}/>);
+        const wrapper = shallow(<TeamInfo {...defaultProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -29,7 +29,7 @@ describe('components/TeamInfo', () => {
         const utilsMock = require.requireMock('utils/utils.jsx');
         utilsMock.imageURLForTeam.mockImplementation(() => 'test');
 
-        const wrapper = shallow(<TeamInfo {...defaultProps}/>);
+        const wrapper = shallow(<TeamInfo {...defaultProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });

@@ -21,12 +21,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadRolesIfNeeded,
-            editRole,
-            setNavigationBlocked,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadRolesIfNeeded,
+                editRole,
+                setNavigationBlocked,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PermissionSystemSchemeSettings);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PermissionSystemSchemeSettings);

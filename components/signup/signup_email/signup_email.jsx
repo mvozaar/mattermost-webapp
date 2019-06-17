@@ -37,14 +37,16 @@ export default class SignupEmail extends React.Component {
             setGlobalItem: PropTypes.func.isRequired,
             getTeamInviteInfo: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
 
-        const data = (new URLSearchParams(this.props.location.search)).get('d');
-        const token = (new URLSearchParams(this.props.location.search)).get('t');
-        const inviteId = (new URLSearchParams(this.props.location.search)).get('id');
+        const data = new URLSearchParams(this.props.location.search).get('d');
+        const token = new URLSearchParams(this.props.location.search).get('t');
+        const inviteId = new URLSearchParams(this.props.location.search).get(
+            'id',
+        );
 
         this.state = {};
         if (token && token.length > 0) {
@@ -75,10 +77,13 @@ export default class SignupEmail extends React.Component {
             email: parsedData.email,
             teamName: parsedData.name,
         };
-    }
+    };
 
     getInviteInfo = async (inviteId) => {
-        const {data, error} = await this.props.actions.getTeamInviteInfo(inviteId);
+        const {data, error} = await this.props.actions.getTeamInviteInfo(
+            inviteId,
+        );
+
         if (data) {
             this.setState({
                 loading: false,
@@ -87,7 +92,8 @@ export default class SignupEmail extends React.Component {
                 teamName: data.name,
             });
         } else if (error) {
-            this.setState({loading: false,
+            this.setState({
+                loading: false,
                 noOpenServerError: true,
                 serverError: (
                     <FormattedMessage
@@ -97,79 +103,110 @@ export default class SignupEmail extends React.Component {
                 ),
             });
         }
-    }
+    };
 
     handleSignupSuccess = (user, data) => {
         trackEvent('signup', 'signup_user_02_complete');
 
-        this.props.actions.loginById(data.id, user.password, '').then(({error}) => {
-            if (error) {
-                if (error.server_error_id === 'api.user.login.not_verified.app_error') {
-                    browserHistory.push('/should_verify_email?email=' + encodeURIComponent(user.email) + '&teamname=' + encodeURIComponent(this.state.teamName));
-                } else {
-                    this.setState({
-                        serverError: error.message,
-                        isSubmitting: false,
-                    });
+        this.props.actions
+            .loginById(data.id, user.password, '')
+            .then(({error}) => {
+                if (error) {
+                    if (
+                        error.server_error_id ===
+                        'api.user.login.not_verified.app_error'
+                    ) {
+                        browserHistory.push(
+                            '/should_verify_email?email=' +
+                                encodeURIComponent(user.email) +
+                                '&teamname=' +
+                                encodeURIComponent(this.state.teamName),
+                        );
+                    } else {
+                        this.setState({
+                            serverError: error.message,
+                            isSubmitting: false,
+                        });
+                    }
+
+                    return;
                 }
 
-                return;
-            }
+                if (this.state.token > 0) {
+                    this.props.actions.setGlobalItem(
+                        this.state.token,
+                        JSON.stringify({usedBefore: true}),
+                    );
+                }
 
-            if (this.state.token > 0) {
-                this.props.actions.setGlobalItem(this.state.token, JSON.stringify({usedBefore: true}));
-            }
-
-            const redirectTo = (new URLSearchParams(this.props.location.search)).get('redirect_to');
-            if (redirectTo) {
-                browserHistory.push(redirectTo);
-            } else {
-                GlobalActions.redirectUserToDefaultTeam();
-            }
-        });
-    }
+                const redirectTo = new URLSearchParams(
+                    this.props.location.search,
+                ).get('redirect_to');
+                if (redirectTo) {
+                    browserHistory.push(redirectTo);
+                } else {
+                    GlobalActions.redirectUserToDefaultTeam();
+                }
+            });
+    };
 
     isUserValid = () => {
         const providedEmail = this.refs.email.value.trim();
         if (!providedEmail) {
             this.setState({
                 nameError: '',
-                emailError: (<FormattedMessage id='signup_user_completed.required'/>),
+                emailError: (
+                    <FormattedMessage id='signup_user_completed.required' />
+                ),
+
                 passwordError: '',
                 serverError: '',
             });
+
             return false;
         }
 
         if (!isEmail(providedEmail)) {
             this.setState({
                 nameError: '',
-                emailError: (<FormattedMessage id='signup_user_completed.validEmail'/>),
+                emailError: (
+                    <FormattedMessage id='signup_user_completed.validEmail' />
+                ),
+
                 passwordError: '',
                 serverError: '',
             });
+
             return false;
         }
 
         const providedUsername = this.refs.name.value.trim().toLowerCase();
         if (!providedUsername) {
             this.setState({
-                nameError: (<FormattedMessage id='signup_user_completed.required'/>),
+                nameError: (
+                    <FormattedMessage id='signup_user_completed.required' />
+                ),
+
                 emailError: '',
                 passwordError: '',
                 serverError: '',
             });
+
             return false;
         }
 
         const usernameError = Utils.isValidUsername(providedUsername);
         if (usernameError === 'Cannot use a reserved word as a username.') {
             this.setState({
-                nameError: (<FormattedMessage id='signup_user_completed.reserved'/>),
+                nameError: (
+                    <FormattedMessage id='signup_user_completed.reserved' />
+                ),
+
                 emailError: '',
                 passwordError: '',
                 serverError: '',
             });
+
             return false;
         } else if (usernameError) {
             this.setState({
@@ -182,15 +219,21 @@ export default class SignupEmail extends React.Component {
                         }}
                     />
                 ),
+
                 emailError: '',
                 passwordError: '',
                 serverError: '',
             });
+
             return false;
         }
 
         const providedPassword = this.refs.password.value;
-        const {valid, error} = Utils.isValidPassword(providedPassword, this.props.passwordConfig);
+        const {valid, error} = Utils.isValidPassword(
+            providedPassword,
+            this.props.passwordConfig,
+        );
+
         if (!valid && error) {
             this.setState({
                 nameError: '',
@@ -198,11 +241,12 @@ export default class SignupEmail extends React.Component {
                 passwordError: error,
                 serverError: '',
             });
+
             return false;
         }
 
         return true;
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -228,46 +272,47 @@ export default class SignupEmail extends React.Component {
                 allow_marketing: true,
             };
 
-            this.props.actions.createUser(user, this.state.token, this.state.inviteId).then((result) => {
-                if (result.error) {
-                    this.setState({
-                        serverError: result.error.message,
-                        isSubmitting: false,
-                    });
-                    return;
-                }
+            this.props.actions
+                .createUser(user, this.state.token, this.state.inviteId)
+                .then((result) => {
+                    if (result.error) {
+                        this.setState({
+                            serverError: result.error.message,
+                            isSubmitting: false,
+                        });
 
-                this.handleSignupSuccess(user, result.data);
-            });
+                        return;
+                    }
+
+                    this.handleSignupSuccess(user, result.data);
+                });
         }
-    }
+    };
 
     renderEmailSignup = () => {
         let emailError = null;
         let emailHelpText = (
-            <span
-                id='valid_email'
-                className='help-block'
-            >
+            <span id='valid_email' className='help-block'>
                 <FormattedMessage
                     id='signup_user_completed.emailHelp'
                     defaultMessage='Valid email required for sign-up'
                 />
             </span>
         );
+
         let emailDivStyle = 'form-group';
         if (this.state.emailError) {
-            emailError = (<label className='control-label'>{this.state.emailError}</label>);
+            emailError = (
+                <label className='control-label'>{this.state.emailError}</label>
+            );
+
             emailHelpText = '';
             emailDivStyle += ' has-error';
         }
 
         let nameError = null;
         let nameHelpText = (
-            <span
-                id='valid_name'
-                className='help-block'
-            >
+            <span id='valid_name' className='help-block'>
                 <FormattedMessage
                     id='signup_user_completed.userHelp'
                     defaultMessage="Username must begin with a letter, and contain between {min} to {max} lowercase characters made up of numbers, letters, and the symbols '.', '-' and '_'"
@@ -278,9 +323,13 @@ export default class SignupEmail extends React.Component {
                 />
             </span>
         );
+
         let nameDivStyle = 'form-group';
         if (this.state.nameError) {
-            nameError = <label className='control-label'>{this.state.nameError}</label>;
+            nameError = (
+                <label className='control-label'>{this.state.nameError}</label>
+            );
+
             nameHelpText = '';
             nameDivStyle += ' has-error';
         }
@@ -288,7 +337,12 @@ export default class SignupEmail extends React.Component {
         let passwordError = null;
         let passwordDivStyle = 'form-group';
         if (this.state.passwordError) {
-            passwordError = <label className='control-label'>{this.state.passwordError}</label>;
+            passwordError = (
+                <label className='control-label'>
+                    {this.state.passwordError}
+                </label>
+            );
+
             passwordDivStyle += ' has-error';
         }
 
@@ -336,6 +390,7 @@ export default class SignupEmail extends React.Component {
                                 spellCheck='false'
                                 autoCapitalize='off'
                             />
+
                             {emailError}
                             {emailHelpText}
                         </div>
@@ -361,6 +416,7 @@ export default class SignupEmail extends React.Component {
                                 spellCheck='false'
                                 autoCapitalize='off'
                             />
+
                             {nameError}
                             {nameHelpText}
                         </div>
@@ -384,6 +440,7 @@ export default class SignupEmail extends React.Component {
                                 maxLength='128'
                                 spellCheck='false'
                             />
+
                             {passwordError}
                         </div>
                     </div>
@@ -404,7 +461,7 @@ export default class SignupEmail extends React.Component {
                 </div>
             </form>
         );
-    }
+    };
 
     render() {
         const {
@@ -423,13 +480,15 @@ export default class SignupEmail extends React.Component {
                     id='existingEmailErrorContainer'
                     className={'form-group has-error'}
                 >
-                    <label className='control-label'>{this.state.serverError}</label>
+                    <label className='control-label'>
+                        {this.state.serverError}
+                    </label>
                 </div>
             );
         }
 
         if (this.state.loading) {
-            return (<LoadingScreen/>);
+            return <LoadingScreen />;
         }
 
         let emailSignup;
@@ -462,39 +521,31 @@ export default class SignupEmail extends React.Component {
 
         return (
             <div>
-                <BackButton/>
-                <div
-                    id='signup_email_section'
-                    className='col-sm-12'
-                >
+                <BackButton />
+                <div id='signup_email_section' className='col-sm-12'>
                     <div className='signup-team__container padding--less'>
                         <img
                             alt={'signup team logo'}
                             className='signup-team-logo'
                             src={logoImage}
                         />
+
                         <SiteNameAndDescription
                             customDescriptionText={customDescriptionText}
                             siteName={siteName}
                         />
-                        <h4
-                            id='create_account'
-                            className='color--light'
-                        >
+
+                        <h4 id='create_account' className='color--light'>
                             <FormattedMessage
                                 id='signup_user_completed.lets'
                                 defaultMessage="Let's create your account"
                             />
                         </h4>
-                        <span
-                            id='signin_account'
-                            className='color--light'
-                        >
+                        <span id='signin_account' className='color--light'>
                             <FormattedMessage
                                 id='signup_user_completed.haveAccount'
                                 defaultMessage='Already have an account?'
-                            />
-                            {' '}
+                            />{' '}
                             <Link
                                 id='signin_account_link'
                                 to={'/login' + location.search}

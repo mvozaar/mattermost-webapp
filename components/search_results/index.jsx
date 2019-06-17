@@ -7,7 +7,10 @@ import {bindActionCreators} from 'redux';
 import {getMorePostsForSearch} from 'mattermost-redux/actions/search';
 import {getChannel} from 'mattermost-redux/selectors/entities/channels';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {getSearchMatches, getSearchResults} from 'mattermost-redux/selectors/entities/posts';
+import {
+    getSearchMatches,
+    getSearchResults,
+} from 'mattermost-redux/selectors/entities/posts';
 import * as PreferenceSelectors from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {getCurrentSearchForCurrentTeam} from 'mattermost-redux/selectors/entities/search';
@@ -30,9 +33,12 @@ function makeMapStateToProps() {
     return function mapStateToProps(state) {
         const config = getConfig(state);
 
-        const dataRetentionEnableMessageDeletion = config.DataRetentionEnableMessageDeletion === 'true';
-        const dataRetentionMessageRetentionDays = config.DataRetentionMessageRetentionDays;
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const dataRetentionEnableMessageDeletion =
+            config.DataRetentionEnableMessageDeletion === 'true';
+        const dataRetentionMessageRetentionDays =
+            config.DataRetentionMessageRetentionDays;
+        const viewArchivedChannels =
+            config.ExperimentalViewArchivedChannels === 'true';
 
         const newResults = getSearchResults(state);
 
@@ -47,7 +53,11 @@ function makeMapStateToProps() {
                 }
 
                 const channel = getChannel(state, post.channel_id);
-                if (channel && channel.delete_at !== 0 && !viewArchivedChannels) {
+                if (
+                    channel &&
+                    channel.delete_at !== 0 &&
+                    !viewArchivedChannels
+                ) {
                     return;
                 }
 
@@ -67,7 +77,13 @@ function makeMapStateToProps() {
             isSearchingPinnedPost: getIsSearchingPinnedPost(state),
             isSearchGettingMore: getIsSearchGettingMore(state),
             isSearchAtEnd: currentSearch.isEnd,
-            compactDisplay: PreferenceSelectors.get(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.MESSAGE_DISPLAY, Preferences.MESSAGE_DISPLAY_DEFAULT) === Preferences.MESSAGE_DISPLAY_COMPACT,
+            compactDisplay:
+                PreferenceSelectors.get(
+                    state,
+                    Preferences.CATEGORY_DISPLAY_SETTINGS,
+                    Preferences.MESSAGE_DISPLAY,
+                    Preferences.MESSAGE_DISPLAY_DEFAULT,
+                ) === Preferences.MESSAGE_DISPLAY_COMPACT,
             dataRetentionEnableMessageDeletion,
             dataRetentionMessageRetentionDays,
         };
@@ -76,10 +92,17 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getMorePostsForSearch,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getMorePostsForSearch,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(SearchResults);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(SearchResults);

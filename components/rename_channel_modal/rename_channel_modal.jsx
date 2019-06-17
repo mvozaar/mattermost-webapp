@@ -4,7 +4,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Modal, OverlayTrigger, Tooltip} from 'react-bootstrap';
-import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {
+    defineMessages,
+    FormattedMessage,
+    injectIntl,
+    intlShape,
+} from 'react-intl';
 
 import LocalizedInput from 'components/localized_input/localized_input';
 import {browserHistory} from 'utils/browser_history';
@@ -18,26 +23,33 @@ const holders = defineMessages({
         id: t('rename_channel.required'),
         defaultMessage: 'This field is required',
     },
+
     maxLength: {
         id: t('rename_channel.maxLength'),
-        defaultMessage: 'This field must be less than {maxLength, number} characters',
+        defaultMessage:
+            'This field must be less than {maxLength, number} characters',
     },
+
     lowercase: {
         id: t('rename_channel.lowercase'),
         defaultMessage: 'Must be lowercase alphanumeric characters',
     },
+
     url: {
         id: t('rename_channel.url'),
         defaultMessage: 'URL',
     },
+
     defaultError: {
         id: t('rename_channel.defaultError'),
         defaultMessage: ' - Cannot be changed for the default channel',
     },
+
     displayNameHolder: {
         id: t('rename_channel.displayNameHolder'),
         defaultMessage: 'Enter display name',
     },
+
     handleHolder: {
         id: t('rename_channel.handleHolder'),
         defaultMessage: 'lowercase alphanumeric characters',
@@ -46,7 +58,6 @@ const holders = defineMessages({
 
 export class RenameChannelModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * react-intl helper object
          */
@@ -76,7 +87,6 @@ export class RenameChannelModal extends React.PureComponent {
          * Object with redux action creators
          */
         actions: PropTypes.shape({
-
             /*
              * Action creator to patch current channel
              */
@@ -98,7 +108,8 @@ export class RenameChannelModal extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (!Utils.areObjectsEqual(nextProps.channel, this.props.channel)) {
             this.setState({
                 displayName: nextProps.channel.display_name,
@@ -109,15 +120,15 @@ export class RenameChannelModal extends React.PureComponent {
 
     setError = (err) => {
         this.setState({serverError: err.message});
-    }
+    };
 
     unsetError = () => {
         this.setState({serverError: ''});
-    }
+    };
 
     handleEntering = () => {
         Utils.placeCaretAtEnd(this.textbox);
-    }
+    };
 
     handleHide = (e) => {
         if (e) {
@@ -131,7 +142,7 @@ export class RenameChannelModal extends React.PureComponent {
             invalid: false,
             show: false,
         });
-    }
+    };
 
     handleSubmit = async (e) => {
         if (e) {
@@ -143,16 +154,25 @@ export class RenameChannelModal extends React.PureComponent {
         const oldDisplayName = channel.display_name;
         const state = {serverError: ''};
         const {formatMessage} = this.props.intl;
-        const {actions: {patchChannel}} = this.props;
+        const {
+            actions: {patchChannel},
+        } = this.props;
 
         channel.display_name = this.state.displayName.trim();
         if (!channel.display_name) {
             state.displayNameError = formatMessage(holders.required);
             state.invalid = true;
-        } else if (channel.display_name.length > Constants.MAX_CHANNELNAME_LENGTH) {
-            state.displayNameError = formatMessage(holders.maxLength, {maxLength: Constants.MAX_CHANNELNAME_LENGTH});
+        } else if (
+            channel.display_name.length > Constants.MAX_CHANNELNAME_LENGTH
+        ) {
+            state.displayNameError = formatMessage(holders.maxLength, {
+                maxLength: Constants.MAX_CHANNELNAME_LENGTH,
+            });
+
             state.invalid = true;
-        } else if (channel.display_name.length < Constants.MIN_CHANNELNAME_LENGTH) {
+        } else if (
+            channel.display_name.length < Constants.MIN_CHANNELNAME_LENGTH
+        ) {
             state.displayNameError = (
                 <FormattedMessage
                     id='rename_channel.minLength'
@@ -162,6 +182,7 @@ export class RenameChannelModal extends React.PureComponent {
                     }}
                 />
             );
+
             state.invalid = true;
         } else {
             state.displayNameError = '';
@@ -172,7 +193,10 @@ export class RenameChannelModal extends React.PureComponent {
             state.nameError = formatMessage(holders.required);
             state.invalid = true;
         } else if (channel.name.length > Constants.MAX_CHANNELNAME_LENGTH) {
-            state.nameError = formatMessage(holders.maxLength, {maxLength: Constants.MAX_CHANNELNAME_LENGTH});
+            state.nameError = formatMessage(holders.maxLength, {
+                maxLength: Constants.MAX_CHANNELNAME_LENGTH,
+            });
+
             state.invalid = true;
         } else {
             const cleanedName = cleanUpUrlable(channel.name);
@@ -189,7 +213,10 @@ export class RenameChannelModal extends React.PureComponent {
         if (state.invalid) {
             return;
         }
-        if (oldName === channel.name && oldDisplayName === channel.display_name) {
+        if (
+            oldName === channel.name &&
+            oldDisplayName === channel.display_name
+        ) {
             this.onSaveSuccess();
             return;
         }
@@ -201,13 +228,15 @@ export class RenameChannelModal extends React.PureComponent {
         } else if (error) {
             this.setError(error);
         }
-    }
+    };
 
     onSaveSuccess = () => {
         this.handleHide();
         this.unsetError();
-        browserHistory.push('/' + this.props.team.name + '/channels/' + this.state.channelName);
-    }
+        browserHistory.push(
+            '/' + this.props.team.name + '/channels/' + this.state.channelName,
+        );
+    };
 
     handleCancel = (e) => {
         this.setState({
@@ -216,38 +245,52 @@ export class RenameChannelModal extends React.PureComponent {
         });
 
         this.handleHide(e);
-    }
+    };
 
     onNameChange = (e) => {
         this.setState({channelName: e.target.value});
-    }
+    };
 
     onDisplayNameChange = (e) => {
         this.setState({displayName: e.target.value});
-    }
+    };
 
     getTextbox = (node) => {
         this.textbox = node;
-    }
+    };
 
     render() {
         let displayNameError = null;
         let displayNameClass = 'form-group';
         if (this.state.displayNameError) {
-            displayNameError = <label className='control-label'>{this.state.displayNameError}</label>;
+            displayNameError = (
+                <label className='control-label'>
+                    {this.state.displayNameError}
+                </label>
+            );
+
             displayNameClass += ' has-error';
         }
 
         let nameError = null;
         let nameClass = 'form-group';
         if (this.state.nameError) {
-            nameError = <label className='control-label'>{this.state.nameError}</label>;
+            nameError = (
+                <label className='control-label'>{this.state.nameError}</label>
+            );
+
             nameClass += ' has-error';
         }
 
         let serverError = null;
         if (this.state.serverError) {
-            serverError = <div className='form-group has-error'><label className='control-label'>{this.state.serverError}</label></div>;
+            serverError = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>
+                        {this.state.serverError}
+                    </label>
+                </div>
+            );
         }
 
         const {formatMessage} = this.props.intl;
@@ -262,9 +305,7 @@ export class RenameChannelModal extends React.PureComponent {
 
         const fullUrl = this.props.currentTeamUrl + '/channels';
         const shortUrl = getShortenedURL(fullUrl, 35);
-        const urlTooltip = (
-            <Tooltip id='urlTooltip'>{fullUrl}</Tooltip>
-        );
+        const urlTooltip = <Tooltip id='urlTooltip'>{fullUrl}</Tooltip>;
 
         return (
             <Modal
@@ -305,10 +346,13 @@ export class RenameChannelModal extends React.PureComponent {
                                 value={this.state.displayName}
                                 maxLength={Constants.MAX_CHANNELNAME_LENGTH}
                             />
+
                             {displayNameError}
                         </div>
                         <div className={nameClass}>
-                            <label className='control-label'>{urlInputLabel}</label>
+                            <label className='control-label'>
+                                {urlInputLabel}
+                            </label>
 
                             <div className='input-group input-group--limit'>
                                 <OverlayTrigger
@@ -317,7 +361,9 @@ export class RenameChannelModal extends React.PureComponent {
                                     placement='top'
                                     overlay={urlTooltip}
                                 >
-                                    <span className='input-group-addon'>{shortUrl}</span>
+                                    <span className='input-group-addon'>
+                                        {shortUrl}
+                                    </span>
                                 </OverlayTrigger>
                                 <LocalizedInput
                                     onChange={this.onNameChange}

@@ -26,9 +26,8 @@ export default function HelpFormatting() {
                         id='help.formatting.renders'
                         defaultMessage='Renders as:'
                     />
-                </p>
-                {' '}
-                <Markdown message={example}/>
+                </p>{' '}
+                <Markdown message={example} />
             </div>
         );
     };
@@ -41,7 +40,7 @@ export default function HelpFormatting() {
                     defaultMessage='Formatting Text'
                 />
             </h1>
-            <hr/>
+            <hr />
             <p>
                 <FormattedMessage
                     id='help.formatting.intro'
@@ -108,7 +107,9 @@ export default function HelpFormatting() {
                 id='help.formatting.codeBlock'
                 defaultMessage='Code block'
             >
-                {(example) => renderRawExampleWithResult('```\n' + example + '\n```')}
+                {(example) =>
+                    renderRawExampleWithResult('```\n' + example + '\n```')
+                }
             </FormattedMessage>
             <h3 className='markdown__heading'>
                 <FormattedMessage
@@ -119,13 +120,15 @@ export default function HelpFormatting() {
             <p>
                 <FormattedMarkdownMessage
                     id='help.formatting.syntax.description'
-                    defaultMessage='To add syntax highlighting, type the language to be highlighted after the ``` at the beginning of the code block. Mattermost also offers four different code themes (GitHub, Solarized Dark, Solarized Light, Monokai) that can be changed in **Account Settings** > **Display** > **Theme** > **Custom Theme** > **Center Channel Styles**'
+                    defaultMessage='To add syntax highlighting, type the language to be highlighted after the ``` at the beginning of the code block. SCC also offers four different code themes (GitHub, Solarized Dark, Solarized Light, Monokai) that can be changed in **Account Settings** > **Display** > **Theme** > **Custom Theme** > **Center Channel Styles**'
                 />
             </p>
             <p>
                 <FormattedMarkdownMessage
                     id='help.formatting.supportedSyntax'
-                    defaultMessage={'Supported languages are: `as`, `applescript`, `osascript`, `scpt`, `bash`, `sh`, `zsh`, `clj`, `boot`, `cl2`, `cljc`, `cljs`, `cljs.hl`, `cljscm`, `cljx`, `hic`, `coffee`, `_coffee`, `cake`, `cjsx`, `cson`, `iced`, `cpp`, `c`, `cc`, `h`, `c++`, `h++`, `hpp`, `cs`, `csharp`, `css`, `d`, `di`, `dart`, `delphi`, `dpr`, `dfm`, `pas`, `pascal`, `freepascal`, `lazarus`, `lpr`, `lfm`, `diff`, `django`, `jinja`, `dockerfile`, `docker`, `erl`, `f90`, `f95`, `fsharp`, `fs`, `gcode`, `nc`, `go`, `groovy`, `handlebars`, `hbs`, `html.hbs`, `html.handlebars`, `hs`, `hx`, `java`, `jsp`, `js`, `jsx`, `json`, `jl`, `kt`, `ktm`, `kts`, `less`, `lisp`, `lua`, `mk`, `mak`, `md`, `mkdown`, `mkd`, `matlab`, `m`, `mm`, `objc`, `obj-c`, `ml`, `perl`, `pl`, `php`, `php3`, `php4`, `php5`, `php6`, `ps`, `ps1`, `pp`, `py`, `gyp`, `r`, `ruby`, `rb`, `gemspec`, `podspec`, `thor`, `irb`, `rs`, `scala`, `scm`, `sld`, `scss`, `st`, `styl`, `sql`, `swift`, `tex`, `vbnet`, `vb`, `bas`, `vbs`, `v`, `veo`, `xml`, `html`, `xhtml`, `rss`, `atom`, `xsl`, `plist`, `yaml`'}
+                    defaultMessage={
+                        'Supported languages are: `as`, `applescript`, `osascript`, `scpt`, `bash`, `sh`, `zsh`, `clj`, `boot`, `cl2`, `cljc`, `cljs`, `cljs.hl`, `cljscm`, `cljx`, `hic`, `coffee`, `_coffee`, `cake`, `cjsx`, `cson`, `iced`, `cpp`, `c`, `cc`, `h`, `c++`, `h++`, `hpp`, `cs`, `csharp`, `css`, `d`, `di`, `dart`, `delphi`, `dpr`, `dfm`, `pas`, `pascal`, `freepascal`, `lazarus`, `lpr`, `lfm`, `diff`, `django`, `jinja`, `dockerfile`, `docker`, `erl`, `f90`, `f95`, `fsharp`, `fs`, `gcode`, `nc`, `go`, `groovy`, `handlebars`, `hbs`, `html.hbs`, `html.handlebars`, `hs`, `hx`, `java`, `jsp`, `js`, `jsx`, `json`, `jl`, `kt`, `ktm`, `kts`, `less`, `lisp`, `lua`, `mk`, `mak`, `md`, `mkdown`, `mkd`, `matlab`, `m`, `mm`, `objc`, `obj-c`, `ml`, `perl`, `pl`, `php`, `php3`, `php4`, `php5`, `php6`, `ps`, `ps1`, `pp`, `py`, `gyp`, `r`, `ruby`, `rb`, `gemspec`, `podspec`, `thor`, `irb`, `rs`, `scala`, `scm`, `sld`, `scss`, `st`, `styl`, `sql`, `swift`, `tex`, `vbnet`, `vb`, `bas`, `vbs`, `v`, `veo`, `xml`, `html`, `xhtml`, `rss`, `atom`, `xsl`, `plist`, `yaml`'
+                    }
                 />
             </p>
             <p>
@@ -136,7 +139,9 @@ export default function HelpFormatting() {
             </p>
             <FormattedMessage
                 id='help.formatting.syntaxEx'
-                defaultMessage={'```go\npackage main\nimport "fmt"\nfunc main() \\{\n    fmt.Println("Hello, 世界")\n\\}\n```'}
+                defaultMessage={
+                    "```go\npackage main\nimport 'fmt'\nfunc main() \\{\n    fmt.Println('Hello, \u4E16\u754C')\n\\}\n```"
+                }
                 values={{dummy: ''}}
             >
                 {(example) => renderRawExample(example)}
@@ -155,7 +160,7 @@ export default function HelpFormatting() {
             </p>
             <p>
                 <img
-                    src='https://docs.mattermost.com/_images/syntax-highlighting-github.PNG'
+                    src='https://docs.securCom.me/_images/syntax-highlighting-github.PNG'
                     alt='go syntax-highlighting'
                     className='markdown-inline-img'
                 />
@@ -168,7 +173,7 @@ export default function HelpFormatting() {
             </p>
             <p>
                 <img
-                    src='https://docs.mattermost.com/_images/syntax-highlighting-sol-dark.PNG'
+                    src='https://docs.securCom.me/_images/syntax-highlighting-sol-dark.PNG'
                     alt='go syntax-highlighting'
                     className='markdown-inline-img'
                 />
@@ -181,7 +186,7 @@ export default function HelpFormatting() {
             </p>
             <p>
                 <img
-                    src='https://docs.mattermost.com/_images/syntax-highlighting-sol-light.PNG'
+                    src='https://docs.securCom.me/_images/syntax-highlighting-sol-light.PNG'
                     alt='go syntax-highlighting'
                     className='markdown-inline-img'
                 />
@@ -194,7 +199,7 @@ export default function HelpFormatting() {
             </p>
             <p>
                 <img
-                    src='https://docs.mattermost.com/_images/syntax-highlighting-monokai.PNG'
+                    src='https://docs.securCom.me/_images/syntax-highlighting-monokai.PNG'
                     alt='go syntax-highlighting'
                     className='markdown-inline-img'
                 />
@@ -217,7 +222,7 @@ export default function HelpFormatting() {
                     id='help.formatting.renders'
                     defaultMessage='Renders as:'
                 >
-                    {(text) => (<Markdown message={text + ' `monospace`'}/>)}
+                    {(text) => <Markdown message={text + ' `monospace`'} />}
                 </FormattedMessage>
             </p>
             <h2 className='markdown__heading'>
@@ -234,16 +239,20 @@ export default function HelpFormatting() {
             </p>
             <FormattedMessage
                 id='help.formatting.linkEx'
-                defaultMessage={'[Check out Mattermost!](https://about.mattermost.com/)'}
+                defaultMessage={
+                    '[Check out securCom!](https://about.securCom.me/)'
+                }
             >
                 {(example) => (
                     <div>
-                        <Markdown message={'`' + example + '`'}/>
+                        <Markdown message={'`' + example + '`'} />
                         <FormattedMessage
                             id='help.formatting.renders'
                             defaultMessage='Renders as:'
                         >
-                            {(text) => (<Markdown message={text + ' ' + example}/>)}
+                            {(text) => (
+                                <Markdown message={text + ' ' + example} />
+                            )}
                         </FormattedMessage>
                     </div>
                 )}
@@ -262,7 +271,9 @@ export default function HelpFormatting() {
             </p>
             <FormattedMessage
                 id='help.formatting.imagesExample'
-                defaultMessage={'![alt text](link "hover text")\n\nand\n\n[![Build Status](https://travis-ci.org/mattermost/mattermost-server.svg?branch=master)](https://travis-ci.org/mattermost/mattermost-server) [![Github](https://assets-cdn.github.com/favicon.ico)](https://github.com/mattermost/mattermost-server)'}
+                defaultMessage={
+                    "![alt text](link 'hover text')\n\nand\n\n[![Build Status](https://travis-ci.org/mattermost/mattermost-server.svg?branch=master)](https://travis-ci.org/mattermost/mattermost-server) [![Github](https://assets-cdn.github.com/favicon.ico)](https://github.com/mattermost/mattermost-server)"
+                }
             >
                 {(example) => renderRawExampleWithResult(example)}
             </FormattedMessage>
@@ -275,7 +286,9 @@ export default function HelpFormatting() {
             <p>
                 <FormattedMarkdownMessage
                     id='help.formatting.emojis.description'
-                    defaultMessage={'Open the emoji autocomplete by typing `:`. A full list of emojis can be found [here](!http://www.emoji-cheat-sheet.com/). It is also possible to create your own [Custom Emoji](!http://docs.mattermost.com/help/settings/custom-emoji.html) if the emoji you want to use doesn\'t exist.'}
+                    defaultMessage={
+                        "Open the emoji autocomplete by typing `:`. A full list of emojis can be found [here](!http://www.emoji-cheat-sheet.com/). It is also possible to create your own [Custom Emoji](!http://docs.securCom.me/help/settings/custom-emoji.html) if the emoji you want to use doesn't exist."
+                    }
                 />
             </p>
             {renderRawExampleWithResult(':smile: :+1: :sheep:')}
@@ -296,10 +309,10 @@ export default function HelpFormatting() {
                     id='help.formatting.renders'
                     defaultMessage='Renders as:'
                 >
-                    {(text) => <Markdown message={'`***` ' + text}/>}
+                    {(text) => <Markdown message={'`***` ' + text} />}
                 </FormattedMessage>
             </p>
-            <Markdown message='***'/>
+            <Markdown message='***' />
             <h2 className='markdown__heading'>
                 <FormattedMessage
                     id='help.formatting.quotes.title'
@@ -338,7 +351,9 @@ export default function HelpFormatting() {
             </p>
             <FormattedMessage
                 id='help.formatting.listExample'
-                defaultMessage={'* list item one\n* list item two\n    * item two sub-point'}
+                defaultMessage={
+                    '* list item one\n* list item two\n    * item two sub-point'
+                }
             >
                 {(example) => renderRawExampleWithResult(example)}
             </FormattedMessage>
@@ -362,7 +377,9 @@ export default function HelpFormatting() {
             </p>
             <FormattedMessage
                 id='help.formatting.checklistExample'
-                defaultMessage={'- [ ] Item one\n- [ ] Item two\n- [x] Completed item'}
+                defaultMessage={
+                    '- [ ] Item one\n- [ ] Item two\n- [x] Completed item'
+                }
             >
                 {(example) => renderRawExampleWithResult(example)}
             </FormattedMessage>
@@ -375,12 +392,16 @@ export default function HelpFormatting() {
             <p>
                 <FormattedMarkdownMessage
                     id='help.formatting.tables.description'
-                    defaultMessage={'Create a table by placing a dashed line under the header row and separating the columns with a pipe `|`. (The columns don\'t need to line up exactly for it to work). Choose how to align table columns by including colons `:` within the header row.'}
+                    defaultMessage={
+                        "Create a table by placing a dashed line under the header row and separating the columns with a pipe `|`. (The columns don't need to line up exactly for it to work). Choose how to align table columns by including colons `:` within the header row."
+                    }
                 />
             </p>
             <FormattedMessage
                 id='help.formatting.tableExample'
-                defaultMessage={'| Left-Aligned  | Center Aligned  | Right Aligned |\n| :------------ |:---------------:| -----:|\n| Left column 1 | this text       |  $100 |\n| Left column 2 | is              |   $10 |\n| Left column 3 | centered        |    $1 |'}
+                defaultMessage={
+                    '| Left-Aligned  | Center Aligned  | Right Aligned |\n| :------------ |:---------------:| -----:|\n| Left column 1 | this text       |  $100 |\n| Left column 2 | is              |   $10 |\n| Left column 3 | centered        |    $1 |'
+                }
             >
                 {(example) => renderRawExampleWithResult(example)}
             </FormattedMessage>
@@ -393,12 +414,16 @@ export default function HelpFormatting() {
             <p>
                 <FormattedMessage
                     id='help.formatting.headings.description'
-                    defaultMessage={'Make a heading by typing # and a space before your title. For smaller headings, use more #\'s.'}
+                    defaultMessage={
+                        "Make a heading by typing # and a space before your title. For smaller headings, use more #'s."
+                    }
                 />
             </p>
             <FormattedMessage
                 id='help.formatting.headingsExample'
-                defaultMessage={'## Large Heading\n### Smaller Heading\n#### Even Smaller Heading'}
+                defaultMessage={
+                    '## Large Heading\n### Smaller Heading\n#### Even Smaller Heading'
+                }
             >
                 {(example) => renderRawExampleWithResult(example)}
             </FormattedMessage>

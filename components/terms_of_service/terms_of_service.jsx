@@ -59,6 +59,7 @@ export default class TermsOfService extends React.PureComponent {
             customTermsOfServiceText: '',
             loading: true,
         });
+
         const {data} = await this.props.actions.getTermsOfService();
         if (data) {
             this.setState({
@@ -67,7 +68,9 @@ export default class TermsOfService extends React.PureComponent {
                 loading: false,
             });
         } else {
-            GlobalActions.emitUserLoggedOutEvent(`/login?extra=${Constants.GET_TERMS_ERROR}`);
+            GlobalActions.emitUserLoggedOutEvent(
+                `/login?extra=${Constants.GET_TERMS_ERROR}`,
+            );
         }
     };
 
@@ -81,18 +84,16 @@ export default class TermsOfService extends React.PureComponent {
             loadingAgree: true,
             serverError: null,
         });
-        this.registerUserAction(
-            true,
-            () => {
-                const query = new URLSearchParams(this.props.location.search);
-                const redirectTo = query.get('redirect_to');
-                if (redirectTo && redirectTo.match(/^\/([^/]|$)/)) {
-                    browserHistory.push(redirectTo);
-                } else {
-                    GlobalActions.redirectUserToDefaultTeam();
-                }
+
+        this.registerUserAction(true, () => {
+            const query = new URLSearchParams(this.props.location.search);
+            const redirectTo = query.get('redirect_to');
+            if (redirectTo && redirectTo.match(/^\/([^/]|$)/)) {
+                browserHistory.push(redirectTo);
+            } else {
+                GlobalActions.redirectUserToDefaultTeam();
             }
-        );
+        });
     };
 
     handleRejectTerms = () => {
@@ -100,16 +101,20 @@ export default class TermsOfService extends React.PureComponent {
             loadingDisagree: true,
             serverError: null,
         });
-        this.registerUserAction(
-            false,
-            () => {
-                GlobalActions.emitUserLoggedOutEvent(`/login?extra=${Constants.TERMS_REJECTED}`);
-            }
-        );
+
+        this.registerUserAction(false, () => {
+            GlobalActions.emitUserLoggedOutEvent(
+                `/login?extra=${Constants.TERMS_REJECTED}`,
+            );
+        });
     };
 
     registerUserAction = async (accepted, success) => {
-        const {data} = await this.props.actions.updateMyTermsOfServiceStatus(this.state.customTermsOfServiceId, accepted);
+        const {data} = await this.props.actions.updateMyTermsOfServiceStatus(
+            this.state.customTermsOfServiceId,
+            accepted,
+        );
+
         if (data) {
             success(data);
         } else {
@@ -128,7 +133,7 @@ export default class TermsOfService extends React.PureComponent {
 
     render() {
         if (this.state.loading) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
 
         let termsMarkdownClasses = 'terms-of-service__markdown';
@@ -139,13 +144,10 @@ export default class TermsOfService extends React.PureComponent {
         }
         return (
             <div>
-                <AnnouncementBar/>
+                <AnnouncementBar />
                 <div className='signup-header'>
-                    <a
-                        href='#'
-                        onClick={this.handleLogoutClick}
-                    >
-                        <LogoutIcon/>
+                    <a href='#' onClick={this.handleLogoutClick}>
+                        <LogoutIcon />
                         <FormattedMessage
                             id='web.header.logout'
                             defaultMessage='Logout'
@@ -156,19 +158,32 @@ export default class TermsOfService extends React.PureComponent {
                     <div className='signup-team__container terms-of-service__container'>
                         <div className={termsMarkdownClasses}>
                             <div className='medium-center'>
-                                {messageHtmlToComponent(this.formattedText(this.state.customTermsOfServiceText), false, {mentions: false})}
+                                {messageHtmlToComponent(
+                                    this.formattedText(
+                                        this.state.customTermsOfServiceText,
+                                    ),
+
+                                    false,
+                                    {mentions: false},
+                                )}
                             </div>
                         </div>
                         <div className='terms-of-service__footer medium-center'>
                             <ButtonGroup className='terms-of-service__button-group'>
                                 <Button
                                     bsStyle={'primary'}
-                                    disabled={this.state.loadingAgree || this.state.loadingDisagree}
+                                    disabled={
+                                        this.state.loadingAgree ||
+                                        this.state.loadingDisagree
+                                    }
                                     id='acceptTerms'
                                     onClick={this.handleAcceptTerms}
                                     type='submit'
                                 >
-                                    {this.state.loadingAgree && <LoadingSpinner/>}
+                                    {this.state.loadingAgree && (
+                                        <LoadingSpinner />
+                                    )}
+
                                     <FormattedMessage
                                         id='terms_of_service.agreeButton'
                                         defaultMessage={'I Agree'}
@@ -176,12 +191,18 @@ export default class TermsOfService extends React.PureComponent {
                                 </Button>
                                 <Button
                                     bsStyle={'link'}
-                                    disabled={this.state.loadingAgree || this.state.loadingDisagree}
+                                    disabled={
+                                        this.state.loadingAgree ||
+                                        this.state.loadingDisagree
+                                    }
                                     id='rejectTerms'
                                     onClick={this.handleRejectTerms}
                                     type='reset'
                                 >
-                                    {this.state.loadingDisagree && <LoadingSpinner/>}
+                                    {this.state.loadingDisagree && (
+                                        <LoadingSpinner />
+                                    )}
+
                                     <FormattedMessage
                                         id='terms_of_service.disagreeButton'
                                         defaultMessage={'I Disagree'}
@@ -190,9 +211,7 @@ export default class TermsOfService extends React.PureComponent {
                             </ButtonGroup>
                             {Boolean(this.state.serverError) && (
                                 <div className='terms-of-service__server-error alert alert-warning'>
-                                    <WarningIcon/>
-                                    {' '}
-                                    {this.state.serverError}
+                                    <WarningIcon /> {this.state.serverError}
                                 </div>
                             )}
                         </div>

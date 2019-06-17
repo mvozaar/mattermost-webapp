@@ -43,9 +43,7 @@ class EmoticonSuggestion extends Suggestion {
                         title={text}
                     />
                 </div>
-                <div className='pull-left'>
-                    {text}
-                </div>
+                <div className='pull-left'>{text}</div>
             </div>
         );
     }
@@ -54,7 +52,7 @@ class EmoticonSuggestion extends Suggestion {
 export default class EmoticonProvider extends Provider {
     handlePretextChanged(pretext, resultsCallback) {
         // Look for the potential emoticons at the start of the text, after whitespace, and at the start of emoji reaction commands
-        const captured = (/(^|\s|^\+|^-)(:([^:\s]*))$/g).exec(pretext);
+        const captured = /(^|\s|^\+|^-)(:([^:\s]*))$/g.exec(pretext);
         if (!captured) {
             return false;
         }
@@ -77,8 +75,19 @@ export default class EmoticonProvider extends Provider {
             }
         }
 
-        if (store.getState().entities.general.config.EnableCustomEmoji === 'true') {
-            store.dispatch(autocompleteCustomEmojis(partialName)).then(() => this.findAndSuggestEmojis(text, partialName, resultsCallback));
+        if (
+            store.getState().entities.general.config.EnableCustomEmoji ===
+            'true'
+        ) {
+            store
+                .dispatch(autocompleteCustomEmojis(partialName))
+                .then(() =>
+                    this.findAndSuggestEmojis(
+                        text,
+                        partialName,
+                        resultsCallback,
+                    ),
+                );
         } else {
             this.findAndSuggestEmojis(text, partialName, resultsCallback);
         }
@@ -107,9 +116,11 @@ export default class EmoticonProvider extends Provider {
                 // This is a system emoji so it may have multiple names
                 for (const alias of emoji.aliases) {
                     if (alias.indexOf(partialName) !== -1) {
-                        const matchedArray = recentEmojis.includes(alias) || recentEmojis.includes(name) ?
-                            recentMatched :
-                            matched;
+                        const matchedArray =
+                            recentEmojis.includes(alias) ||
+                            recentEmojis.includes(name)
+                                ? recentMatched
+                                : matched;
 
                         matchedArray.push({name: alias, emoji});
                         break;
@@ -122,9 +133,9 @@ export default class EmoticonProvider extends Provider {
                     continue;
                 }
 
-                const matchedArray = recentEmojis.includes(name) ?
-                    recentMatched :
-                    matched;
+                const matchedArray = recentEmojis.includes(name)
+                    ? recentMatched
+                    : matched;
 
                 matchedArray.push({name, emoji});
             }
@@ -143,10 +154,7 @@ export default class EmoticonProvider extends Provider {
             ...this.formatEmojis(matched),
         ];
 
-        const items = [
-            ...recentMatched,
-            ...matched,
-        ];
+        const items = [...recentMatched, ...matched];
 
         // Required to get past the dispatch during dispatch error
 

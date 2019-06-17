@@ -12,15 +12,15 @@ describe('components/FlagPostSearchHint', () => {
             <FlagPostSearchHint
                 dataRetentionEnableMessageDeletion={true}
                 dataRetentionMessageRetentionDays={'30'}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, without data retention', () => {
-        const wrapper = shallow(
-            <FlagPostSearchHint/>
-        );
+        const wrapper = shallow(<FlagPostSearchHint />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

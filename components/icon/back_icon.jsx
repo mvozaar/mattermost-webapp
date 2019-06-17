@@ -12,12 +12,7 @@ export default class BackIcon extends React.PureComponent {
                 id='generic_icons.back'
                 defaultMessage='Back Icon'
             >
-                {(title) => (
-                    <i
-                        className='fa fa-angle-left'
-                        title={title}
-                    />
-                )}
+                {(title) => <i className='fa fa-angle-left' title={title} />}
             </FormattedMessage>
         );
     }

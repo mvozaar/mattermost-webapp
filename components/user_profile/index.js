@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 
-import {getUser, makeGetDisplayName} from 'mattermost-redux/selectors/entities/users';
+import {
+    getUser,
+    makeGetDisplayName,
+} from 'mattermost-redux/selectors/entities/users';
 
 import UserProfile from './user_profile';
 

@@ -16,8 +16,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 channelId={'test-channel-id'}
                 channelStatus={'test'}
                 hasDraft={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -30,8 +31,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 teammateId={'test'}
                 teammateDeletedAt={1}
                 hasDraft={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -43,8 +45,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 channelId={'test-channel-id'}
                 membersCount={3}
                 hasDraft={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -55,8 +58,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 channelType={Constants.PRIVATE_CHANNEL}
                 channelId={'test-channel-id'}
                 hasDraft={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -67,8 +71,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 channelType={Constants.OPEN_CHANNEL}
                 channelId={'test-channel-id'}
                 hasDraft={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -79,8 +84,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 channelType={Constants.OPEN_CHANNEL}
                 channelId={'test-channel-id'}
                 hasDraft={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -91,8 +97,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 channelType={Constants.OPEN_CHANNEL}
                 channelId={'test-channel-id'}
                 hasDraft={true}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

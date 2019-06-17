@@ -31,7 +31,7 @@ export default class ChannelSelectorModal extends React.Component {
             setModalSearchTerm: PropTypes.func.isRequired,
             searchChannels: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -53,7 +53,8 @@ export default class ChannelSelectorModal extends React.Component {
         });
     }
 
-    componentDidUpdate(prevProps) { // eslint-disable-line camelcase
+    componentDidUpdate(prevProps) {
+        // eslint-disable-line camelcase
         if (prevProps.searchTerm !== this.props.searchTerm) {
             clearTimeout(this.searchTimeoutId);
 
@@ -62,27 +63,24 @@ export default class ChannelSelectorModal extends React.Component {
                 return;
             }
 
-            this.searchTimeoutId = setTimeout(
-                async () => {
-                    this.setChannelsLoadingState(true);
-                    await this.props.actions.searchChannels(searchTerm);
-                    this.setChannelsLoadingState(false);
-                },
-                Constants.SEARCH_TIMEOUT_MILLISECONDS
-            );
+            this.searchTimeoutId = setTimeout(async () => {
+                this.setChannelsLoadingState(true);
+                await this.props.actions.searchChannels(searchTerm);
+                this.setChannelsLoadingState(false);
+            }, Constants.SEARCH_TIMEOUT_MILLISECONDS);
         }
     }
 
     handleHide = () => {
         this.props.actions.setModalSearchTerm('');
         this.setState({show: false});
-    }
+    };
 
     handleExit = () => {
         if (this.props.onModalDismissed) {
             this.props.onModalDismissed();
         }
-    }
+    };
 
     handleSubmit = (e) => {
         if (e) {
@@ -95,39 +93,45 @@ export default class ChannelSelectorModal extends React.Component {
 
         this.props.onChannelsSelected(this.state.values);
         this.handleHide();
-    }
+    };
 
     addValue = (value) => {
         const values = Object.assign([], this.state.values);
-        if (value && value.id && values.findIndex((v) => v.id === value.id) === -1) {
+        if (
+            value &&
+            value.id &&
+            values.findIndex((v) => v.id === value.id) === -1
+        ) {
             values.push(value);
         }
 
         this.setState({values});
-    }
+    };
 
     setChannelsLoadingState = (loadingState) => {
         this.setState({
             loadingChannels: loadingState,
         });
-    }
+    };
 
     handlePageChange = (page, prevPage) => {
         if (page > prevPage) {
             this.setChannelsLoadingState(true);
-            this.props.actions.loadChannels(page + 1, CHANNELS_PER_PAGE).then(() => {
-                this.setChannelsLoadingState(false);
-            });
+            this.props.actions
+                .loadChannels(page + 1, CHANNELS_PER_PAGE)
+                .then(() => {
+                    this.setChannelsLoadingState(false);
+                });
         }
-    }
+    };
 
     handleDelete = (values) => {
         this.setState({values});
-    }
+    };
 
     search = (term) => {
         this.props.actions.setModalSearchTerm(term);
-    }
+    };
 
     renderOption(option, isSelected, onAdd) {
         let rowSelected = '';
@@ -142,19 +146,23 @@ export default class ChannelSelectorModal extends React.Component {
                 className={'more-modal__row clickable ' + rowSelected}
                 onClick={() => onAdd(option)}
             >
-                <div
-                    className='more-modal__details'
-                >
-                    {option.type === 'P' &&
-                        <LockIcon className='icon icon__lock'/>}
-                    {option.type === 'O' &&
-                        <GlobeIcon className='icon icon__globe'/>}
+                <div className='more-modal__details'>
+                    {option.type === 'P' && (
+                        <LockIcon className='icon icon__lock' />
+                    )}
+
+                    {option.type === 'O' && (
+                        <GlobeIcon className='icon icon__globe' />
+                    )}
+
                     <span className='channel-name'>{option.display_name}</span>
-                    <span className='team-name'>{'(' + option.team_display_name + ')'}</span>
+                    <span className='team-name'>
+                        {'(' + option.team_display_name + ')'}
+                    </span>
                 </div>
                 <div className='more-modal__actions'>
                     <div className='more-modal__actions--round'>
-                        <i className='fa fa-plus'/>
+                        <i className='fa fa-plus' />
                     </div>
                 </div>
             </div>
@@ -162,7 +170,9 @@ export default class ChannelSelectorModal extends React.Component {
     }
 
     renderValue(props) {
-        return props.data.display_name + ' (' + props.data.team_display_name + ')';
+        return (
+            props.data.display_name + ' (' + props.data.team_display_name + ')'
+        );
     }
 
     render() {
@@ -179,10 +189,10 @@ export default class ChannelSelectorModal extends React.Component {
         if (this.props.channels) {
             channels = this.props.channels.filter((channel) => {
                 return (
-                    (channel.delete_at === 0) &&
-                    (channel.scheme_id !== this.currentSchemeId) &&
-                    (this.props.alreadySelected.indexOf(channel.id) === -1) &&
-                    (this.props.excludeNames.indexOf(channel.name) === -1)
+                    channel.delete_at === 0 &&
+                    channel.scheme_id !== this.currentSchemeId &&
+                    this.props.alreadySelected.indexOf(channel.id) === -1 &&
+                    this.props.excludeNames.indexOf(channel.name) === -1
                 );
             });
             channels.sort(compareChannels);
@@ -190,7 +200,9 @@ export default class ChannelSelectorModal extends React.Component {
 
         return (
             <Modal
-                dialogClassName={'more-modal more-direct-channels channel-selector-modal'}
+                dialogClassName={
+                    'more-modal more-direct-channels channel-selector-modal'
+                }
                 show={this.state.show}
                 onHide={this.handleHide}
                 onExited={this.handleExit}
@@ -225,7 +237,10 @@ export default class ChannelSelectorModal extends React.Component {
                         buttonSubmitText={buttonSubmitText}
                         saving={false}
                         loading={this.state.loadingChannels}
-                        placeholderText={localizeMessage('multiselect.addChannelsPlaceholder', 'Search and add channels')}
+                        placeholderText={localizeMessage(
+                            'multiselect.addChannelsPlaceholder',
+                            'Search and add channels',
+                        )}
                     />
                 </Modal.Body>
             </Modal>

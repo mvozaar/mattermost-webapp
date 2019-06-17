@@ -18,6 +18,7 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
             general: {
                 config: {},
             },
+
             teams: {
                 currentTeamId: 'someTeamId',
                 myMembers: {
@@ -26,17 +27,18 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                     },
                 },
             },
+
             channels: {
                 myMembers: {
-                    somePublicMemberChannelId: {
-                    },
-                    somePrivateMemberChannelId: {
-                    },
-                    someDirectConversation: {
-                    },
-                    someGroupConversation: {
-                    },
+                    somePublicMemberChannelId: {},
+
+                    somePrivateMemberChannelId: {},
+
+                    someDirectConversation: {},
+
+                    someGroupConversation: {},
                 },
+
                 channels: {
                     somePublicMemberChannelId: {
                         id: 'somePublicMemberChannelId',
@@ -45,6 +47,7 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                         display_name: 'Some Public Member Channel',
                         delete_at: 0,
                     },
+
                     somePrivateMemberChannelId: {
                         id: 'somePrivateMemberChannelId',
                         type: 'P',
@@ -52,6 +55,7 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                         display_name: 'Some Private Member Channel',
                         delete_at: 0,
                     },
+
                     somePublicNonMemberChannelId: {
                         id: 'somePublicNonMemberChannelId',
                         type: 'O',
@@ -59,6 +63,7 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                         display_name: 'Some Public Non-Member Channel',
                         delete_at: 0,
                     },
+
                     somePrivateNonMemberChannelId: {
                         id: 'somePrivateNonMemberChannelId',
                         type: 'P',
@@ -66,6 +71,7 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                         display_name: 'Some Private Non-Member Channel',
                         delete_at: 0,
                     },
+
                     someDirectConversation: {
                         id: 'someDirectConversation',
                         type: 'D',
@@ -73,6 +79,7 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                         display_name: 'Some Direct Conversation',
                         delete_at: 0,
                     },
+
                     someGroupConversation: {
                         id: 'someGroupConversation',
                         type: 'GM',
@@ -81,6 +88,7 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                         delete_at: 0,
                     },
                 },
+
                 channelsInTeam: {
                     someTeamId: [
                         'somePublicMemberChannelId',
@@ -92,16 +100,19 @@ describe('components/SearchChannelWithPermissionsProvider', () => {
                     ],
                 },
             },
+
             roles: {
                 roles: {
                     public_channels_manager: {
                         permissions: ['manage_public_channel_members'],
                     },
+
                     private_channels_manager: {
                         permissions: ['manage_private_channel_members'],
                     },
                 },
             },
+
             users: {
                 profiles: {},
             },

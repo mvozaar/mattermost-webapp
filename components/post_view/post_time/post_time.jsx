@@ -13,7 +13,6 @@ import LocalDateTime from 'components/local_date_time';
 
 export default class PostTime extends React.PureComponent {
     static propTypes = {
-
         /*
          * If true, time will be rendered as a permalink to the post
          */
@@ -24,7 +23,12 @@ export default class PostTime extends React.PureComponent {
          */
         eventTime: PropTypes.number.isRequired,
 
-        location: PropTypes.oneOf([Locations.CENTER, Locations.RHS_ROOT, Locations.RHS_COMMENT, Locations.SEARCH]).isRequired,
+        location: PropTypes.oneOf([
+            Locations.CENTER,
+            Locations.RHS_ROOT,
+            Locations.RHS_COMMENT,
+            Locations.SEARCH,
+        ]).isRequired,
 
         /*
          * The post id of posting being rendered
@@ -46,19 +50,14 @@ export default class PostTime extends React.PureComponent {
 
     render() {
         const localDateTime = (
-            <LocalDateTime
-                eventTime={this.props.eventTime}
-            />
+            <LocalDateTime eventTime={this.props.eventTime} />
         );
+
         if (isMobile() || !this.props.isPermalink) {
             return localDateTime;
         }
 
-        const {
-            location,
-            postId,
-            teamUrl,
-        } = this.props;
+        const {location, postId, teamUrl} = this.props;
 
         return (
             <Link

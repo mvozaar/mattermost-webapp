@@ -7,7 +7,10 @@ import store from 'stores/redux_store.jsx';
 import {ActionTypes} from 'utils/constants.jsx';
 import {getSiteURL} from 'utils/url.jsx';
 import PluginRegistry from 'plugins/registry';
-import {unregisterAllPluginWebSocketEvents, unregisterPluginReconnectHandler} from 'actions/websocket_actions.jsx';
+import {
+    unregisterAllPluginWebSocketEvents,
+    unregisterPluginReconnectHandler,
+} from 'actions/websocket_actions.jsx';
 
 // plugins records all active web app plugins by id.
 window.plugins = {};
@@ -38,9 +41,11 @@ export async function initializePlugins() {
         return;
     }
 
-    await Promise.all(data.map((m) => {
-        return loadPlugin(m);
-    }));
+    await Promise.all(
+        data.map((m) => {
+            return loadPlugin(m);
+        }),
+    );
 }
 
 // getPlugins queries the server for all enabled plugins
@@ -80,7 +85,10 @@ export function loadPlugin(manifest) {
 
         // Backwards compatibility for old plugins
         let bundlePath = manifest.webapp.bundle_path;
-        if (bundlePath.includes('/static/') && !bundlePath.includes('/static/plugins/')) {
+        if (
+            bundlePath.includes('/static/') &&
+            !bundlePath.includes('/static/plugins/')
+        ) {
             bundlePath = bundlePath.replace('/static/', '/static/plugins/');
         }
 
@@ -119,7 +127,7 @@ export function removePlugin(manifest) {
     if (plugin && plugin.uninitialize) {
         plugin.uninitialize();
 
-    // Support the deprecated deinitialize callback from the plugins beta.
+        // Support the deprecated deinitialize callback from the plugins beta.
     } else if (plugin && plugin.deinitialize) {
         plugin.deinitialize();
     }
@@ -162,7 +170,10 @@ export async function loadPluginsIfNecessary() {
     Object.keys(oldManifests).forEach((id) => {
         if (!newManifests.hasOwnProperty(id)) {
             const oldManifest = oldManifests[id];
-            store.dispatch({type: ActionTypes.REMOVED_WEBAPP_PLUGIN, data: oldManifest});
+            store.dispatch({
+                type: ActionTypes.REMOVED_WEBAPP_PLUGIN,
+                data: oldManifest,
+            });
             removePlugin(oldManifest);
         }
     });

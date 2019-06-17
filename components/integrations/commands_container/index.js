@@ -24,10 +24,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadCommandsAndProfilesForTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadCommandsAndProfilesForTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommandsContainer);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(CommandsContainer);

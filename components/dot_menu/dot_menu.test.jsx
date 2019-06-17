@@ -44,9 +44,7 @@ describe('components/dot_menu/DotMenu', () => {
     };
 
     test('should match snapshot, on Center', () => {
-        const wrapper = shallowWithIntl(
-            <DotMenu {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<DotMenu {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
 
@@ -61,9 +59,7 @@ describe('components/dot_menu/DotMenu', () => {
         const utils = require('utils/post_utils'); //eslint-disable-line global-require
         utils.canDeletePost.mockReturnValue(true);
 
-        const wrapper = shallowWithIntl(
-            <DotMenu {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<DotMenu {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });

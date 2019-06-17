@@ -14,7 +14,7 @@ describe('components/MsgTyping', () => {
     };
 
     test('should match snapshot, on nobody typing', () => {
-        const wrapper = shallow(<MsgTyping {...baseProps}/>);
+        const wrapper = shallow(<MsgTyping {...baseProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -22,7 +22,7 @@ describe('components/MsgTyping', () => {
         const typingUsers = ['test.user'];
         const props = {...baseProps, typingUsers};
 
-        const wrapper = shallow(<MsgTyping {...props}/>);
+        const wrapper = shallow(<MsgTyping {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -30,7 +30,7 @@ describe('components/MsgTyping', () => {
         const typingUsers = ['test.user', 'other.test.user', 'another.user'];
         const props = {...baseProps, typingUsers};
 
-        const wrapper = shallow(<MsgTyping {...props}/>);
+        const wrapper = shallow(<MsgTyping {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 });

@@ -31,7 +31,10 @@ export default class CustomUrlSchemesSetting extends React.Component {
     }
 
     stringToArray = (str) => {
-        return str.split(',').map((s) => s.trim()).filter(Boolean);
+        return str
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean);
     };
 
     arrayToString = (arr) => {
@@ -49,10 +52,14 @@ export default class CustomUrlSchemesSetting extends React.Component {
     };
 
     render() {
-        const label = Utils.localizeMessage('admin.customization.customUrlSchemes', 'Custom URL Schemes:');
+        const label = Utils.localizeMessage(
+            'admin.customization.customUrlSchemes',
+            'Custom URL Schemes:',
+        );
+
         const helpText = Utils.localizeMessage(
             'admin.customization.customUrlSchemesDesc',
-            'Allows message text to link if it begins with any of the comma-separated URL schemes listed. By default, the following schemes will create links: "http", "https", "ftp", "tel", and "mailto".'
+            "Allows message text to link if it begins with any of the comma-separated URL schemes listed. By default, the following schemes will create links: 'http', 'https', 'ftp', 'tel', and 'mailto'.",
         );
 
         return (
@@ -66,7 +73,13 @@ export default class CustomUrlSchemesSetting extends React.Component {
                     id={this.props.id}
                     className='form-control'
                     type='text'
-                    placeholder={{id: t('admin.customization.customUrlSchemesPlaceholder'), defaultMessage: 'E.g.: "git,smtp"'}}
+                    placeholder={{
+                        id: t(
+                            'admin.customization.customUrlSchemesPlaceholder',
+                        ),
+
+                        defaultMessage: "E.g.: 'git,smtp'",
+                    }}
                     value={this.state.value}
                     onChange={this.handleChange}
                     disabled={this.props.disabled || this.props.setByEnv}

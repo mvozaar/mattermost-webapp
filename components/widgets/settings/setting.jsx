@@ -25,9 +25,7 @@ const Setting = (props) => {
             </label>
             <div className={inputClassName}>
                 {children}
-                <div className='help-text'>
-                    {helpText}
-                </div>
+                <div className='help-text'>{helpText}</div>
                 {footer}
             </div>
         </div>

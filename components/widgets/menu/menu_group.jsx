@@ -13,7 +13,9 @@ export default class MenuGroup extends React.PureComponent {
     render() {
         const {children} = this.props;
 
-        const divider = this.props.divider || <li className='MenuGroup menu-divider'/>;
+        const divider = this.props.divider || (
+            <li className='MenuGroup menu-divider' />
+        );
 
         return (
             <React.Fragment>

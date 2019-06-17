@@ -24,6 +24,7 @@ describe('components/ChannelHeader', () => {
             goToLastViewedChannel: jest.fn(),
             loadBot: jest.fn(),
         },
+
         teamUrl: 'team_url',
         teamId: 'team_id',
         channel: {},
@@ -41,26 +42,26 @@ describe('components/ChannelHeader', () => {
             name: 'Test',
             delete_at: 0,
         },
+
         channelMember: {
             channel_id: 'channel_id',
             user_id: 'user_id',
         },
+
         currentUser: {
             id: 'user_id',
         },
     };
 
     test('should render properly when empty', () => {
-        const wrapper = shallowWithIntl(
-            <ChannelHeader {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<ChannelHeader {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should render properly when populated', () => {
-        const wrapper = shallowWithIntl(
-            <ChannelHeader {...populatedProps}/>
-        );
+        const wrapper = shallowWithIntl(<ChannelHeader {...populatedProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -80,18 +81,19 @@ describe('components/ChannelHeader', () => {
                     },
                 },
             },
+
             channelMember: {
                 channel_id: 'channel_id',
                 user_id: 'user_id',
             },
+
             currentUser: {
                 id: 'user_id',
             },
         };
 
-        const wrapper = shallowWithIntl(
-            <ChannelHeader {...props}/>
-        );
+        const wrapper = shallowWithIntl(<ChannelHeader {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -101,9 +103,8 @@ describe('components/ChannelHeader', () => {
             channel: {...populatedProps.channel, delete_at: 1234},
         };
 
-        const wrapper = shallowWithIntl(
-            <ChannelHeader {...props}/>
-        );
+        const wrapper = shallowWithIntl(<ChannelHeader {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -113,9 +114,8 @@ describe('components/ChannelHeader', () => {
             isMuted: true,
         };
 
-        const wrapper = shallowWithIntl(
-            <ChannelHeader {...props}/>
-        );
+        const wrapper = shallowWithIntl(<ChannelHeader {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

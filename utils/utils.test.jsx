@@ -13,16 +13,66 @@ describe('Utils.getDisplayNameByUser', () => {
         });
     });
 
-    const userA = {username: 'a_user', nickname: 'a_nickname', first_name: 'a_first_name', last_name: ''};
-    const userB = {username: 'b_user', nickname: 'b_nickname', first_name: '', last_name: 'b_last_name'};
-    const userC = {username: 'c_user', nickname: '', first_name: 'c_first_name', last_name: 'c_last_name'};
-    const userD = {username: 'd_user', nickname: 'd_nickname', first_name: 'd_first_name', last_name: 'd_last_name'};
-    const userE = {username: 'e_user', nickname: '', first_name: 'e_first_name', last_name: 'e_last_name'};
-    const userF = {username: 'f_user', nickname: 'f_nickname', first_name: 'f_first_name', last_name: 'f_last_name'};
-    const userG = {username: 'g_user', nickname: '', first_name: 'g_first_name', last_name: 'g_last_name'};
-    const userH = {username: 'h_user', nickname: 'h_nickname', first_name: '', last_name: 'h_last_name'};
-    const userI = {username: 'i_user', nickname: 'i_nickname', first_name: 'i_first_name', last_name: ''};
-    const userJ = {username: 'j_user', nickname: '', first_name: 'j_first_name', last_name: ''};
+    const userA = {
+        username: 'a_user',
+        nickname: 'a_nickname',
+        first_name: 'a_first_name',
+        last_name: '',
+    };
+    const userB = {
+        username: 'b_user',
+        nickname: 'b_nickname',
+        first_name: '',
+        last_name: 'b_last_name',
+    };
+    const userC = {
+        username: 'c_user',
+        nickname: '',
+        first_name: 'c_first_name',
+        last_name: 'c_last_name',
+    };
+    const userD = {
+        username: 'd_user',
+        nickname: 'd_nickname',
+        first_name: 'd_first_name',
+        last_name: 'd_last_name',
+    };
+    const userE = {
+        username: 'e_user',
+        nickname: '',
+        first_name: 'e_first_name',
+        last_name: 'e_last_name',
+    };
+    const userF = {
+        username: 'f_user',
+        nickname: 'f_nickname',
+        first_name: 'f_first_name',
+        last_name: 'f_last_name',
+    };
+    const userG = {
+        username: 'g_user',
+        nickname: '',
+        first_name: 'g_first_name',
+        last_name: 'g_last_name',
+    };
+    const userH = {
+        username: 'h_user',
+        nickname: 'h_nickname',
+        first_name: '',
+        last_name: 'h_last_name',
+    };
+    const userI = {
+        username: 'i_user',
+        nickname: 'i_nickname',
+        first_name: 'i_first_name',
+        last_name: '',
+    };
+    const userJ = {
+        username: 'j_user',
+        nickname: '',
+        first_name: 'j_first_name',
+        last_name: '',
+    };
 
     test('Show display name of user with TeammateNameDisplay set to username', () => {
         store.dispatch({
@@ -32,7 +82,18 @@ describe('Utils.getDisplayNameByUser', () => {
             },
         });
 
-        [userA, userB, userC, userD, userE, userF, userG, userH, userI, userJ].forEach((user) => {
+        [
+            userA,
+            userB,
+            userC,
+            userD,
+            userE,
+            userF,
+            userG,
+            userH,
+            userI,
+            userJ,
+        ].forEach((user) => {
             expect(Utils.getDisplayNameByUser(user)).toEqual(user.username);
         });
     });
@@ -94,19 +155,100 @@ describe('Utils.sortUsersByStatusAndDisplayName', () => {
         });
     });
 
-    const userA = {id: 'a', username: 'a_user', nickname: 'ja_nickname', first_name: 'a_first_name', last_name: 'ja_last_name'};
-    const userB = {id: 'b', username: 'b_user', nickname: 'ib_nickname', first_name: 'a_first_name', last_name: 'ib_last_name'};
-    const userC = {id: 'c', username: 'c_user', nickname: 'hc_nickname', first_name: 'a_first_name', last_name: 'hc_last_name'};
-    const userD = {id: 'd', username: 'd_user', nickname: 'gd_nickname', first_name: 'a_first_name', last_name: 'gd_last_name'};
-    const userE = {id: 'e', username: 'e_user', nickname: 'fe_nickname', first_name: 'b_first_name', last_name: 'fe_last_name'};
-    const userF = {id: 'f', username: 'f_user', nickname: 'ef_nickname', first_name: 'b_first_name', last_name: 'ef_last_name'};
-    const userG = {id: 'g', username: 'g_user', nickname: 'dg_nickname', first_name: 'b_first_name', last_name: 'dg_last_name'};
-    const userH = {id: 'h', username: 'h_user', nickname: 'ch_nickname', first_name: 'c_first_name', last_name: 'ch_last_name'};
-    const userI = {id: 'i', username: 'i_user', nickname: 'bi_nickname', first_name: 'c_first_name', last_name: 'bi_last_name'};
-    const userJ = {id: 'j', username: 'j_user', nickname: 'aj_nickname', first_name: 'c_first_name', last_name: 'aj_last_name'};
-    const userK = {id: 'k', username: 'k_bot', nickname: 'ak_nickname', first_name: 'a_first_name', last_name: 'aABot_last_name', is_bot: true};
-    const userL = {id: 'l', username: 'l_bot', nickname: 'al_nickname', first_name: 'b_first_name', last_name: 'aBBot_last_name', is_bot: true};
-    const userM = {id: 'm', username: 'm_bot', nickname: 'am_nickname', first_name: 'c_first_name', last_name: 'aCBot_last_name', is_bot: true};
+    const userA = {
+        id: 'a',
+        username: 'a_user',
+        nickname: 'ja_nickname',
+        first_name: 'a_first_name',
+        last_name: 'ja_last_name',
+    };
+    const userB = {
+        id: 'b',
+        username: 'b_user',
+        nickname: 'ib_nickname',
+        first_name: 'a_first_name',
+        last_name: 'ib_last_name',
+    };
+    const userC = {
+        id: 'c',
+        username: 'c_user',
+        nickname: 'hc_nickname',
+        first_name: 'a_first_name',
+        last_name: 'hc_last_name',
+    };
+    const userD = {
+        id: 'd',
+        username: 'd_user',
+        nickname: 'gd_nickname',
+        first_name: 'a_first_name',
+        last_name: 'gd_last_name',
+    };
+    const userE = {
+        id: 'e',
+        username: 'e_user',
+        nickname: 'fe_nickname',
+        first_name: 'b_first_name',
+        last_name: 'fe_last_name',
+    };
+    const userF = {
+        id: 'f',
+        username: 'f_user',
+        nickname: 'ef_nickname',
+        first_name: 'b_first_name',
+        last_name: 'ef_last_name',
+    };
+    const userG = {
+        id: 'g',
+        username: 'g_user',
+        nickname: 'dg_nickname',
+        first_name: 'b_first_name',
+        last_name: 'dg_last_name',
+    };
+    const userH = {
+        id: 'h',
+        username: 'h_user',
+        nickname: 'ch_nickname',
+        first_name: 'c_first_name',
+        last_name: 'ch_last_name',
+    };
+    const userI = {
+        id: 'i',
+        username: 'i_user',
+        nickname: 'bi_nickname',
+        first_name: 'c_first_name',
+        last_name: 'bi_last_name',
+    };
+    const userJ = {
+        id: 'j',
+        username: 'j_user',
+        nickname: 'aj_nickname',
+        first_name: 'c_first_name',
+        last_name: 'aj_last_name',
+    };
+    const userK = {
+        id: 'k',
+        username: 'k_bot',
+        nickname: 'ak_nickname',
+        first_name: 'a_first_name',
+        last_name: 'aABot_last_name',
+        is_bot: true,
+    };
+    const userL = {
+        id: 'l',
+        username: 'l_bot',
+        nickname: 'al_nickname',
+        first_name: 'b_first_name',
+        last_name: 'aBBot_last_name',
+        is_bot: true,
+    };
+    const userM = {
+        id: 'm',
+        username: 'm_bot',
+        nickname: 'am_nickname',
+        first_name: 'c_first_name',
+        last_name: 'aCBot_last_name',
+        is_bot: true,
+    };
     const statusesByUserId = {
         a: 'dnd',
         b: 'away',
@@ -133,19 +275,64 @@ describe('Utils.sortUsersByStatusAndDisplayName', () => {
 
         for (const data of [
             {
-                users: [userM, userK, userL, userF, userA, userB, userC, userD, userE],
-                result: [userD, userE, userF, userB, userA, userC, userK, userL, userM],
+                users: [
+                    userM,
+                    userK,
+                    userL,
+                    userF,
+                    userA,
+                    userB,
+                    userC,
+                    userD,
+                    userE,
+                ],
+                result: [
+                    userD,
+                    userE,
+                    userF,
+                    userB,
+                    userA,
+                    userC,
+                    userK,
+                    userL,
+                    userM,
+                ],
             },
+
             {
-                users: [userM, userL, userK, userJ, userI, userH, userG, userF, userE],
-                result: [userE, userF, userJ, userH, userG, userI, userK, userL, userM],
+                users: [
+                    userM,
+                    userL,
+                    userK,
+                    userJ,
+                    userI,
+                    userH,
+                    userG,
+                    userF,
+                    userE,
+                ],
+                result: [
+                    userE,
+                    userF,
+                    userJ,
+                    userH,
+                    userG,
+                    userI,
+                    userK,
+                    userL,
+                    userM,
+                ],
             },
+
             {
                 users: [userL, userM, userK, userJ, userF, userE, userD],
                 result: [userD, userE, userF, userJ, userK, userL, userM],
             },
         ]) {
-            const sortedUsers = Utils.sortUsersByStatusAndDisplayName(data.users, statusesByUserId);
+            const sortedUsers = Utils.sortUsersByStatusAndDisplayName(
+                data.users,
+                statusesByUserId,
+            );
             for (let i = 0; i < sortedUsers.length; i++) {
                 expect(sortedUsers[i]).toEqual(data.result[i]);
             }
@@ -162,19 +349,64 @@ describe('Utils.sortUsersByStatusAndDisplayName', () => {
 
         for (const data of [
             {
-                users: [userM, userK, userL, userF, userA, userB, userC, userD, userE],
-                result: [userF, userE, userD, userB, userA, userC, userK, userL, userM],
+                users: [
+                    userM,
+                    userK,
+                    userL,
+                    userF,
+                    userA,
+                    userB,
+                    userC,
+                    userD,
+                    userE,
+                ],
+                result: [
+                    userF,
+                    userE,
+                    userD,
+                    userB,
+                    userA,
+                    userC,
+                    userK,
+                    userL,
+                    userM,
+                ],
             },
+
             {
-                users: [userM, userL, userK, userJ, userI, userH, userG, userF, userE],
-                result: [userJ, userF, userE, userH, userG, userI, userK, userL, userM],
+                users: [
+                    userM,
+                    userL,
+                    userK,
+                    userJ,
+                    userI,
+                    userH,
+                    userG,
+                    userF,
+                    userE,
+                ],
+                result: [
+                    userJ,
+                    userF,
+                    userE,
+                    userH,
+                    userG,
+                    userI,
+                    userK,
+                    userL,
+                    userM,
+                ],
             },
+
             {
                 users: [userL, userM, userK, userJ, userF, userE, userD],
                 result: [userJ, userF, userE, userD, userK, userL, userM],
             },
         ]) {
-            const sortedUsers = Utils.sortUsersByStatusAndDisplayName(data.users, statusesByUserId);
+            const sortedUsers = Utils.sortUsersByStatusAndDisplayName(
+                data.users,
+                statusesByUserId,
+            );
             for (let i = 0; i < sortedUsers.length; i++) {
                 expect(sortedUsers[i]).toEqual(data.result[i]);
             }
@@ -191,19 +423,64 @@ describe('Utils.sortUsersByStatusAndDisplayName', () => {
 
         for (const data of [
             {
-                users: [userM, userK, userL, userF, userA, userB, userC, userD, userE],
-                result: [userD, userF, userE, userB, userA, userC, userK, userL, userM],
+                users: [
+                    userM,
+                    userK,
+                    userL,
+                    userF,
+                    userA,
+                    userB,
+                    userC,
+                    userD,
+                    userE,
+                ],
+                result: [
+                    userD,
+                    userF,
+                    userE,
+                    userB,
+                    userA,
+                    userC,
+                    userK,
+                    userL,
+                    userM,
+                ],
             },
+
             {
-                users: [userM, userL, userK, userJ, userI, userH, userG, userF, userE],
-                result: [userF, userE, userJ, userH, userG, userI, userK, userL, userM],
+                users: [
+                    userM,
+                    userL,
+                    userK,
+                    userJ,
+                    userI,
+                    userH,
+                    userG,
+                    userF,
+                    userE,
+                ],
+                result: [
+                    userF,
+                    userE,
+                    userJ,
+                    userH,
+                    userG,
+                    userI,
+                    userK,
+                    userL,
+                    userM,
+                ],
             },
+
             {
                 users: [userL, userM, userK, userJ, userF, userE, userD],
                 result: [userD, userF, userE, userJ, userK, userL, userM],
             },
         ]) {
-            const sortedUsers = Utils.sortUsersByStatusAndDisplayName(data.users, statusesByUserId);
+            const sortedUsers = Utils.sortUsersByStatusAndDisplayName(
+                data.users,
+                statusesByUserId,
+            );
             for (let i = 0; i < sortedUsers.length; i++) {
                 expect(sortedUsers[i]).toEqual(data.result[i]);
             }
@@ -223,8 +500,10 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: false,
                     requireSymbol: false,
                 },
+
                 valid: false,
             },
+
             {
                 password: 'longenoughpassword',
                 config: {
@@ -234,6 +513,7 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: false,
                     requireSymbol: false,
                 },
+
                 valid: true,
             },
         ]) {
@@ -253,8 +533,10 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: false,
                     requireSymbol: false,
                 },
+
                 valid: false,
             },
+
             {
                 password: 'SOMELowercase',
                 config: {
@@ -264,6 +546,7 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: false,
                     requireSymbol: false,
                 },
+
                 valid: true,
             },
         ]) {
@@ -283,8 +566,10 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: false,
                     requireSymbol: false,
                 },
+
                 valid: false,
             },
+
             {
                 password: 'SOMEUppercase',
                 config: {
@@ -294,6 +579,7 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: false,
                     requireSymbol: false,
                 },
+
                 valid: true,
             },
         ]) {
@@ -313,8 +599,10 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: true,
                     requireSymbol: false,
                 },
+
                 valid: false,
             },
+
             {
                 password: 'S0m3Numb3rs',
                 config: {
@@ -324,6 +612,7 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: true,
                     requireSymbol: false,
                 },
+
                 valid: true,
             },
         ]) {
@@ -343,8 +632,10 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: true,
                     requireSymbol: true,
                 },
+
                 valid: false,
             },
+
             {
                 password: 'S0m3Symb0!s',
                 config: {
@@ -354,6 +645,7 @@ describe('Utils.isValidPassword', () => {
                     requireNumber: true,
                     requireSymbol: true,
                 },
+
                 valid: true,
             },
         ]) {
@@ -371,84 +663,136 @@ describe('Utils.isKeyPressed', () => {
                 key: ['/', 191, 'Slash'],
                 valid: true,
             },
+
             {
                 event: new KeyboardEvent('keydown', {key: 'ù', keyCode: 191}),
                 key: ['/', 191, 'Slash'],
                 valid: true,
             },
         ]) {
-            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(data.valid);
+            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(
+                data.valid,
+            );
         }
     });
 
     test('Key match works for both uppercase and lower case', () => {
         for (const data of [
             {
-                event: new KeyboardEvent('keydown', {key: 'A', keyCode: 65, code: 'KeyA'}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'A',
+                    keyCode: 65,
+                    code: 'KeyA',
+                }),
                 key: ['a', 65, 'KeyA'],
                 valid: true,
             },
+
             {
-                event: new KeyboardEvent('keydown', {key: 'a', keyCode: 65, code: 'KeyA'}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'a',
+                    keyCode: 65,
+                    code: 'KeyA',
+                }),
                 key: ['a', 65, 'KeyA'],
                 valid: true,
             },
         ]) {
-            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(data.valid);
+            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(
+                data.valid,
+            );
         }
     });
 
     test('KeyCode is used for dead letter keys', () => {
         for (const data of [
             {
-                event: new KeyboardEvent('keydown', {key: 'Dead', keyCode: 222}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Dead',
+                    keyCode: 222,
+                }),
                 key: ['', 222],
                 valid: true,
             },
+
             {
-                event: new KeyboardEvent('keydown', {key: 'Dead', keyCode: 222}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Dead',
+                    keyCode: 222,
+                }),
                 key: ['not-used-field', 222],
                 valid: true,
             },
+
             {
-                event: new KeyboardEvent('keydown', {key: 'Dead', keyCode: 222}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Dead',
+                    keyCode: 222,
+                }),
                 key: [null, 222],
                 valid: true,
             },
+
             {
-                event: new KeyboardEvent('keydown', {key: 'Dead', keyCode: 222}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Dead',
+                    keyCode: 222,
+                }),
                 key: [null, 223],
                 valid: false,
             },
         ]) {
-            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(data.valid);
+            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(
+                data.valid,
+            );
         }
     });
 
     test('KeyCode is used for unidentified keys', () => {
         for (const data of [
             {
-                event: new KeyboardEvent('keydown', {key: 'Unidentified', keyCode: 2220, code: 'Unidentified'}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Unidentified',
+                    keyCode: 2220,
+                    code: 'Unidentified',
+                }),
                 key: ['', 2220],
                 valid: true,
             },
+
             {
-                event: new KeyboardEvent('keydown', {key: 'Unidentified', keyCode: 2220, code: 'Unidentified'}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Unidentified',
+                    keyCode: 2220,
+                    code: 'Unidentified',
+                }),
                 key: ['not-used-field', 2220],
                 valid: true,
             },
+
             {
-                event: new KeyboardEvent('keydown', {key: 'Unidentified', keyCode: 2220, code: 'Unidentified'}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Unidentified',
+                    keyCode: 2220,
+                    code: 'Unidentified',
+                }),
                 key: [null, 2220],
                 valid: true,
             },
+
             {
-                event: new KeyboardEvent('keydown', {key: 'Unidentified', keyCode: 2220, code: 'Unidentified'}),
+                event: new KeyboardEvent('keydown', {
+                    key: 'Unidentified',
+                    keyCode: 2220,
+                    code: 'Unidentified',
+                }),
                 key: [null, 2221],
                 valid: false,
             },
         ]) {
-            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(data.valid);
+            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(
+                data.valid,
+            );
         }
     });
 
@@ -459,23 +803,28 @@ describe('Utils.isKeyPressed', () => {
                 key: ['', 2221],
                 valid: true,
             },
+
             {
                 event: {keyCode: 2221},
                 key: ['not-used-field', 2221],
                 valid: true,
             },
+
             {
                 event: {keyCode: 2221},
                 key: [null, 2221],
                 valid: true,
             },
+
             {
                 event: {keyCode: 2221},
                 key: [null, 2222],
                 valid: false,
             },
         ]) {
-            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(data.valid);
+            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(
+                data.valid,
+            );
         }
     });
 
@@ -486,13 +835,16 @@ describe('Utils.isKeyPressed', () => {
                 key: ['k', 65],
                 valid: true,
             },
+
             {
                 event: {key: 'b', keyCode: 66},
                 key: ['y', 66],
                 valid: true,
             },
         ]) {
-            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(data.valid);
+            expect(Utils.isKeyPressed(data.event, data.key)).toEqual(
+                data.valid,
+            );
         }
     });
 
@@ -515,6 +867,7 @@ describe('Utils.localizeMessage', () => {
         general: {
             config: {},
         },
+
         users: {
             currentUserId: 'abcd',
             profiles: {
@@ -542,15 +895,21 @@ describe('Utils.localizeMessage', () => {
         });
 
         test('with translations', () => {
-            expect(Utils.localizeMessage('test.hello_world', 'Hello, World!')).toEqual('Bonjour tout le monde!');
+            expect(
+                Utils.localizeMessage('test.hello_world', 'Hello, World!'),
+            ).toEqual('Bonjour tout le monde!');
         });
 
         test('with missing string in translations', () => {
-            expect(Utils.localizeMessage('test.hello_world2', 'Hello, World 2!')).toEqual('Hello, World 2!');
+            expect(
+                Utils.localizeMessage('test.hello_world2', 'Hello, World 2!'),
+            ).toEqual('Hello, World 2!');
         });
 
         test('with missing string in translations and no default', () => {
-            expect(Utils.localizeMessage('test.hello_world2')).toEqual('test.hello_world2');
+            expect(Utils.localizeMessage('test.hello_world2')).toEqual(
+                'test.hello_world2',
+            );
         });
     });
 
@@ -567,11 +926,15 @@ describe('Utils.localizeMessage', () => {
         });
 
         test('without translations', () => {
-            expect(Utils.localizeMessage('test.hello_world', 'Hello, World!')).toEqual('Hello, World!');
+            expect(
+                Utils.localizeMessage('test.hello_world', 'Hello, World!'),
+            ).toEqual('Hello, World!');
         });
 
         test('without translations and no default', () => {
-            expect(Utils.localizeMessage('test.hello_world')).toEqual('test.hello_world');
+            expect(Utils.localizeMessage('test.hello_world')).toEqual(
+                'test.hello_world',
+            );
         });
     });
 });
@@ -608,6 +971,7 @@ describe('Utils.isDevMode', () => {
                     },
                 },
             });
+
             expect(Utils.isDevMode()).toEqual(false);
         });
 
@@ -621,6 +985,7 @@ describe('Utils.isDevMode', () => {
                     },
                 },
             });
+
             expect(Utils.isDevMode()).toEqual(false);
         });
 
@@ -634,6 +999,7 @@ describe('Utils.isDevMode', () => {
                     },
                 },
             });
+
             expect(Utils.isDevMode()).toEqual(false);
         });
 
@@ -647,6 +1013,7 @@ describe('Utils.isDevMode', () => {
                     },
                 },
             });
+
             expect(Utils.isDevMode()).toEqual(false);
         });
     });
@@ -672,6 +1039,7 @@ describe('Utils.isDevMode', () => {
                     },
                 },
             });
+
             expect(Utils.isDevMode()).toEqual(true);
         });
     });

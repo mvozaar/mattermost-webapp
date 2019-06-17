@@ -20,10 +20,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            toggleEmbedVisibility,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                toggleEmbedVisibility,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleImageView);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SingleImageView);

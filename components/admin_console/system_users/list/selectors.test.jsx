@@ -30,8 +30,16 @@ describe('components/admin_console/system_users/list/selectors', () => {
                 const expectedUsers = [{id: 'id1'}, {id: 'id2'}];
                 users.searchProfiles.mockReturnValue(expectedUsers);
 
-                expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
-                expect(users.searchProfiles).toBeCalledWith(state, term, false, {});
+                expect(getUsers(state, loading, teamId, term)).toEqual(
+                    expectedUsers,
+                );
+
+                expect(users.searchProfiles).toBeCalledWith(
+                    state,
+                    term,
+                    false,
+                    {},
+                );
             });
 
             describe('falling back to fetching user by id', () => {
@@ -42,8 +50,17 @@ describe('components/admin_console/system_users/list/selectors', () => {
                     users.searchProfiles.mockReturnValue([]);
                     users.getUser.mockReturnValue(expectedUsers[0]);
 
-                    expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
-                    expect(users.searchProfiles).toBeCalledWith(state, term, false, {});
+                    expect(getUsers(state, loading, teamId, term)).toEqual(
+                        expectedUsers,
+                    );
+
+                    expect(users.searchProfiles).toBeCalledWith(
+                        state,
+                        term,
+                        false,
+                        {},
+                    );
+
                     expect(users.getUser).toBeCalledWith(state, term);
                 });
 
@@ -52,8 +69,17 @@ describe('components/admin_console/system_users/list/selectors', () => {
                     users.searchProfiles.mockReturnValue([]);
                     users.getUser.mockReturnValue(null);
 
-                    expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
-                    expect(users.searchProfiles).toBeCalledWith(state, term, false, {});
+                    expect(getUsers(state, loading, teamId, term)).toEqual(
+                        expectedUsers,
+                    );
+
+                    expect(users.searchProfiles).toBeCalledWith(
+                        state,
+                        term,
+                        false,
+                        {},
+                    );
+
                     expect(users.getUser).toBeCalledWith(state, term);
                 });
             });
@@ -68,8 +94,17 @@ describe('components/admin_console/system_users/list/selectors', () => {
                 const expectedUsers = [{id: 'id1'}, {id: 'id2'}];
                 users.searchProfilesInTeam.mockReturnValue(expectedUsers);
 
-                expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
-                expect(users.searchProfilesInTeam).toBeCalledWith(state, teamId, term, false, {});
+                expect(getUsers(state, loading, teamId, term)).toEqual(
+                    expectedUsers,
+                );
+
+                expect(users.searchProfilesInTeam).toBeCalledWith(
+                    state,
+                    teamId,
+                    term,
+                    false,
+                    {},
+                );
             });
 
             describe('falling back to fetching user by id', () => {
@@ -80,8 +115,18 @@ describe('components/admin_console/system_users/list/selectors', () => {
                     users.searchProfilesInTeam.mockReturnValue([]);
                     users.getUser.mockReturnValue(expectedUsers[0]);
 
-                    expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
-                    expect(users.searchProfilesInTeam).toBeCalledWith(state, teamId, term, false, {});
+                    expect(getUsers(state, loading, teamId, term)).toEqual(
+                        expectedUsers,
+                    );
+
+                    expect(users.searchProfilesInTeam).toBeCalledWith(
+                        state,
+                        teamId,
+                        term,
+                        false,
+                        {},
+                    );
+
                     expect(users.getUser).toBeCalledWith(state, term);
                 });
 
@@ -90,8 +135,18 @@ describe('components/admin_console/system_users/list/selectors', () => {
                     users.searchProfilesInTeam.mockReturnValue([]);
                     users.getUser.mockReturnValue(null);
 
-                    expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
-                    expect(users.searchProfilesInTeam).toBeCalledWith(state, teamId, term, false, {});
+                    expect(getUsers(state, loading, teamId, term)).toEqual(
+                        expectedUsers,
+                    );
+
+                    expect(users.searchProfilesInTeam).toBeCalledWith(
+                        state,
+                        teamId,
+                        term,
+                        false,
+                        {},
+                    );
+
                     expect(users.getUser).toBeCalledWith(state, term);
                 });
             });
@@ -108,7 +163,10 @@ describe('components/admin_console/system_users/list/selectors', () => {
             const expectedUsers = [{id: 'id1'}, {id: 'id2'}];
             users.getProfiles.mockReturnValue(expectedUsers);
 
-            expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
+            expect(getUsers(state, loading, teamId, term)).toEqual(
+                expectedUsers,
+            );
+
             expect(users.getProfiles).toBeCalledWith(state, {});
         });
 
@@ -118,7 +176,10 @@ describe('components/admin_console/system_users/list/selectors', () => {
             const expectedUsers = [{id: 'id1'}, {id: 'id2'}];
             users.getProfilesWithoutTeam.mockReturnValue(expectedUsers);
 
-            expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
+            expect(getUsers(state, loading, teamId, term)).toEqual(
+                expectedUsers,
+            );
+
             expect(users.getProfilesWithoutTeam).toBeCalledWith(state, {});
         });
 
@@ -127,7 +188,10 @@ describe('components/admin_console/system_users/list/selectors', () => {
 
             const expectedUsers = [{id: 'id1'}, {id: 'id2'}];
             users.getProfilesInTeam.mockReturnValue(expectedUsers);
-            expect(getUsers(state, loading, teamId, term)).toEqual(expectedUsers);
+            expect(getUsers(state, loading, teamId, term)).toEqual(
+                expectedUsers,
+            );
+
             expect(users.getProfilesInTeam).toBeCalledWith(state, teamId, {});
         });
     });
@@ -146,7 +210,10 @@ describe('components/admin_console/system_users/list/selectors', () => {
             const expectedUsers = [{id: 'id1'}];
             users.getProfiles.mockReturnValue(expectedUsers);
 
-            expect(getUsers(state, loading, teamId, term, systemAdmin)).toEqual(expectedUsers);
+            expect(getUsers(state, loading, teamId, term, systemAdmin)).toEqual(
+                expectedUsers,
+            );
+
             expect(users.getProfiles).toBeCalledWith(state, roleFilter);
         });
 
@@ -156,8 +223,14 @@ describe('components/admin_console/system_users/list/selectors', () => {
             const expectedUsers = [{id: 'id1'}, {id: 'id2'}];
             users.getProfilesWithoutTeam.mockReturnValue(expectedUsers);
 
-            expect(getUsers(state, loading, teamId, term, inactive)).toEqual(expectedUsers);
-            expect(users.getProfilesWithoutTeam).toBeCalledWith(state, inactiveFilter);
+            expect(getUsers(state, loading, teamId, term, inactive)).toEqual(
+                expectedUsers,
+            );
+
+            expect(users.getProfilesWithoutTeam).toBeCalledWith(
+                state,
+                inactiveFilter,
+            );
         });
 
         it('system admin profiles for the given team', () => {
@@ -165,8 +238,15 @@ describe('components/admin_console/system_users/list/selectors', () => {
 
             const expectedUsers = [{id: 'id2'}];
             users.getProfilesInTeam.mockReturnValue(expectedUsers);
-            expect(getUsers(state, loading, teamId, term, systemAdmin)).toEqual(expectedUsers);
-            expect(users.getProfilesInTeam).toBeCalledWith(state, teamId, roleFilter);
+            expect(getUsers(state, loading, teamId, term, systemAdmin)).toEqual(
+                expectedUsers,
+            );
+
+            expect(users.getProfilesInTeam).toBeCalledWith(
+                state,
+                teamId,
+                roleFilter,
+            );
         });
     });
 });

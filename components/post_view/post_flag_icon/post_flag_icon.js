@@ -13,7 +13,12 @@ import {t} from 'utils/i18n';
 
 export default class PostFlagIcon extends React.PureComponent {
     static propTypes = {
-        location: PropTypes.oneOf([Locations.CENTER, Locations.RHS_ROOT, Locations.RHS_COMMENT, Locations.SEARCH]).isRequired,
+        location: PropTypes.oneOf([
+            Locations.CENTER,
+            Locations.RHS_ROOT,
+            Locations.RHS_COMMENT,
+            Locations.SEARCH,
+        ]).isRequired,
         postId: PropTypes.string.isRequired,
         isFlagged: PropTypes.bool.isRequired,
         isEphemeral: PropTypes.bool,
@@ -31,18 +36,14 @@ export default class PostFlagIcon extends React.PureComponent {
     handlePress = (e) => {
         e.preventDefault();
 
-        const {
-            actions,
-            isFlagged,
-            postId,
-        } = this.props;
+        const {actions, isFlagged, postId} = this.props;
 
         if (isFlagged) {
             actions.unflagPost(postId);
         } else {
             actions.flagPost(postId);
         }
-    }
+    };
 
     render() {
         if (this.props.isEphemeral) {
@@ -55,9 +56,9 @@ export default class PostFlagIcon extends React.PureComponent {
 
         let flagIcon;
         if (isFlagged) {
-            flagIcon = <FlagIconFilled className='icon'/>;
+            flagIcon = <FlagIconFilled className='icon' />;
         } else {
-            flagIcon = <FlagIcon className='icon'/>;
+            flagIcon = <FlagIcon className='icon' />;
         }
 
         return (
@@ -69,15 +70,23 @@ export default class PostFlagIcon extends React.PureComponent {
                 overlay={
                     <Tooltip id='flagTooltip'>
                         <FormattedMessage
-                            id={isFlagged ? t('flag_post.unflag') : t('flag_post.flag')}
-                            defaultMessage={isFlagged ? 'Unflag' : 'Flag for follow up'}
+                            id={
+                                isFlagged
+                                    ? t('flag_post.unflag')
+                                    : t('flag_post.flag')
+                            }
+                            defaultMessage={
+                                isFlagged ? 'Unflag' : 'Flag for follow up'
+                            }
                         />
                     </Tooltip>
                 }
             >
                 <button
                     id={`${this.props.location}_flagIcon_${this.props.postId}`}
-                    className={'style--none flag-icon__container ' + flagVisible}
+                    className={
+                        'style--none flag-icon__container ' + flagVisible
+                    }
                     onClick={this.handlePress}
                 >
                     {flagIcon}

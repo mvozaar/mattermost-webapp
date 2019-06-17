@@ -23,17 +23,15 @@ export default class ClusterTableContainer extends React.Component {
     }
 
     load() {
-        getClusterStatus(
-            (data) => {
-                this.setState({
-                    clusterInfos: data,
-                });
-            },
-            null
-        );
+        getClusterStatus((data) => {
+            this.setState({
+                clusterInfos: data,
+            });
+        }, null);
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         this.load();
 
         // reload the cluster status every 15 seconds
@@ -60,7 +58,7 @@ export default class ClusterTableContainer extends React.Component {
 
     render() {
         if (this.state.clusterInfos == null) {
-            return (<LoadingScreen/>);
+            return <LoadingScreen />;
         }
 
         return (

@@ -10,11 +10,18 @@ import TeamUrl from './team_url';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            checkIfTeamExists,
-            createTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                checkIfTeamExists,
+                createTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(TeamUrl);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(TeamUrl);

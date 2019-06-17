@@ -33,11 +33,19 @@ const currentTeamId = '321';
 const currentUserId = 'user123';
 
 const UserSelectors = require('mattermost-redux/selectors/entities/users');
-UserSelectors.getCurrentUserMentionKeys = jest.fn(() => [{key: '@here'}, {key: '@mattermost'}, {key: '@channel'}, {key: '@all'}]);
+UserSelectors.getCurrentUserMentionKeys = jest.fn(() => [
+    {key: '@here'},
+    {key: '@mattermost'},
+    {key: '@channel'},
+    {key: '@all'},
+]);
 
 jest.mock('mattermost-redux/actions/posts', () => ({
     getPostThread: (...args) => ({type: 'MOCK_GET_POST_THREAD', args}),
-    getProfilesAndStatusesForPosts: (...args) => ({type: 'MOCK_GET_PROFILES_AND_STATUSES_FOR_POSTS', args}),
+    getProfilesAndStatusesForPosts: (...args) => ({
+        type: 'MOCK_GET_PROFILES_AND_STATUSES_FOR_POSTS',
+        args,
+    }),
 }));
 
 jest.mock('mattermost-redux/actions/search', () => ({
@@ -58,12 +66,15 @@ describe('rhs view actions', () => {
                     ExperimentalViewArchivedChannels: 'false',
                 },
             },
+
             channels: {
                 currentChannelId,
             },
+
             teams: {
                 currentTeamId,
             },
+
             users: {
                 currentUserId,
                 profiles: {
@@ -77,6 +88,7 @@ describe('rhs view actions', () => {
                 },
             },
         },
+
         views: {
             rhs: {
                 rhsState: null,
@@ -168,12 +180,38 @@ describe('rhs view actions', () => {
             const timeZoneOffset = getBrowserUtcOffset() * 60;
 
             const compareStore = mockStore(initialState);
-            compareStore.dispatch(SearchActions.searchPostsWithParams(currentTeamId, {include_deleted_channels: false, terms, is_or_search: false, time_zone_offset: timeZoneOffset, page: 0, per_page: 20}, true));
+            compareStore.dispatch(
+                SearchActions.searchPostsWithParams(
+                    currentTeamId,
+                    {
+                        include_deleted_channels: false,
+                        terms,
+                        is_or_search: false,
+                        time_zone_offset: timeZoneOffset,
+                        page: 0,
+                        per_page: 20,
+                    },
+                    true,
+                ),
+            );
 
             expect(store.getActions()).toEqual(compareStore.getActions());
 
             store.dispatch(performSearch(terms, true));
-            compareStore.dispatch(SearchActions.searchPostsWithParams(currentTeamId, {include_deleted_channels: false, terms, is_or_search: true, time_zone_offset: timeZoneOffset, page: 0, per_page: 20}, true));
+            compareStore.dispatch(
+                SearchActions.searchPostsWithParams(
+                    currentTeamId,
+                    {
+                        include_deleted_channels: false,
+                        terms,
+                        is_or_search: true,
+                        time_zone_offset: timeZoneOffset,
+                        page: 0,
+                        per_page: 20,
+                    },
+                    true,
+                ),
+            );
 
             expect(store.getActions()).toEqual(compareStore.getActions());
         });
@@ -202,6 +240,7 @@ describe('rhs view actions', () => {
                 type: ActionTypes.UPDATE_RHS_SEARCH_RESULTS_TERMS,
                 terms,
             });
+
             compareStore.dispatch(performSearch(terms));
 
             expect(store.getActions()).toEqual(compareStore.getActions());
@@ -225,19 +264,23 @@ describe('rhs view actions', () => {
                     type: ActionTypes.UPDATE_RHS_STATE,
                     state: RHSStates.FLAG,
                 },
+
                 {
                     type: 'MOCK_GET_FLAGGED_POSTS',
                 },
+
                 {
                     type: 'BATCHING_REDUCER.BATCH',
                     meta: {
                         batch: true,
                     },
+
                     payload: [
                         {
                             type: SearchTypes.RECEIVED_SEARCH_POSTS,
                             data: 'data',
                         },
+
                         {
                             type: SearchTypes.RECEIVED_SEARCH_TERM,
                             data: {
@@ -262,7 +305,9 @@ describe('rhs view actions', () => {
 
             await store.dispatch(showPinnedPosts());
 
-            expect(SearchActions.getPinnedPosts).toHaveBeenCalledWith(currentChannelId);
+            expect(SearchActions.getPinnedPosts).toHaveBeenCalledWith(
+                currentChannelId,
+            );
 
             expect(store.getActions()).toEqual([
                 {
@@ -270,11 +315,13 @@ describe('rhs view actions', () => {
                     meta: {
                         batch: true,
                     },
+
                     payload: [
                         {
                             type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
                             terms: '',
                         },
+
                         {
                             type: ActionTypes.UPDATE_RHS_STATE,
                             channelId: currentChannelId,
@@ -282,19 +329,23 @@ describe('rhs view actions', () => {
                         },
                     ],
                 },
+
                 {
                     type: 'MOCK_GET_PINNED_POSTS',
                 },
+
                 {
                     type: 'BATCHING_REDUCER.BATCH',
                     meta: {
                         batch: true,
                     },
+
                     payload: [
                         {
                             type: SearchTypes.RECEIVED_SEARCH_POSTS,
                             data: 'data',
                         },
+
                         {
                             type: SearchTypes.RECEIVED_SEARCH_TERM,
                             data: {
@@ -319,7 +370,9 @@ describe('rhs view actions', () => {
 
             await store.dispatch(showPinnedPosts(channelId));
 
-            expect(SearchActions.getPinnedPosts).toHaveBeenCalledWith(channelId);
+            expect(SearchActions.getPinnedPosts).toHaveBeenCalledWith(
+                channelId,
+            );
 
             expect(store.getActions()).toEqual([
                 {
@@ -327,11 +380,13 @@ describe('rhs view actions', () => {
                     meta: {
                         batch: true,
                     },
+
                     payload: [
                         {
                             type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
                             terms: '',
                         },
+
                         {
                             type: ActionTypes.UPDATE_RHS_STATE,
                             channelId,
@@ -339,19 +394,23 @@ describe('rhs view actions', () => {
                         },
                     ],
                 },
+
                 {
                     type: 'MOCK_GET_PINNED_POSTS',
                 },
+
                 {
                     type: 'BATCHING_REDUCER.BATCH',
                     meta: {
                         batch: true,
                     },
+
                     payload: [
                         {
                             type: SearchTypes.RECEIVED_SEARCH_POSTS,
                             data: 'data',
                         },
+
                         {
                             type: SearchTypes.RECEIVED_SEARCH_TERM,
                             data: {
@@ -373,16 +432,19 @@ describe('rhs view actions', () => {
             const compareStore = mockStore(initialState);
 
             compareStore.dispatch(performSearch('@mattermost ', true));
-            compareStore.dispatch(batchActions([
-                {
-                    type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
-                    terms: '@mattermost ',
-                },
-                {
-                    type: ActionTypes.UPDATE_RHS_STATE,
-                    state: RHSStates.MENTION,
-                },
-            ]));
+            compareStore.dispatch(
+                batchActions([
+                    {
+                        type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
+                        terms: '@mattermost ',
+                    },
+
+                    {
+                        type: ActionTypes.UPDATE_RHS_STATE,
+                        state: RHSStates.MENTION,
+                    },
+                ]),
+            );
 
             expect(store.getActions()).toEqual(compareStore.getActions());
         });
@@ -395,7 +457,9 @@ describe('rhs view actions', () => {
             expect(trackEvent).toHaveBeenCalledTimes(1);
 
             expect(trackEvent.mock.calls[0][0]).toEqual('api');
-            expect(trackEvent.mock.calls[0][1]).toEqual('api_posts_search_mention');
+            expect(trackEvent.mock.calls[0][1]).toEqual(
+                'api_posts_search_mention',
+            );
         });
     });
 
@@ -404,17 +468,20 @@ describe('rhs view actions', () => {
             store.dispatch(closeRightHandSide());
 
             const compareStore = mockStore(initialState);
-            compareStore.dispatch(batchActions([
-                {
-                    type: ActionTypes.UPDATE_RHS_STATE,
-                    state: null,
-                },
-                {
-                    type: ActionTypes.SELECT_POST,
-                    postId: '',
-                    channelId: '',
-                },
-            ]));
+            compareStore.dispatch(
+                batchActions([
+                    {
+                        type: ActionTypes.UPDATE_RHS_STATE,
+                        state: null,
+                    },
+
+                    {
+                        type: ActionTypes.SELECT_POST,
+                        postId: '',
+                        channelId: '',
+                    },
+                ]),
+            );
 
             expect(store.getActions()).toEqual(compareStore.getActions());
         });

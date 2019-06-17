@@ -6,7 +6,6 @@ import React from 'react';
 
 export default class MobileChannelHeaderPlug extends React.PureComponent {
     static propTypes = {
-
         /*
          * Components or actions to add as channel header buttons
          */
@@ -24,7 +23,7 @@ export default class MobileChannelHeaderPlug extends React.PureComponent {
          * Logged in user's theme
          */
         theme: PropTypes.object.isRequired,
-    }
+    };
 
     createButton(plug) {
         return (

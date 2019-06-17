@@ -20,27 +20,15 @@ import LoadingSpinner from 'components/widgets/loading/loading_wrapper.jsx';
 const GET_MORE_BUFFER = 30;
 
 export function renderView(props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--view'
-        />);
+    return <div {...props} className='scrollbar--view' />;
 }
 
 export function renderThumbHorizontal(props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--horizontal'
-        />);
+    return <div {...props} className='scrollbar--horizontal' />;
 }
 
 export function renderThumbVertical(props) {
-    return (
-        <div
-            {...props}
-            className='scrollbar--vertical'
-        />);
+    return <div {...props} className='scrollbar--vertical' />;
 }
 
 export default class SearchResults extends React.PureComponent {
@@ -100,22 +88,27 @@ export default class SearchResults extends React.PureComponent {
             windowWidth: Utils.windowWidth(),
             windowHeight: Utils.windowHeight(),
         });
-    }
+    };
 
     scrollToTop = () => {
         this.refs.scrollbars.scrollToTop();
-    }
+    };
 
     handleScroll = () => {
-        if (!this.props.isFlaggedPosts && !this.props.isPinnedPosts && !this.props.isSearchingTerm && !this.props.isSearchGettingMore) {
+        if (
+            !this.props.isFlaggedPosts &&
+            !this.props.isPinnedPosts &&
+            !this.props.isSearchingTerm &&
+            !this.props.isSearchGettingMore
+        ) {
             const scrollHeight = this.refs.scrollbars.getScrollHeight();
             const scrollTop = this.refs.scrollbars.getScrollTop();
             const clientHeight = this.refs.scrollbars.getClientHeight();
-            if ((scrollTop + clientHeight + GET_MORE_BUFFER) >= scrollHeight) {
+            if (scrollTop + clientHeight + GET_MORE_BUFFER >= scrollHeight) {
                 this.loadMorePosts();
             }
         }
-    }
+    };
 
     loadMorePosts = debounce(() => {
         this.props.actions.getMorePostsForSearch();
@@ -123,7 +116,7 @@ export default class SearchResults extends React.PureComponent {
 
     render() {
         const results = this.props.results;
-        const noResults = (!results || results.length === 0);
+        const noResults = !results || results.length === 0;
         const searchTerms = this.props.searchTerms;
 
         let ctls = null;
@@ -137,7 +130,12 @@ export default class SearchResults extends React.PureComponent {
             ctls = (
                 <div className='sidebar--right__subheader'>
                     <div className='sidebar--right__loading'>
-                        <LoadingSpinner text={Utils.localizeMessage('search_header.loading', 'Searching')}/>
+                        <LoadingSpinner
+                            text={Utils.localizeMessage(
+                                'search_header.loading',
+                                'Searching',
+                            )}
+                        />
                     </div>
                 </div>
             );
@@ -145,8 +143,12 @@ export default class SearchResults extends React.PureComponent {
             ctls = (
                 <div className='sidebar--right__subheader'>
                     <FlagPostSearchHint
-                        dataRetentionEnableMessageDeletion={this.props.dataRetentionEnableMessageDeletion}
-                        dataRetentionMessageRetentionDays={this.props.dataRetentionMessageRetentionDays}
+                        dataRetentionEnableMessageDeletion={
+                            this.props.dataRetentionEnableMessageDeletion
+                        }
+                        dataRetentionMessageRetentionDays={
+                            this.props.dataRetentionMessageRetentionDays
+                        }
                     />
                 </div>
             );
@@ -154,23 +156,31 @@ export default class SearchResults extends React.PureComponent {
             ctls = (
                 <div className='sidebar--right__subheader'>
                     <PinPostSearchHint
-                        dataRetentionEnableMessageDeletion={this.props.dataRetentionEnableMessageDeletion}
-                        dataRetentionMessageRetentionDays={this.props.dataRetentionMessageRetentionDays}
+                        dataRetentionEnableMessageDeletion={
+                            this.props.dataRetentionEnableMessageDeletion
+                        }
+                        dataRetentionMessageRetentionDays={
+                            this.props.dataRetentionMessageRetentionDays
+                        }
                     />
                 </div>
             );
         } else if (!searchTerms && noResults) {
             ctls = (
                 <div className='sidebar--right__subheader'>
-                    <SearchHint/>
+                    <SearchHint />
                 </div>
             );
         } else if (noResults) {
             ctls = (
                 <div className='sidebar--right__subheader'>
                     <NoResultSearchHint
-                        dataRetentionEnableMessageDeletion={this.props.dataRetentionEnableMessageDeletion}
-                        dataRetentionMessageRetentionDays={this.props.dataRetentionMessageRetentionDays}
+                        dataRetentionEnableMessageDeletion={
+                            this.props.dataRetentionEnableMessageDeletion
+                        }
+                        dataRetentionMessageRetentionDays={
+                            this.props.dataRetentionMessageRetentionDays
+                        }
                     />
                 </div>
             );
@@ -178,7 +188,9 @@ export default class SearchResults extends React.PureComponent {
             let sortedResults;
             if (this.props.isPinnedPosts) {
                 sortedResults = [...results];
-                sortedResults.sort((postA, postB) => postB.create_at - postA.create_at);
+                sortedResults.sort(
+                    (postA, postB) => postB.create_at - postA.create_at,
+                );
             } else {
                 sortedResults = results;
             }
@@ -190,19 +202,29 @@ export default class SearchResults extends React.PureComponent {
                         compactDisplay={this.props.compactDisplay}
                         post={post}
                         matches={this.props.matches[post.id]}
-                        term={(!this.props.isFlaggedPosts && !this.props.isPinnedPosts && !this.props.isMentionSearch) ? searchTerms : ''}
+                        term={
+                            !this.props.isFlaggedPosts &&
+                            !this.props.isPinnedPosts &&
+                            !this.props.isMentionSearch
+                                ? searchTerms
+                                : ''
+                        }
                         isMentionSearch={this.props.isMentionSearch}
                     />
                 );
             }, this);
 
-            if (!this.props.isSearchAtEnd && !this.props.isFlaggedPosts && !this.props.isPinnedPosts) {
+            if (
+                !this.props.isSearchAtEnd &&
+                !this.props.isFlaggedPosts &&
+                !this.props.isPinnedPosts
+            ) {
                 loadingMorePostsComponent = (
                     <div className='loading-screen'>
                         <div className='loading__content'>
-                            <div className='round round-1'/>
-                            <div className='round round-2'/>
-                            <div className='round round-3'/>
+                            <div className='round round-1' />
+                            <div className='round round-2' />
+                            <div className='round round-3' />
                         </div>
                     </div>
                 );
@@ -218,6 +240,7 @@ export default class SearchResults extends React.PureComponent {
                     channelDisplayName={this.props.channelDisplayName}
                     isLoading={this.props.isSearchingTerm}
                 />
+
                 <Scrollbars
                     ref='scrollbars'
                     autoHide={true}

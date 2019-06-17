@@ -35,6 +35,7 @@ class PasswordResetForm extends React.Component {
                     />
                 ),
             });
+
             return;
         }
 
@@ -43,25 +44,23 @@ class PasswordResetForm extends React.Component {
         });
 
         resetPassword(
-            (new URLSearchParams(this.props.location.search)).get('token'),
+            new URLSearchParams(this.props.location.search).get('token'),
             password,
             () => {
                 this.setState({error: null});
             },
             (err) => {
                 this.setState({error: err.message});
-            }
+            },
         );
-    }
+    };
 
     render() {
         var error = null;
         if (this.state.error) {
             error = (
                 <div className='form-group has-error'>
-                    <label className='control-label'>
-                        {this.state.error}
-                    </label>
+                    <label className='control-label'>{this.state.error}</label>
                 </div>
             );
         }
@@ -96,15 +95,15 @@ class PasswordResetForm extends React.Component {
                                 className='form-control'
                                 name='password'
                                 ref='password'
-                                placeholder={{id: t('password_form.pwd'), defaultMessage: 'Password'}}
+                                placeholder={{
+                                    id: t('password_form.pwd'),
+                                    defaultMessage: 'Password',
+                                }}
                                 spellCheck='false'
                             />
                         </div>
                         {error}
-                        <button
-                            type='submit'
-                            className='btn btn-primary'
-                        >
+                        <button type='submit' className='btn btn-primary'>
                             <FormattedMessage
                                 id='password_form.change'
                                 defaultMessage='Change my password'

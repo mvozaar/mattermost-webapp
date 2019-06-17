@@ -15,6 +15,7 @@ describe('runMessageWillBePostedHooks', () => {
                 components: {},
             },
         });
+
         const post = {message: 'test'};
 
         const result = await store.dispatch(runMessageWillBePostedHooks(post));
@@ -38,6 +39,7 @@ describe('runMessageWillBePostedHooks', () => {
                 },
             },
         });
+
         const post = {message: 'test'};
 
         const result = await store.dispatch(runMessageWillBePostedHooks(post));
@@ -64,6 +66,7 @@ describe('runMessageWillBePostedHooks', () => {
                 },
             },
         });
+
         const post = {message: 'test'};
 
         const result = await store.dispatch(runMessageWillBePostedHooks(post));
@@ -75,9 +78,15 @@ describe('runMessageWillBePostedHooks', () => {
     });
 
     test('should pass the result of each hook to the next', async () => {
-        const hook1 = jest.fn((post) => ({post: {...post, message: post.message + 'a'}}));
-        const hook2 = jest.fn((post) => ({post: {...post, message: post.message + 'b'}}));
-        const hook3 = jest.fn((post) => ({post: {...post, message: post.message + 'c'}}));
+        const hook1 = jest.fn((post) => ({
+            post: {...post, message: post.message + 'a'},
+        }));
+        const hook2 = jest.fn((post) => ({
+            post: {...post, message: post.message + 'b'},
+        }));
+        const hook3 = jest.fn((post) => ({
+            post: {...post, message: post.message + 'c'},
+        }));
 
         const store = mockStore({
             plugins: {
@@ -90,6 +99,7 @@ describe('runMessageWillBePostedHooks', () => {
                 },
             },
         });
+
         const post = {message: 'test'};
 
         const result = await store.dispatch(runMessageWillBePostedHooks(post));
@@ -118,12 +128,11 @@ describe('runMessageWillBePostedHooks', () => {
         const store = mockStore({
             plugins: {
                 components: {
-                    MessageWillBePosted: [
-                        {hook},
-                    ],
+                    MessageWillBePosted: [{hook}],
                 },
             },
         });
+
         const post = {message: 'test'};
 
         const result = await store.dispatch(runMessageWillBePostedHooks(post));
@@ -134,18 +143,18 @@ describe('runMessageWillBePostedHooks', () => {
 
     test('should assume post is unchanged if a hook returns undefined', async () => {
         const hook1 = jest.fn();
-        const hook2 = jest.fn((post) => ({post: {...post, message: post.message + 'b'}}));
+        const hook2 = jest.fn((post) => ({
+            post: {...post, message: post.message + 'b'},
+        }));
 
         const store = mockStore({
             plugins: {
                 components: {
-                    MessageWillBePosted: [
-                        {hook: hook1},
-                        {hook: hook2},
-                    ],
+                    MessageWillBePosted: [{hook: hook1}, {hook: hook2}],
                 },
             },
         });
+
         const post = {message: 'test'};
 
         const result = await store.dispatch(runMessageWillBePostedHooks(post));

@@ -9,9 +9,16 @@ import {goToLastViewedChannel} from 'actions/views/channel';
 import CloseChannel from './close_channel';
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        goToLastViewedChannel,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            goToLastViewedChannel,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(null, mapDispatchToProps)(CloseChannel);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(CloseChannel);

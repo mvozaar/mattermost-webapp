@@ -12,11 +12,9 @@ import ModalController from 'components/modal_controller';
 class TestModal extends React.Component {
     render() {
         return (
-            <Modal
-                show={true}
-            >
-                <Modal.Header closeButton={true}/>
-                <Modal.Body/>
+            <Modal show={true}>
+                <Modal.Header closeButton={true} />
+                <Modal.Body />
             </Modal>
         );
     }
@@ -38,13 +36,20 @@ describe('components/ModalController', () => {
 
         const wrapper = mount(
             <Provider store={store}>
-                <ModalController/>
-            </Provider>
+                <ModalController />
+            </Provider>,
         );
 
         expect(wrapper).toMatchSnapshot();
-        expect(wrapper.find('div').first().html()).toBe('<div></div>');
-        expect(document.getElementsByClassName('modal-dialog').length).toBeFalsy();
+        expect(
+            wrapper
+                .find('div')
+                .first()
+                .html(),
+        ).toBe('<div></div>');
+        expect(
+            document.getElementsByClassName('modal-dialog').length,
+        ).toBeFalsy();
     });
 
     test('test model should be open', () => {
@@ -66,8 +71,8 @@ describe('components/ModalController', () => {
 
         mount(
             <Provider store={store}>
-                <ModalController/>
-            </Provider>
+                <ModalController />
+            </Provider>,
         );
 
         expect(document.getElementsByClassName('modal-dialog').length).toBe(1);

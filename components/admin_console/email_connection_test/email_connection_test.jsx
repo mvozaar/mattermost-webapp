@@ -45,33 +45,31 @@ export default class EmailConnectionTestButton extends React.Component {
         const config = JSON.parse(JSON.stringify(this.props.config));
         this.props.getConfigFromState(config);
 
-        this.props.actions.testEmail(config).then(
-            (data) => {
-                if (data.error) {
-                    let fail = data.error.message;
-                    if (data.error.detailed_error) {
-                        fail += ' - ' + data.error.detailed_error;
-                    }
-                    this.setState({
-                        testing: false,
-                        fail,
-                    });
-                } else {
-                    this.setState({
-                        testing: false,
-                        success: true,
-                    });
+        this.props.actions.testEmail(config).then((data) => {
+            if (data.error) {
+                let fail = data.error.message;
+                if (data.error.detailed_error) {
+                    fail += ' - ' + data.error.detailed_error;
                 }
+                this.setState({
+                    testing: false,
+                    fail,
+                });
+            } else {
+                this.setState({
+                    testing: false,
+                    success: true,
+                });
             }
-        );
-    }
+        });
+    };
 
     render() {
         let testMessage = null;
         if (this.state.success) {
             testMessage = (
                 <div className='alert alert-success'>
-                    <SuccessIcon/>
+                    <SuccessIcon />
                     <FormattedMessage
                         id='admin.email.emailSuccess'
                         defaultMessage='No errors were reported while sending an email.  Please check your inbox to make sure.'
@@ -81,7 +79,7 @@ export default class EmailConnectionTestButton extends React.Component {
         } else if (this.state.fail) {
             testMessage = (
                 <div className='alert alert-warning'>
-                    <WarningIcon/>
+                    <WarningIcon />
                     {this.state.fail}
                 </div>
             );
@@ -98,7 +96,10 @@ export default class EmailConnectionTestButton extends React.Component {
                         >
                             <LoadingWrapper
                                 loading={this.state.testing}
-                                text={Utils.localizeMessage('admin.email.testing', 'Testing...')}
+                                text={Utils.localizeMessage(
+                                    'admin.email.testing',
+                                    'Testing...',
+                                )}
                             >
                                 <FormattedMessage
                                     id='admin.email.connectionSecurityTest'
@@ -106,9 +107,7 @@ export default class EmailConnectionTestButton extends React.Component {
                                 />
                             </LoadingWrapper>
                         </button>
-                        <div>
-                            {testMessage}
-                        </div>
+                        <div>{testMessage}</div>
                     </div>
                 </div>
             </div>

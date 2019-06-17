@@ -16,7 +16,7 @@ export default class GroupTeamsAndChannels extends React.PureComponent {
         loading: PropTypes.bool.isRequired,
         getGroupSyncables: PropTypes.func.isRequired,
         unlink: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -29,17 +29,33 @@ export default class GroupTeamsAndChannels extends React.PureComponent {
         const collapsed = {...this.state.collapsed};
         collapsed[id] = !collapsed[id];
         this.setState({collapsed});
-    }
+    };
 
     onRemoveItem = async (id, type) => {
         if (type === 'public-team' || type === 'private-team') {
-            await this.props.unlink(this.props.id, id, Groups.SYNCABLE_TYPE_TEAM);
-            await this.props.getGroupSyncables(this.props.id, Groups.SYNCABLE_TYPE_TEAM);
+            await this.props.unlink(
+                this.props.id,
+                id,
+                Groups.SYNCABLE_TYPE_TEAM,
+            );
+
+            await this.props.getGroupSyncables(
+                this.props.id,
+                Groups.SYNCABLE_TYPE_TEAM,
+            );
         } else {
-            await this.props.unlink(this.props.id, id, Groups.SYNCABLE_TYPE_CHANNEL);
-            await this.props.getGroupSyncables(this.props.id, Groups.SYNCABLE_TYPE_CHANNEL);
+            await this.props.unlink(
+                this.props.id,
+                id,
+                Groups.SYNCABLE_TYPE_CHANNEL,
+            );
+
+            await this.props.getGroupSyncables(
+                this.props.id,
+                Groups.SYNCABLE_TYPE_CHANNEL,
+            );
         }
-    }
+    };
 
     teamsAndChannelsToEntries = (teams, channels) => {
         const entries = [];
@@ -50,7 +66,10 @@ export default class GroupTeamsAndChannels extends React.PureComponent {
             existingTeams.add(team.team_id);
             teamEntries.push({
                 type: team.team_type === 'O' ? 'public-team' : 'private-team',
-                hasChildren: channels.some((channel) => channel.team_id === team.team_id),
+                hasChildren: channels.some(
+                    (channel) => channel.team_id === team.team_id,
+                ),
+
                 name: team.team_display_name,
                 collapsed: this.state.collapsed[team.team_id],
                 id: team.team_id,
@@ -60,9 +79,13 @@ export default class GroupTeamsAndChannels extends React.PureComponent {
 
         const channelEntriesByTeam = {};
         channels.forEach((channel) => {
-            channelEntriesByTeam[channel.team_id] = channelEntriesByTeam[channel.team_id] || [];
+            channelEntriesByTeam[channel.team_id] =
+                channelEntriesByTeam[channel.team_id] || [];
             channelEntriesByTeam[channel.team_id].push({
-                type: channel.channel_type === 'O' ? 'public-channel' : 'private-channel',
+                type:
+                    channel.channel_type === 'O'
+                        ? 'public-channel'
+                        : 'private-channel',
                 name: channel.channel_display_name,
                 id: channel.channel_id,
             });
@@ -70,7 +93,10 @@ export default class GroupTeamsAndChannels extends React.PureComponent {
             if (!existingTeams.has(channel.team_id)) {
                 existingTeams.add(channel.team_id);
                 teamEntries.push({
-                    type: channel.team_type === 'O' ? 'public-team' : 'private-team',
+                    type:
+                        channel.team_type === 'O'
+                            ? 'public-team'
+                            : 'private-team',
                     hasChildren: true,
                     name: channel.team_display_name,
                     collapsed: this.state.collapsed[channel.team_id],
@@ -91,16 +117,19 @@ export default class GroupTeamsAndChannels extends React.PureComponent {
         });
 
         return entries;
-    }
+    };
 
     render = () => {
-        const entries = this.teamsAndChannelsToEntries(this.props.teams, this.props.channels);
+        const entries = this.teamsAndChannelsToEntries(
+            this.props.teams,
+            this.props.channels,
+        );
 
         if (this.props.loading) {
             return (
                 <div className='group-teams-and-channels'>
                     <div className='group-teams-and-channels-loading'>
-                        <i className='fa fa-spinner fa-pulse fa-2x'/>
+                        <i className='fa fa-spinner fa-pulse fa-2x' />
                     </div>
                 </div>
             );

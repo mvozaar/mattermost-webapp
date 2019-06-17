@@ -18,6 +18,7 @@ describe('components/integrations/InstalledCommand', () => {
         token: 'testToken',
         create_at: '1499722850203',
     };
+
     const creator = {username: 'username'};
 
     const requiredProps = {
@@ -30,13 +31,18 @@ describe('components/integrations/InstalledCommand', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<InstalledCommand {...requiredProps}/>);
+        const wrapper = shallow(<InstalledCommand {...requiredProps} />);
         expect(wrapper).toMatchSnapshot();
 
         const trigger = `- /${command.trigger} ${command.auto_complete_hint}`;
         expect(wrapper.find('.item-details__trigger').text()).toBe(trigger);
-        expect(wrapper.find('.item-details__name').text()).toBe(command.display_name);
-        expect(wrapper.find('.item-details__description').text()).toBe(command.description);
+        expect(wrapper.find('.item-details__name').text()).toBe(
+            command.display_name,
+        );
+
+        expect(wrapper.find('.item-details__description').text()).toBe(
+            command.description,
+        );
     });
 
     test('should match snapshot, not autocomplete, no display_name/description/auto_complete_hint', () => {
@@ -47,9 +53,10 @@ describe('components/integrations/InstalledCommand', () => {
             token: 'testToken',
             create_at: '1499722850203',
         };
+
         const props = {...requiredProps, command: minCommand};
 
-        const wrapper = shallow(<InstalledCommand {...props}/>);
+        const wrapper = shallow(<InstalledCommand {...props} />);
         expect(wrapper).toMatchSnapshot();
 
         const trigger = `- /${command.trigger}`;
@@ -61,10 +68,13 @@ describe('components/integrations/InstalledCommand', () => {
         const canChange = true;
         const props = {...requiredProps, onRegenToken, canChange};
 
-        const wrapper = shallow(<InstalledCommand {...props}/>);
+        const wrapper = shallow(<InstalledCommand {...props} />);
         expect(wrapper).toMatchSnapshot();
 
-        wrapper.find('div.item-actions button').first().simulate('click', {preventDefault: jest.fn()});
+        wrapper
+            .find('div.item-actions button')
+            .first()
+            .simulate('click', {preventDefault: jest.fn()});
         expect(onRegenToken).toHaveBeenCalledTimes(1);
         expect(onRegenToken).toHaveBeenCalledWith(props.command);
     });
@@ -74,7 +84,7 @@ describe('components/integrations/InstalledCommand', () => {
         const canChange = true;
         const props = {...requiredProps, onDelete, canChange};
 
-        const wrapper = shallow(<InstalledCommand {...props}/>);
+        const wrapper = shallow(<InstalledCommand {...props} />);
         expect(wrapper).toMatchSnapshot();
 
         wrapper.instance().handleDelete();
@@ -86,7 +96,7 @@ describe('components/integrations/InstalledCommand', () => {
         const filter = 'no_match';
         const props = {...requiredProps, filter};
 
-        const wrapper = shallow(<InstalledCommand {...props}/>);
+        const wrapper = shallow(<InstalledCommand {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 });

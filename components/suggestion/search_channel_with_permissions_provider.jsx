@@ -2,9 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {
-    getChannelsInCurrentTeam,
-} from 'mattermost-redux/selectors/entities/channels';
+import {getChannelsInCurrentTeam} from 'mattermost-redux/selectors/entities/channels';
 import {getMyChannelMemberships} from 'mattermost-redux/selectors/entities/common';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
@@ -44,17 +42,11 @@ class SearchChannelWithPermissionsSuggestion extends Suggestion {
         const displayName = channel.display_name;
         let icon = null;
         if (channelIsArchived) {
-            icon = (
-                <ArchiveIcon className='icon icon__archive'/>
-            );
+            icon = <ArchiveIcon className='icon icon__archive' />;
         } else if (channel.type === Constants.OPEN_CHANNEL) {
-            icon = (
-                <GlobeIcon className='icon icon__globe icon--body'/>
-            );
+            icon = <GlobeIcon className='icon icon__globe icon--body' />;
         } else if (channel.type === Constants.PRIVATE_CHANNEL) {
-            icon = (
-                <LockIcon className='icon icon__lock icon--body'/>
-            );
+            icon = <LockIcon className='icon icon__lock icon--body' />;
         }
 
         return (
@@ -73,8 +65,12 @@ class SearchChannelWithPermissionsSuggestion extends Suggestion {
 let prefix = '';
 
 function channelSearchSorter(wrappedA, wrappedB) {
-    const aIsArchived = wrappedA.channel.delete_at ? wrappedA.channel.delete_at !== 0 : false;
-    const bIsArchived = wrappedB.channel.delete_at ? wrappedB.channel.delete_at !== 0 : false;
+    const aIsArchived = wrappedA.channel.delete_at
+        ? wrappedA.channel.delete_at !== 0
+        : false;
+    const bIsArchived = wrappedB.channel.delete_at
+        ? wrappedB.channel.delete_at !== 0
+        : false;
     if (aIsArchived && !bIsArchived) {
         return 1;
     } else if (!aIsArchived && bIsArchived) {
@@ -113,11 +109,23 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
 
             const searchString = channel.display_name;
 
-            if (channel.type === Constants.OPEN_CHANNEL &&
-                haveIChannelPermission(state, {channel: channelId, team: teamId, permission: Permissions.MANAGE_PUBLIC_CHANNEL_MEMBERS})) {
+            if (
+                channel.type === Constants.OPEN_CHANNEL &&
+                haveIChannelPermission(state, {
+                    channel: channelId,
+                    team: teamId,
+                    permission: Permissions.MANAGE_PUBLIC_CHANNEL_MEMBERS,
+                })
+            ) {
                 return searchString.toLowerCase().includes(channelPrefixLower);
-            } else if (channel.type === Constants.PRIVATE_CHANNEL &&
-                haveIChannelPermission(state, {channel: channelId, team: teamId, permission: Permissions.MANAGE_PRIVATE_CHANNEL_MEMBERS})) {
+            } else if (
+                channel.type === Constants.PRIVATE_CHANNEL &&
+                haveIChannelPermission(state, {
+                    channel: channelId,
+                    team: teamId,
+                    permission: Permissions.MANAGE_PRIVATE_CHANNEL_MEMBERS,
+                })
+            ) {
                 return searchString.toLowerCase().includes(channelPrefixLower);
             }
 
@@ -133,7 +141,11 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
 
             // Dispatch suggestions for local data
             const channels = getChannelsInCurrentTeam(state);
-            this.formatChannelsAndDispatch(channelPrefix, resultsCallback, channels);
+            this.formatChannelsAndDispatch(
+                channelPrefix,
+                resultsCallback,
+                channels,
+            );
 
             // Fetch data from the server and dispatch
             this.fetchChannels(channelPrefix, resultsCallback);
@@ -149,7 +161,10 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
             return;
         }
 
-        const channelsAsync = ChannelActions.autocompleteChannelsForSearch(teamId, channelPrefix)(store.dispatch, store.getState);
+        const channelsAsync = ChannelActions.autocompleteChannelsForSearch(
+            teamId,
+            channelPrefix,
+        )(store.dispatch, store.getState);
 
         let channelsFromServer = [];
         try {
@@ -163,8 +178,15 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
             return;
         }
 
-        const channels = getChannelsInCurrentTeam(state).concat(channelsFromServer);
-        this.formatChannelsAndDispatch(channelPrefix, resultsCallback, channels);
+        const channels = getChannelsInCurrentTeam(state).concat(
+            channelsFromServer,
+        );
+
+        this.formatChannelsAndDispatch(
+            channelPrefix,
+            resultsCallback,
+            channels,
+        );
     }
 
     formatChannelsAndDispatch(channelPrefix, resultsCallback, allChannels) {
@@ -183,7 +205,8 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
         const channelFilter = this.makeChannelSearchFilter(channelPrefix);
 
         const config = getConfig(state);
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels =
+            config.ExperimentalViewArchivedChannels === 'true';
 
         for (const id of Object.keys(allChannels)) {
             const channel = allChannels[id];
@@ -199,7 +222,12 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
                 const newChannel = Object.assign({}, channel);
                 const channelIsArchived = channel.delete_at !== 0;
 
-                const wrappedChannel = {channel: newChannel, name: newChannel.name, deactivated: false};
+                const wrappedChannel = {
+                    channel: newChannel,
+                    name: newChannel.name,
+                    deactivated: false,
+                };
+
                 if (!viewArchivedChannels && channelIsArchived) {
                     continue;
                 } else if (!members[channel.id]) {
@@ -218,9 +246,9 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
             }
         }
 
-        const channelNames = channels.
-            sort(channelSearchSorter).
-            map((wrappedChannel) => wrappedChannel.channel.name);
+        const channelNames = channels
+            .sort(channelSearchSorter)
+            .map((wrappedChannel) => wrappedChannel.channel.name);
 
         resultsCallback({
             matchedPretext: channelPrefix,

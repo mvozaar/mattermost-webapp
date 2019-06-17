@@ -35,15 +35,23 @@ describe('Account Settings > Display > Channel Display Mode', () => {
         cy.get('#displayButton').click();
 
         // * Check that it changed into the Display section
-        cy.get('#displaySettingsTitle').should('be.visible').should('contain', 'Display Settings');
+        cy.get('#displaySettingsTitle')
+            .should('be.visible')
+            .should('contain', 'Display Settings');
 
         // 3. Scroll up to bring Channel Display setting in viewable area.
         cy.get('#channel_display_modeTitle').scrollIntoView();
 
         // * Check the min setting view if each element is present and contains expected text values
-        cy.get('#channel_display_modeTitle').should('be.visible').should('contain', 'Channel Display');
-        cy.get('#channel_display_modeDesc').should('be.visible').should('contain', 'Fixed width');
-        cy.get('#channel_display_modeEdit').should('be.visible').should('contain', 'Edit');
+        cy.get('#channel_display_modeTitle')
+            .should('be.visible')
+            .should('contain', 'Channel Display');
+        cy.get('#channel_display_modeDesc')
+            .should('be.visible')
+            .should('contain', 'Fixed width');
+        cy.get('#channel_display_modeEdit')
+            .should('be.visible')
+            .should('contain', 'Edit');
         cy.get('#accountSettingsHeader > .close').should('be.visible');
     });
 
@@ -58,12 +66,16 @@ describe('Account Settings > Display > Channel Display Mode', () => {
         // * Check the max setting view if each element is present and contains expected text values
         cy.get('#channel_display_modeFormatA').should('be.visible');
         cy.get('#channel_display_modeFormatB').should('be.visible');
-        cy.get('#saveSetting').should('be.visible').should('contain', 'Save');
-        cy.get('#cancelSetting').should('be.visible').should('contain', 'Cancel');
+        cy.get('#saveSetting')
+            .should('be.visible')
+            .should('contain', 'Save');
+        cy.get('#cancelSetting')
+            .should('be.visible')
+            .should('contain', 'Cancel');
         cy.get('#accountSettingsHeader > .close').should('be.visible');
     });
 
-    it('change channel display mode setting to "Full width"', () => {
+    it("change channel display mode setting to 'Full width'", () => {
         // 5. Click the radio button for "Full width"
         cy.get('#channel_display_modeFormatA').click();
 
@@ -72,7 +84,9 @@ describe('Account Settings > Display > Channel Display Mode', () => {
 
         // * Check that it changed into min setting view
         // * Check if element is present and contains expected text values
-        cy.get('#channel_display_modeDesc').should('be.visible').should('contain', 'Full width');
+        cy.get('#channel_display_modeDesc')
+            .should('be.visible')
+            .should('contain', 'Full width');
 
         // 7. Click "x" button to close Account Settings modal
         cy.get('#accountSettingsHeader > .close').click();
@@ -82,10 +96,14 @@ describe('Account Settings > Display > Channel Display Mode', () => {
 
         // * Validate if the post content in center channel is full width
         // by checking the exact class name.
-        cy.get('#postContent').first().invoke('attr', 'class').should('contain', 'post__content').should('not.contain', 'center');
+        cy.get('#postContent')
+            .first()
+            .invoke('attr', 'class')
+            .should('contain', 'post__content')
+            .should('not.contain', 'center');
     });
 
-    it('AS13225 Channel display mode setting to "Fixed width, centered"', () => {
+    it("AS13225 Channel display mode setting to 'Fixed width, centered'", () => {
         // 1. Return to Account Settings modal
         cy.toAccountSettingsModal('user-1', true);
 
@@ -109,7 +127,9 @@ describe('Account Settings > Display > Channel Display Mode', () => {
 
         // * Check that it changed into min setting view
         // * Check if element is present and contains expected text values
-        cy.get('#channel_display_modeDesc').should('be.visible').should('contain', 'Fixed width');
+        cy.get('#channel_display_modeDesc')
+            .should('be.visible')
+            .should('contain', 'Fixed width');
 
         // 7. Click "x" button to close Account Settings modal
         cy.get('#accountSettingsHeader > .close').click();
@@ -119,6 +139,9 @@ describe('Account Settings > Display > Channel Display Mode', () => {
 
         // * Validate if the post content in center channel is fixed and centered
         // by checking the exact class name.
-        cy.get('#postContent').first().invoke('attr', 'class').should('contain', 'post__content center');
+        cy.get('#postContent')
+            .first()
+            .invoke('attr', 'class')
+            .should('contain', 'post__content center');
     });
 });

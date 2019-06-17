@@ -27,8 +27,12 @@ export default class CenterChannel extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-        if (this.props.location.pathname !== nextProps.location.pathname && nextProps.location.pathname.includes('/pl/')) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
+        if (
+            this.props.location.pathname !== nextProps.location.pathname &&
+            nextProps.location.pathname.includes('/pl/')
+        ) {
             this.setState({returnTo: this.props.location.pathname});
         }
     }
@@ -47,7 +51,7 @@ export default class CenterChannel extends React.PureComponent {
             >
                 <div className='row header'>
                     <div id='navbar'>
-                        <ChannelHeaderMobile/>
+                        <ChannelHeaderMobile />
                     </div>
                 </div>
                 <div className='row main'>
@@ -61,11 +65,13 @@ export default class CenterChannel extends React.PureComponent {
                                 />
                             )}
                         />
+
                         <Route
                             path={'/:team/:path(channels|messages)/:identifier'}
                             component={ChannelIdentifierRouter}
                         />
-                        <Redirect to={lastChannelPath}/>
+
+                        <Redirect to={lastChannelPath} />
                     </Switch>
                 </div>
             </div>

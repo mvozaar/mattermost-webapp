@@ -8,16 +8,8 @@ import {FormattedMessage} from 'react-intl';
 export default class AddIcon extends React.PureComponent {
     render() {
         return (
-            <FormattedMessage
-                id='generic_icons.add'
-                defaultMessage='Add Icon'
-            >
-                {(title) => (
-                    <i
-                        className='fa fa-plus'
-                        title={title}
-                    />
-                )}
+            <FormattedMessage id='generic_icons.add' defaultMessage='Add Icon'>
+                {(title) => <i className='fa fa-plus' title={title} />}
             </FormattedMessage>
         );
     }

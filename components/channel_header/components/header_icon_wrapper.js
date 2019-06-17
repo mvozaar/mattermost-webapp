@@ -25,18 +25,21 @@ export default function HeaderIconWrapper({
                 messageID: t('channel_header.flagged'),
                 message: 'Flagged Posts',
             },
+
             pinnedPosts: {
                 class: '',
                 id: 'pinnedPostTooltip',
                 messageID: t('channel_header.pinnedPosts'),
                 message: 'Pinned Posts',
             },
+
             recentMentions: {
                 class: '',
                 id: 'recentMentionsTooltip',
                 messageID: t('channel_header.recentMentions'),
                 message: 'Recent Mentions',
             },
+
             search: {
                 class: '',
                 id: 'searchTooltip',
@@ -50,10 +53,7 @@ export default function HeaderIconWrapper({
         }
 
         return (
-            <Tooltip
-                id={toolTips[key].id}
-                className={toolTips[key].class}
-            >
+            <Tooltip id={toolTips[key].id} className={toolTips[key].class}>
                 <FormattedMessage
                     id={toolTips[key].messageID}
                     defaultMessage={toolTips[key].message}
@@ -65,10 +65,7 @@ export default function HeaderIconWrapper({
     let tooltip;
     if (tooltipKey === 'plugin' && tooltipText) {
         tooltip = (
-            <Tooltip
-                id='pluginTooltip'
-                className=''
-            >
+            <Tooltip id='pluginTooltip' className=''>
                 <span>{tooltipText}</span>
             </Tooltip>
         );
@@ -87,7 +84,10 @@ export default function HeaderIconWrapper({
                 >
                     <button
                         id={buttonId}
-                        className={buttonClass || 'channel-header__icon icon--hidden style--none'}
+                        className={
+                            buttonClass ||
+                            'channel-header__icon icon--hidden style--none'
+                        }
                         onClick={onClick}
                     >
                         {iconComponent}
@@ -101,7 +101,10 @@ export default function HeaderIconWrapper({
         <div className='flex-child'>
             <button
                 id={buttonId}
-                className={buttonClass || 'channel-header__icon icon--hidden style--none'}
+                className={
+                    buttonClass ||
+                    'channel-header__icon icon--hidden style--none'
+                }
                 onClick={onClick}
             >
                 {iconComponent}

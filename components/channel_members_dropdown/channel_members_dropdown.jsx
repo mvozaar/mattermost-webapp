@@ -56,6 +56,7 @@ export default class ChannelMembersDropdown extends React.Component {
                     serverError: result.error.message,
                     removing: false,
                 });
+
                 return;
             }
 
@@ -65,7 +66,13 @@ export default class ChannelMembersDropdown extends React.Component {
     };
 
     handleMakeChannelMember = async () => {
-        const {error} = await this.props.actions.updateChannelMemberSchemeRoles(this.props.channel.id, this.props.user.id, true, false);
+        const {error} = await this.props.actions.updateChannelMemberSchemeRoles(
+            this.props.channel.id,
+            this.props.user.id,
+            true,
+            false,
+        );
+
         if (error) {
             this.setState({serverError: error.message});
         } else {
@@ -74,7 +81,13 @@ export default class ChannelMembersDropdown extends React.Component {
     };
 
     handleMakeChannelAdmin = async () => {
-        const {error} = await this.props.actions.updateChannelMemberSchemeRoles(this.props.channel.id, this.props.user.id, true, true);
+        const {error} = await this.props.actions.updateChannelMemberSchemeRoles(
+            this.props.channel.id,
+            this.props.user.id,
+            true,
+            true,
+        );
+
         if (error) {
             this.setState({serverError: error.message});
         } else {
@@ -101,13 +114,21 @@ export default class ChannelMembersDropdown extends React.Component {
 
     render() {
         const supportsChannelAdmin = this.props.isLicensed;
-        const isChannelAdmin = supportsChannelAdmin && (Utils.isChannelAdmin(this.props.isLicensed, this.props.channelMember.roles) || this.props.channelMember.scheme_admin);
+        const isChannelAdmin =
+            supportsChannelAdmin &&
+            (Utils.isChannelAdmin(
+                this.props.isLicensed,
+                this.props.channelMember.roles,
+            ) ||
+                this.props.channelMember.scheme_admin);
 
         let serverError = null;
         if (this.state.serverError) {
             serverError = (
                 <div className='has-error'>
-                    <label className='has-error control-label'>{this.state.serverError}</label>
+                    <label className='has-error control-label'>
+                        {this.state.serverError}
+                    </label>
                 </div>
             );
         }
@@ -119,14 +140,20 @@ export default class ChannelMembersDropdown extends React.Component {
         if (this.props.canChangeMemberRoles) {
             const role = this.renderRole(isChannelAdmin);
 
-            const canRemoveFromChannel = this.props.canRemoveMember && this.props.channel.name !== Constants.DEFAULT_CHANNEL && !this.props.channel.group_constrained;
+            const canRemoveFromChannel =
+                this.props.canRemoveMember &&
+                this.props.channel.name !== Constants.DEFAULT_CHANNEL &&
+                !this.props.channel.group_constrained;
             const canMakeChannelMember = isChannelAdmin;
             const canMakeChannelAdmin = supportsChannelAdmin && !isChannelAdmin;
 
-            if ((canMakeChannelMember || canMakeChannelAdmin)) {
+            if (canMakeChannelMember || canMakeChannelAdmin) {
                 const {index, totalUsers} = this.props;
                 let openUp = false;
-                if (totalUsers > ROWS_FROM_BOTTOM_TO_OPEN_UP && totalUsers - index <= ROWS_FROM_BOTTOM_TO_OPEN_UP) {
+                if (
+                    totalUsers > ROWS_FROM_BOTTOM_TO_OPEN_UP &&
+                    totalUsers - index <= ROWS_FROM_BOTTOM_TO_OPEN_UP
+                ) {
                     openUp = true;
                 }
 
@@ -137,28 +164,43 @@ export default class ChannelMembersDropdown extends React.Component {
                             type='button'
                         >
                             <span>{role} </span>
-                            <DropdownIcon/>
+                            <DropdownIcon />
                         </button>
                         <Menu
                             openLeft={true}
                             openUp={openUp}
-                            ariaLabel={Utils.localizeMessage('channel_members_dropdown.menuAriaLabel', 'Channel member role change')}
+                            ariaLabel={Utils.localizeMessage(
+                                'channel_members_dropdown.menuAriaLabel',
+                                'Channel member role change',
+                            )}
                         >
                             <MenuItemAction
                                 show={canMakeChannelMember}
                                 onClick={this.handleMakeChannelMember}
-                                text={Utils.localizeMessage('channel_members_dropdown.make_channel_member', 'Make Channel Member')}
+                                text={Utils.localizeMessage(
+                                    'channel_members_dropdown.make_channel_member',
+                                    'Make Channel Member',
+                                )}
                             />
+
                             <MenuItemAction
                                 show={canMakeChannelAdmin}
                                 onClick={this.handleMakeChannelAdmin}
-                                text={Utils.localizeMessage('channel_members_dropdown.make_channel_admin', 'Make Channel Admin')}
+                                text={Utils.localizeMessage(
+                                    'channel_members_dropdown.make_channel_admin',
+                                    'Make Channel Admin',
+                                )}
                             />
+
                             <MenuItemAction
                                 show={canRemoveFromChannel}
                                 onClick={this.handleRemoveFromChannel}
-                                text={Utils.localizeMessage('channel_members_dropdown.remove_from_channel', 'Remove From Channel')}
+                                text={Utils.localizeMessage(
+                                    'channel_members_dropdown.remove_from_channel',
+                                    'Remove From Channel',
+                                )}
                             />
+
                             {serverError}
                         </Menu>
                     </MenuWrapper>
@@ -166,7 +208,11 @@ export default class ChannelMembersDropdown extends React.Component {
             }
         }
 
-        if (this.props.canRemoveMember && this.props.channel.name !== Constants.DEFAULT_CHANNEL && !this.props.channel.group_constrained) {
+        if (
+            this.props.canRemoveMember &&
+            this.props.channel.name !== Constants.DEFAULT_CHANNEL &&
+            !this.props.channel.group_constrained
+        ) {
             return (
                 <button
                     id='removeMember'
@@ -184,15 +230,9 @@ export default class ChannelMembersDropdown extends React.Component {
         }
 
         if (this.props.channel.name === Constants.DEFAULT_CHANNEL) {
-            return (
-                <div/>
-            );
+            return <div />;
         }
 
-        return (
-            <div>
-                {this.renderRole(isChannelAdmin)}
-            </div>
-        );
+        return <div>{this.renderRole(isChannelAdmin)}</div>;
     }
 }

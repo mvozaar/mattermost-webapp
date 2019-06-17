@@ -12,7 +12,8 @@ function mapStateToProps(state) {
     const enableIncomingWebhooks = config.EnableIncomingWebhooks === 'true';
     const enableOutgoingWebhooks = config.EnableOutgoingWebhooks === 'true';
     const enableCommands = config.EnableCommands === 'true';
-    const enableOAuthServiceProvider = config.EnableOAuthServiceProvider === 'true';
+    const enableOAuthServiceProvider =
+        config.EnableOAuthServiceProvider === 'true';
 
     return {
         siteName,

@@ -32,9 +32,8 @@ describe('components/HeaderFooterTemplate', () => {
     });
 
     test('should match snapshot without children', () => {
-        const wrapper = shallow(
-            <NotLoggedIn config={{}}/>
-        );
+        const wrapper = shallow(<NotLoggedIn config={{}} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -42,36 +41,45 @@ describe('components/HeaderFooterTemplate', () => {
         const wrapper = shallow(
             <NotLoggedIn config={{}}>
                 <p>{'test'}</p>
-            </NotLoggedIn>
+            </NotLoggedIn>,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with help link', () => {
         const wrapper = shallow(
-            <NotLoggedIn config={{HelpLink: 'http://testhelplink'}}/>
+            <NotLoggedIn config={{HelpLink: 'http://testhelplink'}} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with term of service link', () => {
         const wrapper = shallow(
-            <NotLoggedIn config={{TermsOfServiceLink: 'http://testtermsofservicelink'}}/>
+            <NotLoggedIn
+                config={{TermsOfServiceLink: 'http://testtermsofservicelink'}}
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with privacy policy link', () => {
         const wrapper = shallow(
-            <NotLoggedIn config={{PrivacyPolicyLink: 'http://testprivacypolicylink'}}/>
+            <NotLoggedIn
+                config={{PrivacyPolicyLink: 'http://testprivacypolicylink'}}
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with about link', () => {
         const wrapper = shallow(
-            <NotLoggedIn config={{AboutLink: 'http://testaboutlink'}}/>
+            <NotLoggedIn config={{AboutLink: 'http://testaboutlink'}} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -84,29 +92,51 @@ describe('components/HeaderFooterTemplate', () => {
                     PrivacyPolicyLink: 'http://testprivacypolicylink',
                     AboutLink: 'http://testaboutlink',
                 }}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should set classes on body and #root on mount', () => {
         expect(document.body.classList.contains('sticky')).toBe(false);
-        expect(document.getElementById('root').classList.contains('container-fluid')).toBe(true);
-        shallow(<NotLoggedIn config={{AboutLink: 'http://testaboutlink'}}/>);
+        expect(
+            document
+                .getElementById('root')
+                .classList.contains('container-fluid'),
+        ).toBe(true);
+        shallow(<NotLoggedIn config={{AboutLink: 'http://testaboutlink'}} />);
         expect(document.body.classList.contains('sticky')).toBe(true);
-        expect(document.getElementById('root').classList.contains('container-fluid')).toBe(true);
+        expect(
+            document
+                .getElementById('root')
+                .classList.contains('container-fluid'),
+        ).toBe(true);
     });
 
     test('should unset classes on body and #root on unmount', () => {
         expect(document.body.classList.contains('sticky')).toBe(false);
-        expect(document.getElementById('root').classList.contains('container-fluid')).toBe(true);
+        expect(
+            document
+                .getElementById('root')
+                .classList.contains('container-fluid'),
+        ).toBe(true);
         const wrapper = shallow(
-            <NotLoggedIn config={{AboutLink: 'http://testaboutlink'}}/>
+            <NotLoggedIn config={{AboutLink: 'http://testaboutlink'}} />,
         );
+
         expect(document.body.classList.contains('sticky')).toBe(true);
-        expect(document.getElementById('root').classList.contains('container-fluid')).toBe(true);
+        expect(
+            document
+                .getElementById('root')
+                .classList.contains('container-fluid'),
+        ).toBe(true);
         wrapper.unmount();
         expect(document.body.classList.contains('sticky')).toBe(false);
-        expect(document.getElementById('root').classList.contains('container-fluid')).toBe(false);
+        expect(
+            document
+                .getElementById('root')
+                .classList.contains('container-fluid'),
+        ).toBe(false);
     });
 });

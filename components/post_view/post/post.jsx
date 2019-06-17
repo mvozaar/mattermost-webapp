@@ -12,7 +12,6 @@ import PostHeader from 'components/post_view/post_header';
 
 export default class Post extends React.PureComponent {
     static propTypes = {
-
         /**
          * The post to render
          */
@@ -71,7 +70,7 @@ export default class Post extends React.PureComponent {
         actions: PropTypes.shape({
             selectPost: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         post: {},
@@ -87,7 +86,8 @@ export default class Post extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         this.setState({sameRoot: this.hasSameRoot(nextProps)});
     }
 
@@ -100,7 +100,7 @@ export default class Post extends React.PureComponent {
         }
 
         this.props.actions.selectPost(post);
-    }
+    };
 
     handleDropdownOpened = (opened) => {
         if (this.props.togglePostMenu) {
@@ -110,23 +110,33 @@ export default class Post extends React.PureComponent {
         this.setState({
             dropdownOpened: opened,
         });
-    }
+    };
 
     hasSameRoot = (props) => {
         const post = props.post;
 
         if (props.isFirstReply) {
             return false;
-        } else if (!post.root_id && !props.previousPostIsComment && props.consecutivePostByUser) {
+        } else if (
+            !post.root_id &&
+            !props.previousPostIsComment &&
+            props.consecutivePostByUser
+        ) {
             return true;
         } else if (post.root_id) {
             return true;
         }
 
         return false;
-    }
+    };
 
-    getClassName = (post, isSystemMessage, fromWebhook, fromAutoResponder, fromBot) => {
+    getClassName = (
+        post,
+        isSystemMessage,
+        fromWebhook,
+        fromAutoResponder,
+        fromBot,
+    ) => {
         let className = 'post';
 
         if (post.failed || post.state === Posts.POST_DELETED) {
@@ -145,7 +155,11 @@ export default class Post extends React.PureComponent {
         }
 
         let currentUserCss = '';
-        if (this.props.currentUserId === post.user_id && !fromWebhook && !isSystemMessage) {
+        if (
+            this.props.currentUserId === post.user_id &&
+            !fromWebhook &&
+            !isSystemMessage
+        ) {
             currentUserCss = 'current--user';
         }
 
@@ -187,20 +201,30 @@ export default class Post extends React.PureComponent {
             className += ' post--pinned';
         }
 
-        return className + ' ' + sameUserClass + ' ' + rootUser + ' ' + postType + ' ' + currentUserCss;
-    }
+        return (
+            className +
+            ' ' +
+            sameUserClass +
+            ' ' +
+            rootUser +
+            ' ' +
+            postType +
+            ' ' +
+            currentUserCss
+        );
+    };
 
     getRef = (node) => {
         this.domNode = node;
-    }
+    };
 
     setHover = () => {
         this.setState({hover: true});
-    }
+    };
 
     unsetHover = () => {
         this.setState({hover: false});
-    }
+    };
 
     render() {
         const {post} = this.props;
@@ -210,11 +234,17 @@ export default class Post extends React.PureComponent {
 
         const isSystemMessage = PostUtils.isSystemMessage(post);
         const fromAutoResponder = PostUtils.fromAutoResponder(post);
-        const fromWebhook = post && post.props && post.props.from_webhook === 'true';
+        const fromWebhook =
+            post && post.props && post.props.from_webhook === 'true';
         const fromBot = post && post.props && post.props.from_bot === 'true';
 
         let profilePic;
-        const hideProfilePicture = this.state.sameRoot && this.props.consecutivePostByUser && (!post.root_id && this.props.replyCount === 0) && !fromBot;
+        const hideProfilePicture =
+            this.state.sameRoot &&
+            this.props.consecutivePostByUser &&
+            !post.root_id &&
+            this.props.replyCount === 0 &&
+            !fromBot;
         if (!hideProfilePicture) {
             profilePic = (
                 <PostProfilePicture
@@ -226,9 +256,7 @@ export default class Post extends React.PureComponent {
 
             if (fromAutoResponder) {
                 profilePic = (
-                    <span className='auto-responder'>
-                        {profilePic}
-                    </span>
+                    <span className='auto-responder'>{profilePic}</span>
                 );
             }
         }
@@ -242,7 +270,13 @@ export default class Post extends React.PureComponent {
             <div
                 ref={this.getRef}
                 id={'post_' + post.id}
-                className={this.getClassName(post, isSystemMessage, fromWebhook, fromAutoResponder, fromBot)}
+                className={this.getClassName(
+                    post,
+                    isSystemMessage,
+                    fromWebhook,
+                    fromAutoResponder,
+                    fromBot,
+                )}
                 onMouseOver={this.setHover}
                 onMouseLeave={this.unsetHover}
                 onTouchStart={this.setHover}
@@ -251,9 +285,7 @@ export default class Post extends React.PureComponent {
                     id='postContent'
                     className={'post__content ' + centerClass}
                 >
-                    <div className='post__img'>
-                        {profilePic}
-                    </div>
+                    <div className='post__img'>{profilePic}</div>
                     <div>
                         <PostHeader
                             post={post}
@@ -265,6 +297,7 @@ export default class Post extends React.PureComponent {
                             showTimeWithoutHover={!hideProfilePicture}
                             hover={this.state.hover}
                         />
+
                         <PostBody
                             post={post}
                             handleCommentClick={this.handleCommentClick}

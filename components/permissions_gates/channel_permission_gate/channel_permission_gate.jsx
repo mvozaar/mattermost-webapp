@@ -7,10 +7,9 @@ import React from 'react';
 export default class ChannelPermissionGate extends React.Component {
     static defaultProps = {
         invert: false,
-    }
+    };
 
     static propTypes = {
-
         /**
          * Channel to check the permission
          */

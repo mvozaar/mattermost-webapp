@@ -18,7 +18,6 @@ const EMOJI_PICKER_WIDTH_OFFSET = 260;
 
 export default class ReactionList extends React.PureComponent {
     static propTypes = {
-
         /**
          * The post to render reactions for
          */
@@ -40,7 +39,6 @@ export default class ReactionList extends React.PureComponent {
         enableEmojiPicker: PropTypes.bool.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * Function to add a reaction to the post
              */
@@ -51,7 +49,7 @@ export default class ReactionList extends React.PureComponent {
              */
             scrollPostList: PropTypes.func.isRequired,
         }),
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -69,21 +67,21 @@ export default class ReactionList extends React.PureComponent {
 
     getTarget = () => {
         return this.refs.addReactionButton;
-    }
+    };
 
     handleEmojiClick = (emoji) => {
         this.setState({showEmojiPicker: false});
         const emojiName = emoji.name || emoji.aliases[0];
         this.props.actions.addReaction(this.props.post.id, emojiName);
-    }
+    };
 
     hideEmojiPicker = () => {
         this.setState({showEmojiPicker: false});
-    }
+    };
 
     toggleEmojiPicker = () => {
         this.setState({showEmojiPicker: !this.state.showEmojiPicker});
-    }
+    };
 
     render() {
         if (!this.props.post.has_reactions || !this.props.reactions) {
@@ -120,7 +118,10 @@ export default class ReactionList extends React.PureComponent {
         const addReactionButton = this.getTarget();
         let rightOffset = DEFAULT_EMOJI_PICKER_RIGHT_OFFSET;
         if (addReactionButton) {
-            rightOffset = window.innerWidth - addReactionButton.getBoundingClientRect().right - EMOJI_PICKER_WIDTH_OFFSET;
+            rightOffset =
+                window.innerWidth -
+                addReactionButton.getBoundingClientRect().right -
+                EMOJI_PICKER_WIDTH_OFFSET;
 
             if (rightOffset < 0) {
                 rightOffset = DEFAULT_EMOJI_PICKER_RIGHT_OFFSET;
@@ -149,6 +150,7 @@ export default class ReactionList extends React.PureComponent {
                         rightOffset={rightOffset}
                         topOffset={-5}
                     />
+
                     <OverlayTrigger
                         trigger={['hover', 'focus']}
                         placement='top'
@@ -186,9 +188,7 @@ export default class ReactionList extends React.PureComponent {
         return (
             <div className='post-reaction-list'>
                 {reactions}
-                <div className={addReactionClassName}>
-                    {emojiPicker}
-                </div>
+                <div className={addReactionClassName}>{emojiPicker}</div>
             </div>
         );
     }

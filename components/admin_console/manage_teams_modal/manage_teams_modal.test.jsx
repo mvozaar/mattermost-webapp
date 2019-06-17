@@ -19,31 +19,40 @@ describe('ManageTeamsModal', () => {
             roles: 'system_user',
             username: 'currentUsername',
         },
+
         actions: {
-            getTeamMembersForUser: jest.fn().mockReturnValue(Promise.resolve({data: []})),
-            getTeamsForUser: jest.fn().mockReturnValue(Promise.resolve({data: []})),
+            getTeamMembersForUser: jest
+                .fn()
+                .mockReturnValue(Promise.resolve({data: []})),
+            getTeamsForUser: jest
+                .fn()
+                .mockReturnValue(Promise.resolve({data: []})),
             updateTeamMemberSchemeRoles: jest.fn(),
             removeUserFromTeam: jest.fn(),
         },
     };
 
     test('should match snapshot init', () => {
-        const wrapper = shallow(
-            <ManageTeamsModal {...baseProps}/>
-        );
+        const wrapper = shallow(<ManageTeamsModal {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should call api calls on mount', () => {
-        shallow(
-            <ManageTeamsModal {...baseProps}/>
+        shallow(<ManageTeamsModal {...baseProps} />);
+
+        expect(baseProps.actions.getTeamMembersForUser).toHaveBeenCalledTimes(
+            1,
         );
 
-        expect(baseProps.actions.getTeamMembersForUser).toHaveBeenCalledTimes(1);
-        expect(baseProps.actions.getTeamMembersForUser).toHaveBeenCalledWith('currentUserId');
+        expect(baseProps.actions.getTeamMembersForUser).toHaveBeenCalledWith(
+            'currentUserId',
+        );
+
         expect(baseProps.actions.getTeamsForUser).toHaveBeenCalledTimes(1);
-        expect(baseProps.actions.getTeamsForUser).toHaveBeenCalledWith('currentUserId');
+        expect(baseProps.actions.getTeamsForUser).toHaveBeenCalledWith(
+            'currentUserId',
+        );
     });
 
     test('should save data in state from api calls', (done) => {
@@ -54,8 +63,12 @@ describe('ManageTeamsModal', () => {
             delete_at: 0,
         };
 
-        const getTeamMembersForUser = jest.fn().mockReturnValue(Promise.resolve({data: [{team_id: '123test'}]}));
-        const getTeamsForUser = jest.fn().mockReturnValue(Promise.resolve({data: [mockTeamData]}));
+        const getTeamMembersForUser = jest
+            .fn()
+            .mockReturnValue(Promise.resolve({data: [{team_id: '123test'}]}));
+        const getTeamsForUser = jest
+            .fn()
+            .mockReturnValue(Promise.resolve({data: [mockTeamData]}));
 
         const props = {
             ...baseProps,
@@ -66,13 +79,14 @@ describe('ManageTeamsModal', () => {
             },
         };
 
-        const wrapper = shallow(
-            <ManageTeamsModal {...props}/>
-        );
+        const wrapper = shallow(<ManageTeamsModal {...props} />);
 
         process.nextTick(() => {
             expect(wrapper.state('teams')).toEqual([mockTeamData]);
-            expect(wrapper.state('teamMembers')).toEqual([{team_id: '123test'}]);
+            expect(wrapper.state('teamMembers')).toEqual([
+                {team_id: '123test'},
+            ]);
+
             expect(wrapper).toMatchSnapshot();
             done();
         });

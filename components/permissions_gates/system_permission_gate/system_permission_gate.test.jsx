@@ -14,14 +14,19 @@ describe('components/permissions_gates', () => {
         entities: {
             channels: {
                 myMembers: {
-                    channel_id: {channel_id: 'channel_id', roles: 'channel_role'},
+                    channel_id: {
+                        channel_id: 'channel_id',
+                        roles: 'channel_role',
+                    },
                 },
             },
+
             teams: {
                 myMembers: {
                     team_id: {team_id: 'team_id', roles: 'team_role'},
                 },
             },
+
             users: {
                 currentUserId: 'user_id',
                 profiles: {
@@ -31,6 +36,7 @@ describe('components/permissions_gates', () => {
                     },
                 },
             },
+
             roles: {
                 roles: {
                     system_role: {permissions: ['test_system_permission']},
@@ -40,16 +46,19 @@ describe('components/permissions_gates', () => {
             },
         },
     };
+
     const store = mockStore(state);
 
     describe('SystemPermissionGate', () => {
         test('should match snapshot when user have permission', () => {
             const wrapper = mount(
                 <Provider store={store}>
-                    <SystemPermissionGate permissions={['test_system_permission']}>
+                    <SystemPermissionGate
+                        permissions={['test_system_permission']}
+                    >
                         <p>{'Valid permission (shown)'}</p>
                     </SystemPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -57,10 +66,15 @@ describe('components/permissions_gates', () => {
         test('should match snapshot when user have at least on of the permissions', () => {
             const wrapper = mount(
                 <Provider store={store}>
-                    <SystemPermissionGate permissions={['test_system_permission', 'not_existing_permission']}>
+                    <SystemPermissionGate
+                        permissions={[
+                            'test_system_permission',
+                            'not_existing_permission',
+                        ]}
+                    >
                         <p>{'Valid permission (shown)'}</p>
                     </SystemPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -74,7 +88,7 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Valid permission but inverted (not shown)'}</p>
                     </SystemPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -88,18 +102,18 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Invalid permission but inverted (shown)'}</p>
                     </SystemPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
         });
-        test('should match snapshot when user haven\'t permission', () => {
+        test("should match snapshot when user haven't permission", () => {
             const wrapper = mount(
                 <Provider store={store}>
                     <SystemPermissionGate permissions={['invalid_permission']}>
                         <p>{'Invalid permission (not shown)'}</p>
                     </SystemPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();

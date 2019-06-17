@@ -15,26 +15,27 @@ describe('/components/create_team', () => {
     const defaultProps = {
         currentChannel: {name: 'test-channel'},
         currentTeam: {name: 'test-team'},
-        siteName: 'Mattermost',
+        siteName: 'securCom',
         customBrand: true,
         enableCustomBrand: true,
         customDescriptionText: 'Welcome to our custom branded site!',
         match: {
             url: 'http://localhost:8065/create_team',
         },
+
         history: {
             push: jest.fn(),
         },
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallowWithIntl(<CreateTeam {...defaultProps}/>);
+        const wrapper = shallowWithIntl(<CreateTeam {...defaultProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should run props.history.push with new state', () => {
-        const wrapper = shallowWithIntl(<CreateTeam {...defaultProps}/>);
+        const wrapper = shallowWithIntl(<CreateTeam {...defaultProps} />);
 
         const history = wrapper.instance().props.history;
         const state = {team: {name: 'team_name'}, wizard: ''};

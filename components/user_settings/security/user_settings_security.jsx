@@ -71,7 +71,7 @@ export default class SecurityTab extends React.Component {
             getAuthorizedApps: PropTypes.func.isRequired,
             deauthorizeOAuthApp: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -94,15 +94,13 @@ export default class SecurityTab extends React.Component {
 
     componentDidMount() {
         if (this.props.enableOAuthServiceProvider) {
-            this.props.actions.getAuthorizedApps().then(
-                ({data, error}) => {
-                    if (data) {
-                        this.setState({authorizedApps: data, serverError: null}); //eslint-disable-line react/no-did-mount-set-state
-                    } else if (error) {
-                        this.setState({serverError: error.message}); //eslint-disable-line react/no-did-mount-set-state
-                    }
+            this.props.actions.getAuthorizedApps().then(({data, error}) => {
+                if (data) {
+                    this.setState({authorizedApps: data, serverError: null}); //eslint-disable-line react/no-did-mount-set-state
+                } else if (error) {
+                    this.setState({serverError: error.message}); //eslint-disable-line react/no-did-mount-set-state
                 }
-            );
+            });
         }
     }
 
@@ -113,32 +111,51 @@ export default class SecurityTab extends React.Component {
         const confirmPassword = this.state.confirmPassword;
 
         if (currentPassword === '') {
-            this.setState({passwordError: Utils.localizeMessage('user.settings.security.currentPasswordError', 'Please enter your current password.'), serverError: ''});
+            this.setState({
+                passwordError: Utils.localizeMessage(
+                    'user.settings.security.currentPasswordError',
+                    'Please enter your current password.',
+                ),
+
+                serverError: '',
+            });
+
             return;
         }
 
-        const {valid, error} = Utils.isValidPassword(newPassword, this.props.passwordConfig);
+        const {valid, error} = Utils.isValidPassword(
+            newPassword,
+            this.props.passwordConfig,
+        );
+
         if (!valid && error) {
             this.setState({
                 passwordError: error,
                 serverError: '',
             });
+
             return;
         }
 
         if (newPassword !== confirmPassword) {
-            const defaultState = Object.assign(this.getDefaultState(), {passwordError: Utils.localizeMessage('user.settings.security.passwordMatchError', 'The new passwords you entered do not match.'), serverError: ''});
+            const defaultState = Object.assign(this.getDefaultState(), {
+                passwordError: Utils.localizeMessage(
+                    'user.settings.security.passwordMatchError',
+                    'The new passwords you entered do not match.',
+                ),
+
+                serverError: '',
+            });
+
             this.setState(defaultState);
             return;
         }
 
         this.setState({savingPassword: true});
 
-        this.props.actions.updateUserPassword(
-            user.id,
-            currentPassword,
-            newPassword).
-            then(({data, error: err}) => {
+        this.props.actions
+            .updateUserPassword(user.id, currentPassword, newPassword)
+            .then(({data, error: err}) => {
                 if (data) {
                     this.props.updateSection('');
                     this.props.actions.getMe();
@@ -154,66 +171,68 @@ export default class SecurityTab extends React.Component {
                     this.setState(state);
                 }
             });
-    }
+    };
 
     updateCurrentPassword = (e) => {
         this.setState({currentPassword: e.target.value});
-    }
+    };
 
     updateNewPassword = (e) => {
         this.setState({newPassword: e.target.value});
-    }
+    };
 
     updateConfirmPassword = (e) => {
         this.setState({confirmPassword: e.target.value});
-    }
+    };
 
     deauthorizeApp = (e) => {
         e.preventDefault();
         const appId = e.currentTarget.getAttribute('data-app');
-        this.props.actions.deauthorizeOAuthApp(appId).then(
-            ({data, error}) => {
-                if (data) {
-                    const authorizedApps = this.state.authorizedApps.filter((app) => {
+        this.props.actions.deauthorizeOAuthApp(appId).then(({data, error}) => {
+            if (data) {
+                const authorizedApps = this.state.authorizedApps.filter(
+                    (app) => {
                         return app.id !== appId;
-                    });
+                    },
+                );
 
-                    this.setState({authorizedApps, serverError: null});
-                } else if (error) {
-                    this.setState({serverError: error.message});
-                }
+                this.setState({authorizedApps, serverError: null});
+            } else if (error) {
+                this.setState({serverError: error.message});
             }
-        );
-    }
+        });
+    };
 
     handleUpdateSection = (section) => {
         if (section) {
             this.props.updateSection(section);
         } else {
             switch (this.props.activeSection) {
-            case SECTION_MFA:
-            case SECTION_SIGNIN:
-            case SECTION_TOKENS:
-            case SECTION_APPS:
-                this.setState({
-                    serverError: null,
-                });
-                break;
-            case SECTION_PASSWORD:
-                this.setState({
-                    currentPassword: '',
-                    newPassword: '',
-                    confirmPassword: '',
-                    serverError: null,
-                    passwordError: null,
-                });
-                break;
-            default:
+                case SECTION_MFA:
+                case SECTION_SIGNIN:
+                case SECTION_TOKENS:
+                case SECTION_APPS:
+                    this.setState({
+                        serverError: null,
+                    });
+
+                    break;
+                case SECTION_PASSWORD:
+                    this.setState({
+                        currentPassword: '',
+                        newPassword: '',
+                        confirmPassword: '',
+                        serverError: null,
+                        passwordError: null,
+                    });
+
+                    break;
+                default:
             }
 
             this.props.updateSection('');
         }
-    }
+    };
 
     createPasswordSection = () => {
         if (this.props.activeSection === SECTION_PASSWORD) {
@@ -224,10 +243,7 @@ export default class SecurityTab extends React.Component {
                 submit = this.submitPassword;
 
                 inputs.push(
-                    <div
-                        key='currentPasswordUpdateForm'
-                        className='form-group'
-                    >
+                    <div key='currentPasswordUpdateForm' className='form-group'>
                         <label className='col-sm-5 control-label'>
                             <FormattedMessage
                                 id='user.settings.security.currentPassword'
@@ -244,13 +260,11 @@ export default class SecurityTab extends React.Component {
                                 value={this.state.currentPassword}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
+
                 inputs.push(
-                    <div
-                        key='newPasswordUpdateForm'
-                        className='form-group'
-                    >
+                    <div key='newPasswordUpdateForm' className='form-group'>
                         <label className='col-sm-5 control-label'>
                             <FormattedMessage
                                 id='user.settings.security.newPassword'
@@ -266,8 +280,9 @@ export default class SecurityTab extends React.Component {
                                 value={this.state.newPassword}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
+
                 inputs.push(
                     <div
                         key='retypeNewPasswordUpdateForm'
@@ -288,77 +303,72 @@ export default class SecurityTab extends React.Component {
                                 value={this.state.confirmPassword}
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.GITLAB_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.GITLAB_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.security.passwordGitlabCantUpdate'
                                 defaultMessage='Login occurs through GitLab. Password cannot be updated.'
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.LDAP_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.LDAP_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.security.passwordLdapCantUpdate'
                                 defaultMessage='Login occurs through AD/LDAP. Password cannot be updated.'
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.SAML_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.SAML_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.security.passwordSamlCantUpdate'
                                 defaultMessage='This field is handled through your login provider. If you want to change it, you need to do so through your login provider.'
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.GOOGLE_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.GOOGLE_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.security.passwordGoogleCantUpdate'
                                 defaultMessage='Login occurs through Google Apps. Password cannot be updated.'
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
-            } else if (this.props.user.auth_service === Constants.OFFICE365_SERVICE) {
+            } else if (
+                this.props.user.auth_service === Constants.OFFICE365_SERVICE
+            ) {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='form-group'
-                    >
+                    <div key='oauthEmailInfo' className='form-group'>
                         <div className='padding-bottom x2'>
                             <FormattedMessage
                                 id='user.settings.security.passwordOffice365CantUpdate'
                                 defaultMessage='Login occurs through Office 365. Password cannot be updated.'
                             />
                         </div>
-                    </div>
+                    </div>,
                 );
             }
 
@@ -398,6 +408,7 @@ export default class SecurityTab extends React.Component {
                                 year='numeric'
                             />
                         ),
+
                         time: (
                             <FormattedTime
                                 value={d}
@@ -437,7 +448,9 @@ export default class SecurityTab extends React.Component {
                     defaultMessage='Login done through Google Apps'
                 />
             );
-        } else if (this.props.user.auth_service === Constants.OFFICE365_SERVICE) {
+        } else if (
+            this.props.user.auth_service === Constants.OFFICE365_SERVICE
+        ) {
             describe = (
                 <FormattedMessage
                     id='user.settings.security.loginOffice365'
@@ -460,7 +473,7 @@ export default class SecurityTab extends React.Component {
                 focused={true}
             />
         );
-    }
+    };
 
     createSignInSection = () => {
         const user = this.props.user;
@@ -479,14 +492,21 @@ export default class SecurityTab extends React.Component {
                         <div className='padding-bottom x2'>
                             <Link
                                 className='btn btn-primary'
-                                to={'/claim/email_to_oauth?email=' + encodeURIComponent(user.email) + '&old_type=' + user.auth_service + '&new_type=' + Constants.GITLAB_SERVICE}
+                                to={
+                                    '/claim/email_to_oauth?email=' +
+                                    encodeURIComponent(user.email) +
+                                    '&old_type=' +
+                                    user.auth_service +
+                                    '&new_type=' +
+                                    Constants.GITLAB_SERVICE
+                                }
                             >
                                 <FormattedMessage
                                     id='user.settings.security.switchGitlab'
                                     defaultMessage='Switch to using GitLab SSO'
                                 />
                             </Link>
-                            <br/>
+                            <br />
                         </div>
                     );
                 }
@@ -496,14 +516,21 @@ export default class SecurityTab extends React.Component {
                         <div className='padding-bottom x2'>
                             <Link
                                 className='btn btn-primary'
-                                to={'/claim/email_to_oauth?email=' + encodeURIComponent(user.email) + '&old_type=' + user.auth_service + '&new_type=' + Constants.GOOGLE_SERVICE}
+                                to={
+                                    '/claim/email_to_oauth?email=' +
+                                    encodeURIComponent(user.email) +
+                                    '&old_type=' +
+                                    user.auth_service +
+                                    '&new_type=' +
+                                    Constants.GOOGLE_SERVICE
+                                }
                             >
                                 <FormattedMessage
                                     id='user.settings.security.switchGoogle'
                                     defaultMessage='Switch to using Google SSO'
                                 />
                             </Link>
-                            <br/>
+                            <br />
                         </div>
                     );
                 }
@@ -513,14 +540,21 @@ export default class SecurityTab extends React.Component {
                         <div className='padding-bottom x2'>
                             <Link
                                 className='btn btn-primary'
-                                to={'/claim/email_to_oauth?email=' + encodeURIComponent(user.email) + '&old_type=' + user.auth_service + '&new_type=' + Constants.OFFICE365_SERVICE}
+                                to={
+                                    '/claim/email_to_oauth?email=' +
+                                    encodeURIComponent(user.email) +
+                                    '&old_type=' +
+                                    user.auth_service +
+                                    '&new_type=' +
+                                    Constants.OFFICE365_SERVICE
+                                }
                             >
                                 <FormattedMessage
                                     id='user.settings.security.switchOffice365'
                                     defaultMessage='Switch to using Office 365 SSO'
                                 />
                             </Link>
-                            <br/>
+                            <br />
                         </div>
                     );
                 }
@@ -530,14 +564,17 @@ export default class SecurityTab extends React.Component {
                         <div className='padding-bottom x2'>
                             <Link
                                 className='btn btn-primary'
-                                to={'/claim/email_to_ldap?email=' + encodeURIComponent(user.email)}
+                                to={
+                                    '/claim/email_to_ldap?email=' +
+                                    encodeURIComponent(user.email)
+                                }
                             >
                                 <FormattedMessage
                                     id='user.settings.security.switchLdap'
                                     defaultMessage='Switch to using AD/LDAP'
                                 />
                             </Link>
-                            <br/>
+                            <br />
                         </div>
                     );
                 }
@@ -547,37 +584,47 @@ export default class SecurityTab extends React.Component {
                         <div className='padding-bottom x2'>
                             <Link
                                 className='btn btn-primary'
-                                to={'/claim/email_to_oauth?email=' + encodeURIComponent(user.email) + '&old_type=' + user.auth_service + '&new_type=' + Constants.SAML_SERVICE}
+                                to={
+                                    '/claim/email_to_oauth?email=' +
+                                    encodeURIComponent(user.email) +
+                                    '&old_type=' +
+                                    user.auth_service +
+                                    '&new_type=' +
+                                    Constants.SAML_SERVICE
+                                }
                             >
                                 <FormattedMessage
                                     id='user.settings.security.switchSaml'
                                     defaultMessage='Switch to using SAML SSO'
                                 />
                             </Link>
-                            <br/>
+                            <br />
                         </div>
                     );
                 }
             } else if (this.props.enableSignUpWithEmail) {
                 let link;
                 if (user.auth_service === Constants.LDAP_SERVICE) {
-                    link = '/claim/ldap_to_email?email=' + encodeURIComponent(user.email);
+                    link =
+                        '/claim/ldap_to_email?email=' +
+                        encodeURIComponent(user.email);
                 } else {
-                    link = '/claim/oauth_to_email?email=' + encodeURIComponent(user.email) + '&old_type=' + user.auth_service;
+                    link =
+                        '/claim/oauth_to_email?email=' +
+                        encodeURIComponent(user.email) +
+                        '&old_type=' +
+                        user.auth_service;
                 }
 
                 emailOption = (
                     <div className='padding-bottom x2'>
-                        <Link
-                            className='btn btn-primary'
-                            to={link}
-                        >
+                        <Link className='btn btn-primary' to={link}>
                             <FormattedMessage
                                 id='user.settings.security.switchEmail'
                                 defaultMessage='Switch to using email and password'
                             />
                         </Link>
-                        <br/>
+                        <br />
                     </div>
                 );
             }
@@ -591,7 +638,7 @@ export default class SecurityTab extends React.Component {
                     {office365Option}
                     {ldapOption}
                     {samlOption}
-                </div>
+                </div>,
             );
 
             const extraInfo = (
@@ -605,7 +652,10 @@ export default class SecurityTab extends React.Component {
 
             return (
                 <SettingItemMax
-                    title={Utils.localizeMessage('user.settings.security.method', 'Sign-in Method')}
+                    title={Utils.localizeMessage(
+                        'user.settings.security.method',
+                        'Sign-in Method',
+                    )}
                     extraInfo={extraInfo}
                     inputs={inputs}
                     serverError={this.state.serverError}
@@ -620,6 +670,7 @@ export default class SecurityTab extends React.Component {
                 defaultMessage='Email and Password'
             />
         );
+
         if (this.props.user.auth_service === Constants.GITLAB_SERVICE) {
             describe = (
                 <FormattedMessage
@@ -634,7 +685,9 @@ export default class SecurityTab extends React.Component {
                     defaultMessage='Google'
                 />
             );
-        } else if (this.props.user.auth_service === Constants.OFFICE365_SERVICE) {
+        } else if (
+            this.props.user.auth_service === Constants.OFFICE365_SERVICE
+        ) {
             describe = (
                 <FormattedMessage
                     id='user.settings.security.office365'
@@ -659,18 +712,24 @@ export default class SecurityTab extends React.Component {
 
         return (
             <SettingItemMin
-                title={Utils.localizeMessage('user.settings.security.method', 'Sign-in Method')}
+                title={Utils.localizeMessage(
+                    'user.settings.security.method',
+                    'Sign-in Method',
+                )}
                 describe={describe}
                 section={SECTION_SIGNIN}
                 updateSection={this.handleUpdateSection}
             />
         );
-    }
+    };
 
     createOAuthAppsSection = () => {
         if (this.props.activeSection === SECTION_APPS) {
             let apps;
-            if (this.state.authorizedApps && this.state.authorizedApps.length > 0) {
+            if (
+                this.state.authorizedApps &&
+                this.state.authorizedApps.length > 0
+            ) {
                 apps = this.state.authorizedApps.map((app) => {
                     const homepage = (
                         <a
@@ -694,7 +753,9 @@ export default class SecurityTab extends React.Component {
                                         {' -'} {homepage}
                                     </span>
                                 </div>
-                                <div className='authorized-app__description'>{app.description}</div>
+                                <div className='authorized-app__description'>
+                                    {app.description}
+                                </div>
                                 <div className='authorized-app__deauthorize'>
                                     <a
                                         href='#'
@@ -714,7 +775,7 @@ export default class SecurityTab extends React.Component {
                                     src={app.icon_url || icon50}
                                 />
                             </div>
-                            <br/>
+                            <br />
                         </div>
                     );
                 });
@@ -748,12 +809,9 @@ export default class SecurityTab extends React.Component {
             }
 
             inputs.push(
-                <div
-                    className={wrapperClass}
-                    key='authorizedApps'
-                >
+                <div className={wrapperClass} key='authorizedApps'>
                     {apps}
-                </div>
+                </div>,
             );
 
             const title = (
@@ -762,6 +820,7 @@ export default class SecurityTab extends React.Component {
                         id='user.settings.security.oauthApps'
                         defaultMessage='OAuth 2.0 Applications'
                     />
+
                     {helpText}
                 </div>
             );
@@ -785,7 +844,10 @@ export default class SecurityTab extends React.Component {
 
         return (
             <SettingItemMin
-                title={Utils.localizeMessage('user.settings.security.oauthApps', 'OAuth 2.0 Applications')}
+                title={Utils.localizeMessage(
+                    'user.settings.security.oauthApps',
+                    'OAuth 2.0 Applications',
+                )}
                 describe={
                     <FormattedMessage
                         id='user.settings.security.oauthAppsDescription'
@@ -796,7 +858,7 @@ export default class SecurityTab extends React.Component {
                 updateSection={this.handleUpdateSection}
             />
         );
-    }
+    };
 
     render() {
         const user = this.props.user;
@@ -804,16 +866,25 @@ export default class SecurityTab extends React.Component {
         const passwordSection = this.createPasswordSection();
 
         let numMethods = 0;
-        numMethods = this.props.enableSignUpWithGitLab ? numMethods + 1 : numMethods;
-        numMethods = this.props.enableSignUpWithGoogle ? numMethods + 1 : numMethods;
-        numMethods = this.props.enableSignUpWithOffice365 ? numMethods + 1 : numMethods;
+        numMethods = this.props.enableSignUpWithGitLab
+            ? numMethods + 1
+            : numMethods;
+        numMethods = this.props.enableSignUpWithGoogle
+            ? numMethods + 1
+            : numMethods;
+        numMethods = this.props.enableSignUpWithOffice365
+            ? numMethods + 1
+            : numMethods;
         numMethods = this.props.enableLdap ? numMethods + 1 : numMethods;
         numMethods = this.props.enableSaml ? numMethods + 1 : numMethods;
 
         // If there are other sign-in methods and either email is enabled or the user's account is email, then allow switching
         let signInSection;
-        if ((this.props.enableSignUpWithEmail || user.auth_service === '') &&
-            numMethods > 0 && this.props.experimentalEnableAuthenticationTransfer) {
+        if (
+            (this.props.enableSignUpWithEmail || user.auth_service === '') &&
+            numMethods > 0 &&
+            this.props.experimentalEnableAuthenticationTransfer
+        ) {
             signInSection = this.createSignInSection();
         }
 
@@ -853,10 +924,7 @@ export default class SecurityTab extends React.Component {
                             </button>
                         )}
                     </FormattedMessage>
-                    <h4
-                        className='modal-title'
-                        ref='title'
-                    >
+                    <h4 className='modal-title' ref='title'>
                         <div className='modal-back'>
                             <FormattedMessage
                                 id='generic_icons.collapse'
@@ -884,21 +952,22 @@ export default class SecurityTab extends React.Component {
                             defaultMessage='Security Settings'
                         />
                     </h3>
-                    <div className='divider-dark first'/>
+                    <div className='divider-dark first' />
                     {passwordSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     <MfaSection
                         active={this.props.activeSection === SECTION_MFA}
                         updateSection={this.handleUpdateSection}
                     />
-                    <div className='divider-light'/>
+
+                    <div className='divider-light' />
                     {oauthSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {tokensSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {signInSection}
-                    <div className='divider-dark'/>
-                    <br/>
+                    <div className='divider-dark' />
+                    <br />
                     <ToggleModalButton
                         className='security-links color--link'
                         dialogType={AccessHistoryModal}
@@ -908,10 +977,7 @@ export default class SecurityTab extends React.Component {
                             defaultMessage='Access History Icon'
                         >
                             {(title) => (
-                                <i
-                                    className='fa fa-clock-o'
-                                    title={title}
-                                />
+                                <i className='fa fa-clock-o' title={title} />
                             )}
                         </FormattedMessage>
                         <FormattedMessage
@@ -928,10 +994,7 @@ export default class SecurityTab extends React.Component {
                             defaultMessage='Active Sessions Icon'
                         >
                             {(title) => (
-                                <i
-                                    className='fa fa-clock-o'
-                                    title={title}
-                                />
+                                <i className='fa fa-clock-o' title={title} />
                             )}
                         </FormattedMessage>
                         <FormattedMessage

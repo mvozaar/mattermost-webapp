@@ -25,16 +25,14 @@ export default function FileUploadOverlay(props) {
                         src={fileOverlayImage}
                         alt='Files'
                     />
+
                     <span>
                         <FormattedMessage
                             id='generic_icons.upload'
                             defaultMessage='Upload Icon'
                         >
                             {(title) => (
-                                <i
-                                    className='fa fa-upload'
-                                    title={title}
-                                />
+                                <i className='fa fa-upload' title={title} />
                             )}
                         </FormattedMessage>
                         <FormattedMessage

@@ -10,7 +10,6 @@ import {renderSystemMessage} from './system_message_helpers.jsx';
 
 export default class PostMarkdown extends React.PureComponent {
     static propTypes = {
-
         /*
          * Any extra props that should be passed into the image component
          */
@@ -49,15 +48,25 @@ export default class PostMarkdown extends React.PureComponent {
 
     render() {
         if (this.props.post) {
-            const renderedSystemMessage = renderSystemMessage(this.props.post, this.props.channel);
+            const renderedSystemMessage = renderSystemMessage(
+                this.props.post,
+                this.props.channel,
+            );
+
             if (renderedSystemMessage) {
                 return <div>{renderedSystemMessage}</div>;
             }
         }
 
         // Proxy images if we have an image proxy and the server hasn't already rewritten the post's image URLs.
-        const proxyImages = !this.props.post || !this.props.post.message_source || this.props.post.message === this.props.post.message_source;
-        const channelNamesMap = this.props.post && this.props.post.props && this.props.post.props.channel_mentions;
+        const proxyImages =
+            !this.props.post ||
+            !this.props.post.message_source ||
+            this.props.post.message === this.props.post.message_source;
+        const channelNamesMap =
+            this.props.post &&
+            this.props.post.props &&
+            this.props.post.props.channel_mentions;
 
         let {message} = this.props;
         const {post} = this.props;
@@ -77,7 +86,11 @@ export default class PostMarkdown extends React.PureComponent {
                 options={this.props.options}
                 channelNamesMap={channelNamesMap}
                 hasPluginTooltips={this.props.hasPluginTooltips}
-                imagesMetadata={this.props.post && this.props.post.metadata && this.props.post.metadata.images}
+                imagesMetadata={
+                    this.props.post &&
+                    this.props.post.metadata &&
+                    this.props.post.metadata.images
+                }
             />
         );
     }

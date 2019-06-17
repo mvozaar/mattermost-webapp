@@ -34,20 +34,33 @@ export default class OAuthToEmail extends React.PureComponent {
 
         const password = ReactDOM.findDOMNode(this.refs.password).value;
         if (!password) {
-            state.error = Utils.localizeMessage('claim.oauth_to_email.enterPwd', 'Please enter a password.');
+            state.error = Utils.localizeMessage(
+                'claim.oauth_to_email.enterPwd',
+                'Please enter a password.',
+            );
+
             this.setState(state);
             return;
         }
 
-        const {valid, error} = Utils.isValidPassword(password, this.props.passwordConfig);
+        const {valid, error} = Utils.isValidPassword(
+            password,
+            this.props.passwordConfig,
+        );
+
         if (!valid && error) {
             this.setState({error});
             return;
         }
 
-        const confirmPassword = ReactDOM.findDOMNode(this.refs.passwordconfirm).value;
+        const confirmPassword = ReactDOM.findDOMNode(this.refs.passwordconfirm)
+            .value;
         if (!confirmPassword || password !== confirmPassword) {
-            state.error = Utils.localizeMessage('claim.oauth_to_email.pwdNotMatch', 'Passwords do not match.');
+            state.error = Utils.localizeMessage(
+                'claim.oauth_to_email.pwdNotMatch',
+                'Passwords do not match.',
+            );
+
             this.setState(state);
             return;
         }
@@ -66,13 +79,17 @@ export default class OAuthToEmail extends React.PureComponent {
             },
             (err) => {
                 this.setState({error: err.message});
-            }
+            },
         );
     }
     render() {
         var error = null;
         if (this.state.error) {
-            error = <div className='form-group has-error'><label className='control-label'>{this.state.error}</label></div>;
+            error = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>{this.state.error}</label>
+                </div>
+            );
         }
 
         var formClass = 'form-group';
@@ -80,7 +97,11 @@ export default class OAuthToEmail extends React.PureComponent {
             formClass += ' has-error';
         }
 
-        const uiType = `${(this.props.currentType === Constants.SAML_SERVICE ? Constants.SAML_SERVICE.toUpperCase() : Utils.toTitleCase(this.props.currentType))} SSO`;
+        const uiType = `${
+            this.props.currentType === Constants.SAML_SERVICE
+                ? Constants.SAML_SERVICE.toUpperCase()
+                : Utils.toTitleCase(this.props.currentType)
+        } SSO`;
 
         return (
             <div>
@@ -115,7 +136,10 @@ export default class OAuthToEmail extends React.PureComponent {
                             className='form-control'
                             name='password'
                             ref='password'
-                            placeholder={{id: t('claim.oauth_to_email.newPwd'), defaultMessage: 'New Password'}}
+                            placeholder={{
+                                id: t('claim.oauth_to_email.newPwd'),
+                                defaultMessage: 'New Password',
+                            }}
                             spellCheck='false'
                         />
                     </div>
@@ -125,15 +149,15 @@ export default class OAuthToEmail extends React.PureComponent {
                             className='form-control'
                             name='passwordconfirm'
                             ref='passwordconfirm'
-                            placeholder={{id: t('claim.oauth_to_email.confirm'), defaultMessage: 'Confirm Password'}}
+                            placeholder={{
+                                id: t('claim.oauth_to_email.confirm'),
+                                defaultMessage: 'Confirm Password',
+                            }}
                             spellCheck='false'
                         />
                     </div>
                     {error}
-                    <button
-                        type='submit'
-                        className='btn btn-primary'
-                    >
+                    <button type='submit' className='btn btn-primary'>
                         <FormattedMessage
                             id='claim.oauth_to_email.switchTo'
                             defaultMessage='Switch {type} to email and password'

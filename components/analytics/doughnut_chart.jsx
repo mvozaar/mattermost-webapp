@@ -11,7 +11,6 @@ import * as Utils from 'utils/utils.jsx';
 
 export default class DoughnutChart extends React.PureComponent {
     static propTypes = {
-
         /*
          * Chart title
          */
@@ -58,11 +57,16 @@ export default class DoughnutChart extends React.PureComponent {
         var el = ReactDOM.findDOMNode(this.refs.canvas);
         var ctx = el.getContext('2d');
         const dataCopy = JSON.parse(JSON.stringify(this.props.data));
-        this.chart = new Chart(ctx, {type: 'doughnut', data: dataCopy, options: {}});
+        this.chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: dataCopy,
+            options: {},
+        });
+
         if (update) {
             this.chart.update();
         }
-    }
+    };
 
     render() {
         let content;
@@ -86,12 +90,8 @@ export default class DoughnutChart extends React.PureComponent {
         return (
             <div className='col-sm-6'>
                 <div className='total-count'>
-                    <div className='title'>
-                        {this.props.title}
-                    </div>
-                    <div className='content'>
-                        {content}
-                    </div>
+                    <div className='title'>{this.props.title}</div>
+                    <div className='content'>{content}</div>
                 </div>
             </div>
         );

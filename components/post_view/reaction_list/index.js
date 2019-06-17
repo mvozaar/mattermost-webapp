@@ -18,7 +18,8 @@ function makeMapStateToProps() {
 
     return function mapStateToProps(state, ownProps) {
         const config = getConfig(state);
-        const enableEmojiPicker = config.EnableEmojiPicker === 'true' && !ownProps.isReadOnly;
+        const enableEmojiPicker =
+            config.EnableEmojiPicker === 'true' && !ownProps.isReadOnly;
 
         const channel = getChannel(state, ownProps.post.channel_id) || {};
         const teamId = channel.team_id;
@@ -33,11 +34,18 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addReaction,
-            scrollPostList,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addReaction,
+                scrollPostList,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(ReactionList);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(ReactionList);

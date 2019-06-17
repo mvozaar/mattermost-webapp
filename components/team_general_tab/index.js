@@ -5,7 +5,12 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {patchTeam, removeTeamIcon, setTeamIcon, regenerateTeamInviteId} from 'mattermost-redux/actions/teams';
+import {
+    patchTeam,
+    removeTeamIcon,
+    setTeamIcon,
+    regenerateTeamInviteId,
+} from 'mattermost-redux/actions/teams';
 import {Permissions} from 'mattermost-redux/constants';
 import {haveITeamPermission} from 'mattermost-redux/selectors/entities/roles';
 
@@ -15,7 +20,10 @@ function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
     const maxFileSize = parseInt(config.MaxFileSize, 10);
 
-    const canInviteTeamMembers = haveITeamPermission(state, {team: ownProps.team.id, permission: Permissions.INVITE_USER});
+    const canInviteTeamMembers = haveITeamPermission(state, {
+        team: ownProps.team.id,
+        permission: Permissions.INVITE_USER,
+    });
 
     return {
         maxFileSize,
@@ -25,13 +33,20 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            patchTeam,
-            regenerateTeamInviteId,
-            removeTeamIcon,
-            setTeamIcon,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                patchTeam,
+                regenerateTeamInviteId,
+                removeTeamIcon,
+                setTeamIcon,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamGeneralTab);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TeamGeneralTab);

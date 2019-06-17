@@ -57,12 +57,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            setRhsExpanded,
-            showPinnedPosts,
-            scrollPostList,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                setRhsExpanded,
+                showPinnedPosts,
+                scrollPostList,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarRight);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SidebarRight);

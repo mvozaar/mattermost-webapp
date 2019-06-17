@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 import {getPost} from 'mattermost-redux/selectors/entities/posts';
-import {isCurrentChannelReadOnly, getCurrentChannel} from 'mattermost-redux/selectors/entities/channels';
+import {
+    isCurrentChannelReadOnly,
+    getCurrentChannel,
+} from 'mattermost-redux/selectors/entities/channels';
 import {getUser} from 'mattermost-redux/selectors/entities/users';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
@@ -18,7 +21,8 @@ function mapStateToProps(state, ownProps) {
     }
 
     const config = getConfig(state);
-    const enablePostUsernameOverride = config.EnablePostUsernameOverride === 'true';
+    const enablePostUsernameOverride =
+        config.EnablePostUsernameOverride === 'true';
 
     const currentChannel = getCurrentChannel(state);
     const channelIsArchived = currentChannel.delete_at !== 0;

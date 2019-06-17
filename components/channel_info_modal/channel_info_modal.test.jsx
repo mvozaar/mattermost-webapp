@@ -14,10 +14,15 @@ describe('components/ChannelInfoModal', () => {
 
         const wrapper = shallow(
             <ChannelInfoModal
-                channel={{name: 'testchannel', displayName: 'testchannel', header: '', purpose: ''}}
+                channel={{
+                    name: 'testchannel',
+                    displayName: 'testchannel',
+                    header: '',
+                    purpose: '',
+                }}
                 currentTeam={{id: 'testid', name: 'testteam'}}
                 onHide={emptyFunction}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -37,6 +42,7 @@ describe('components/ChannelInfoModal', () => {
                 },
             },
         };
+
         function emptyFunction() {} //eslint-disable-line no-empty-function
 
         const wrapper = shallow(
@@ -44,7 +50,7 @@ describe('components/ChannelInfoModal', () => {
                 channel={channel}
                 currentTeam={{id: 'testid', name: 'testteam'}}
                 onHide={emptyFunction}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -58,13 +64,22 @@ describe('components/ChannelInfoModal', () => {
 
         const wrapper = mountWithIntl(
             <ChannelInfoModal
-                channel={{name: 'testchannel', displayName: 'testchannel', header: '', purpose: ''}}
+                channel={{
+                    name: 'testchannel',
+                    displayName: 'testchannel',
+                    header: '',
+                    purpose: '',
+                }}
                 currentTeam={{id: 'testid', name: 'testteam'}}
                 onHide={onHide}
-            />
+            />,
         );
 
-        wrapper.find(Modal).first().props().onExited();
+        wrapper
+            .find(Modal)
+            .first()
+            .props()
+            .onExited();
         done();
     });
 });

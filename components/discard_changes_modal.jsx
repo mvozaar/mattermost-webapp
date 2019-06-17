@@ -9,7 +9,6 @@ import ConfirmModal from 'components/confirm_modal.jsx';
 
 export default class DiscardChangesModal extends React.PureComponent {
     static propTypes = {
-
         /*
          * Bool whether the modal is shown
          */
@@ -24,8 +23,7 @@ export default class DiscardChangesModal extends React.PureComponent {
          * Action to call on cancel
          */
         onCancel: PropTypes.func.isRequired,
-
-    }
+    };
 
     render() {
         const title = (

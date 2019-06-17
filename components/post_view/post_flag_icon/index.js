@@ -10,11 +10,18 @@ import PostFlagIcon from './post_flag_icon';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            flagPost,
-            unflagPost,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                flagPost,
+                unflagPost,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(PostFlagIcon);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(PostFlagIcon);

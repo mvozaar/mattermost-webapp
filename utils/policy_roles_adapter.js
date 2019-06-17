@@ -5,33 +5,95 @@ import {Permissions} from 'mattermost-redux/constants/index';
 
 const MAPPING = {
     enableTeamCreation: {
-        true: [{roleName: 'system_user', permission: Permissions.CREATE_TEAM, shouldHave: true}],
-        false: [{roleName: 'system_user', permission: Permissions.CREATE_TEAM, shouldHave: false}],
+        true: [
+            {
+                roleName: 'system_user',
+                permission: Permissions.CREATE_TEAM,
+                shouldHave: true,
+            },
+        ],
+        false: [
+            {
+                roleName: 'system_user',
+                permission: Permissions.CREATE_TEAM,
+                shouldHave: false,
+            },
+        ],
     },
 
     editOthersPosts: {
         true: [
-            {roleName: 'system_admin', permission: Permissions.EDIT_OTHERS_POSTS, shouldHave: true},
-            {roleName: 'team_admin', permission: Permissions.EDIT_OTHERS_POSTS, shouldHave: true},
+            {
+                roleName: 'system_admin',
+                permission: Permissions.EDIT_OTHERS_POSTS,
+                shouldHave: true,
+            },
+            {
+                roleName: 'team_admin',
+                permission: Permissions.EDIT_OTHERS_POSTS,
+                shouldHave: true,
+            },
         ],
+
         false: [
-            {roleName: 'team_admin', permission: Permissions.EDIT_OTHERS_POSTS, shouldHave: false},
-            {roleName: 'system_admin', permission: Permissions.EDIT_OTHERS_POSTS, shouldHave: true},
+            {
+                roleName: 'team_admin',
+                permission: Permissions.EDIT_OTHERS_POSTS,
+                shouldHave: false,
+            },
+            {
+                roleName: 'system_admin',
+                permission: Permissions.EDIT_OTHERS_POSTS,
+                shouldHave: true,
+            },
         ],
     },
 
     enableOnlyAdminIntegrations: {
         true: [
-            {roleName: 'team_user', permission: Permissions.MANAGE_INCOMING_WEBHOOKS, shouldHave: false},
-            {roleName: 'team_user', permission: Permissions.MANAGE_OUTGOING_WEBHOOKS, shouldHave: false},
-            {roleName: 'team_user', permission: Permissions.MANAGE_SLASH_COMMANDS, shouldHave: false},
-            {roleName: 'system_user', permission: Permissions.MANAGE_OAUTH, shouldHave: false},
+            {
+                roleName: 'team_user',
+                permission: Permissions.MANAGE_INCOMING_WEBHOOKS,
+                shouldHave: false,
+            },
+            {
+                roleName: 'team_user',
+                permission: Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                shouldHave: false,
+            },
+            {
+                roleName: 'team_user',
+                permission: Permissions.MANAGE_SLASH_COMMANDS,
+                shouldHave: false,
+            },
+            {
+                roleName: 'system_user',
+                permission: Permissions.MANAGE_OAUTH,
+                shouldHave: false,
+            },
         ],
+
         false: [
-            {roleName: 'team_user', permission: Permissions.MANAGE_INCOMING_WEBHOOKS, shouldHave: true},
-            {roleName: 'team_user', permission: Permissions.MANAGE_OUTGOING_WEBHOOKS, shouldHave: true},
-            {roleName: 'team_user', permission: Permissions.MANAGE_SLASH_COMMANDS, shouldHave: true},
-            {roleName: 'system_user', permission: Permissions.MANAGE_OAUTH, shouldHave: true},
+            {
+                roleName: 'team_user',
+                permission: Permissions.MANAGE_INCOMING_WEBHOOKS,
+                shouldHave: true,
+            },
+            {
+                roleName: 'team_user',
+                permission: Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                shouldHave: true,
+            },
+            {
+                roleName: 'team_user',
+                permission: Permissions.MANAGE_SLASH_COMMANDS,
+                shouldHave: true,
+            },
+            {
+                roleName: 'system_user',
+                permission: Permissions.MANAGE_OAUTH,
+                shouldHave: true,
+            },
         ],
     },
 };
@@ -60,9 +122,14 @@ export function rolesFromMapping(mappingValues, roles) {
     Object.entries(rolesClone).forEach(([roleName, roleClone]) => {
         const originalPermissionSet = new Set(roles[roleName].permissions);
         const newPermissionSet = new Set(roleClone.permissions);
-        const difference = [...newPermissionSet].filter((x) => !originalPermissionSet.has(x));
+        const difference = [...newPermissionSet].filter(
+            (x) => !originalPermissionSet.has(x),
+        );
 
-        if (originalPermissionSet.size === newPermissionSet.size && difference.length === 0) {
+        if (
+            originalPermissionSet.size === newPermissionSet.size &&
+            difference.length === 0
+        ) {
             delete rolesClone[roleName];
         }
     });
@@ -83,7 +150,9 @@ export function mappingValueFromRoles(key, roles) {
             return o.value;
         }
     }
-    throw new Error(`No matching mapping value found for key '${key}' with the given roles.`);
+    throw new Error(
+        `No matching mapping value found for key '${key}' with the given roles.`,
+    );
 }
 
 function purgeNonPertinentRoles(roles) {
@@ -100,7 +169,9 @@ function mutateRolesBasedOnMapping(mappingKey, value, roles) {
     const roleRules = MAPPING[mappingKey][value];
 
     if (typeof roleRules === 'undefined') {
-        throw new Error(`Value '${value}' not present in MAPPING for key '${mappingKey}'.`);
+        throw new Error(
+            `Value '${value}' not present in MAPPING for key '${mappingKey}'.`,
+        );
     }
 
     roleRules.forEach((item) => {
@@ -134,7 +205,12 @@ function* mappingPartIterator(mappingPart, roles) {
 
             const hasUnmetCondition = roleRules.some((item) => {
                 const role = roles[item.roleName];
-                return (item.shouldHave && !role.permissions.includes(item.permission)) || (!item.shouldHave && role.permissions.includes(item.permission));
+                return (
+                    (item.shouldHave &&
+                        !role.permissions.includes(item.permission)) ||
+                    (!item.shouldHave &&
+                        role.permissions.includes(item.permission))
+                );
             });
 
             yield {value, allConditionsAreMet: !hasUnmetCondition};

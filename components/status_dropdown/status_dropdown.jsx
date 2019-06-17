@@ -26,44 +26,44 @@ export default class StatusDropdown extends React.Component {
             openModal: PropTypes.func.isRequired,
             setStatus: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         userId: '',
         profilePicture: '',
         status: UserStatuses.OFFLINE,
-    }
+    };
 
     isUserOutOfOffice = () => {
         return this.props.status === UserStatuses.OUT_OF_OFFICE;
-    }
+    };
 
     setStatus = (status) => {
         this.props.actions.setStatus({
             user_id: this.props.userId,
             status,
         });
-    }
+    };
 
     setOnline = (event) => {
         event.preventDefault();
         this.setStatus(UserStatuses.ONLINE);
-    }
+    };
 
     setOffline = (event) => {
         event.preventDefault();
         this.setStatus(UserStatuses.OFFLINE);
-    }
+    };
 
     setAway = (event) => {
         event.preventDefault();
         this.setStatus(UserStatuses.AWAY);
-    }
+    };
 
     setDnd = (event) => {
         event.preventDefault();
         this.setStatus(UserStatuses.DND);
-    }
+    };
 
     showStatusChangeConfirmation = (status) => {
         const resetStatusModalData = {
@@ -86,7 +86,7 @@ export default class StatusDropdown extends React.Component {
                 src={this.props.profilePicture}
             />
         );
-    }
+    };
 
     renderDropdownIcon = () => {
         return (
@@ -94,64 +94,94 @@ export default class StatusDropdown extends React.Component {
                 id='generic_icons.dropdown'
                 defaultMessage='Dropdown Icon'
             >
-                { (title) => (
-                    <i
-                        className={'fa fa-caret-down'}
-                        title={title}
-                    />)
-                }
+                {(title) => <i className={'fa fa-caret-down'} title={title} />}
             </FormattedMessage>
         );
-    }
+    };
 
     render() {
-        const needsConfirm = this.isUserOutOfOffice() && this.props.autoResetPref === '';
+        const needsConfirm =
+            this.isUserOutOfOffice() && this.props.autoResetPref === '';
         const profilePicture = this.renderProfilePicture();
         const dropdownIcon = this.renderDropdownIcon();
 
-        const setOnline = needsConfirm ? () => this.showStatusChangeConfirmation('online') : this.setOnline;
-        const setDnd = needsConfirm ? () => this.showStatusChangeConfirmation('dnd') : this.setDnd;
-        const setAway = needsConfirm ? () => this.showStatusChangeConfirmation('away') : this.setAway;
-        const setOffline = needsConfirm ? () => this.showStatusChangeConfirmation('offline') : this.setOffline;
+        const setOnline = needsConfirm
+            ? () => this.showStatusChangeConfirmation('online')
+            : this.setOnline;
+        const setDnd = needsConfirm
+            ? () => this.showStatusChangeConfirmation('dnd')
+            : this.setDnd;
+        const setAway = needsConfirm
+            ? () => this.showStatusChangeConfirmation('away')
+            : this.setAway;
+        const setOffline = needsConfirm
+            ? () => this.showStatusChangeConfirmation('offline')
+            : this.setOffline;
 
         return (
-            <MenuWrapper
-                onToggle={this.onToggle}
-                style={this.props.style}
-            >
+            <MenuWrapper onToggle={this.onToggle} style={this.props.style}>
                 <div className='status-wrapper status-selector'>
                     {profilePicture}
-                    <StatusIcon status={this.props.status}/>
+                    <StatusIcon status={this.props.status} />
                     <span className={'status status-edit edit'}>
                         {dropdownIcon}
                     </span>
                 </div>
-                <Menu ariaLabel={localizeMessage('status_dropdown.menuAriaLabel', 'Change Status Menu')}>
+                <Menu
+                    ariaLabel={localizeMessage(
+                        'status_dropdown.menuAriaLabel',
+                        'Change Status Menu',
+                    )}
+                >
                     <MenuGroup>
                         <MenuItemAction
                             show={this.isUserOutOfOffice()}
                             onClick={() => null}
-                            text={localizeMessage('status_dropdown.set_ooo', 'Out of office')}
-                            extraText={localizeMessage('status_dropdown.set_ooo.extra', 'Automatic Replies are enabled')}
+                            text={localizeMessage(
+                                'status_dropdown.set_ooo',
+                                'Out of office',
+                            )}
+                            extraText={localizeMessage(
+                                'status_dropdown.set_ooo.extra',
+                                'Automatic Replies are enabled',
+                            )}
                         />
                     </MenuGroup>
                     <MenuGroup>
                         <MenuItemAction
                             onClick={setOnline}
-                            text={localizeMessage('status_dropdown.set_online', 'Online')}
+                            text={localizeMessage(
+                                'status_dropdown.set_online',
+                                'Online',
+                            )}
                         />
+
                         <MenuItemAction
                             onClick={setAway}
-                            text={localizeMessage('status_dropdown.set_away', 'Away')}
+                            text={localizeMessage(
+                                'status_dropdown.set_away',
+                                'Away',
+                            )}
                         />
+
                         <MenuItemAction
                             onClick={setDnd}
-                            text={localizeMessage('status_dropdown.set_dnd', 'Do not disturb')}
-                            extraText={localizeMessage('status_dropdown.set_dnd.extra', 'Disables Desktop and Push Notifications')}
+                            text={localizeMessage(
+                                'status_dropdown.set_dnd',
+                                'Do not disturb',
+                            )}
+                            extraText={localizeMessage(
+                                'status_dropdown.set_dnd.extra',
+                                'Disables Desktop and Push Notifications',
+                            )}
                         />
+
                         <MenuItemAction
                             onClick={setOffline}
-                            text={localizeMessage('status_dropdown.set_offline', 'Offline')}
+                            text={localizeMessage(
+                                'status_dropdown.set_offline',
+                                'Offline',
+                            )}
                         />
                     </MenuGroup>
                 </Menu>

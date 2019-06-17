@@ -23,13 +23,12 @@ export default class Audits extends React.PureComponent {
         audits: PropTypes.arrayOf(PropTypes.object).isRequired,
 
         actions: PropTypes.shape({
-
             /*
              * Function to fetch audits
              */
             getAudits: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -42,23 +41,24 @@ export default class Audits extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.props.actions.getAudits().then(
-            () => this.setState({loadingAudits: false})
-        );
+        this.props.actions
+            .getAudits()
+            .then(() => this.setState({loadingAudits: false}));
     }
 
     reload = () => {
         this.setState({loadingAudits: true});
-        this.props.actions.getAudits().then(
-            () => this.setState({loadingAudits: false})
-        );
-    }
+        this.props.actions
+            .getAudits()
+            .then(() => this.setState({loadingAudits: false}));
+    };
 
     activityLogHeader = () => {
         const style = {
             display: 'inline-block',
             margin: 0,
         };
+
         return (
             <h4 style={style}>
                 <FormattedMessage
@@ -67,22 +67,20 @@ export default class Audits extends React.PureComponent {
                 />
             </h4>
         );
-    }
+    };
 
     renderComplianceReports = () => {
         if (!this.props.isLicensed) {
-            return <div/>;
+            return <div />;
         }
-        return (
-            <ComplianceReports/>
-        );
-    }
+        return <ComplianceReports />;
+    };
 
     render() {
         let content = null;
 
         if (this.state.loadingAudits) {
-            content = <LoadingScreen/>;
+            content = <LoadingScreen />;
         } else {
             content = (
                 <div>
@@ -113,17 +111,15 @@ export default class Audits extends React.PureComponent {
                             className='btn btn-link pull-right'
                             onClick={this.reload}
                         >
-                            <ReloadIcon/>
+                            <ReloadIcon />
                             <FormattedMessage
                                 id='admin.audits.reload'
                                 defaultMessage='Reload User Activity Logs'
                             />
                         </button>
-                        <div className='clearfix'/>
+                        <div className='clearfix' />
                     </div>
-                    <div className='audit-panel__table'>
-                        {content}
-                    </div>
+                    <div className='audit-panel__table'>{content}</div>
                 </div>
             </div>
         );

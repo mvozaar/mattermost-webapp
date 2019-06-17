@@ -33,12 +33,7 @@ class SwitchTeamSuggestion extends Suggestion {
                         id='general_tab.teamIcon'
                         defaultMessage='Team Icon'
                     >
-                        {(title) => (
-                            <i
-                                className='fa fa-group'
-                                title={title}
-                            />
-                        )}
+                        {(title) => <i className='fa fa-group' title={title} />}
                     </FormattedMessage>
                 </div>
                 {item.display_name}
@@ -59,7 +54,9 @@ function quickSwitchSorter(a, b) {
         const locale = getCurrentLocale(getState());
 
         if (aDisplayName !== bDisplayName) {
-            return aDisplayName.localeCompare(bDisplayName, locale, {numeric: true});
+            return aDisplayName.localeCompare(bDisplayName, locale, {
+                numeric: true,
+            });
         }
 
         return a.name.localeCompare(b.name, locale, {numeric: true});
@@ -79,13 +76,15 @@ export default class SwitchTeamProvider extends Provider {
             const allTeams = Selectors.getMyTeams(getState());
 
             const teams = allTeams.filter((team) => {
-                return team.display_name.toLowerCase().indexOf(teamPrefix) !== -1 ||
-                    team.name.indexOf(teamPrefix) !== -1;
+                return (
+                    team.display_name.toLowerCase().indexOf(teamPrefix) !==
+                        -1 || team.name.indexOf(teamPrefix) !== -1
+                );
             });
 
-            const teamNames = teams.
-                sort(quickSwitchSorter).
-                map((team) => team.name);
+            const teamNames = teams
+                .sort(quickSwitchSorter)
+                .map((team) => team.name);
 
             resultsCallback({
                 matchedPretext: teamPrefix,

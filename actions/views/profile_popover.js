@@ -23,6 +23,9 @@ export function getMembershipForCurrentEntities(userId) {
             channelId = selectedPost.channel_id;
         }
 
-        return Promise.all([dispatch(getTeamMember(currentTeamId, userId)), dispatch(getChannelMember(channelId, userId))]);
+        return Promise.all([
+            dispatch(getTeamMember(currentTeamId, userId)),
+            dispatch(getChannelMember(channelId, userId)),
+        ]);
     };
 }

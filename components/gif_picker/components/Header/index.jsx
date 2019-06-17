@@ -5,9 +5,15 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import {saveSearchBarText, searchTextUpdate} from 'mattermost-redux/actions/gifs';
+import {
+    saveSearchBarText,
+    searchTextUpdate,
+} from 'mattermost-redux/actions/gifs';
 import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
-import {changeOpacity, makeStyleFromTheme} from 'mattermost-redux/utils/theme_utils';
+import {
+    changeOpacity,
+    makeStyleFromTheme,
+} from 'mattermost-redux/utils/theme_utils';
 
 import constants from 'components/gif_picker/utils/constants';
 import SearchBar from 'components/gif_picker/components/SearchBar';
@@ -21,25 +27,29 @@ function mapStateToProps(state) {
     };
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     saveSearchBarText,
     searchTextUpdate,
-});
+};
 
 const getStyle = makeStyleFromTheme((theme) => {
     return {
         background: {
             backgroundColor: theme.centerChannelBg,
         },
+
         header: {
             borderBottomColor: changeOpacity(theme.centerChannelColor, 0.2),
         },
+
         icon: {
             fill: changeOpacity(theme.centerChannelColor, 0.3),
         },
+
         iconActive: {
             fill: theme.centerChannelColor,
         },
+
         iconHover: {
             fill: changeOpacity(theme.centerChannelColor, 0.8),
         },
@@ -53,7 +63,7 @@ export class Header extends PureComponent {
         saveSearchBarText: PropTypes.func,
         searchTextUpdate: PropTypes.func,
         theme: PropTypes.object.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -66,15 +76,9 @@ export class Header extends PureComponent {
         const style = getStyle(this.props.theme);
 
         return (
-            <header
-                className='header-container'
-                style={style.background}
-            >
-                <SearchBar {...this.props}/>
-                <nav
-                    className='nav-bar'
-                    style={style.header}
-                >
+            <header className='header-container' style={style.background}>
+                <SearchBar {...this.props} />
+                <nav className='nav-bar' style={style.header}>
                     {this.renderTabs(this.props, style)}
                 </nav>
             </header>
@@ -87,9 +91,21 @@ export class Header extends PureComponent {
         return header.tabs.map((tab, index) => {
             let link;
             if (tab === constants.Tab.TRENDING) {
-                link = this.renderTab('trending', onTrending, GifTrendingIcon, index, style);
+                link = this.renderTab(
+                    'trending',
+                    onTrending,
+                    GifTrendingIcon,
+                    index,
+                    style,
+                );
             } else if (tab === constants.Tab.REACTIONS) {
-                link = this.renderTab('reactions', onCategories, GifReactionsIcon, index, style);
+                link = this.renderTab(
+                    'reactions',
+                    onCategories,
+                    GifReactionsIcon,
+                    index,
+                    style,
+                );
             }
             return link;
         });
@@ -121,7 +137,9 @@ export class Header extends PureComponent {
                             if (this.state.hovering === name) {
                                 return style.iconHover;
                             }
-                            return action === name ? style.iconActive : style.icon;
+                            return action === name
+                                ? style.iconActive
+                                : style.icon;
                         })()}
                     />
                 </div>
@@ -130,4 +148,7 @@ export class Header extends PureComponent {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Header);

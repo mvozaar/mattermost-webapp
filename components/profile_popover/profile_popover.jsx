@@ -29,7 +29,6 @@ class ProfilePopover extends React.PureComponent {
     }
 
     static propTypes = {
-
         /**
          * Source URL from the image to display in the popover
          */
@@ -111,20 +110,23 @@ class ProfilePopover extends React.PureComponent {
         intl: intlShape.isRequired,
 
         ...Popover.propTypes,
-    }
+    };
 
     static defaultProps = {
         isRHS: false,
         hasMention: false,
         status: UserStatuses.OFFLINE,
-    }
+    };
 
     constructor(props) {
         super(props);
 
         this.handleShowDirectChannel = this.handleShowDirectChannel.bind(this);
         this.handleMentionKeyClick = this.handleMentionKeyClick.bind(this);
-        this.handleEditAccountSettings = this.handleEditAccountSettings.bind(this);
+        this.handleEditAccountSettings = this.handleEditAccountSettings.bind(
+            this,
+        );
+
         this.state = {
             loadingDMChannel: -1,
         };
@@ -160,7 +162,9 @@ class ProfilePopover extends React.PureComponent {
                 if (this.props.hide) {
                     this.props.hide();
                 }
-                browserHistory.push(`${this.props.teamUrl}/messages/@${user.username}`);
+                browserHistory.push(
+                    `${this.props.teamUrl}/messages/@${user.username}`,
+                );
             }
         });
     }
@@ -174,7 +178,11 @@ class ProfilePopover extends React.PureComponent {
         if (this.props.hide) {
             this.props.hide();
         }
-        EventEmitter.emit('mention_key_click', this.props.user.username, this.props.isRHS);
+        EventEmitter.emit(
+            'mention_key_click',
+            this.props.user.username,
+            this.props.isRHS,
+        );
     }
 
     handleEditAccountSettings(e) {
@@ -186,7 +194,10 @@ class ProfilePopover extends React.PureComponent {
         if (this.props.hide) {
             this.props.hide();
         }
-        this.props.actions.openModal({ModalId: ModalIdentifiers.USER_SETTINGS, dialogType: UserSettingsModal});
+        this.props.actions.openModal({
+            ModalId: ModalIdentifiers.USER_SETTINGS,
+            dialogType: UserSettingsModal,
+        });
     }
 
     render() {
@@ -226,7 +237,7 @@ class ProfilePopover extends React.PureComponent {
                 height='128'
                 width='128'
                 key='user-popover-image'
-            />
+            />,
         );
 
         const fullname = Utils.getFullName(this.props.user);
@@ -236,7 +247,7 @@ class ProfilePopover extends React.PureComponent {
                 <hr
                     key='user-popover-hr'
                     className='divider divider--expanded'
-                />
+                />,
             );
         }
 
@@ -248,12 +259,10 @@ class ProfilePopover extends React.PureComponent {
                     overlay={<Tooltip id='fullNameTooltip'>{fullname}</Tooltip>}
                     key='user-popover-fullname'
                 >
-                    <div
-                        className='overflow--ellipsis text-nowrap'
-                    >
+                    <div className='overflow--ellipsis text-nowrap'>
                         <strong>{fullname}</strong>
                     </div>
-                </OverlayTrigger>
+                </OverlayTrigger>,
             );
         }
 
@@ -264,12 +273,16 @@ class ProfilePopover extends React.PureComponent {
                     className='overflow--ellipsis text-nowrap'
                 >
                     {this.props.bot.description}
-                </div>
+                </div>,
             );
         }
 
         if (this.props.user.position) {
-            const position = this.props.user.position.substring(0, Constants.MAX_POSITION_LENGTH);
+            const position = this.props.user.position.substring(
+                0,
+                Constants.MAX_POSITION_LENGTH,
+            );
+
             dataContent.push(
                 <OverlayTrigger
                     delayShow={Constants.OVERLAY_TIME_DELAY}
@@ -277,12 +290,10 @@ class ProfilePopover extends React.PureComponent {
                     overlay={<Tooltip id='positionTooltip'>{position}</Tooltip>}
                     key='user-popover-position'
                 >
-                    <div
-                        className='overflow--ellipsis text-nowrap padding-bottom padding-top half'
-                    >
+                    <div className='overflow--ellipsis text-nowrap padding-bottom padding-top half'>
                         {position}
                     </div>
-                </OverlayTrigger>
+                </OverlayTrigger>,
             );
         }
 
@@ -292,7 +303,7 @@ class ProfilePopover extends React.PureComponent {
                 <hr
                     key='user-popover-hr2'
                     className='divider divider--expanded'
-                />
+                />,
             );
 
             dataContent.push(
@@ -307,7 +318,7 @@ class ProfilePopover extends React.PureComponent {
                     >
                         {email}
                     </a>
-                </div>
+                </div>,
             );
         }
 
@@ -317,7 +328,7 @@ class ProfilePopover extends React.PureComponent {
                 pluggableName='PopoverUserAttributes'
                 user={this.props.user}
                 status={this.props.hideStatus ? null : this.props.status}
-            />
+            />,
         );
 
         if (this.props.enableTimezone && this.props.user.timezone) {
@@ -330,8 +341,9 @@ class ProfilePopover extends React.PureComponent {
                         id='user_profile.account.localTime'
                         defaultMessage='Local Time: '
                     />
-                    <LocalDateTime userTimezone={this.props.user.timezone}/>
-                </div>
+
+                    <LocalDateTime userTimezone={this.props.user.timezone} />
+                </div>,
             );
         }
 
@@ -342,20 +354,21 @@ class ProfilePopover extends React.PureComponent {
                     key='user-popover-settings'
                     className='popover__row first'
                 >
-                    <a
-                        href='#'
-                        onClick={this.handleEditAccountSettings}
-                    >
+                    <a href='#' onClick={this.handleEditAccountSettings}>
                         <i
                             className='fa fa-pencil-square-o'
-                            title={formatMessage({id: 'generic_icons.edit', defaultMessage: 'Edit Icon'})}
+                            title={formatMessage({
+                                id: 'generic_icons.edit',
+                                defaultMessage: 'Edit Icon',
+                            })}
                         />
+
                         <FormattedMessage
                             id='user_profile.account.editSettings'
                             defaultMessage='Edit Account Settings'
                         />
                     </a>
-                </div>
+                </div>,
             );
         }
 
@@ -373,14 +386,18 @@ class ProfilePopover extends React.PureComponent {
                     >
                         <i
                             className='fa fa-paper-plane'
-                            title={formatMessage({id: 'user_profile.send.dm.icon', defaultMessage: 'Send Message Icon'})}
+                            title={formatMessage({
+                                id: 'user_profile.send.dm.icon',
+                                defaultMessage: 'Send Message Icon',
+                            })}
                         />
+
                         <FormattedMessage
                             id='user_profile.send.dm'
                             defaultMessage='Send Message'
                         />
                     </a>
-                </div>
+                </div>,
             );
 
             if (this.props.canManageAnyChannelMembersInCurrentTeam) {
@@ -390,10 +407,7 @@ class ProfilePopover extends React.PureComponent {
                         className='popover__row first'
                         key='user-popover-add-to-channel'
                     >
-                        <a
-                            href='#'
-                            className='text-nowrap'
-                        >
+                        <a href='#' className='text-nowrap'>
                             <ToggleModalButtonRedux
                                 ref='addUserToChannelModalButton'
                                 modalId={ModalIdentifiers.ADD_USER_TO_CHANNEL}
@@ -404,15 +418,21 @@ class ProfilePopover extends React.PureComponent {
                             >
                                 <i
                                     className='fa fa-user-plus'
-                                    title={formatMessage({id: 'user_profile.add_user_to_channel.icon', defaultMessage: 'Add User to Channel Icon'})}
+                                    title={formatMessage({
+                                        id:
+                                            'user_profile.add_user_to_channel.icon',
+                                        defaultMessage:
+                                            'Add User to Channel Icon',
+                                    })}
                                 />
+
                                 <FormattedMessage
                                     id='user_profile.add_user_to_channel'
                                     defaultMessage='Add to a Channel'
                                 />
                             </ToggleModalButtonRedux>
                         </a>
-                    </div>
+                    </div>,
                 );
             }
         }
@@ -423,18 +443,43 @@ class ProfilePopover extends React.PureComponent {
                 pluggableName='PopoverUserActions'
                 user={this.props.user}
                 status={this.props.hideStatus ? null : this.props.status}
-            />
+            />,
         );
 
         let roleTitle;
         if (this.props.user.is_bot) {
-            roleTitle = <span className='user-popover__role'>{Utils.localizeMessage('bots.is_bot', 'BOT')}</span>;
+            roleTitle = (
+                <span className='user-popover__role'>
+                    {Utils.localizeMessage('bots.is_bot', 'BOT')}
+                </span>
+            );
         } else if (Utils.isSystemAdmin(this.props.user.roles)) {
-            roleTitle = <span className='user-popover__role'>{Utils.localizeMessage('admin.permissions.roles.system_admin.name', 'System Admin')}</span>;
+            roleTitle = (
+                <span className='user-popover__role'>
+                    {Utils.localizeMessage(
+                        'admin.permissions.roles.system_admin.name',
+                        'System Admin',
+                    )}
+                </span>
+            );
         } else if (this.props.isTeamAdmin) {
-            roleTitle = <span className='user-popover__role'>{Utils.localizeMessage('admin.permissions.roles.team_admin.name', 'Team Admin')}</span>;
+            roleTitle = (
+                <span className='user-popover__role'>
+                    {Utils.localizeMessage(
+                        'admin.permissions.roles.team_admin.name',
+                        'Team Admin',
+                    )}
+                </span>
+            );
         } else if (this.props.isChannelAdmin) {
-            roleTitle = <span className='user-popover__role'>{Utils.localizeMessage('admin.permissions.roles.channel_admin.name', 'Channel Admin')}</span>;
+            roleTitle = (
+                <span className='user-popover__role'>
+                    {Utils.localizeMessage(
+                        'admin.permissions.roles.channel_admin.name',
+                        'Channel Admin',
+                    )}
+                </span>
+            );
         }
 
         let title = `@${this.props.user.username}`;
@@ -443,19 +488,13 @@ class ProfilePopover extends React.PureComponent {
         }
         title = (
             <span>
-                <span className='user-popover__username'>
-                    {title}
-                </span>
+                <span className='user-popover__username'>{title}</span>
                 {roleTitle}
             </span>
         );
 
         return (
-            <Popover
-                {...popoverProps}
-                title={title}
-                id='user-profile-popover'
-            >
+            <Popover {...popoverProps} title={title} id='user-profile-popover'>
                 {dataContent}
             </Popover>
         );

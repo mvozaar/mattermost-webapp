@@ -4,7 +4,12 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {updateUserRoles, uploadProfileImage, setDefaultProfileImage, createUserAccessToken} from 'mattermost-redux/actions/users';
+import {
+    updateUserRoles,
+    uploadProfileImage,
+    setDefaultProfileImage,
+    createUserAccessToken,
+} from 'mattermost-redux/actions/users';
 import {createBot, patchBot} from 'mattermost-redux/actions/bots';
 import {getBotAccounts} from 'mattermost-redux/selectors/entities/bots';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
@@ -16,7 +21,7 @@ import AddBot from './add_bot.jsx';
 
 function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
-    const botId = (new URLSearchParams(ownProps.location.search)).get('id');
+    const botId = new URLSearchParams(ownProps.location.search).get('id');
     const bots = getBotAccounts(state);
     const bot = bots ? bots[botId] : null;
     const user = bot ? getUsers(state)[bot.user_id] : null;
@@ -25,21 +30,30 @@ function mapStateToProps(state, ownProps) {
         maxFileSize: parseInt(config.MaxFileSize, 10),
         bot,
         roles,
-        editingUserHasManageSystem: haveISystemPermission(state, {permission: Permissions.MANAGE_SYSTEM}),
+        editingUserHasManageSystem: haveISystemPermission(state, {
+            permission: Permissions.MANAGE_SYSTEM,
+        }),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            createBot,
-            patchBot,
-            uploadProfileImage,
-            setDefaultProfileImage,
-            createUserAccessToken,
-            updateUserRoles,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                createBot,
+                patchBot,
+                uploadProfileImage,
+                setDefaultProfileImage,
+                createUserAccessToken,
+                updateUserRoles,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddBot);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddBot);

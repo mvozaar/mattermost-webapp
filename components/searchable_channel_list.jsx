@@ -49,7 +49,8 @@ export default class SearchableChannelList extends React.Component {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.isSearch && !this.props.isSearch) {
             this.setState({page: 0});
         }
@@ -57,20 +58,14 @@ export default class SearchableChannelList extends React.Component {
 
     handleJoin(channel) {
         this.setState({joiningChannel: channel.id});
-        this.props.handleJoin(
-            channel,
-            () => {
-                this.setState({joiningChannel: ''});
-            }
-        );
+        this.props.handleJoin(channel, () => {
+            this.setState({joiningChannel: ''});
+        });
     }
 
     createChannelRow(channel) {
         return (
-            <div
-                className='more-modal__row'
-                key={channel.id}
-            >
+            <div className='more-modal__row' key={channel.id}>
                 <div className='more-modal__details'>
                     <p className='more-modal__name'>{channel.display_name}</p>
                     <p className='more-modal__description'>{channel.purpose}</p>
@@ -83,7 +78,10 @@ export default class SearchableChannelList extends React.Component {
                     >
                         <LoadingWrapper
                             loading={this.state.joiningChannel === channel.id}
-                            text={localizeMessage('more_channels.joining', 'Joining...')}
+                            text={localizeMessage(
+                                'more_channels.joining',
+                                'Joining...',
+                            )}
                         >
                             <FormattedMessage
                                 id='more_channels.join'
@@ -99,7 +97,11 @@ export default class SearchableChannelList extends React.Component {
     nextPage(e) {
         e.preventDefault();
         this.setState({page: this.state.page + 1, nextDisabled: true});
-        this.nextTimeoutId = setTimeout(() => this.setState({nextDisabled: false}), NEXT_BUTTON_TIMEOUT_MILLISECONDS);
+        this.nextTimeoutId = setTimeout(
+            () => this.setState({nextDisabled: false}),
+            NEXT_BUTTON_TIMEOUT_MILLISECONDS,
+        );
+
         this.props.nextPage(this.state.page + 1);
         $(ReactDOM.findDOMNode(this.refs.channelListScroll)).scrollTop(0);
     }
@@ -125,7 +127,7 @@ export default class SearchableChannelList extends React.Component {
         let previousButton;
 
         if (this.props.loading && channels.length === 0) {
-            listContent = <LoadingScreen style={{marginTop: '50%'}}/>;
+            listContent = <LoadingScreen style={{marginTop: '50%'}} />;
         } else if (channels.length === 0) {
             listContent = (
                 <div className='no-channel-message'>
@@ -141,10 +143,17 @@ export default class SearchableChannelList extends React.Component {
         } else {
             const pageStart = this.state.page * this.props.channelsPerPage;
             const pageEnd = pageStart + this.props.channelsPerPage;
-            const channelsToDisplay = this.props.channels.slice(pageStart, pageEnd);
+            const channelsToDisplay = this.props.channels.slice(
+                pageStart,
+                pageEnd,
+            );
+
             listContent = channelsToDisplay.map(this.createChannelRow);
 
-            if (channelsToDisplay.length >= this.props.channelsPerPage && pageEnd < this.props.channels.length) {
+            if (
+                channelsToDisplay.length >= this.props.channelsPerPage &&
+                pageEnd < this.props.channels.length
+            ) {
                 nextButton = (
                     <button
                         className='btn btn-link filter-control filter-control__next'
@@ -181,7 +190,10 @@ export default class SearchableChannelList extends React.Component {
                         id='searchChannelsTextbox'
                         ref='filter'
                         className='form-control filter-textbox'
-                        placeholder={{id: t('filtered_channels_list.search'), defaultMessage: 'Search channels'}}
+                        placeholder={{
+                            id: t('filtered_channels_list.search'),
+                            defaultMessage: 'Search channels',
+                        }}
                         inputComponent={LocalizedInput}
                         onInput={this.doSearch}
                     />
@@ -197,7 +209,10 @@ export default class SearchableChannelList extends React.Component {
                             id='searchChannelsTextbox'
                             ref='filter'
                             className='form-control filter-textbox'
-                            placeholder={{id: t('filtered_channels_list.search'), defaultMessage: 'Search channels'}}
+                            placeholder={{
+                                id: t('filtered_channels_list.search'),
+                                defaultMessage: 'Search channels',
+                            }}
                             inputComponent={LocalizedInput}
                             onInput={this.doSearch}
                         />
@@ -212,13 +227,8 @@ export default class SearchableChannelList extends React.Component {
         return (
             <div className='filtered-user-list'>
                 {input}
-                <div
-                    ref='channelList'
-                    className='more-modal__list'
-                >
-                    <div ref='channelListScroll'>
-                        {listContent}
-                    </div>
+                <div ref='channelList' className='more-modal__list'>
+                    <div ref='channelListScroll'>{listContent}</div>
                 </div>
                 <div className='filter-controls'>
                     {previousButton}

@@ -79,25 +79,37 @@ describe('Actions.Team', () => {
     test('switchTeam', () => {
         browserHistory.push = jest.fn();
         testStore.dispatch(Actions.switchTeam('/test'));
-        expect(channelActions.viewChannel).toHaveBeenCalledWith('currentChannelId');
+        expect(channelActions.viewChannel).toHaveBeenCalledWith(
+            'currentChannelId',
+        );
         expect(browserHistory.push).toHaveBeenCalledWith('/test');
     });
 
     test('addUsersToTeam', () => {
         testStore.dispatch(Actions.addUsersToTeam('teamId', ['123', '1234']));
-        expect(TeamActions.addUsersToTeam).toHaveBeenCalledWith('teamId', ['123', '1234']);
+        expect(TeamActions.addUsersToTeam).toHaveBeenCalledWith('teamId', [
+            '123',
+            '1234',
+        ]);
     });
 
     test('removeUserFromTeamAndGetStats', async () => {
-        await testStore.dispatch(Actions.removeUserFromTeamAndGetStats('teamId', '123'));
+        await testStore.dispatch(
+            Actions.removeUserFromTeamAndGetStats('teamId', '123'),
+        );
         expect(userActions.getUser).toHaveBeenCalledWith('123');
         expect(TeamActions.getTeamStats).toHaveBeenCalledWith('teamId');
-        expect(channelActions.getChannelStats).toHaveBeenCalledWith('currentChannelId');
+        expect(channelActions.getChannelStats).toHaveBeenCalledWith(
+            'currentChannelId',
+        );
     });
 
     test('addUserToTeam', async () => {
         await testStore.dispatch(Actions.addUserToTeam('teamId', 'userId'));
-        expect(TeamActions.addUserToTeam).toHaveBeenCalledWith('teamId', 'userId');
+        expect(TeamActions.addUserToTeam).toHaveBeenCalledWith(
+            'teamId',
+            'userId',
+        );
         expect(TeamActions.getTeam).toHaveBeenCalledWith('teamId');
     });
 });

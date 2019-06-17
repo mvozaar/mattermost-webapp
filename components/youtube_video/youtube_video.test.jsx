@@ -23,21 +23,26 @@ describe('YoutubeVideo', () => {
     test('should correctly parse youtube start time formats', () => {
         for (const youtube of [
             {
-                link: 'https://www.youtube.com/watch?time_continue=490&v=xqCoNej8Zxo',
+                link:
+                    'https://www.youtube.com/watch?time_continue=490&v=xqCoNej8Zxo',
                 time: '&start=490',
             },
+
             {
                 link: 'https://www.youtube.com/watch?start=490&v=xqCoNej8Zxo',
                 time: '&start=490',
             },
+
             {
                 link: 'https://www.youtube.com/watch?t=490&v=xqCoNej8Zxo',
                 time: '&start=490',
             },
         ]) {
-            const wrapper = shallow(<YoutubeVideo {...baseProps}/>);
+            const wrapper = shallow(<YoutubeVideo {...baseProps} />);
 
-            expect(wrapper.instance().handleYoutubeTime(youtube.link)).toEqual(youtube.time);
+            expect(wrapper.instance().handleYoutubeTime(youtube.link)).toEqual(
+                youtube.time,
+            );
         }
     });
 
@@ -50,15 +55,20 @@ describe('YoutubeVideo', () => {
 
             getYoutubeVideoInfo.mockImplementation((key, videoId, success) => {
                 success({
-                    items: [{
-                        snippet: {},
-                    }],
+                    items: [
+                        {
+                            snippet: {},
+                        },
+                    ],
                 });
             });
 
-            const wrapper = shallow(<YoutubeVideo {...props}/>);
+            const wrapper = shallow(<YoutubeVideo {...props} />);
 
-            expect(wrapper.find('img').prop('src')).not.toContain('/api/v4/image');
+            expect(wrapper.find('img').prop('src')).not.toContain(
+                '/api/v4/image',
+            );
+
             expect(wrapper.find('img').prop('src')).toContain('hqdefault.jpg');
         });
 
@@ -70,13 +80,15 @@ describe('YoutubeVideo', () => {
 
             getYoutubeVideoInfo.mockImplementation((key, videoId, success) => {
                 success({
-                    items: [{
-                        snippet: {},
-                    }],
+                    items: [
+                        {
+                            snippet: {},
+                        },
+                    ],
                 });
             });
 
-            const wrapper = shallow(<YoutubeVideo {...props}/>);
+            const wrapper = shallow(<YoutubeVideo {...props} />);
 
             expect(wrapper.find('img').prop('src')).toContain('/api/v4/image');
             expect(wrapper.find('img').prop('src')).toContain('hqdefault.jpg');
@@ -89,7 +101,7 @@ describe('YoutubeVideo', () => {
                 hasImageProxy: true,
             };
 
-            const wrapper = shallow(<YoutubeVideo {...props}/>);
+            const wrapper = shallow(<YoutubeVideo {...props} />);
 
             expect(wrapper.find('img').prop('src')).toContain('/api/v4/image');
             expect(wrapper.find('img').prop('src')).toContain('hqdefault.jpg');
@@ -103,18 +115,22 @@ describe('YoutubeVideo', () => {
 
             getYoutubeVideoInfo.mockImplementation((key, videoId, success) => {
                 success({
-                    items: [{
-                        snippet: {
-                            liveBroadcastContent: 'live',
+                    items: [
+                        {
+                            snippet: {
+                                liveBroadcastContent: 'live',
+                            },
                         },
-                    }],
+                    ],
                 });
             });
 
-            const wrapper = shallow(<YoutubeVideo {...props}/>);
+            const wrapper = shallow(<YoutubeVideo {...props} />);
 
             expect(wrapper.find('img').prop('src')).toContain('/api/v4/image');
-            expect(wrapper.find('img').prop('src')).toContain('hqdefault_live.jpg');
+            expect(wrapper.find('img').prop('src')).toContain(
+                'hqdefault_live.jpg',
+            );
         });
     });
 });

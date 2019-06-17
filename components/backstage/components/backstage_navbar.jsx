@@ -27,7 +27,7 @@ export default class BackstageNavbar extends React.Component {
                     className='backstage-navbar__back'
                     to={`/${this.props.team.name}`}
                 >
-                    <BackIcon/>
+                    <BackIcon />
                     <span>
                         <FormattedMessage
                             id='backstage_navbar.backToMattermost'

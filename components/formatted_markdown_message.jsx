@@ -11,7 +11,10 @@ const TARGET_BLANK_URL_PREFIX = '!';
 export class CustomRenderer extends marked.Renderer {
     link(href, title, text) {
         if (href[0] === TARGET_BLANK_URL_PREFIX) {
-            return `<a href="${href.substring(1, href.length)}" rel="noreferrer" target="_blank">${text}</a>`;
+            return `<a href="${href.substring(
+                1,
+                href.length,
+            )}" rel="noreferrer" target="_blank">${text}</a>`;
         }
         return `<a href="${href}">${text}</a>`;
     }
@@ -22,19 +25,19 @@ export class CustomRenderer extends marked.Renderer {
 }
 
 /*
-* Translations component with the same API as react-intl's <FormattedMessage> component except the message string
-* accepts markdown. It supports the following non-block-level markdown:
-* - *italic*
-* - **bold**
-* - `inline code`
-* - ~~strikethrough~~
-* - [link](http://example.com/)
-* - [link in new tab](!http://example.com/)
-* - line\nbreaks
-*
-* Note: Line breaks (\n) in a defaultMessage parameter string must be surrounded by curly brackets {} in JSX. Example:
-* <FormattedMarkdownMessage id='my.example' defaultMessage={'first line\nsecond line'} />
-*/
+ * Translations component with the same API as react-intl's <FormattedMessage> component except the message string
+ * accepts markdown. It supports the following non-block-level markdown:
+ * - *italic*
+ * - **bold**
+ * - `inline code`
+ * - ~~strikethrough~~
+ * - [link](http://example.com/)
+ * - [link in new tab](!http://example.com/)
+ * - line\nbreaks
+ *
+ * Note: Line breaks (\n) in a defaultMessage parameter string must be surrounded by curly brackets {} in JSX. Example:
+ * <FormattedMarkdownMessage id='my.example' defaultMessage={'first line\nsecond line'} />
+ */
 class FormattedMarkdownMessage extends React.PureComponent {
     static get propTypes() {
         return {
@@ -46,10 +49,14 @@ class FormattedMarkdownMessage extends React.PureComponent {
     }
 
     render() {
-        const origMsg = this.props.intl.formatMessage({
-            id: this.props.id,
-            defaultMessage: this.props.defaultMessage,
-        }, this.props.values);
+        const origMsg = this.props.intl.formatMessage(
+            {
+                id: this.props.id,
+                defaultMessage: this.props.defaultMessage,
+            },
+
+            this.props.values,
+        );
 
         const markedUpMessage = marked(origMsg, {
             breaks: true,
@@ -57,7 +64,7 @@ class FormattedMarkdownMessage extends React.PureComponent {
             renderer: new CustomRenderer(),
         });
 
-        return (<span dangerouslySetInnerHTML={{__html: markedUpMessage}}/>);
+        return <span dangerouslySetInnerHTML={{__html: markedUpMessage}} />;
     }
 }
 

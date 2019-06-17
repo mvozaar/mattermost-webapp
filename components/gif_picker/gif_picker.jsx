@@ -29,13 +29,15 @@ export const appProps = {
 export default class GifPicker extends React.Component {
     static propTypes = {
         onGifClick: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
 
         // All props are primitives or treated as immutable
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(
+            this,
+        );
 
         this.handleTrending = this.handleTrending.bind(this);
         this.handleCategories = this.handleCategories.bind(this);
@@ -73,34 +75,38 @@ export default class GifPicker extends React.Component {
         const {action} = this.state;
         let component;
         switch (action) {
-        case 'reactions':
-            component = (
-                <Categories
-                    appProps={appProps}
-                    onTrending={this.handleTrending}
-                    onSearch={this.handleSearch}
-                />
-            );
-            break;
-        case 'search':
-            component = (
-                <Search
-                    appProps={appProps}
-                    onCategories={this.handleCategories}
-                    handleItemClick={this.handleItemClick}
-                />
-            );
-            break;
-        case 'trending':
-            component = (
-                <Trending
-                    appProps={appProps}
-                    onCategories={this.handleCategories}
-                    handleItemClick={this.handleItemClick}
-                />
-            );
-            break;
+            case 'reactions':
+                component = (
+                    <Categories
+                        appProps={appProps}
+                        onTrending={this.handleTrending}
+                        onSearch={this.handleSearch}
+                    />
+                );
+
+                break;
+            case 'search':
+                component = (
+                    <Search
+                        appProps={appProps}
+                        onCategories={this.handleCategories}
+                        handleItemClick={this.handleItemClick}
+                    />
+                );
+
+                break;
+            case 'trending':
+                component = (
+                    <Trending
+                        appProps={appProps}
+                        onCategories={this.handleCategories}
+                        handleItemClick={this.handleItemClick}
+                    />
+                );
+
+                break;
         }
+
         return (
             <div>
                 <App

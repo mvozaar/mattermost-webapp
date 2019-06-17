@@ -16,36 +16,28 @@ describe('components/file_attachment/FileThumbnail', () => {
     };
 
     test('should match snapshot, small size image', () => {
-        const wrapper = shallow(
-            <FileThumbnail fileInfo={fileInfo}/>
-        );
+        const wrapper = shallow(<FileThumbnail fileInfo={fileInfo} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, normal size image', () => {
         const newFileInfo = {...fileInfo, height: 150, width: 150};
-        const wrapper = shallow(
-            <FileThumbnail fileInfo={newFileInfo}/>
-        );
+        const wrapper = shallow(<FileThumbnail fileInfo={newFileInfo} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, svg', () => {
         const newFileInfo = {...fileInfo, extension: 'svg'};
-        const wrapper = shallow(
-            <FileThumbnail fileInfo={newFileInfo}/>
-        );
+        const wrapper = shallow(<FileThumbnail fileInfo={newFileInfo} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, pdf', () => {
         const newFileInfo = {...fileInfo, extension: 'pdf'};
-        const wrapper = shallow(
-            <FileThumbnail fileInfo={newFileInfo}/>
-        );
+        const wrapper = shallow(<FileThumbnail fileInfo={newFileInfo} />);
 
         expect(wrapper).toMatchSnapshot();
     });

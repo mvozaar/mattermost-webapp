@@ -11,7 +11,7 @@ import imgTrans from 'images/img_trans.gif';
 export default class EmojiPickerPreview extends React.Component {
     static propTypes = {
         emoji: PropTypes.object,
-    }
+    };
 
     render() {
         const emoji = this.props.emoji;
@@ -31,7 +31,14 @@ export default class EmojiPickerPreview extends React.Component {
                         <img
                             alt={'emoji category image'}
                             src={imgTrans}
-                            className={'emojisprite-preview emoji-category-' + emoji.category + '-' + emoji.batch + ' emoji-' + emoji.filename}
+                            className={
+                                'emojisprite-preview emoji-category-' +
+                                emoji.category +
+                                '-' +
+                                emoji.batch +
+                                ' emoji-' +
+                                emoji.filename
+                            }
                         />
                     </span>
                 );
@@ -54,7 +61,9 @@ export default class EmojiPickerPreview extends React.Component {
                         {previewImage}
                     </div>
                     <div className='emoji-picker__preview-image-label-box'>
-                        <span className='emoji-picker__preview-name'>{name}</span>
+                        <span className='emoji-picker__preview-name'>
+                            {name}
+                        </span>
                         <span className='emoji-picker__preview-aliases'>
                             {':' + aliases[0] + ':'}
                         </span>

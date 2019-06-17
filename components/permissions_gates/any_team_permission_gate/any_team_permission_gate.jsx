@@ -7,10 +7,9 @@ import React from 'react';
 export default class AnyTeamPermissionGate extends React.Component {
     static defaultProps = {
         invert: false,
-    }
+    };
 
     static propTypes = {
-
         /**
          * Permissions enough to pass the gate (binary OR)
          */

@@ -20,7 +20,10 @@ function mapStateToProps(state) {
     const sendEmailNotifications = config.SendEmailNotifications === 'true';
     const enableUserCreation = config.EnableUserCreation === 'true';
 
-    const defaultChannel = getChannelsNameMapInCurrentTeam(state)[Constants.DEFAULT_CHANNEL];
+    const defaultChannel = getChannelsNameMapInCurrentTeam(state)[
+        Constants.DEFAULT_CHANNEL
+    ];
+
     const team = getCurrentTeam(state);
 
     return {
@@ -35,10 +38,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            sendEmailInvitesToTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                sendEmailInvitesToTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InviteMemberModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(InviteMemberModal);

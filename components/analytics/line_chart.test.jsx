@@ -8,11 +8,7 @@ import LineChart from 'components/analytics/line_chart.jsx';
 describe('components/analytics/line_chart.jsx', () => {
     test('should match snapshot, on loading', () => {
         const wrapper = shallow(
-            <LineChart
-                title='Test'
-                height={400}
-                width={600}
-            />
+            <LineChart title='Test' height={400} width={600} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -25,12 +21,7 @@ describe('components/analytics/line_chart.jsx', () => {
         };
 
         const wrapper = shallow(
-            <LineChart
-                title='Test'
-                height={400}
-                width={600}
-                data={data}
-            />
+            <LineChart title='Test' height={400} width={600} data={data} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -38,19 +29,13 @@ describe('components/analytics/line_chart.jsx', () => {
 
     test('should match snapshot, loaded with data', () => {
         const data = {
-            datasets: [
-                {data: [1, 2, 3]},
-            ],
+            datasets: [{data: [1, 2, 3]}],
+
             labels: ['test1', 'test2', 'test3'],
         };
 
         const wrapper = shallow(
-            <LineChart
-                title='Test'
-                height={400}
-                width={600}
-                data={data}
-            />
+            <LineChart title='Test' height={400} width={600} data={data} />,
         );
 
         expect(wrapper).toMatchSnapshot();

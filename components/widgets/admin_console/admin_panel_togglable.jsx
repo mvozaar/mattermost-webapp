@@ -11,14 +11,18 @@ import AdminPanel from './admin_panel.jsx';
 const AdminPanelTogglable = (props) => {
     return (
         <AdminPanel
-            className={'AdminPanelTogglable ' + props.className + (props.open ? '' : ' closed')}
+            className={
+                'AdminPanelTogglable ' +
+                props.className +
+                (props.open ? '' : ' closed')
+            }
             id={props.id}
             titleId={props.titleId}
             titleDefault={props.titleDefault}
             subtitleId={props.subtitleId}
             subtitleDefault={props.subtitleDefault}
             onHeaderClick={props.onToggle}
-            button={<AccordionToggleIcon/>}
+            button={<AccordionToggleIcon />}
         >
             {props.children}
         </AdminPanel>

@@ -35,7 +35,7 @@ export default class TeamMembersDropdown extends React.Component {
             removeUserFromTeamAndGetStats: PropTypes.func.isRequired,
             updateUserActive: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -53,7 +53,15 @@ export default class TeamMembersDropdown extends React.Component {
         if (this.props.user.id === me.id && me.roles.includes('system_admin')) {
             this.handleDemote(this.props.user, 'team_user');
         } else {
-            const {error} = await this.props.actions.updateTeamMemberSchemeRoles(this.props.teamMember.team_id, this.props.user.id, true, false);
+            const {
+                error,
+            } = await this.props.actions.updateTeamMemberSchemeRoles(
+                this.props.teamMember.team_id,
+                this.props.user.id,
+                true,
+                false,
+            );
+
             if (error) {
                 this.setState({serverError: error.message});
             } else {
@@ -64,28 +72,40 @@ export default class TeamMembersDropdown extends React.Component {
                 }
             }
         }
-    }
+    };
 
     handleRemoveFromTeam = async () => {
-        const {error} = await this.props.actions.removeUserFromTeamAndGetStats(this.props.teamMember.team_id, this.props.user.id);
+        const {error} = await this.props.actions.removeUserFromTeamAndGetStats(
+            this.props.teamMember.team_id,
+            this.props.user.id,
+        );
+
         if (error) {
             this.setState({serverError: error.message});
         }
-    }
+    };
 
     handleMakeAdmin = async () => {
         const me = this.props.currentUser;
         if (this.props.user.id === me.id && me.roles.includes('system_admin')) {
             this.handleDemote(this.props.user, 'team_user team_admin');
         } else {
-            const {error} = await this.props.actions.updateTeamMemberSchemeRoles(this.props.teamMember.team_id, this.props.user.id, true, true);
+            const {
+                error,
+            } = await this.props.actions.updateTeamMemberSchemeRoles(
+                this.props.teamMember.team_id,
+                this.props.user.id,
+                true,
+                true,
+            );
+
             if (error) {
                 this.setState({serverError: error.message});
             } else {
                 this.props.actions.getUser(this.props.user.id);
             }
         }
-    }
+    };
 
     handleDemote = (user, role, newRole) => {
         this.setState({
@@ -95,7 +115,7 @@ export default class TeamMembersDropdown extends React.Component {
             role,
             newRole,
         });
-    }
+    };
 
     handleDemoteCancel = () => {
         this.setState({
@@ -105,24 +125,32 @@ export default class TeamMembersDropdown extends React.Component {
             role: null,
             newRole: null,
         });
-    }
+    };
 
     handleDemoteSubmit = async () => {
-        const {error} = await this.props.actions.updateTeamMemberSchemeRoles(this.props.teamMember.team_id, this.props.user.id, true, false);
+        const {error} = await this.props.actions.updateTeamMemberSchemeRoles(
+            this.props.teamMember.team_id,
+            this.props.user.id,
+            true,
+            false,
+        );
+
         if (error) {
             this.setState({serverError: error.message});
         } else {
             this.props.actions.getUser(this.props.user.id);
             browserHistory.push(this.props.teamUrl);
         }
-    }
+    };
 
     render() {
         let serverError = null;
         if (this.state.serverError) {
             serverError = (
                 <div className='has-error'>
-                    <label className='has-error control-label'>{this.state.serverError}</label>
+                    <label className='has-error control-label'>
+                        {this.state.serverError}
+                    </label>
                 </div>
             );
         }
@@ -136,7 +164,10 @@ export default class TeamMembersDropdown extends React.Component {
             />
         );
 
-        if ((teamMember.roles.length > 0 && Utils.isAdmin(teamMember.roles)) || teamMember.scheme_admin) {
+        if (
+            (teamMember.roles.length > 0 && Utils.isAdmin(teamMember.roles)) ||
+            teamMember.scheme_admin
+        ) {
             currentRoles = (
                 <FormattedMessage
                     id='team_members_dropdown.teamAdmin'
@@ -155,8 +186,13 @@ export default class TeamMembersDropdown extends React.Component {
         }
 
         const me = this.props.currentUser;
-        let showMakeMember = (Utils.isAdmin(teamMember.roles) || teamMember.scheme_admin) && !Utils.isSystemAdmin(user.roles);
-        let showMakeAdmin = !Utils.isAdmin(teamMember.roles) && !Utils.isSystemAdmin(user.roles) && !teamMember.scheme_admin;
+        let showMakeMember =
+            (Utils.isAdmin(teamMember.roles) || teamMember.scheme_admin) &&
+            !Utils.isSystemAdmin(user.roles);
+        let showMakeAdmin =
+            !Utils.isAdmin(teamMember.roles) &&
+            !Utils.isSystemAdmin(user.roles) &&
+            !teamMember.scheme_admin;
 
         if (user.delete_at > 0) {
             currentRoles = (
@@ -165,11 +201,13 @@ export default class TeamMembersDropdown extends React.Component {
                     defaultMessage='Inactive'
                 />
             );
+
             showMakeMember = false;
             showMakeAdmin = false;
         }
 
-        const canRemoveFromTeam = user.id !== me.id && !currentTeam.group_constrained;
+        const canRemoveFromTeam =
+            user.id !== me.id && !currentTeam.group_constrained;
 
         let makeDemoteModal = null;
         if (user.id === me.id) {
@@ -184,10 +222,11 @@ export default class TeamMembersDropdown extends React.Component {
                 <div>
                     <FormattedMessage
                         id='team_members_dropdown.confirmDemoteDescription'
-                        defaultMessage="If you demote yourself from the System Admin role and there is not another user with System Admin privileges, you'll need to re-assign a System Admin by accessing the Mattermost server through a terminal and running the following command."
+                        defaultMessage="If you demote yourself from the System Admin role and there is not another user with System Admin privileges, you'll need to re-assign a System Admin by accessing the SCC server through a terminal and running the following command."
                     />
-                    <br/>
-                    <br/>
+
+                    <br />
+                    <br />
                     <FormattedMessage
                         id='team_members_dropdown.confirmDemotionCmd'
                         defaultMessage='platform roles system_admin {username}'
@@ -195,6 +234,7 @@ export default class TeamMembersDropdown extends React.Component {
                             username: me.username,
                         }}
                     />
+
                     {serverError}
                 </div>
             );
@@ -224,7 +264,10 @@ export default class TeamMembersDropdown extends React.Component {
 
         const {index, totalUsers} = this.props;
         let openUp = false;
-        if (totalUsers > ROWS_FROM_BOTTOM_TO_OPEN_UP && totalUsers - index <= ROWS_FROM_BOTTOM_TO_OPEN_UP) {
+        if (
+            totalUsers > ROWS_FROM_BOTTOM_TO_OPEN_UP &&
+            totalUsers - index <= ROWS_FROM_BOTTOM_TO_OPEN_UP
+        ) {
             openUp = true;
         }
 
@@ -237,29 +280,43 @@ export default class TeamMembersDropdown extends React.Component {
                     aria-expanded='true'
                 >
                     <span>{currentRoles} </span>
-                    <DropdownIcon/>
+                    <DropdownIcon />
                 </button>
                 <div>
                     <Menu
                         openLeft={true}
                         openUp={openUp}
-                        ariaLabel={Utils.localizeMessage('team_members_dropdown.menuAriaLabel', 'Team member role change')}
+                        ariaLabel={Utils.localizeMessage(
+                            'team_members_dropdown.menuAriaLabel',
+                            'Team member role change',
+                        )}
                     >
                         <MenuItemAction
                             id='removeFromTeam'
                             show={canRemoveFromTeam}
                             onClick={this.handleRemoveFromTeam}
-                            text={Utils.localizeMessage('team_members_dropdown.leave_team', 'Remove From Team')}
+                            text={Utils.localizeMessage(
+                                'team_members_dropdown.leave_team',
+                                'Remove From Team',
+                            )}
                         />
+
                         <MenuItemAction
                             show={showMakeAdmin}
                             onClick={this.handleMakeAdmin}
-                            text={Utils.localizeMessage('team_members_dropdown.makeAdmin', 'Make Team Admin')}
+                            text={Utils.localizeMessage(
+                                'team_members_dropdown.makeAdmin',
+                                'Make Team Admin',
+                            )}
                         />
+
                         <MenuItemAction
                             show={showMakeMember}
                             onClick={this.handleMakeMember}
-                            text={Utils.localizeMessage('team_members_dropdown.makeMember', 'Make Member')}
+                            text={Utils.localizeMessage(
+                                'team_members_dropdown.makeMember',
+                                'Make Member',
+                            )}
                         />
                     </Menu>
                     {makeDemoteModal}

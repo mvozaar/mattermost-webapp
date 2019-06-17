@@ -23,7 +23,7 @@ export default class UserSettings extends React.PureComponent {
         collapseModal: PropTypes.func.isRequired,
         setEnforceFocus: PropTypes.func.isRequired,
         setRequireConfirm: PropTypes.func.isRequired,
-    }
+    };
 
     render() {
         if (this.props.activeTab === 'general') {
@@ -108,6 +108,6 @@ export default class UserSettings extends React.PureComponent {
             );
         }
 
-        return <div/>;
+        return <div />;
     }
 }

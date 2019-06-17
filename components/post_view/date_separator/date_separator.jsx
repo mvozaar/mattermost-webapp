@@ -13,21 +13,15 @@ export default class DateSeparator extends React.PureComponent {
         ]).isRequired,
         timeZone: PropTypes.string,
         enableTimezone: PropTypes.bool,
-    }
+    };
 
     render() {
-        const {
-            date,
-            enableTimezone,
-            timeZone,
-        } = this.props;
+        const {date, enableTimezone, timeZone} = this.props;
         const timezoneProps = enableTimezone && timeZone ? {timeZone} : {};
 
         return (
-            <div
-                className='date-separator'
-            >
-                <hr className='separator__hr'/>
+            <div className='date-separator'>
+                <hr className='separator__hr' />
                 <div className='separator__text'>
                     <FormattedDate
                         {...timezoneProps}

@@ -17,10 +17,17 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getUserAccessTokensForUser,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getUserAccessTokensForUser,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageTokensModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ManageTokensModal);

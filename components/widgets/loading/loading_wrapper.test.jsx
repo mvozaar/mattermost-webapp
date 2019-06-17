@@ -19,6 +19,7 @@ describe('components/widgets/loading/LoadingWrapper', () => {
 />
 `,
         },
+
         {
             name: 'showing spinner without text',
             loading: true,
@@ -29,18 +30,21 @@ describe('components/widgets/loading/LoadingWrapper', () => {
 />
 `,
         },
+
         {
             name: 'showing content with children',
             loading: false,
             children: 'text',
-            snapshot: '"text"',
+            snapshot: "'text'",
         },
+
         {
             name: 'showing content without children',
             loading: false,
-            snapshot: '""',
+            snapshot: "''",
         },
     ];
+
     for (const testCase of testCases) {
         test(testCase.name, () => {
             const wrapper = shallow(
@@ -50,9 +54,10 @@ describe('components/widgets/loading/LoadingWrapper', () => {
                     type={testCase.type}
                 >
                     {testCase.children}
-                </LoadingWrapper>
+                </LoadingWrapper>,
             );
-            expect(wrapper).toMatchInlineSnapshot(testCase.snapshot, '""');
+
+            expect(wrapper).toMatchInlineSnapshot(testCase.snapshot, "''");
         });
     }
 });

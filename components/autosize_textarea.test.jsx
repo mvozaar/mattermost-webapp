@@ -8,9 +8,7 @@ import AutosizeTextarea from 'components/autosize_textarea.jsx';
 
 describe('components/AutosizeTextarea', () => {
     test('should match snapshot, init', () => {
-        const wrapper = shallow(
-            <AutosizeTextarea/>
-        );
+        const wrapper = shallow(<AutosizeTextarea />);
 
         expect(wrapper).toMatchSnapshot();
     });

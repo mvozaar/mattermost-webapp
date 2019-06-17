@@ -29,24 +29,39 @@ export default class GroupUsers extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.props.getMembers(this.props.groupID, 0, GROUP_MEMBERS_PAGE_SIZE).then(() => {
-            this.setState({loading: false});
-        });
+        this.props
+            .getMembers(this.props.groupID, 0, GROUP_MEMBERS_PAGE_SIZE)
+            .then(() => {
+                this.setState({loading: false});
+            });
     }
 
     previousPage = async () => {
         const page = this.state.page < 1 ? 0 : this.state.page - 1;
         this.setState({page, loading: true});
-        await this.props.getMembers(this.props.groupID, page, GROUP_MEMBERS_PAGE_SIZE);
+        await this.props.getMembers(
+            this.props.groupID,
+            page,
+            GROUP_MEMBERS_PAGE_SIZE,
+        );
+
         this.setState({loading: false});
-    }
+    };
 
     nextPage = async () => {
-        const page = (this.state.page + 1) * GROUP_MEMBERS_PAGE_SIZE >= this.props.total ? this.state.page : this.state.page + 1;
+        const page =
+            (this.state.page + 1) * GROUP_MEMBERS_PAGE_SIZE >= this.props.total
+                ? this.state.page
+                : this.state.page + 1;
         this.setState({page, loading: true});
-        await this.props.getMembers(this.props.groupID, page, GROUP_MEMBERS_PAGE_SIZE);
+        await this.props.getMembers(
+            this.props.groupID,
+            page,
+            GROUP_MEMBERS_PAGE_SIZE,
+        );
+
         this.setState({loading: false});
-    }
+    };
 
     renderRows = () => {
         if (this.props.members.length === 0) {
@@ -71,15 +86,16 @@ export default class GroupUsers extends React.PureComponent {
                 />
             );
         });
-    }
+    };
 
     renderPagination = () => {
         if (this.props.members.length === 0) {
-            return (<div className='group-users--footer empty'/>);
+            return <div className='group-users--footer empty' />;
         }
 
-        const startCount = (this.state.page * GROUP_MEMBERS_PAGE_SIZE) + 1;
-        let endCount = (this.state.page * GROUP_MEMBERS_PAGE_SIZE) + GROUP_MEMBERS_PAGE_SIZE;
+        const startCount = this.state.page * GROUP_MEMBERS_PAGE_SIZE + 1;
+        let endCount =
+            this.state.page * GROUP_MEMBERS_PAGE_SIZE + GROUP_MEMBERS_PAGE_SIZE;
         const total = this.props.total;
         if (endCount > total) {
             endCount = total;
@@ -101,22 +117,26 @@ export default class GroupUsers extends React.PureComponent {
                     />
                 </div>
                 <button
-                    className={'btn btn-link prev ' + (firstPage ? 'disabled' : '')}
+                    className={
+                        'btn btn-link prev ' + (firstPage ? 'disabled' : '')
+                    }
                     onClick={this.previousPage}
                     disabled={firstPage}
                 >
-                    <PreviousIcon/>
+                    <PreviousIcon />
                 </button>
                 <button
-                    className={'btn btn-link next ' + (lastPage ? 'disabled' : '')}
+                    className={
+                        'btn btn-link next ' + (lastPage ? 'disabled' : '')
+                    }
                     onClick={this.nextPage}
                     disabled={lastPage}
                 >
-                    <NextIcon/>
+                    <NextIcon />
                 </button>
             </div>
         );
-    }
+    };
 
     render = () => {
         return (
@@ -124,12 +144,19 @@ export default class GroupUsers extends React.PureComponent {
                 <div className='group-users--header'>
                     <FormattedMarkdownMessage
                         id='admin.group_settings.group_profile.group_users.ldapConnector'
-                        defaultMessage={'AD/LDAP Connector is configured to sync and manage this group and its users. [Click here to view](/admin_console/authentication/ldap)'}
+                        defaultMessage={
+                            'AD/LDAP Connector is configured to sync and manage this group and its users. [Click here to view](/admin_console/authentication/ldap)'
+                        }
                     />
                 </div>
                 <div className='group-users--body'>
-                    <div className={'group-users-loading ' + (this.state.loading ? 'active' : '')}>
-                        <i className='fa fa-spinner fa-pulse fa-2x'/>
+                    <div
+                        className={
+                            'group-users-loading ' +
+                            (this.state.loading ? 'active' : '')
+                        }
+                    >
+                        <i className='fa fa-spinner fa-pulse fa-2x' />
                     </div>
                     {this.renderRows()}
                 </div>

@@ -13,6 +13,6 @@ export default {
     },
 
     appName: {
-        mattermost: 'mattermost',
+        mattermost: 'securcom',
     },
 };

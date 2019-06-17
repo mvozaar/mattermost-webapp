@@ -27,50 +27,49 @@ import * as Utils from 'utils/utils.jsx';
 
 export default class SearchResultsItem extends React.PureComponent {
     static propTypes = {
-
         /**
-        *  Data used for rendering post
-        */
+         *  Data used for rendering post
+         */
         post: PropTypes.object,
 
         /**
-        * An array of strings in this post that were matched by the search
-        */
+         * An array of strings in this post that were matched by the search
+         */
         matches: PropTypes.array,
 
         /**
-        *  channel object for rendering channel name on top of result
-        */
+         *  channel object for rendering channel name on top of result
+         */
         channel: PropTypes.object,
 
         /**
-        *  Flag for determining result display setting
-        */
+         *  Flag for determining result display setting
+         */
         compactDisplay: PropTypes.bool,
 
         /**
-        *  Flag for highlighting mentions
-        */
+         *  Flag for highlighting mentions
+         */
         isMentionSearch: PropTypes.bool,
 
         /**
-        *  Flag for highlighting search term
-        */
+         *  Flag for highlighting search term
+         */
         term: PropTypes.string,
 
         /**
-        *  Flag for determining result flag state
-        */
+         *  Flag for determining result flag state
+         */
         isFlagged: PropTypes.bool,
 
         /**
-        *  Data used creating URl for jump to post
-        */
+         *  Data used creating URl for jump to post
+         */
         currentTeamName: PropTypes.string,
 
         /**
-        *  Data used for delete in DotMenu
-        */
+         *  Data used for delete in DotMenu
+         */
         commentCountForPost: PropTypes.number,
 
         /**
@@ -84,8 +83,8 @@ export default class SearchResultsItem extends React.PureComponent {
         isBot: PropTypes.bool.isRequired,
 
         /**
-        *  Function used for closing LHS
-        */
+         *  Function used for closing LHS
+         */
         actions: PropTypes.shape({
             closeRightHandSide: PropTypes.func.isRequired,
             selectPost: PropTypes.func.isRequired,
@@ -116,7 +115,9 @@ export default class SearchResultsItem extends React.PureComponent {
         }
 
         this.props.actions.setRhsExpanded(false);
-        browserHistory.push(`/${this.props.currentTeamName}/pl/${this.props.post.id}`);
+        browserHistory.push(
+            `/${this.props.currentTeamName}/pl/${this.props.post.id}`,
+        );
     };
 
     handleDropdownOpened = (isOpened) => {
@@ -128,8 +129,10 @@ export default class SearchResultsItem extends React.PureComponent {
     renderPostTime = () => {
         const post = this.props.post;
 
-        const isPermalink = !(Posts.POST_DELETED === post.state ||
-            ReduxPostUtils.isPostPendingOrFailed(post));
+        const isPermalink = !(
+            Posts.POST_DELETED === post.state ||
+            ReduxPostUtils.isPostPendingOrFailed(post)
+        );
 
         return (
             <PostTime
@@ -169,7 +172,9 @@ export default class SearchResultsItem extends React.PureComponent {
                         id='search_item.direct'
                         defaultMessage='Direct Message (with {username})'
                         values={{
-                            username: Utils.getDisplayNameByUser(Utils.getDirectTeammate(channel.id)),
+                            username: Utils.getDisplayNameByUser(
+                                Utils.getDirectTeammate(channel.id),
+                            ),
                         }}
                     />
                 );
@@ -178,10 +183,12 @@ export default class SearchResultsItem extends React.PureComponent {
 
         let overrideUsername;
         let disableProfilePopover = false;
-        if (post.props &&
+        if (
+            post.props &&
             post.props.from_webhook &&
             post.props.override_username &&
-            this.props.enablePostUsernameOverride) {
+            this.props.enablePostUsernameOverride
+        ) {
             overrideUsername = post.props.override_username;
             disableProfilePopover = true;
         }
@@ -194,7 +201,9 @@ export default class SearchResultsItem extends React.PureComponent {
             />
         );
 
-        const profilePicContainer = (<div className='post__img'>{profilePic}</div>);
+        const profilePicContainer = (
+            <div className='post__img'>{profilePic}</div>
+        );
 
         let postClass = '';
         if (PostUtils.isEdited(this.props.post)) {
@@ -242,12 +251,14 @@ export default class SearchResultsItem extends React.PureComponent {
                         commentCount={this.props.commentCountForPost}
                         isReadOnly={channelIsArchived || null}
                     />
+
                     <CommentIcon
                         location={Locations.SEARCH}
                         handleCommentClick={this.handleFocusRHSClick}
                         postId={post.id}
                         searchStyle={'search-item__comment'}
                     />
+
                     <a
                         onClick={this.handleJumpClick}
                         className='search-item__jump'
@@ -296,19 +307,19 @@ export default class SearchResultsItem extends React.PureComponent {
 
         return (
             <div className='search-item__container'>
-                <DateSeparator date={currentPostDay}/>
+                <DateSeparator date={currentPostDay} />
                 <div className={this.getClassName()}>
                     <div className='search-channel__name'>
                         {channelName}
-                        {channelIsArchived &&
+                        {channelIsArchived && (
                             <span className='search-channel__archived'>
-                                <ArchiveIcon className='icon icon__archive channel-header-archived-icon svg-text-color'/>
+                                <ArchiveIcon className='icon icon__archive channel-header-archived-icon svg-text-color' />
                                 <FormattedMessage
                                     id='search_item.channelArchived'
                                     defaultMessage='Archived'
                                 />
                             </span>
-                        }
+                        )}
                     </div>
                     <div className='post__content'>
                         {profilePicContainer}
@@ -319,12 +330,21 @@ export default class SearchResultsItem extends React.PureComponent {
                                         <UserProfile
                                             userId={post.user_id}
                                             overwriteName={overrideUsername}
-                                            disablePopover={disableProfilePopover}
+                                            disablePopover={
+                                                disableProfilePopover
+                                            }
                                             isRHS={true}
                                         />
                                     </strong>
                                 </div>
-                                <BotBadge show={Boolean(post.props && post.props.from_webhook && !this.props.isBot)}/>
+                                <BotBadge
+                                    show={Boolean(
+                                        post.props &&
+                                            post.props.from_webhook &&
+                                            !this.props.isBot,
+                                    )}
+                                />
+
                                 <div className='col'>
                                     {this.renderPostTime()}
                                     {pinnedBadge}

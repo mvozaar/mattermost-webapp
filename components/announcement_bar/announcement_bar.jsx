@@ -16,14 +16,15 @@ export default class AnnouncementBar extends React.PureComponent {
         type: PropTypes.string,
         message: PropTypes.node.isRequired,
         handleClose: PropTypes.func,
-    }
+    };
+
     static defaultProps = {
         showCloseButton: false,
         color: '',
         textColor: '',
         type: AnnouncementBarTypes.CRITICAL,
         handleClose: null,
-    }
+    };
 
     componentDidMount() {
         document.body.classList.add('announcement-bar--fixed');
@@ -44,7 +45,7 @@ export default class AnnouncementBar extends React.PureComponent {
         if (this.props.handleClose) {
             this.props.handleClose();
         }
-    }
+    };
 
     render() {
         if (!this.props.message) {
@@ -82,31 +83,22 @@ export default class AnnouncementBar extends React.PureComponent {
 
         let message = this.props.message;
         if (typeof message == 'string') {
-            message = (
-                <FormattedMarkdownMessage id={this.props.message}/>
-            );
+            message = <FormattedMarkdownMessage id={this.props.message} />;
         }
 
         const announcementTooltip = (
-            <Tooltip id='announcement-bar__tooltip'>
-                {message}
-            </Tooltip>
+            <Tooltip id='announcement-bar__tooltip'>{message}</Tooltip>
         );
 
         return (
-            <div
-                className={barClass}
-                style={barStyle}
-            >
+            <div className={barClass} style={barStyle}>
                 <OverlayTrigger
                     trigger={['hover', 'focus']}
                     delayShow={Constants.OVERLAY_TIME_DELAY}
                     placement='bottom'
                     overlay={announcementTooltip}
                 >
-                    <span>
-                        {message}
-                    </span>
+                    <span>{message}</span>
                 </OverlayTrigger>
                 {closeButton}
             </div>

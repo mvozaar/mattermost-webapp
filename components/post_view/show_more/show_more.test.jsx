@@ -7,7 +7,12 @@ import {shallow} from 'enzyme';
 import ShowMore from 'components/post_view/show_more/show_more.jsx';
 
 describe('components/post_view/ShowMore', () => {
-    const children = (<div><p>{'text'}</p></div>);
+    const children = (
+        <div>
+            <p>{'text'}</p>
+        </div>
+    );
+
     const baseProps = {
         checkOverflow: 0,
         isAttachmentText: false,
@@ -23,41 +28,37 @@ describe('components/post_view/ShowMore', () => {
     });
 
     test('should match snapshot, PostMessageView on collapsed view', () => {
-        const wrapper = shallow(<ShowMore {...baseProps}/>);
+        const wrapper = shallow(<ShowMore {...baseProps} />);
         wrapper.setState({isOverflow: true, isCollapsed: true});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, PostMessageView on expanded view', () => {
-        const wrapper = shallow(<ShowMore {...baseProps}/>);
+        const wrapper = shallow(<ShowMore {...baseProps} />);
         wrapper.setState({isOverflow: true, isCollapsed: false});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, PostAttachment on collapsed view', () => {
         const wrapper = shallow(
-            <ShowMore
-                {...baseProps}
-                isAttachmentText={true}
-            />
+            <ShowMore {...baseProps} isAttachmentText={true} />,
         );
+
         wrapper.setState({isOverflow: true, isCollapsed: true});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, PostAttachment on expanded view', () => {
         const wrapper = shallow(
-            <ShowMore
-                {...baseProps}
-                isAttachmentText={true}
-            />
+            <ShowMore {...baseProps} isAttachmentText={true} />,
         );
+
         wrapper.setState({isOverflow: true, isCollapsed: false});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should call checkTextOverflow', () => {
-        const wrapper = shallow(<ShowMore {...baseProps}/>);
+        const wrapper = shallow(<ShowMore {...baseProps} />);
         const instance = wrapper.instance();
         instance.checkTextOverflow = jest.fn();
 

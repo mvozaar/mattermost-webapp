@@ -62,6 +62,7 @@ export default class UserListRow extends React.Component {
                     }}
                 />
             );
+
             emailStyle = '';
         } else if (this.props.user.status) {
             status = this.props.user.status;
@@ -76,47 +77,41 @@ export default class UserListRow extends React.Component {
         let userCountID = null;
         let userCountEmail = null;
         if (this.props.userCount >= 0) {
-            userCountID = Utils.createSafeId('userListRowName' + this.props.userCount);
-            userCountEmail = Utils.createSafeId('userListRowEmail' + this.props.userCount);
+            userCountID = Utils.createSafeId(
+                'userListRowName' + this.props.userCount,
+            );
+
+            userCountEmail = Utils.createSafeId(
+                'userListRowEmail' + this.props.userCount,
+            );
         }
 
         return (
-            <div
-                key={this.props.user.id}
-                className='more-modal__row'
-            >
+            <div key={this.props.user.id} className='more-modal__row'>
                 <ProfilePicture
-                    src={Client4.getProfilePictureUrl(this.props.user.id, this.props.user.last_picture_update)}
+                    src={Client4.getProfilePictureUrl(
+                        this.props.user.id,
+                        this.props.user.last_picture_update,
+                    )}
                     status={status}
                     width='32'
                     height='32'
                 />
-                <div
-                    className='more-modal__details'
-                >
-                    <div
-                        id={userCountID}
-                        className='more-modal__name'
-                    >
+
+                <div className='more-modal__details'>
+                    <div id={userCountID} className='more-modal__name'>
                         {Utils.displayEntireNameForUser(this.props.user)}
                         <BotBadge
                             className='badge-popoverlist'
                             show={Boolean(this.props.user.is_bot)}
                         />
                     </div>
-                    <div
-                        id={userCountEmail}
-                        className={emailStyle}
-                    >
+                    <div id={userCountEmail} className={emailStyle}>
                         {email}
                     </div>
                     {this.props.extraInfo}
                 </div>
-                <div
-                    className='more-modal__actions'
-                >
-                    {buttons}
-                </div>
+                <div className='more-modal__actions'>{buttons}</div>
             </div>
         );
     }

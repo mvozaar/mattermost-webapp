@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 export default class RootPortal extends React.Component {
     static propTypes = {
         children: PropTypes.node,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -24,9 +24,6 @@ export default class RootPortal extends React.Component {
     }
 
     render() {
-        return ReactDOM.createPortal(
-            this.props.children,
-            this.el,
-        );
+        return ReactDOM.createPortal(this.props.children, this.el);
     }
 }

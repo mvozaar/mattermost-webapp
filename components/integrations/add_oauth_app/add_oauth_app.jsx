@@ -10,29 +10,30 @@ import AbstractOAuthApp from '../abstract_oauth_app.jsx';
 
 const HEADER = {id: t('add_oauth_app.header'), defaultMessage: 'Add'};
 const FOOTER = {id: t('installed_oauth_apps.save'), defaultMessage: 'Save'};
-const LOADING = {id: t('installed_oauth_apps.saving'), defaultMessage: 'Saving...'};
+const LOADING = {
+    id: t('installed_oauth_apps.saving'),
+    defaultMessage: 'Saving...',
+};
 
 export default class AddOAuthApp extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The team data
-        */
+         * The team data
+         */
         team: PropTypes.object,
 
         /**
-        * The request state for addOAuthApp action. Contains status and error
-        */
+         * The request state for addOAuthApp action. Contains status and error
+         */
         addOAuthAppRequest: PropTypes.object.isRequired,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call to add new OAuthApp
-            */
+             * The function to call to add new OAuthApp
+             */
             addOAuthApp: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -47,14 +48,19 @@ export default class AddOAuthApp extends React.PureComponent {
 
         const {data} = await this.props.actions.addOAuthApp(app);
         if (data) {
-            browserHistory.push(`/${this.props.team.name}/integrations/confirm?type=oauth2-apps&id=${data.id}`);
+            browserHistory.push(
+                `/${this.props.team.name}/integrations/confirm?type=oauth2-apps&id=${data.id}`,
+            );
+
             return;
         }
 
         if (this.props.addOAuthAppRequest.error) {
-            this.setState({serverError: this.props.addOAuthAppRequest.error.message});
+            this.setState({
+                serverError: this.props.addOAuthAppRequest.error.message,
+            });
         }
-    }
+    };
 
     render() {
         return (

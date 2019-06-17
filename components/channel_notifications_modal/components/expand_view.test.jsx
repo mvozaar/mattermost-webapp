@@ -20,27 +20,26 @@ describe('components/channel_notifications_modal/ExpandView', () => {
     };
 
     test('should match snapshot, DESKTOP on expanded view', () => {
-        const wrapper = shallow(
-            <ExpandView {...baseProps}/>
-        );
+        const wrapper = shallow(<ExpandView {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, PUSH on expanded view', () => {
         const props = {...baseProps, section: NotificationSections.PUSH};
-        const wrapper = shallow(
-            <ExpandView {...props}/>
-        );
+        const wrapper = shallow(<ExpandView {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, MARK_UNREAD on expanded view', () => {
-        const props = {...baseProps, section: NotificationSections.MARK_UNREAD, globalNotifyLevel: null};
-        const wrapper = shallow(
-            <ExpandView {...props}/>
-        );
+        const props = {
+            ...baseProps,
+            section: NotificationSections.MARK_UNREAD,
+            globalNotifyLevel: null,
+        };
+
+        const wrapper = shallow(<ExpandView {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

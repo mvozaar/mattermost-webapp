@@ -7,14 +7,14 @@ import {ActionTypes} from 'utils/constants.jsx';
 
 function translations(state = {}, action) {
     switch (action.type) {
-    case ActionTypes.RECEIVED_TRANSLATIONS:
-        return {
-            ...state,
-            [action.data.locale]: action.data.translations,
-        };
+        case ActionTypes.RECEIVED_TRANSLATIONS:
+            return {
+                ...state,
+                [action.data.locale]: action.data.translations,
+            };
 
-    default:
-        return state;
+        default:
+            return state;
     }
 }
 

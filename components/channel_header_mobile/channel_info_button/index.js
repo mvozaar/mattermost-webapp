@@ -10,10 +10,17 @@ import ChannelInfoButton from './channel_info_button';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            openModal,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                openModal,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(ChannelInfoButton);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(ChannelInfoButton);

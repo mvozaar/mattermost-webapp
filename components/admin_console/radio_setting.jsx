@@ -36,10 +36,7 @@ export default class RadioSetting extends React.Component {
         const options = [];
         for (const {value, text} of this.props.values) {
             options.push(
-                <div
-                    className='radio'
-                    key={value}
-                >
+                <div className='radio' key={value}>
                     <label>
                         <input
                             type='radio'
@@ -47,11 +44,14 @@ export default class RadioSetting extends React.Component {
                             name={this.props.id}
                             checked={value === this.props.value}
                             onChange={this.handleChange}
-                            disabled={this.props.disabled || this.props.setByEnv}
+                            disabled={
+                                this.props.disabled || this.props.setByEnv
+                            }
                         />
+
                         {text}
                     </label>
-                </div>
+                </div>,
             );
         }
 

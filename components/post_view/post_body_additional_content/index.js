@@ -18,10 +18,17 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            toggleEmbedVisibility,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                toggleEmbedVisibility,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostBodyAdditionalContent);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PostBodyAdditionalContent);

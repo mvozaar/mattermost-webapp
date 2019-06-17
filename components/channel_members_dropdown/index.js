@@ -3,7 +3,11 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getChannelStats, updateChannelMemberSchemeRoles, removeChannelMember} from 'mattermost-redux/actions/channels';
+import {
+    getChannelStats,
+    updateChannelMemberSchemeRoles,
+    removeChannelMember,
+} from 'mattermost-redux/actions/channels';
 import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
 import {Permissions} from 'mattermost-redux/constants';
@@ -15,14 +19,12 @@ import ChannelMembersDropdown from './channel_members_dropdown.jsx';
 
 function mapStateToProps(state, ownProps) {
     const {channel} = ownProps;
-    const canChangeMemberRoles = haveIChannelPermission(
-        state,
-        {
-            channel: channel.id,
-            team: channel.team_id,
-            permission: Permissions.MANAGE_CHANNEL_ROLES,
-        }
-    );
+    const canChangeMemberRoles = haveIChannelPermission(state, {
+        channel: channel.id,
+        team: channel.team_id,
+        permission: Permissions.MANAGE_CHANNEL_ROLES,
+    });
+
     const license = getLicense(state);
     const isLicensed = license.IsLicensed === 'true';
     const canRemoveMember = canManageMembers(channel);
@@ -37,12 +39,19 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getChannelStats,
-            updateChannelMemberSchemeRoles,
-            removeChannelMember,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getChannelStats,
+                updateChannelMemberSchemeRoles,
+                removeChannelMember,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelMembersDropdown);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ChannelMembersDropdown);

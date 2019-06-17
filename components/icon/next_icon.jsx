@@ -16,18 +16,17 @@ export default class NextIcon extends React.PureComponent {
     };
 
     render() {
-        const className = 'fa fa-1x fa-angle-right' + (this.props.additionalClassName ? ' ' + this.props.additionalClassName : '');
+        const className =
+            'fa fa-1x fa-angle-right' +
+            (this.props.additionalClassName
+                ? ' ' + this.props.additionalClassName
+                : '');
         return (
             <FormattedMessage
                 id='generic_icons.next'
                 defaultMessage='Next Icon'
             >
-                {(title) => (
-                    <i
-                        className={className}
-                        title={title}
-                    />
-                )}
+                {(title) => <i className={className} title={title} />}
             </FormattedMessage>
         );
     }

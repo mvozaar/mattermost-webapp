@@ -12,7 +12,6 @@ import * as Utils from 'utils/utils.jsx';
 
 export default class EditChannelPurposeModal extends React.PureComponent {
     static propTypes = {
-
         /*
          * callback to call when modal will hide
          */
@@ -42,13 +41,12 @@ export default class EditChannelPurposeModal extends React.PureComponent {
          * Object with redux action creators
          */
         actions: PropTypes.shape({
-
             /*
              * Action creator to patch current channel
              */
             patchChannel: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -61,15 +59,25 @@ export default class EditChannelPurposeModal extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-        const {requestStatus: nextRequestStatus, serverError: nextServerError} = nextProps;
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
+        const {
+            requestStatus: nextRequestStatus,
+            serverError: nextServerError,
+        } = nextProps;
         const {requestStatus} = this.props;
 
-        if (requestStatus !== nextRequestStatus && nextRequestStatus === RequestStatus.SUCCESS) {
+        if (
+            requestStatus !== nextRequestStatus &&
+            nextRequestStatus === RequestStatus.SUCCESS
+        ) {
             this.onHide();
         }
 
-        if (requestStatus !== nextRequestStatus && nextRequestStatus === RequestStatus.FAILURE) {
+        if (
+            requestStatus !== nextRequestStatus &&
+            nextRequestStatus === RequestStatus.FAILURE
+        ) {
             this.setError(nextServerError);
         } else {
             this.unsetError();
@@ -81,52 +89,64 @@ export default class EditChannelPurposeModal extends React.PureComponent {
             this.setState({
                 serverError: Utils.localizeMessage(
                     'edit_channel_purpose_modal.error',
-                    'This channel purpose is too long, please enter a shorter one'
+                    'This channel purpose is too long, please enter a shorter one',
                 ),
             });
         } else {
             this.setState({serverError: err.message});
         }
-    }
+    };
 
     unsetError = () => {
         this.setState({serverError: ''});
-    }
+    };
 
     handleEntering = () => {
         Utils.placeCaretAtEnd(this.purpose);
-    }
+    };
 
     onHide = () => {
         this.setState({show: false});
-    }
+    };
 
     handleKeyDown = (e) => {
         const {ctrlSend} = this.props;
 
-        if (ctrlSend && Utils.isKeyPressed(e, Constants.KeyCodes.ENTER) && e.ctrlKey) {
+        if (
+            ctrlSend &&
+            Utils.isKeyPressed(e, Constants.KeyCodes.ENTER) &&
+            e.ctrlKey
+        ) {
             e.preventDefault();
             this.handleSave(e);
-        } else if (!ctrlSend && Utils.isKeyPressed(e, Constants.KeyCodes.ENTER) && !e.shiftKey && !e.altKey) {
+        } else if (
+            !ctrlSend &&
+            Utils.isKeyPressed(e, Constants.KeyCodes.ENTER) &&
+            !e.shiftKey &&
+            !e.altKey
+        ) {
             e.preventDefault();
             this.handleSave(e);
         }
-    }
+    };
 
     handleSave = () => {
-        const {channel, actions: {patchChannel}} = this.props;
+        const {
+            channel,
+            actions: {patchChannel},
+        } = this.props;
         const {purpose} = this.state;
         if (!channel) {
             return;
         }
 
         patchChannel(channel.id, {purpose});
-    }
+    };
 
     handleChange = (e) => {
         e.preventDefault();
         this.setState({purpose: e.target.value});
-    }
+    };
 
     getPurpose = (node) => {
         this.purpose = node;
@@ -137,8 +157,10 @@ export default class EditChannelPurposeModal extends React.PureComponent {
         if (this.state.serverError) {
             serverError = (
                 <div className='form-group has-error'>
-                    <br/>
-                    <label className='control-label'>{this.state.serverError}</label>
+                    <br />
+                    <label className='control-label'>
+                        {this.state.serverError}
+                    </label>
                 </div>
             );
         }
@@ -151,6 +173,7 @@ export default class EditChannelPurposeModal extends React.PureComponent {
                 />
             </span>
         );
+
         if (this.props.channel.display_name) {
             title = (
                 <span>
@@ -158,7 +181,10 @@ export default class EditChannelPurposeModal extends React.PureComponent {
                         id='edit_channel_purpose_modal.title2'
                         defaultMessage='Edit Purpose for '
                     />
-                    <span className='name'>{this.props.channel.display_name}</span>
+
+                    <span className='name'>
+                        {this.props.channel.display_name}
+                    </span>
                 </span>
             );
         }
@@ -166,14 +192,15 @@ export default class EditChannelPurposeModal extends React.PureComponent {
         let channelPurposeModal = (
             <FormattedMessage
                 id='edit_channel_purpose_modal.body'
-                defaultMessage='Describe how this channel should be used. This text appears in the channel list in the "More..." menu and helps others decide whether to join.'
+                defaultMessage="Describe how this channel should be used. This text appears in the channel list in the 'More...' menu and helps others decide whether to join."
             />
         );
+
         if (this.props.channel.type === 'P') {
             channelPurposeModal = (
                 <FormattedMessage
                     id='edit_channel_private_purpose_modal.body'
-                    defaultMessage='This text appears in the \"View Info\" modal of the private channel.'
+                    defaultMessage="This text appears in the \\'View Info\\' modal of the private channel."
                 />
             );
         }
@@ -196,9 +223,7 @@ export default class EditChannelPurposeModal extends React.PureComponent {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        {channelPurposeModal}
-                    </p>
+                    <p>{channelPurposeModal}</p>
                     <textarea
                         ref={this.getPurpose}
                         className='form-control no-resize'
@@ -208,6 +233,7 @@ export default class EditChannelPurposeModal extends React.PureComponent {
                         onKeyDown={this.handleKeyDown}
                         onChange={this.handleChange}
                     />
+
                     {serverError}
                 </Modal.Body>
                 <Modal.Footer>
@@ -224,7 +250,9 @@ export default class EditChannelPurposeModal extends React.PureComponent {
                     <button
                         type='button'
                         className='btn btn-primary save-button'
-                        disabled={this.props.requestStatus === RequestStatus.STARTED}
+                        disabled={
+                            this.props.requestStatus === RequestStatus.STARTED
+                        }
                         onClick={this.handleSave}
                     >
                         <FormattedMessage

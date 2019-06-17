@@ -28,14 +28,17 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
 
     test('should match snapshot', () => {
         const wrapper = shallow(
-            <CodeBlockCtrlEnterSection {...defaultProps}/>
+            <CodeBlockCtrlEnterSection {...defaultProps} />,
         );
 
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(SettingItemMax).exists()).toEqual(false);
         expect(wrapper.find(SettingItemMin).exists()).toEqual(true);
 
-        wrapper.setProps({activeSection: AdvancedSections.CODE_BLOCK_ON_CTRL_ENTER});
+        wrapper.setProps({
+            activeSection: AdvancedSections.CODE_BLOCK_ON_CTRL_ENTER,
+        });
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(SettingItemMax).exists()).toEqual(true);
         expect(wrapper.find(SettingItemMin).exists()).toEqual(false);
@@ -43,7 +46,7 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
 
     test('should match state on handleOnChange', () => {
         const wrapper = shallow(
-            <CodeBlockCtrlEnterSection {...defaultProps}/>
+            <CodeBlockCtrlEnterSection {...defaultProps} />,
         );
 
         let value = 'false';
@@ -64,7 +67,7 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
                 {...defaultProps}
                 actions={actions}
                 onUpdateSection={onUpdateSection}
-            />
+            />,
         );
 
         const codeBlockOnCtrlEnterPreference = {
@@ -76,14 +79,21 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
 
         wrapper.instance().handleSubmit();
         expect(actions.savePreferences).toHaveBeenCalledTimes(1);
-        expect(actions.savePreferences).toHaveBeenCalledWith(defaultProps.currentUserId, [codeBlockOnCtrlEnterPreference]);
+        expect(actions.savePreferences).toHaveBeenCalledWith(
+            defaultProps.currentUserId,
+            [codeBlockOnCtrlEnterPreference],
+        );
+
         expect(onUpdateSection).toHaveBeenCalledTimes(1);
 
         wrapper.setState({codeBlockOnCtrlEnterState: 'false'});
         codeBlockOnCtrlEnterPreference.value = 'false';
         wrapper.instance().handleSubmit();
         expect(actions.savePreferences).toHaveBeenCalledTimes(2);
-        expect(actions.savePreferences).toHaveBeenCalledWith(defaultProps.currentUserId, [codeBlockOnCtrlEnterPreference]);
+        expect(actions.savePreferences).toHaveBeenCalledWith(
+            defaultProps.currentUserId,
+            [codeBlockOnCtrlEnterPreference],
+        );
     });
 
     test('should match state and call props.onUpdateSection on handleUpdateSection', () => {
@@ -92,17 +102,24 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
             <CodeBlockCtrlEnterSection
                 {...defaultProps}
                 onUpdateSection={onUpdateSection}
-            />
+            />,
         );
 
         wrapper.setState({codeBlockOnCtrlEnterState: 'false'});
         wrapper.instance().handleUpdateSection();
-        expect(wrapper.state('codeBlockOnCtrlEnterState')).toEqual(defaultProps.codeBlockOnCtrlEnter);
+        expect(wrapper.state('codeBlockOnCtrlEnterState')).toEqual(
+            defaultProps.codeBlockOnCtrlEnter,
+        );
+
         expect(onUpdateSection).toHaveBeenCalledTimes(1);
 
         wrapper.setState({codeBlockOnCtrlEnterState: 'false'});
-        wrapper.instance().handleUpdateSection(AdvancedSections.CODE_BLOCK_ON_CTRL_ENTER);
+        wrapper
+            .instance()
+            .handleUpdateSection(AdvancedSections.CODE_BLOCK_ON_CTRL_ENTER);
         expect(onUpdateSection).toHaveBeenCalledTimes(2);
-        expect(onUpdateSection).toBeCalledWith(AdvancedSections.CODE_BLOCK_ON_CTRL_ENTER);
+        expect(onUpdateSection).toBeCalledWith(
+            AdvancedSections.CODE_BLOCK_ON_CTRL_ENTER,
+        );
     });
 });

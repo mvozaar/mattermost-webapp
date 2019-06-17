@@ -31,18 +31,35 @@ export default class TeamGroupsManageModal extends React.PureComponent {
     };
 
     loadItems = async (pageNumber, searchTerm) => {
-        const {data} = await this.props.actions.getGroupsAssociatedToTeam(this.props.team.id, searchTerm, pageNumber, DEFAULT_NUM_PER_PAGE);
+        const {data} = await this.props.actions.getGroupsAssociatedToTeam(
+            this.props.team.id,
+            searchTerm,
+            pageNumber,
+            DEFAULT_NUM_PER_PAGE,
+        );
+
         return {
             items: data.groups,
             totalCount: data.totalGroupCount,
         };
     };
 
-    onClickRemoveGroup = (item, listModal) => this.props.actions.unlinkGroupSyncable(item.id, this.props.team.id, Groups.SYNCABLE_TYPE_TEAM).then(async () => {
-        listModal.setState({loading: true});
-        const {items} = await listModal.props.loadItems(listModal.setState.page, listModal.state.searchTerm);
-        listModal.setState({loading: false, items});
-    });
+    onClickRemoveGroup = (item, listModal) =>
+        this.props.actions
+            .unlinkGroupSyncable(
+                item.id,
+                this.props.team.id,
+                Groups.SYNCABLE_TYPE_TEAM,
+            )
+            .then(async () => {
+                listModal.setState({loading: true});
+                const {items} = await listModal.props.loadItems(
+                    listModal.setState.page,
+                    listModal.state.searchTerm,
+                );
+
+                listModal.setState({loading: false, items});
+            });
 
     onHide = () => {
         this.props.actions.closeModal(ModalIdentifiers.MANAGE_TEAM_GROUPS);
@@ -50,15 +67,15 @@ export default class TeamGroupsManageModal extends React.PureComponent {
 
     titleButtonOnClick = () => {
         this.onHide();
-        this.props.actions.openModal({modalId: ModalIdentifiers.ADD_GROUPS_TO_TEAM, dialogType: AddGroupsToTeamModal});
+        this.props.actions.openModal({
+            modalId: ModalIdentifiers.ADD_GROUPS_TO_TEAM,
+            dialogType: AddGroupsToTeamModal,
+        });
     };
 
     renderRow = (item, listModal) => {
         return (
-            <div
-                key={item.id}
-                className='more-modal__row'
-            >
+            <div key={item.id} className='more-modal__row'>
                 <img
                     className='more-modal__image'
                     src={groupsAvatar}
@@ -66,15 +83,19 @@ export default class TeamGroupsManageModal extends React.PureComponent {
                     width='32'
                     height='32'
                 />
+
                 <div className='more-modal__details'>
-                    <div className='more-modal__name'>{item.display_name} {'-'} <span>
-                        <FormattedMessage
-                            id='numMembers'
-                            defaultMessage='{num, number} {num, plural, one {member} other {members}}'
-                            values={{
-                                num: item.member_count,
-                            }}
-                        /></span>
+                    <div className='more-modal__name'>
+                        {item.display_name} {'-'}{' '}
+                        <span>
+                            <FormattedMessage
+                                id='numMembers'
+                                defaultMessage='{num, number} {num, plural, one {member} other {members}}'
+                                values={{
+                                    num: item.member_count,
+                                }}
+                            />
+                        </span>
                     </div>
                 </div>
                 <div className='more-modal__actions'>
@@ -98,12 +119,25 @@ export default class TeamGroupsManageModal extends React.PureComponent {
         const {formatMessage} = this.context.intl;
         return (
             <ListModal
-                titleText={formatMessage({id: 'manage_team_groups_modal.groups', defaultMessage: '{team} Groups'}, {team: this.props.team.display_name})}
-                searchPlaceholderText={formatMessage({id: 'manage_team_groups_modal.search_placeholder', defaultMessage: 'Search groups'})}
+                titleText={formatMessage(
+                    {
+                        id: 'manage_team_groups_modal.groups',
+                        defaultMessage: '{team} Groups',
+                    },
+
+                    {team: this.props.team.display_name},
+                )}
+                searchPlaceholderText={formatMessage({
+                    id: 'manage_team_groups_modal.search_placeholder',
+                    defaultMessage: 'Search groups',
+                })}
                 renderRow={this.renderRow}
                 loadItems={this.loadItems}
                 onHide={this.onHide}
-                titleBarButtonText={formatMessage({id: 'group_list_modal.addGroupButton', defaultMessage: 'Add Group'})}
+                titleBarButtonText={formatMessage({
+                    id: 'group_list_modal.addGroupButton',
+                    defaultMessage: 'Add Group',
+                })}
                 titleBarButtonOnClick={this.titleButtonOnClick}
             />
         );

@@ -10,7 +10,10 @@ import {Preferences, StoragePrefixes} from 'utils/constants';
 
 export const getEditingPost = createSelector(
     (state) => {
-        if (state.views.posts.editingPost && state.views.posts.editingPost.postId) {
+        if (
+            state.views.posts.editingPost &&
+            state.views.posts.editingPost.postId
+        ) {
             return getPost(state, state.views.posts.editingPost.postId);
         }
 
@@ -22,7 +25,7 @@ export const getEditingPost = createSelector(
             ...editingPost,
             post,
         };
-    }
+    },
 );
 
 export function isEmbedVisible(state, postId) {
@@ -30,12 +33,21 @@ export function isEmbedVisible(state, postId) {
         state,
         Preferences.CATEGORY_DISPLAY_SETTINGS,
         Preferences.COLLAPSE_DISPLAY,
-        Preferences.COLLAPSE_DISPLAY_DEFAULT !== 'false'
+        Preferences.COLLAPSE_DISPLAY_DEFAULT !== 'false',
     );
 
-    return getGlobalItem(state, StoragePrefixes.EMBED_VISIBLE + postId, !previewCollapsed);
+    return getGlobalItem(
+        state,
+        StoragePrefixes.EMBED_VISIBLE + postId,
+        !previewCollapsed,
+    );
 }
 
 export function shouldShowJoinLeaveMessages(state) {
-    return getBoolPreference(state, Preferences.CATEGORY_ADVANCED_SETTINGS, Preferences.ADVANCED_FILTER_JOIN_LEAVE, true);
+    return getBoolPreference(
+        state,
+        Preferences.CATEGORY_ADVANCED_SETTINGS,
+        Preferences.ADVANCED_FILTER_JOIN_LEAVE,
+        true,
+    );
 }

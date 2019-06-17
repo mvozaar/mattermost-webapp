@@ -8,7 +8,6 @@ import {Link} from 'react-router-dom';
 
 export default class BackButton extends React.PureComponent {
     static propTypes = {
-
         /**
          * URL to return to
          */
@@ -26,14 +25,8 @@ export default class BackButton extends React.PureComponent {
 
     render() {
         return (
-            <div
-                id='back_button'
-                className='signup-header'
-            >
-                <Link
-                    onClick={this.props.onClick}
-                    to={this.props.url}
-                >
+            <div id='back_button' className='signup-header'>
+                <Link onClick={this.props.onClick} to={this.props.url}>
                     <FormattedMessage
                         id='generic_icons.back'
                         defaultMessage='Back Icon'

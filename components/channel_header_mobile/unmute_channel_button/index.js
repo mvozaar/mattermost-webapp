@@ -8,9 +8,16 @@ import {updateChannelNotifyProps} from 'mattermost-redux/actions/channels';
 import UnmuteChannelButton from './unmute_channel_button';
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        updateChannelNotifyProps,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            updateChannelNotifyProps,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(null, mapDispatchToProps)(UnmuteChannelButton);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(UnmuteChannelButton);

@@ -27,12 +27,28 @@ export default class DatabaseSettings extends AdminSettings {
     getConfigFromState(config) {
         // driverName and dataSource are read-only from the UI
 
-        config.SqlSettings.MaxIdleConns = this.parseIntNonZero(this.state.maxIdleConns);
-        config.SqlSettings.MaxOpenConns = this.parseIntNonZero(this.state.maxOpenConns);
+        config.SqlSettings.MaxIdleConns = this.parseIntNonZero(
+            this.state.maxIdleConns,
+        );
+
+        config.SqlSettings.MaxOpenConns = this.parseIntNonZero(
+            this.state.maxOpenConns,
+        );
+
         config.SqlSettings.Trace = this.state.trace;
-        config.SqlSettings.QueryTimeout = this.parseIntNonZero(this.state.queryTimeout);
-        config.SqlSettings.ConnMaxLifetimeMilliseconds = this.parseIntNonNegative(this.state.connMaxLifetimeMilliseconds);
-        config.ServiceSettings.MinimumHashtagLength = this.parseIntNonZero(this.state.minimumHashtagLength, 3, 2);
+        config.SqlSettings.QueryTimeout = this.parseIntNonZero(
+            this.state.queryTimeout,
+        );
+
+        config.SqlSettings.ConnMaxLifetimeMilliseconds = this.parseIntNonNegative(
+            this.state.connMaxLifetimeMilliseconds,
+        );
+
+        config.ServiceSettings.MinimumHashtagLength = this.parseIntNonZero(
+            this.state.minimumHashtagLength,
+            3,
+            2,
+        );
 
         return config;
     }
@@ -45,7 +61,8 @@ export default class DatabaseSettings extends AdminSettings {
             maxOpenConns: config.SqlSettings.MaxOpenConns,
             trace: config.SqlSettings.Trace,
             queryTimeout: config.SqlSettings.QueryTimeout,
-            connMaxLifetimeMilliseconds: config.SqlSettings.ConnMaxLifetimeMilliseconds,
+            connMaxLifetimeMilliseconds:
+                config.SqlSettings.ConnMaxLifetimeMilliseconds,
             minimumHashtagLength: config.ServiceSettings.MinimumHashtagLength,
         };
     }
@@ -60,9 +77,11 @@ export default class DatabaseSettings extends AdminSettings {
     }
 
     renderSettings() {
-        const dataSource = '**********' + this.state.dataSource.substring(this.state.dataSource.indexOf('@'));
+        const dataSource =
+            '**********' +
+            this.state.dataSource.substring(this.state.dataSource.indexOf('@'));
 
-        let recycleDbButton = <div/>;
+        let recycleDbButton = <div />;
         if (this.props.license.IsLicensed === 'true') {
             recycleDbButton = (
                 <RequestButton
@@ -70,7 +89,7 @@ export default class DatabaseSettings extends AdminSettings {
                     helpText={
                         <FormattedMessage
                             id='admin.recycle.recycleDescription'
-                            defaultMessage='Deployments using multiple databases can switch from one master database to another without restarting the Mattermost server by updating "config.json" to the new desired configuration and using the {reloadConfiguration} feature to load the new settings while the server is running. The administrator should then use {featureName} feature to recycle the database connections based on the new settings.'
+                            defaultMessage="Deployments using multiple databases can switch from one master database to another without restarting the SCC server by updating 'config.json' to the new desired configuration and using the {reloadConfiguration} feature to load the new settings while the server is running. The administrator should then use {featureName} feature to recycle the database connections based on the new settings."
                             values={{
                                 featureName: (
                                     <b>
@@ -80,6 +99,7 @@ export default class DatabaseSettings extends AdminSettings {
                                         />
                                     </b>
                                 ),
+
                                 reloadConfiguration: (
                                     <a href='../environment/web_server'>
                                         <b>
@@ -134,6 +154,7 @@ export default class DatabaseSettings extends AdminSettings {
                             value={this.state.driverName}
                             disabled={true}
                         />
+
                         <div className='help-text'>
                             <FormattedMessage
                                 id='admin.sql.driverNameDescription'
@@ -159,6 +180,7 @@ export default class DatabaseSettings extends AdminSettings {
                             value={dataSource}
                             disabled={true}
                         />
+
                         <div className='help-text'>
                             <FormattedMessage
                                 id='admin.sql.dataSourceDescription'
@@ -175,7 +197,10 @@ export default class DatabaseSettings extends AdminSettings {
                             defaultMessage='Maximum Idle Connections:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.sql.maxConnectionsExample', 'E.g.: "10"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.sql.maxConnectionsExample',
+                        "E.g.: '10'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.sql.maxConnectionsDescription'
@@ -186,6 +211,7 @@ export default class DatabaseSettings extends AdminSettings {
                     onChange={this.handleChange}
                     setByEnv={this.isSetByEnv('SqlSettings.MaxIdleConns')}
                 />
+
                 <TextSetting
                     id='maxOpenConns'
                     label={
@@ -194,7 +220,10 @@ export default class DatabaseSettings extends AdminSettings {
                             defaultMessage='Maximum Open Connections:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.sql.maxOpenExample', 'E.g.: "10"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.sql.maxOpenExample',
+                        "E.g.: '10'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.sql.maxOpenDescription'
@@ -205,6 +234,7 @@ export default class DatabaseSettings extends AdminSettings {
                     onChange={this.handleChange}
                     setByEnv={this.isSetByEnv('SqlSettings.MaxOpenConns')}
                 />
+
                 <TextSetting
                     id='queryTimeout'
                     label={
@@ -213,7 +243,10 @@ export default class DatabaseSettings extends AdminSettings {
                             defaultMessage='Query Timeout:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.sql.queryTimeoutExample', 'E.g.: "30"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.sql.queryTimeoutExample',
+                        "E.g.: '30'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.sql.queryTimeoutDescription'
@@ -224,6 +257,7 @@ export default class DatabaseSettings extends AdminSettings {
                     onChange={this.handleChange}
                     setByEnv={this.isSetByEnv('SqlSettings.QueryTimeout')}
                 />
+
                 <TextSetting
                     id='connMaxLifetimeMilliseconds'
                     label={
@@ -232,7 +266,10 @@ export default class DatabaseSettings extends AdminSettings {
                             defaultMessage='Maximum Connection Lifetime:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.sql.connMaxLifetimeExample', 'E.g.: "3600000"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.sql.connMaxLifetimeExample',
+                        "E.g.: '3600000'",
+                    )}
                     helpText={
                         <FormattedMessage
                             id='admin.sql.connMaxLifetimeDescription'
@@ -241,8 +278,11 @@ export default class DatabaseSettings extends AdminSettings {
                     }
                     value={this.state.connMaxLifetimeMilliseconds}
                     onChange={this.handleChange}
-                    setByEnv={this.isSetByEnv('SqlSettings.ConnMaxLifetimeMilliseconds')}
+                    setByEnv={this.isSetByEnv(
+                        'SqlSettings.ConnMaxLifetimeMilliseconds',
+                    )}
                 />
+
                 <TextSetting
                     id='minimumHashtagLength'
                     label={
@@ -251,7 +291,10 @@ export default class DatabaseSettings extends AdminSettings {
                             defaultMessage='Minimum Hashtag Length:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.service.minimumHashtagLengthExample', 'E.g.: "3"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.service.minimumHashtagLengthExample',
+                        "E.g.: '3'",
+                    )}
                     helpText={
                         <FormattedMarkdownMessage
                             id='admin.service.minimumHashtagLengthDescription'
@@ -260,8 +303,11 @@ export default class DatabaseSettings extends AdminSettings {
                     }
                     value={this.state.minimumHashtagLength}
                     onChange={this.handleChange}
-                    setByEnv={this.isSetByEnv('ServiceSettings.MinimumHashtagLength')}
+                    setByEnv={this.isSetByEnv(
+                        'ServiceSettings.MinimumHashtagLength',
+                    )}
                 />
+
                 <BooleanSetting
                     id='trace'
                     label={
@@ -280,6 +326,7 @@ export default class DatabaseSettings extends AdminSettings {
                     onChange={this.handleChange}
                     setByEnv={this.isSetByEnv('SqlSettings.Trace')}
                 />
+
                 {recycleDbButton}
             </SettingsGroup>
         );

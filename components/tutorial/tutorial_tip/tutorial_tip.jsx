@@ -26,11 +26,11 @@ export default class TutorialTip extends React.Component {
             closeRhsMenu: PropTypes.func.isRequired,
             savePreferences: PropTypes.func.isRequired,
         }),
-    }
+    };
 
     static defaultProps = {
         overlayClass: '',
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -40,11 +40,11 @@ export default class TutorialTip extends React.Component {
 
     show = () => {
         this.setState({show: true});
-    }
+    };
 
     hide = () => {
         this.setState({show: false});
-    }
+    };
 
     handleNext = () => {
         if (this.state.currentScreen < this.props.screens.length - 1) {
@@ -71,18 +71,20 @@ export default class TutorialTip extends React.Component {
         const {currentUserId, actions} = this.props;
         const {closeRhsMenu, savePreferences} = actions;
 
-        const preferences = [{
-            user_id: currentUserId,
-            category: Preferences.TUTORIAL_STEP,
-            name: currentUserId,
-            value: (this.props.step + 1).toString(),
-        }];
+        const preferences = [
+            {
+                user_id: currentUserId,
+                category: Preferences.TUTORIAL_STEP,
+                name: currentUserId,
+                value: (this.props.step + 1).toString(),
+            },
+        ];
 
         closeRhsMenu();
         this.hide();
 
         savePreferences(currentUserId, preferences);
-    }
+    };
 
     skipTutorial = (e) => {
         e.preventDefault();
@@ -97,37 +99,37 @@ export default class TutorialTip extends React.Component {
         }
 
         const {currentUserId, actions} = this.props;
-        const preferences = [{
-            user_id: currentUserId,
-            category: Preferences.TUTORIAL_STEP,
-            name: currentUserId,
-            value: TutorialSteps.FINISHED.toString(),
-        }];
+        const preferences = [
+            {
+                user_id: currentUserId,
+                category: Preferences.TUTORIAL_STEP,
+                name: currentUserId,
+                value: TutorialSteps.FINISHED.toString(),
+            },
+        ];
 
         actions.savePreferences(currentUserId, preferences);
-    }
+    };
 
     handleCircleClick = (e, screen) => {
         e.preventDefault();
         this.setState({currentScreen: screen});
-    }
+    };
 
     getTarget = () => {
         return this.refs.target;
-    }
+    };
 
     render() {
-        const buttonText = this.state.currentScreen === this.props.screens.length - 1 ? (
-            <FormattedMessage
-                id='tutorial_tip.ok'
-                defaultMessage='Okay'
-            />
-        ) : (
-            <FormattedMessage
-                id='tutorial_tip.next'
-                defaultMessage='Next'
-            />
-        );
+        const buttonText =
+            this.state.currentScreen === this.props.screens.length - 1 ? (
+                <FormattedMessage id='tutorial_tip.ok' defaultMessage='Okay' />
+            ) : (
+                <FormattedMessage
+                    id='tutorial_tip.next'
+                    defaultMessage='Next'
+                />
+            );
 
         const dots = [];
         if (this.props.screens.length > 1) {
@@ -144,13 +146,17 @@ export default class TutorialTip extends React.Component {
                         className={className}
                         data-screen={i}
                         onClick={(e) => this.handleCircleClick(e, i)}
-                    />
+                    />,
                 );
             }
         }
 
         var tutorialGifImage = tutorialGif;
-        if (this.props.overlayClass === 'tip-overlay--header' || this.props.overlayClass === 'tip-overlay--sidebar' || this.props.overlayClass === 'tip-overlay--header--up') {
+        if (
+            this.props.overlayClass === 'tip-overlay--header' ||
+            this.props.overlayClass === 'tip-overlay--sidebar' ||
+            this.props.overlayClass === 'tip-overlay--header--up'
+        ) {
             tutorialGifImage = tutorialGifWhite;
         }
 
@@ -169,10 +175,8 @@ export default class TutorialTip extends React.Component {
                     ref='target'
                 />
 
-                <Overlay
-                    show={this.state.show}
-                >
-                    <div className='tip-backdrop'/>
+                <Overlay show={this.state.show}>
+                    <div className='tip-backdrop' />
                 </Overlay>
 
                 <Overlay
@@ -183,7 +187,7 @@ export default class TutorialTip extends React.Component {
                     target={this.getTarget}
                 >
                     <div className={'tip-overlay ' + this.props.overlayClass}>
-                        <div className='arrow'/>
+                        <div className='arrow' />
                         {this.props.screens[this.state.currentScreen]}
                         <div className='tutorial__footer'>
                             <div className='tutorial__circles'>{dots}</div>
@@ -200,10 +204,8 @@ export default class TutorialTip extends React.Component {
                                         id='tutorial_tip.seen'
                                         defaultMessage='Seen this before? '
                                     />
-                                    <a
-                                        href='#'
-                                        onClick={this.skipTutorial}
-                                    >
+
+                                    <a href='#' onClick={this.skipTutorial}>
                                         <FormattedMessage
                                             id='tutorial_tip.out'
                                             defaultMessage='Opt out of these tips.'

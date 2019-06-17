@@ -4,7 +4,10 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getUser, getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+import {
+    getUser,
+    getCurrentUserId,
+} from 'mattermost-redux/selectors/entities/users';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 
 import {deleteCustomEmoji} from 'mattermost-redux/actions/emojis';
@@ -28,10 +31,17 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            deleteCustomEmoji,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                deleteCustomEmoji,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmojiListItem);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(EmojiListItem);

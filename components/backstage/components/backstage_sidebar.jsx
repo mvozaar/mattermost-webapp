@@ -28,7 +28,10 @@ export default class BackstageSidebar extends React.Component {
     }
 
     renderCustomEmoji() {
-        if (!this.props.enableCustomEmoji || !this.props.canCreateOrDeleteCustomEmoji) {
+        if (
+            !this.props.enableCustomEmoji ||
+            !this.props.canCreateOrDeleteCustomEmoji
+        ) {
             return null;
         }
 
@@ -57,13 +60,15 @@ export default class BackstageSidebar extends React.Component {
                 >
                     <BackstageSection
                         name='incoming_webhooks'
-                        parentLink={'/' + this.props.team.name + '/integrations'}
-                        title={(
+                        parentLink={
+                            '/' + this.props.team.name + '/integrations'
+                        }
+                        title={
                             <FormattedMessage
                                 id='backstage_sidebar.integrations.incoming_webhooks'
                                 defaultMessage='Incoming Webhooks'
                             />
-                        )}
+                        }
                         id='incomingWebhooks'
                     />
                 </TeamPermissionGate>
@@ -79,13 +84,15 @@ export default class BackstageSidebar extends React.Component {
                 >
                     <BackstageSection
                         name='outgoing_webhooks'
-                        parentLink={'/' + this.props.team.name + '/integrations'}
-                        title={(
+                        parentLink={
+                            '/' + this.props.team.name + '/integrations'
+                        }
+                        title={
                             <FormattedMessage
                                 id='backstage_sidebar.integrations.outgoing_webhooks'
                                 defaultMessage='Outgoing Webhooks'
                             />
-                        )}
+                        }
                         id='outgoingWebhooks'
                     />
                 </TeamPermissionGate>
@@ -101,13 +108,15 @@ export default class BackstageSidebar extends React.Component {
                 >
                     <BackstageSection
                         name='commands'
-                        parentLink={'/' + this.props.team.name + '/integrations'}
-                        title={(
+                        parentLink={
+                            '/' + this.props.team.name + '/integrations'
+                        }
+                        title={
                             <FormattedMessage
                                 id='backstage_sidebar.integrations.commands'
                                 defaultMessage='Slash Commands'
                             />
-                        )}
+                        }
                         id='slashCommands'
                     />
                 </TeamPermissionGate>
@@ -120,7 +129,9 @@ export default class BackstageSidebar extends React.Component {
                 <SystemPermissionGate permissions={[Permissions.MANAGE_OAUTH]}>
                     <BackstageSection
                         name='oauth2-apps'
-                        parentLink={'/' + this.props.team.name + '/integrations'}
+                        parentLink={
+                            '/' + this.props.team.name + '/integrations'
+                        }
                         title={
                             <FormattedMessage
                                 id='backstage_sidebar.integrations.oauthApps'
@@ -151,7 +162,12 @@ export default class BackstageSidebar extends React.Component {
 
         return (
             <TeamPermissionGate
-                permissions={[Permissions.MANAGE_INCOMING_WEBHOOKS, Permissions.MANAGE_OUTGOING_WEBHOOKS, Permissions.MANAGE_SLASH_COMMANDS, Permissions.MANAGE_OAUTH]}
+                permissions={[
+                    Permissions.MANAGE_INCOMING_WEBHOOKS,
+                    Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                    Permissions.MANAGE_SLASH_COMMANDS,
+                    Permissions.MANAGE_OAUTH,
+                ]}
                 teamId={this.props.team.id}
             >
                 <BackstageCategory

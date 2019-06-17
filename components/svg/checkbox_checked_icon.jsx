@@ -6,11 +6,7 @@ import React from 'react';
 export default class CheckboxCheckedIcon extends React.PureComponent {
     render() {
         return (
-            <svg
-                width='18px'
-                height='18px'
-                viewBox='0 0 18 18'
-            >
+            <svg width='18px' height='18px' viewBox='0 0 18 18'>
                 <g
                     id='Developer-Export'
                     stroke='none'

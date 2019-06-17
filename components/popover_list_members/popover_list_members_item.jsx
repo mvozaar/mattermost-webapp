@@ -58,15 +58,17 @@ export default class PopoverListMembersItem extends React.PureComponent {
                 onClick={this.handleClick}
             >
                 <ProfilePicture
-                    src={Client4.getProfilePictureUrl(this.props.user.id, this.props.user.last_picture_update)}
+                    src={Client4.getProfilePictureUrl(
+                        this.props.user.id,
+                        this.props.user.last_picture_update,
+                    )}
                     status={status}
                     width='32'
                     height='32'
                 />
+
                 <div className='more-modal__details d-flex whitespace--nowrap'>
-                    <div className='more-modal__name'>
-                        {name}
-                    </div>
+                    <div className='more-modal__name'>{name}</div>
                     <div>
                         <BotBadge
                             show={Boolean(this.props.user.is_bot)}
@@ -74,9 +76,7 @@ export default class PopoverListMembersItem extends React.PureComponent {
                         />
                     </div>
                 </div>
-                <div className='more-modal__actions'>
-                    {messageIcon}
-                </div>
+                <div className='more-modal__actions'>{messageIcon}</div>
             </div>
         );
     }

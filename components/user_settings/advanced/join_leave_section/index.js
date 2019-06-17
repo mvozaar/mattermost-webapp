@@ -16,7 +16,7 @@ function mapStateToProps(state) {
         state,
         Preferences.CATEGORY_ADVANCED_SETTINGS,
         Preferences.ADVANCED_FILTER_JOIN_LEAVE,
-        'true'
+        'true',
     );
 
     return {
@@ -27,10 +27,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            savePreferences,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                savePreferences,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(JoinLeaveSection);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(JoinLeaveSection);

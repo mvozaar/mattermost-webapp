@@ -5,7 +5,10 @@ import {connect} from 'react-redux';
 import {createSelector} from 'reselect';
 
 import {Posts} from 'mattermost-redux/constants';
-import {getAllPosts, getPostIdsInChannel} from 'mattermost-redux/selectors/entities/posts';
+import {
+    getAllPosts,
+    getPostIdsInChannel,
+} from 'mattermost-redux/selectors/entities/posts';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import {makePreparePostIdsForPostList} from 'mattermost-redux/utils/post_list';
 
@@ -23,13 +26,17 @@ export function makeCountUnreadsBelow() {
             }
 
             // Count the number of new posts made by other users that haven't been deleted
-            return postIds.map((id) => allPosts[id]).filter((post) => {
-                return post &&
-                    post.user_id !== currentUserId &&
-                    post.state !== Posts.POST_DELETED &&
-                    post.create_at > lastViewedBottom;
-            }).length;
-        }
+            return postIds
+                .map((id) => allPosts[id])
+                .filter((post) => {
+                    return (
+                        post &&
+                        post.user_id !== currentUserId &&
+                        post.state !== Posts.POST_DELETED &&
+                        post.create_at > lastViewedBottom
+                    );
+                }).length;
+        },
     );
 }
 
@@ -41,11 +48,18 @@ function makeMapStateToProps() {
         let postIds = getPostIdsInChannel(state, ownProps.channelId);
 
         if (postIds) {
-            postIds = preparePostIdsForPostList(state, {postIds, lastViewedAt: ownProps.lastViewedBottom});
+            postIds = preparePostIdsForPostList(state, {
+                postIds,
+                lastViewedAt: ownProps.lastViewedBottom,
+            });
         }
 
         return {
-            newMessages: countUnreadsBelow(state, postIds, ownProps.lastViewedBottom),
+            newMessages: countUnreadsBelow(
+                state,
+                postIds,
+                ownProps.lastViewedBottom,
+            ),
         };
     };
 }

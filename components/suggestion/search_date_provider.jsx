@@ -33,13 +33,20 @@ class SearchDateSuggestion extends Suggestion {
 
 export default class SearchDateProvider extends Provider {
     handlePretextChanged(pretext, resultsCallback) {
-        const captured = (/\b(?:on|before|after):\s*(\S*)$/i).exec(pretext.toLowerCase());
+        const captured = /\b(?:on|before|after):\s*(\S*)$/i.exec(
+            pretext.toLowerCase(),
+        );
+
         if (captured) {
             const datePrefix = captured[1];
 
             this.startNewRequest(datePrefix);
 
-            const dates = Object.assign([], [{label: 'Selected Date', date: datePrefix}]);
+            const dates = Object.assign(
+                [],
+                [{label: 'Selected Date', date: datePrefix}],
+            );
+
             const terms = dates.map((date) => date.date);
 
             resultsCallback({

@@ -16,19 +16,14 @@ describe('components/admin_console/request_button/request_button.jsx', () => {
             <RequestButton
                 requestAction={emptyFunction}
                 helpText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Help Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Help Text' />
                 }
                 buttonText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Button Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Button Text' />
                 }
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -40,23 +35,20 @@ describe('components/admin_console/request_button/request_button.jsx', () => {
             <RequestButton
                 requestAction={requestActionSuccess}
                 helpText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Help Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Help Text' />
                 }
                 buttonText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Button Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Button Text' />
                 }
                 saveNeeded={false}
                 saveConfigAction={saveConfigActionSuccess}
-            />
+            />,
         );
 
-        wrapper.find('button').first().simulate('click');
+        wrapper
+            .find('button')
+            .first()
+            .simulate('click');
 
         expect(requestActionSuccess.mock.calls.length).toBe(1);
         expect(saveConfigActionSuccess.mock.calls.length).toBe(0);
@@ -70,23 +62,20 @@ describe('components/admin_console/request_button/request_button.jsx', () => {
             <RequestButton
                 requestAction={requestActionSuccess}
                 helpText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Help Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Help Text' />
                 }
                 buttonText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Button Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Button Text' />
                 }
                 saveNeeded={true}
                 saveConfigAction={saveConfigActionSuccess}
-            />
+            />,
         );
 
-        wrapper.find('button').first().simulate('click');
+        wrapper
+            .find('button')
+            .first()
+            .simulate('click');
 
         expect(requestActionSuccess.mock.calls.length).toBe(1);
         expect(saveConfigActionSuccess.mock.calls.length).toBe(1);
@@ -100,26 +89,23 @@ describe('components/admin_console/request_button/request_button.jsx', () => {
             <RequestButton
                 requestAction={requestActionSuccess}
                 helpText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Help Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Help Text' />
                 }
                 buttonText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Button Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Button Text' />
                 }
                 showSuccessMessage={true}
                 successMessage={{
                     id: 'success.message',
                     defaultMessage: 'Success Message',
                 }}
-            />
+            />,
         );
 
-        wrapper1.find('button').first().simulate('click');
+        wrapper1
+            .find('button')
+            .first()
+            .simulate('click');
         expect(wrapper1).toMatchSnapshot();
 
         // Success & showSuccessMessage=false
@@ -127,61 +113,57 @@ describe('components/admin_console/request_button/request_button.jsx', () => {
             <RequestButton
                 requestAction={requestActionSuccess}
                 helpText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Help Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Help Text' />
                 }
                 buttonText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Button Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Button Text' />
                 }
                 showSuccessMessage={false}
                 successMessage={{
                     id: 'success.message',
                     defaultMessage: 'Success Message',
                 }}
-            />
+            />,
         );
 
-        wrapper2.find('button').first().simulate('click');
+        wrapper2
+            .find('button')
+            .first()
+            .simulate('click');
 
         expect(wrapper2).toMatchSnapshot();
     });
 
     test('should match snapshot with request error', () => {
-        const requestActionFailure = jest.fn((success, error) => error({
-            message: '__message__',
-            detailed_error: '__detailed_error__',
-        }));
+        const requestActionFailure = jest.fn((success, error) =>
+            error({
+                message: '__message__',
+                detailed_error: '__detailed_error__',
+            }),
+        );
 
         // Error & includeDetailedError=true
         const wrapper1 = mountWithIntl(
             <RequestButton
                 requestAction={requestActionFailure}
                 helpText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Help Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Help Text' />
                 }
                 buttonText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Button Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Button Text' />
                 }
                 includeDetailedError={true}
                 errorMessage={{
                     id: 'error.message',
                     defaultMessage: 'Error Message: {error}',
                 }}
-            />
+            />,
         );
 
-        wrapper1.find('button').first().simulate('click');
+        wrapper1
+            .find('button')
+            .first()
+            .simulate('click');
         expect(wrapper1).toMatchSnapshot();
 
         // Error & includeDetailedError=false
@@ -189,25 +171,22 @@ describe('components/admin_console/request_button/request_button.jsx', () => {
             <RequestButton
                 requestAction={requestActionFailure}
                 helpText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Help Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Help Text' />
                 }
                 buttonText={
-                    <FormattedMessage
-                        id='test'
-                        defaultMessage='Button Text'
-                    />
+                    <FormattedMessage id='test' defaultMessage='Button Text' />
                 }
                 errorMessage={{
                     id: 'error.message',
                     defaultMessage: 'Error Message: {error}',
                 }}
-            />
+            />,
         );
 
-        wrapper2.find('button').first().simulate('click');
+        wrapper2
+            .find('button')
+            .first()
+            .simulate('click');
 
         expect(wrapper2).toMatchSnapshot();
     });

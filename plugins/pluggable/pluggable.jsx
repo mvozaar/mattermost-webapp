@@ -6,7 +6,6 @@ import React from 'react';
 
 export default class Pluggable extends React.PureComponent {
     static propTypes = {
-
         /*
          * Should be a single overridable React component. One of this or pluggableName is required
          */
@@ -26,7 +25,7 @@ export default class Pluggable extends React.PureComponent {
          * Logged in user's theme
          */
         theme: PropTypes.object.isRequired,
-    }
+    };
 
     render() {
         const pluggableName = this.props.pluggableName;
@@ -63,11 +62,7 @@ export default class Pluggable extends React.PureComponent {
                 );
             });
 
-            return (
-                <React.Fragment>
-                    {content}
-                </React.Fragment>
-            );
+            return <React.Fragment>{content}</React.Fragment>;
         }
 
         if (child == null) {

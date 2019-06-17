@@ -15,7 +15,6 @@ export default class SettingItemMin extends React.PureComponent {
     };
 
     static propTypes = {
-
         /**
          * Settings title
          */
@@ -53,7 +52,8 @@ export default class SettingItemMin extends React.PureComponent {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.focused && this.edit) {
             this.edit.focus();
         }
@@ -61,12 +61,12 @@ export default class SettingItemMin extends React.PureComponent {
 
     getEdit = (node) => {
         this.edit = node;
-    }
+    };
 
     handleUpdateSection = (e) => {
         e.preventDefault();
         this.props.updateSection(this.props.section);
-    }
+    };
 
     render() {
         let editButton = null;
@@ -81,7 +81,7 @@ export default class SettingItemMin extends React.PureComponent {
                         onClick={this.handleUpdateSection}
                         ref={this.getEdit}
                     >
-                        <EditIcon/>
+                        <EditIcon />
                         {this.props.describe}
                     </button>
                 </li>
@@ -95,7 +95,7 @@ export default class SettingItemMin extends React.PureComponent {
                         onClick={this.handleUpdateSection}
                         ref={this.getEdit}
                     >
-                        <EditIcon/>
+                        <EditIcon />
                         <FormattedMessage
                             id='setting_item_min.edit'
                             defaultMessage='Edit'
@@ -115,10 +115,7 @@ export default class SettingItemMin extends React.PureComponent {
         }
 
         return (
-            <ul
-                className='section-min'
-                onClick={this.handleUpdateSection}
-            >
+            <ul className='section-min' onClick={this.handleUpdateSection}>
                 <li
                     id={this.props.section + 'Title'}
                     className='col-xs-12 col-sm-9 section-title'

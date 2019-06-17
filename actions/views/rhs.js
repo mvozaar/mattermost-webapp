@@ -10,7 +10,10 @@ import {
     searchPostsWithParams,
 } from 'mattermost-redux/actions/search';
 import * as PostActions from 'mattermost-redux/actions/posts';
-import {getCurrentUserId, getCurrentUserMentionKeys} from 'mattermost-redux/selectors/entities/users';
+import {
+    getCurrentUserId,
+    getCurrentUserMentionKeys,
+} from 'mattermost-redux/selectors/entities/users';
 import {getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentChannelId} from 'mattermost-redux/selectors/entities/channels';
@@ -71,14 +74,31 @@ export function performSearch(terms, isMentionSearch) {
     return (dispatch, getState) => {
         const teamId = getCurrentTeamId(getState());
         const config = getConfig(getState());
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels =
+            config.ExperimentalViewArchivedChannels === 'true';
 
         // timezone offset in seconds
         const userId = getCurrentUserId(getState());
         const userTimezone = getUserTimezone(getState(), userId);
         const userCurrentTimezone = getUserCurrentTimezone(userTimezone);
-        const timezoneOffset = (userCurrentTimezone.length > 0 ? getUtcOffsetForTimeZone(userCurrentTimezone) : getBrowserUtcOffset()) * 60;
-        return dispatch(searchPostsWithParams(teamId, {terms, is_or_search: isMentionSearch, include_deleted_channels: viewArchivedChannels, time_zone_offset: timezoneOffset, page: 0, per_page: 20}, true));
+        const timezoneOffset =
+            (userCurrentTimezone.length > 0
+                ? getUtcOffsetForTimeZone(userCurrentTimezone)
+                : getBrowserUtcOffset()) * 60;
+        return dispatch(
+            searchPostsWithParams(
+                teamId,
+                {
+                    terms,
+                    is_or_search: isMentionSearch,
+                    include_deleted_channels: viewArchivedChannels,
+                    time_zone_offset: timezoneOffset,
+                    page: 0,
+                    per_page: 20,
+                },
+                true,
+            ),
+        );
     };
 }
 
@@ -108,20 +128,23 @@ export function showFlaggedPosts() {
 
         const results = await dispatch(getFlaggedPosts());
 
-        dispatch(batchActions([
-            {
-                type: SearchTypes.RECEIVED_SEARCH_POSTS,
-                data: results.data,
-            },
-            {
-                type: SearchTypes.RECEIVED_SEARCH_TERM,
-                data: {
-                    teamId,
-                    terms: null,
-                    isOrSearch: false,
+        dispatch(
+            batchActions([
+                {
+                    type: SearchTypes.RECEIVED_SEARCH_POSTS,
+                    data: results.data,
                 },
-            },
-        ]));
+
+                {
+                    type: SearchTypes.RECEIVED_SEARCH_TERM,
+                    data: {
+                        teamId,
+                        terms: null,
+                        isOrSearch: false,
+                    },
+                },
+            ]),
+        );
     };
 }
 
@@ -131,88 +154,111 @@ export function showPinnedPosts(channelId) {
         const currentChannelId = getCurrentChannelId(state);
         const teamId = getCurrentTeamId(state);
 
-        dispatch(batchActions([
-            {
-                type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
-                terms: '',
-            },
-            {
-                type: ActionTypes.UPDATE_RHS_STATE,
-                channelId: channelId || currentChannelId,
-                state: RHSStates.PIN,
-            },
-        ]));
-
-        const results = await dispatch(getPinnedPosts(channelId || currentChannelId));
-
-        dispatch(batchActions([
-            {
-                type: SearchTypes.RECEIVED_SEARCH_POSTS,
-                data: results.data,
-            },
-            {
-                type: SearchTypes.RECEIVED_SEARCH_TERM,
-                data: {
-                    teamId,
-                    terms: null,
-                    isOrSearch: false,
+        dispatch(
+            batchActions([
+                {
+                    type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
+                    terms: '',
                 },
-            },
-        ]));
+
+                {
+                    type: ActionTypes.UPDATE_RHS_STATE,
+                    channelId: channelId || currentChannelId,
+                    state: RHSStates.PIN,
+                },
+            ]),
+        );
+
+        const results = await dispatch(
+            getPinnedPosts(channelId || currentChannelId),
+        );
+
+        dispatch(
+            batchActions([
+                {
+                    type: SearchTypes.RECEIVED_SEARCH_POSTS,
+                    data: results.data,
+                },
+
+                {
+                    type: SearchTypes.RECEIVED_SEARCH_TERM,
+                    data: {
+                        teamId,
+                        terms: null,
+                        isOrSearch: false,
+                    },
+                },
+            ]),
+        );
     };
 }
 
 export function showMentions() {
     return (dispatch, getState) => {
-        const termKeys = getCurrentUserMentionKeys(getState()).filter(({key}) => {
-            return key !== '@channel' && key !== '@all' && key !== '@here';
-        });
+        const termKeys = getCurrentUserMentionKeys(getState()).filter(
+            ({key}) => {
+                return key !== '@channel' && key !== '@all' && key !== '@here';
+            },
+        );
 
-        const terms = termKeys.map(({key}) => key).join(' ').trim() + ' ';
+        const terms =
+            termKeys
+                .map(({key}) => key)
+                .join(' ')
+                .trim() + ' ';
 
         trackEvent('api', 'api_posts_search_mention');
 
         dispatch(performSearch(terms, true));
-        dispatch(batchActions([
-            {
-                type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
-                terms,
-            },
-            {
-                type: ActionTypes.UPDATE_RHS_STATE,
-                state: RHSStates.MENTION,
-            },
-        ]));
+        dispatch(
+            batchActions([
+                {
+                    type: ActionTypes.UPDATE_RHS_SEARCH_TERMS,
+                    terms,
+                },
+
+                {
+                    type: ActionTypes.UPDATE_RHS_STATE,
+                    state: RHSStates.MENTION,
+                },
+            ]),
+        );
     };
 }
 
 export function closeRightHandSide() {
     return (dispatch) => {
-        dispatch(batchActions([
-            {
-                type: ActionTypes.UPDATE_RHS_STATE,
-                state: null,
-            },
-            {
-                type: ActionTypes.SELECT_POST,
-                postId: '',
-                channelId: '',
-            },
-        ]));
+        dispatch(
+            batchActions([
+                {
+                    type: ActionTypes.UPDATE_RHS_STATE,
+                    state: null,
+                },
+
+                {
+                    type: ActionTypes.SELECT_POST,
+                    postId: '',
+                    channelId: '',
+                },
+            ]),
+        );
     };
 }
 
-export const toggleMenu = () => (dispatch) => dispatch({
-    type: ActionTypes.TOGGLE_RHS_MENU,
-});
+export const toggleMenu = () => (dispatch) =>
+    dispatch({
+        type: ActionTypes.TOGGLE_RHS_MENU,
+    });
 
-export const openMenu = () => (dispatch) => dispatch({
-    type: ActionTypes.OPEN_RHS_MENU,
-});
+export const openMenu = () => (dispatch) =>
+    dispatch({
+        type: ActionTypes.OPEN_RHS_MENU,
+    });
 
-export const closeMenu = () => (dispatch) => dispatch({
-    type: ActionTypes.CLOSE_RHS_MENU,
-});
+export const closeMenu = () => (dispatch) =>
+    dispatch({
+        type: ActionTypes.CLOSE_RHS_MENU,
+    });
 
 export function setRhsExpanded(expanded) {
     return {
@@ -228,5 +274,9 @@ export function toggleRhsExpanded() {
 }
 
 export function selectPost(post) {
-    return {type: ActionTypes.SELECT_POST, postId: post.root_id || post.id, channelId: post.channel_id};
+    return {
+        type: ActionTypes.SELECT_POST,
+        postId: post.root_id || post.id,
+        channelId: post.channel_id,
+    };
 }

@@ -19,7 +19,7 @@ function signupWithEmail(name, pw) {
     cy.get('#signup').click();
 
     // 3. Type email address (by adding the uniqueUserId in the email address)
-    cy.get('#email').type('unique.' + uniqueUserId + '@sample.mattermost.com');
+    cy.get('#email').type('unique.' + uniqueUserId + '@sample.securCom.me');
 
     // 4. Type 'unique-1' for username
     cy.get('#name').type(name);
@@ -56,13 +56,18 @@ describe('Email Address', () => {
         cy.get('#teamsYouCanJoinContent').should('be.visible');
 
         // * Verify the link to create a new team is available
-        cy.get('#createNewTeamLink').should('have.attr', 'href', '/create_team').and('be.visible', 'contain', 'Create a new team');
+        cy.get('#createNewTeamLink')
+            .should('have.attr', 'href', '/create_team')
+            .and('be.visible', 'contain', 'Create a new team');
 
         // 8. Logout and signup another user with the same email but different username and password
         cy.apiLogout();
         signupWithEmail('unique-2', 'unique2pw');
 
         // * Error message displays below the Create Account button that says "An account with that email already exists"
-        cy.get('#existingEmailErrorContainer').should('contain', 'An account with that email already exists');
+        cy.get('#existingEmailErrorContainer').should(
+            'contain',
+            'An account with that email already exists',
+        );
     });
 });

@@ -41,7 +41,11 @@ export default class MultiSelectSetting extends React.Component {
             return n.value;
         });
 
-        if (this.props.selected.length > 0 && this.props.mustBePresent && values.join(',').indexOf(this.props.mustBePresent) === -1) {
+        if (
+            this.props.selected.length > 0 &&
+            this.props.mustBePresent &&
+            values.join(',').indexOf(this.props.mustBePresent) === -1
+        ) {
             this.setState({error: this.props.notPresent});
         } else {
             this.props.onChange(this.props.id, values);
@@ -49,8 +53,13 @@ export default class MultiSelectSetting extends React.Component {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(newProps) { // eslint-disable-line camelcase
-        if (newProps.selected.length > 0 && newProps.mustBePresent && newProps.selected.join(',').indexOf(newProps.mustBePresent) === -1) {
+    UNSAFE_componentWillReceiveProps(newProps) {
+        // eslint-disable-line camelcase
+        if (
+            newProps.selected.length > 0 &&
+            newProps.mustBePresent &&
+            newProps.selected.join(',').indexOf(newProps.mustBePresent) === -1
+        ) {
             this.setState({error: this.props.notPresent});
         } else {
             this.setState({error: false});
@@ -91,7 +100,8 @@ export default class MultiSelectSetting extends React.Component {
                     onChange={this.handleChange}
                     value={this.calculateValue()}
                 />
-                <FormError error={this.state.error}/>
+
+                <FormError error={this.state.error} />
             </Setting>
         );
     }

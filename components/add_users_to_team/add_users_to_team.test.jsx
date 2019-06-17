@@ -15,6 +15,7 @@ describe('components/AddUsersToTeam', () => {
         addUsersToTeam: jest.fn().mockResolvedValue({data: true}),
         loadStatusesForProfilesList: jest.fn().mockResolvedValue({data: true}),
     };
+
     const baseProps = {
         currentTeamId: 'current_team_id',
         currentTeamName: 'display_name',
@@ -28,19 +29,21 @@ describe('components/AddUsersToTeam', () => {
         const getProfilesNotInTeam = jest.fn().mockResolvedValue({data: true});
         const actions = {...baseActions, getProfilesNotInTeam};
         const props = {...baseProps, actions};
-        const wrapper = shallow(
-            <AddUsersToTeam {...props}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...props} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(Modal).exists()).toBe(true);
         expect(actions.getProfilesNotInTeam).toHaveBeenCalledTimes(1);
-        expect(actions.getProfilesNotInTeam).toHaveBeenCalledWith('current_team_id', false, 0, 100);
+        expect(actions.getProfilesNotInTeam).toHaveBeenCalledWith(
+            'current_team_id',
+            false,
+            0,
+            100,
+        );
     });
 
     test('should match state when onHide is called', () => {
-        const wrapper = shallow(
-            <AddUsersToTeam {...baseProps}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...baseProps} />);
 
         wrapper.setState({show: true});
         wrapper.instance().handleHide();
@@ -50,18 +53,14 @@ describe('components/AddUsersToTeam', () => {
     test('should have called onHide when handleExit is called', () => {
         const onHide = jest.fn();
         const props = {...baseProps, onHide};
-        const wrapper = shallow(
-            <AddUsersToTeam {...props}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...props} />);
 
         wrapper.instance().handleExit();
         expect(onHide).toHaveBeenCalledTimes(1);
     });
 
     test('should match state when handleResponse is called', () => {
-        const wrapper = shallow(
-            <AddUsersToTeam {...baseProps}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...baseProps} />);
 
         wrapper.setState({saving: true, addError: ''});
         wrapper.instance().handleResponse();
@@ -76,14 +75,14 @@ describe('components/AddUsersToTeam', () => {
     });
 
     test('should match state when handleSubmit is called', async () => {
-        const addUsersToTeam = jest.fn().
-            mockResolvedValueOnce({error: true}).
-            mockResolvedValue({data: true});
+        const addUsersToTeam = jest
+            .fn()
+            .mockResolvedValueOnce({error: true})
+            .mockResolvedValue({data: true});
         const actions = {...baseProps.actions, addUsersToTeam};
         const props = {...baseProps, actions};
-        const wrapper = shallow(
-            <AddUsersToTeam {...props}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...props} />);
+
         const instance = wrapper.instance();
         instance.handleResponse = jest.fn();
         instance.handleHide = jest.fn();
@@ -96,7 +95,11 @@ describe('components/AddUsersToTeam', () => {
         await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
         expect(actions.addUsersToTeam).toBeCalled();
         expect(actions.addUsersToTeam).toHaveBeenCalledTimes(1);
-        expect(actions.addUsersToTeam).toBeCalledWith('current_team_id', ['id_1', 'id_2']);
+        expect(actions.addUsersToTeam).toBeCalledWith('current_team_id', [
+            'id_1',
+            'id_2',
+        ]);
+
         expect(instance.handleResponse).toBeCalledTimes(1);
         expect(instance.handleResponse).toBeCalledWith(true);
         expect(instance.handleHide).not.toBeCalled();
@@ -106,7 +109,11 @@ describe('components/AddUsersToTeam', () => {
         await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
         expect(actions.addUsersToTeam).toBeCalled();
         expect(actions.addUsersToTeam).toHaveBeenCalledTimes(2);
-        expect(actions.addUsersToTeam).toBeCalledWith('current_team_id', ['id_1', 'id_2']);
+        expect(actions.addUsersToTeam).toBeCalledWith('current_team_id', [
+            'id_1',
+            'id_2',
+        ]);
+
         expect(instance.handleResponse).toBeCalledTimes(2);
         expect(instance.handleResponse).lastCalledWith(undefined);
         expect(instance.handleHide).toBeCalledTimes(1);
@@ -114,9 +121,7 @@ describe('components/AddUsersToTeam', () => {
     });
 
     test('should match state when addValue is called', () => {
-        const wrapper = shallow(
-            <AddUsersToTeam {...baseProps}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...baseProps} />);
 
         wrapper.setState({values: [{id: 'id_1'}]});
         wrapper.instance().addValue({id: 'id_2'});
@@ -131,9 +136,7 @@ describe('components/AddUsersToTeam', () => {
         const getProfilesNotInTeam = jest.fn().mockResolvedValue({data: true});
         const actions = {...baseActions, getProfilesNotInTeam};
         const props = {...baseProps, actions};
-        const wrapper = shallow(
-            <AddUsersToTeam {...props}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...props} />);
 
         wrapper.setState({users: [{id: 'id_1'}]});
         wrapper.instance().handlePageChange(0, 1);
@@ -150,9 +153,7 @@ describe('components/AddUsersToTeam', () => {
         const setModalSearchTerm = jest.fn().mockResolvedValue({data: true});
         const actions = {...baseActions, setModalSearchTerm};
         const props = {...baseProps, actions};
-        const wrapper = shallow(
-            <AddUsersToTeam {...props}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...props} />);
 
         wrapper.instance().search('');
         expect(actions.setModalSearchTerm).toHaveBeenCalledTimes(1);
@@ -166,9 +167,7 @@ describe('components/AddUsersToTeam', () => {
     });
 
     test('should match state when handleDelete is called', () => {
-        const wrapper = shallow(
-            <AddUsersToTeam {...baseProps}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...baseProps} />);
 
         wrapper.setState({values: [{id: 'id_1'}]});
         const newValues = [{id: 'id_2'}, {id: 'id_3'}];
@@ -177,28 +176,42 @@ describe('components/AddUsersToTeam', () => {
     });
 
     test('should match when renderOption is called', () => {
-        const wrapper = shallow(
-            <AddUsersToTeam {...baseProps}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...baseProps} />);
 
-        const option = {id: 'id', last_picture_update: '12345', email: 'test@test.com'};
+        const option = {
+            id: 'id',
+            last_picture_update: '12345',
+            email: 'test@test.com',
+        };
+
         let isSelected = false;
         function onAdd() {} //eslint-disable-line no-empty-function
 
-        expect(wrapper.instance().renderOption(option, isSelected, onAdd)).toMatchSnapshot();
+        expect(
+            wrapper.instance().renderOption(option, isSelected, onAdd),
+        ).toMatchSnapshot();
 
         isSelected = true;
-        expect(wrapper.instance().renderOption(option, isSelected, onAdd)).toMatchSnapshot();
+        expect(
+            wrapper.instance().renderOption(option, isSelected, onAdd),
+        ).toMatchSnapshot();
 
-        const optionBot = {id: 'id', is_bot: true, last_picture_update: '12345'};
-        expect(wrapper.instance().renderOption(optionBot, isSelected, onAdd)).toMatchSnapshot();
+        const optionBot = {
+            id: 'id',
+            is_bot: true,
+            last_picture_update: '12345',
+        };
+
+        expect(
+            wrapper.instance().renderOption(optionBot, isSelected, onAdd),
+        ).toMatchSnapshot();
     });
 
     test('should match when renderValue is called', () => {
-        const wrapper = shallow(
-            <AddUsersToTeam {...baseProps}/>
-        );
+        const wrapper = shallow(<AddUsersToTeam {...baseProps} />);
 
-        expect(wrapper.instance().renderValue({data: {username: 'username'}})).toEqual('username');
+        expect(
+            wrapper.instance().renderValue({data: {username: 'username'}}),
+        ).toEqual('username');
     });
 });

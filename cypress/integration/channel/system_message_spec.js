@@ -71,14 +71,17 @@ describe('System Message', () => {
         cy.updateChannelHeader('> newheader');
 
         // * Check the status update
-        cy.getLastPost().
-            should('contain', 'System').
-            and('contain', '@user-1 updated the channel header from:').
-            and('contain', 'newheader');
+        cy.getLastPost()
+            .should('contain', 'System')
+            .and('contain', '@user-1 updated the channel header from:')
+            .and('contain', 'newheader');
 
         const validateSingle = (desc) => {
             const lines = getLines(desc.find('p').last());
-            assert(lines === 1, 'second line of the message should be a short one');
+            assert(
+                lines === 1,
+                'second line of the message should be a short one',
+            );
         };
 
         cy.getLastPost().then(validateSingle);
@@ -87,14 +90,17 @@ describe('System Message', () => {
         cy.updateChannelHeader('>' + ' newheader'.repeat(20));
 
         // * Check that the status is updated and is spread on more than one line
-        cy.getLastPost().
-            should('contain', 'System').
-            and('contain', '@user-1 updated the channel header from:').
-            and('contain', ' newheader'.repeat(20));
+        cy.getLastPost()
+            .should('contain', 'System')
+            .and('contain', '@user-1 updated the channel header from:')
+            .and('contain', ' newheader'.repeat(20));
 
         const validateMulti = (desc) => {
             const lines = getLines(desc.find('p').last());
-            assert(lines > 1, 'second line of the message should be a long one');
+            assert(
+                lines > 1,
+                'second line of the message should be a long one',
+            );
         };
 
         cy.getLastPost().then(validateMulti);

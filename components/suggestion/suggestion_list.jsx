@@ -40,7 +40,10 @@ export default class SuggestionList extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.selection !== prevProps.selection && this.props.selection) {
+        if (
+            this.props.selection !== prevProps.selection &&
+            this.props.selection
+        ) {
             this.scrollToItem(this.props.selection);
         }
     }
@@ -61,35 +64,47 @@ export default class SuggestionList extends React.PureComponent {
         if (visibleContentHeight < actualContentHeight) {
             const contentTop = content.scrollTop();
             const contentTopPadding = parseInt(content.css('padding-top'), 10);
-            const contentBottomPadding = parseInt(content.css('padding-top'), 10);
+            const contentBottomPadding = parseInt(
+                content.css('padding-top'),
+                10,
+            );
 
             const item = $(ReactDOM.findDOMNode(this.refs[term]));
             if (item.length === 0) {
                 return;
             }
 
-            const itemTop = item[0].offsetTop - parseInt(item.css('margin-top'), 10);
-            const itemBottomMargin = parseInt(item.css('margin-bottom'), 10) + parseInt(item.css('padding-bottom'), 10);
-            const itemBottom = item[0].offsetTop + item.height() + itemBottomMargin;
+            const itemTop =
+                item[0].offsetTop - parseInt(item.css('margin-top'), 10);
+            const itemBottomMargin =
+                parseInt(item.css('margin-bottom'), 10) +
+                parseInt(item.css('padding-bottom'), 10);
+            const itemBottom =
+                item[0].offsetTop + item.height() + itemBottomMargin;
 
             if (itemTop - contentTopPadding < contentTop) {
                 // the item is off the top of the visible space
                 content.scrollTop(itemTop - contentTopPadding);
-            } else if (itemBottom + contentTopPadding + contentBottomPadding > contentTop + visibleContentHeight) {
+            } else if (
+                itemBottom + contentTopPadding + contentBottomPadding >
+                contentTop + visibleContentHeight
+            ) {
                 // the item has gone off the bottom of the visible space
-                content.scrollTop((itemBottom - visibleContentHeight) + contentTopPadding + contentBottomPadding);
+                content.scrollTop(
+                    itemBottom -
+                        visibleContentHeight +
+                        contentTopPadding +
+                        contentBottomPadding,
+                );
             }
         }
     }
 
     renderDivider(type) {
         return (
-            <div
-                key={type + '-divider'}
-                className='suggestion-list__divider'
-            >
+            <div key={type + '-divider'} className='suggestion-list__divider'>
                 <span>
-                    <FormattedMessage id={'suggestion.' + type}/>
+                    <FormattedMessage id={'suggestion.' + type} />
                 </span>
             </div>
         );
@@ -97,15 +112,12 @@ export default class SuggestionList extends React.PureComponent {
 
     renderNoResults() {
         return (
-            <div
-                key='list-no-results'
-                className='suggestion-list__no-results'
-            >
+            <div key='list-no-results' className='suggestion-list__no-results'>
                 <FormattedMarkdownMessage
                     id='suggestion_list.no_matches'
                     defaultMessage='No items match __{value}__'
                     values={{
-                        value: this.props.pretext || '""',
+                        value: this.props.pretext || "''",
                     }}
                 />
             </div>
@@ -141,7 +153,7 @@ export default class SuggestionList extends React.PureComponent {
             }
 
             if (item.loading) {
-                items.push(<LoadingSpinner key={item.type}/>);
+                items.push(<LoadingSpinner key={item.type} />);
                 continue;
             }
 
@@ -154,20 +166,19 @@ export default class SuggestionList extends React.PureComponent {
                     matchedPretext={this.props.matchedPretext[i]}
                     isSelection={isSelection}
                     onClick={this.props.onCompleteWord}
-                />
+                />,
             );
         }
 
-        const mainClass = 'suggestion-list suggestion-list--' + this.props.location;
-        const contentClass = 'suggestion-list__content suggestion-list__content--' + this.props.location;
+        const mainClass =
+            'suggestion-list suggestion-list--' + this.props.location;
+        const contentClass =
+            'suggestion-list__content suggestion-list__content--' +
+            this.props.location;
 
         return (
             <div className={mainClass}>
-                <div
-                    id='suggestionList'
-                    ref='content'
-                    className={contentClass}
-                >
+                <div id='suggestionList' ref='content' className={contentClass}>
                     {items}
                 </div>
             </div>

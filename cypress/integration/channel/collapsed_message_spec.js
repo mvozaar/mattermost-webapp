@@ -11,7 +11,9 @@
 
 function verifyCollapsedPost() {
     // * Verify show more button
-    cy.get('#showMoreButton').should('be.visible').and('have.text', 'Show More');
+    cy.get('#showMoreButton')
+        .should('be.visible')
+        .and('have.text', 'Show More');
 
     // * Verify gradient
     cy.get('#collapseGradient').should('be.visible');
@@ -19,7 +21,10 @@ function verifyCollapsedPost() {
 
 function verifyExpandedPost() {
     // * Verify show more button now says 'Show Less'
-    cy.get('#showMoreButton').scrollIntoView().should('be.visible').and('have.text', 'Show Less');
+    cy.get('#showMoreButton')
+        .scrollIntoView()
+        .should('be.visible')
+        .and('have.text', 'Show Less');
 
     // * Verify gradient
     cy.get('#collapseGradient').should('be.not.visible');

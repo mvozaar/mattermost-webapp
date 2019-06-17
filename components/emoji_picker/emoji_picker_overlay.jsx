@@ -50,10 +50,18 @@ export default class EmojiPickerOverlay extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillUpdate(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillUpdate(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.show && !this.props.show) {
             const targetBounds = nextProps.target().getBoundingClientRect();
-            const placement = popOverOverlayPosition(targetBounds, window.innerHeight, {above: nextProps.spaceRequiredAbove, below: nextProps.spaceRequiredBelow});
+            const placement = popOverOverlayPosition(
+                targetBounds,
+                window.innerHeight,
+                {
+                    above: nextProps.spaceRequiredAbove,
+                    below: nextProps.spaceRequiredBelow,
+                },
+            );
 
             this.setState({placement, rightOffset: this.emojiPickerPosition()});
         }
@@ -63,7 +71,10 @@ export default class EmojiPickerOverlay extends React.PureComponent {
         const emojiTrigger = this.props.target();
         let rightOffset = Constants.DEFAULT_EMOJI_PICKER_RIGHT_OFFSET;
         if (emojiTrigger) {
-            rightOffset = window.innerWidth - emojiTrigger.getBoundingClientRect().left - Constants.DEFAULT_EMOJI_PICKER_LEFT_OFFSET;
+            rightOffset =
+                window.innerWidth -
+                emojiTrigger.getBoundingClientRect().left -
+                Constants.DEFAULT_EMOJI_PICKER_LEFT_OFFSET;
 
             if (rightOffset < Constants.DEFAULT_EMOJI_PICKER_RIGHT_OFFSET) {
                 rightOffset = Constants.DEFAULT_EMOJI_PICKER_RIGHT_OFFSET;

@@ -17,7 +17,10 @@ import BackstageHeader from 'components/backstage/components/backstage_header.js
 import SpinnerButton from 'components/spinner_button.jsx';
 import FormattedMarkdownMessage from 'components/formatted_markdown_message.jsx';
 import FormError from 'components/form_error.jsx';
-import {AcceptedProfileImageTypes, OVERLAY_TIME_DELAY} from 'utils/constants.jsx';
+import {
+    AcceptedProfileImageTypes,
+    OVERLAY_TIME_DELAY,
+} from 'utils/constants.jsx';
 import * as Utils from 'utils/utils.jsx';
 import * as FileUtils from 'utils/file_utils.jsx';
 
@@ -26,68 +29,66 @@ const roleOptionMember = 'Member';
 
 export default class AddBot extends React.Component {
     static propTypes = {
-
         /**
-        *  Only used for routing since backstage is team based.
-        */
+         *  Only used for routing since backstage is team based.
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        *  Bot to edit (if editing)
-        */
+         *  Bot to edit (if editing)
+         */
         bot: PropTypes.object,
 
         /**
-        *  Roles of the bot to edit (if editing)
-        */
+         *  Roles of the bot to edit (if editing)
+         */
         roles: PropTypes.string,
 
         /**
-        * Maximum upload file size (for bot account profile picture)
-        */
+         * Maximum upload file size (for bot account profile picture)
+         */
         maxFileSize: PropTypes.number.isRequired,
 
         /**
          * Editing user has the MANAGE_SYSTEM permission
-        */
+         */
         editingUserHasManageSystem: PropTypes.bool.isRequired,
 
         /**
-        * Bot to edit
-        */
+         * Bot to edit
+         */
         actions: PropTypes.shape({
-
             /**
-            * Creates a new bot account.
-            */
+             * Creates a new bot account.
+             */
             createBot: PropTypes.func.isRequired,
 
             /**
-            * Patches an existing bot account.
-            */
+             * Patches an existing bot account.
+             */
             patchBot: PropTypes.func.isRequired,
 
             /**
-            * Uploads a user profile image
-            */
+             * Uploads a user profile image
+             */
             uploadProfileImage: PropTypes.func.isRequired,
 
             /**
-            * Set profile image to default
-            */
+             * Set profile image to default
+             */
             setDefaultProfileImage: PropTypes.func.isRequired,
 
             /**
-            * For creating default access token
-            */
+             * For creating default access token
+             */
             createUserAccessToken: PropTypes.func.isRequired,
 
             /**
-            * For creating setting bot to system admin or special posting permissions
-            */
+             * For creating setting bot to system admin or special posting permissions
+             */
             updateUserRoles: PropTypes.func.isRequired,
         }),
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -108,9 +109,16 @@ export default class AddBot extends React.Component {
             this.state.username = this.props.bot.username;
             this.state.displayName = this.props.bot.display_name;
             this.state.description = this.props.bot.description;
-            this.state.role = UserUtils.isSystemAdmin(this.props.roles || '') ? roleOptionSystemAdmin : roleOptionMember;
-            this.state.postAll = UserUtils.hasPostAllRole(this.props.roles || '');
-            this.state.postChannels = UserUtils.hasPostAllPublicRole(this.props.roles || '');
+            this.state.role = UserUtils.isSystemAdmin(this.props.roles || '')
+                ? roleOptionSystemAdmin
+                : roleOptionMember;
+            this.state.postAll = UserUtils.hasPostAllRole(
+                this.props.roles || '',
+            );
+
+            this.state.postChannels = UserUtils.hasPostAllPublicRole(
+                this.props.roles || '',
+            );
         }
     }
 
@@ -118,37 +126,37 @@ export default class AddBot extends React.Component {
         this.setState({
             username: e.target.value,
         });
-    }
+    };
 
     updateDisplayName = (e) => {
         this.setState({
             displayName: e.target.value,
         });
-    }
+    };
 
     updateDescription = (e) => {
         this.setState({
             description: e.target.value,
         });
-    }
+    };
 
     updateRole = (e) => {
         this.setState({
             role: e.target.value,
         });
-    }
+    };
 
     updatePostAll = (e) => {
         this.setState({
             postAll: e.target.checked,
         });
-    }
+    };
 
     updatePostChannels = (e) => {
         this.setState({
             postChannels: e.target.checked,
         });
-    }
+    };
 
     updatePicture = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -157,8 +165,13 @@ export default class AddBot extends React.Component {
 
             var reader = new FileReader();
             reader.onload = (e2) => {
-                const orientation = FileUtils.getExifOrientation(e2.target.result);
-                const orientationStyles = FileUtils.getOrientationStyles(orientation);
+                const orientation = FileUtils.getExifOrientation(
+                    e2.target.result,
+                );
+
+                const orientationStyles = FileUtils.getOrientationStyles(
+                    orientation,
+                );
 
                 this.setState({
                     image: this.previewBlob,
@@ -171,11 +184,11 @@ export default class AddBot extends React.Component {
         } else {
             this.setState({pictureFile: null, image: null});
         }
-    }
+    };
 
     setDefault = () => {
         this.setState({pictureFile: 'default', image: BotDefaultIcon});
-    }
+    };
 
     updateRoles = async (data) => {
         let roles = General.SYSTEM_USER_ROLE;
@@ -188,13 +201,17 @@ export default class AddBot extends React.Component {
             roles += ' ' + General.SYSTEM_POST_ALL_PUBLIC_ROLE;
         }
 
-        const rolesResult = await this.props.actions.updateUserRoles(data.user_id, roles);
+        const rolesResult = await this.props.actions.updateUserRoles(
+            data.user_id,
+            roles,
+        );
+
         if (rolesResult) {
             return rolesResult.error;
         }
 
         return null;
-    }
+    };
 
     handleSubmit = async (e) => {
         e.preventDefault();
@@ -212,11 +229,14 @@ export default class AddBot extends React.Component {
                     />
                 ),
             });
+
             return;
         }
 
         if (this.state.pictureFile) {
-            if (!AcceptedProfileImageTypes.includes(this.state.pictureFile.type)) {
+            if (
+                !AcceptedProfileImageTypes.includes(this.state.pictureFile.type)
+            ) {
                 this.setState({
                     error: (
                         <FormattedMessage
@@ -251,20 +271,36 @@ export default class AddBot extends React.Component {
         let data;
         let error;
         if (this.props.bot) {
-            const result = await this.props.actions.patchBot(this.props.bot.user_id, bot);
+            const result = await this.props.actions.patchBot(
+                this.props.bot.user_id,
+                bot,
+            );
+
             if (result) {
                 data = result.data;
                 error = result.error;
             } else {
-                error = Utils.localizeMessage('bot.edit_failed', 'Failed to edit bot');
+                error = Utils.localizeMessage(
+                    'bot.edit_failed',
+                    'Failed to edit bot',
+                );
             }
 
             if (!error) {
-                if (this.state.pictureFile && this.state.pictureFile !== 'default') {
-                    const imageResult = await this.props.actions.uploadProfileImage(data.user_id, this.state.pictureFile);
+                if (
+                    this.state.pictureFile &&
+                    this.state.pictureFile !== 'default'
+                ) {
+                    const imageResult = await this.props.actions.uploadProfileImage(
+                        data.user_id,
+                        this.state.pictureFile,
+                    );
+
                     error = imageResult.error;
                 } else {
-                    await this.props.actions.setDefaultProfileImage(data.user_id);
+                    await this.props.actions.setDefaultProfileImage(
+                        data.user_id,
+                    );
                 }
             }
 
@@ -273,7 +309,10 @@ export default class AddBot extends React.Component {
             }
 
             if (data) {
-                browserHistory.push(`/${this.props.team.name}/integrations/bots`);
+                browserHistory.push(
+                    `/${this.props.team.name}/integrations/bots`,
+                );
+
                 return;
             }
         } else {
@@ -282,23 +321,41 @@ export default class AddBot extends React.Component {
                 data = result.data;
                 error = result.error;
             } else {
-                error = Utils.localizeMessage('bot.create_failed', 'Failed to create bot');
+                error = Utils.localizeMessage(
+                    'bot.create_failed',
+                    'Failed to create bot',
+                );
             }
 
             let token = '';
             if (!error) {
-                if (this.state.pictureFile && this.state.pictureFile !== 'default') {
-                    await this.props.actions.uploadProfileImage(data.user_id, this.state.pictureFile);
+                if (
+                    this.state.pictureFile &&
+                    this.state.pictureFile !== 'default'
+                ) {
+                    await this.props.actions.uploadProfileImage(
+                        data.user_id,
+                        this.state.pictureFile,
+                    );
                 } else {
-                    await this.props.actions.setDefaultProfileImage(data.user_id);
+                    await this.props.actions.setDefaultProfileImage(
+                        data.user_id,
+                    );
                 }
-                const tokenResult = await this.props.actions.createUserAccessToken(data.user_id,
-                    Utils.localizeMessage('bot.token.default.description', 'Default Token')
+                const tokenResult = await this.props.actions.createUserAccessToken(
+                    data.user_id,
+                    Utils.localizeMessage(
+                        'bot.token.default.description',
+                        'Default Token',
+                    ),
                 );
 
                 // On error just skip the confirmation because we have a bot without a token.
                 if (!tokenResult || tokenResult.error) {
-                    browserHistory.push(`/${this.props.team.name}/integrations/bots`);
+                    browserHistory.push(
+                        `/${this.props.team.name}/integrations/bots`,
+                    );
+
                     return;
                 }
 
@@ -310,7 +367,10 @@ export default class AddBot extends React.Component {
             }
 
             if (data) {
-                browserHistory.push(`/${this.props.team.name}/integrations/confirm?type=bots&id=${data.user_id}&token=${token}`);
+                browserHistory.push(
+                    `/${this.props.team.name}/integrations/confirm?type=bots&id=${data.user_id}&token=${token}`,
+                );
+
                 return;
             }
         }
@@ -324,21 +384,20 @@ export default class AddBot extends React.Component {
                 error: error.message,
             });
         }
-    }
+    };
 
     render() {
         let subtitle = (
-            <FormattedMessage
-                id='bots.manage.add'
-                defaultMessage='Add'
-            />
+            <FormattedMessage id='bots.manage.add' defaultMessage='Add' />
         );
+
         let buttonText = (
             <FormattedMessage
                 id='bots.manage.add.create'
                 defaultMessage='Create Bot Account'
             />
         );
+
         let buttonActiveText = (
             <FormattedMessage
                 id='bots.manage.add.creating'
@@ -349,17 +408,16 @@ export default class AddBot extends React.Component {
         // If we are editing
         if (this.props.bot) {
             subtitle = (
-                <FormattedMessage
-                    id='bots.manage.edit'
-                    defaultMessage='Edit'
-                />
+                <FormattedMessage id='bots.manage.edit' defaultMessage='Edit' />
             );
+
             buttonText = (
                 <FormattedMessage
                     id='bots.manage.edit.title'
                     defaultMessage='Update'
                 />
             );
+
             buttonActiveText = (
                 <FormattedMessage
                     id='bots.manage.edit.editing'
@@ -374,23 +432,21 @@ export default class AddBot extends React.Component {
                 trigger={['hover', 'focus']}
                 delayShow={OVERLAY_TIME_DELAY}
                 placement='right'
-                overlay={(
+                overlay={
                     <Tooltip id='removeIcon'>
                         <FormattedMessage
                             id='bot.remove_profile_picture'
                             defaultMessage='Remove Bot Icon'
                         />
                     </Tooltip>
-                )}
+                }
             >
-                <a
-                    className={'bot-profile__remove'}
-                    onClick={this.setDefault}
-                >
+                <a className={'bot-profile__remove'} onClick={this.setDefault}>
                     <span>{'×'}</span>
                 </a>
             </OverlayTrigger>
         );
+
         let imageStyles = null;
         if (this.props.bot && !this.state.pictureFile) {
             imageURL = Utils.imageURLForUser(this.props.bot.user_id);
@@ -437,6 +493,7 @@ export default class AddBot extends React.Component {
                                     value={this.state.username}
                                     onChange={this.updateUsername}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='bot.add.username.help'
@@ -463,15 +520,15 @@ export default class AddBot extends React.Component {
                                         src={imageURL}
                                         style={imageStyles}
                                     />
+
                                     {removeImageIcon}
                                 </div>
-                                <div
-                                    className='btn btn-sm btn-primary btn-file sel-btn'
-                                >
+                                <div className='btn btn-sm btn-primary btn-file sel-btn'>
                                     <FormattedMessage
                                         id='bots.image.upload'
                                         defaultMessage='Upload an image'
                                     />
+
                                     <input
                                         accept='.jpg,.png,.bmp'
                                         type='file'
@@ -499,10 +556,13 @@ export default class AddBot extends React.Component {
                                     value={this.state.displayName}
                                     onChange={this.updateDisplayName}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='bot.add.display_name.help'
-                                        defaultMessage={'(Optional) You can choose to display your bot\'s full name rather than its username.'}
+                                        defaultMessage={
+                                            "(Optional) You can choose to display your bot's full name rather than its username."
+                                        }
                                     />
                                 </div>
                             </div>
@@ -526,6 +586,7 @@ export default class AddBot extends React.Component {
                                     value={this.state.description}
                                     onChange={this.updateDescription}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='bot.add.description.help'
@@ -548,17 +609,15 @@ export default class AddBot extends React.Component {
                                 <select
                                     className='form-control'
                                     value={this.state.role}
-                                    disabled={!this.props.editingUserHasManageSystem}
+                                    disabled={
+                                        !this.props.editingUserHasManageSystem
+                                    }
                                     onChange={this.updateRole}
                                 >
-                                    <option
-                                        value={roleOptionMember}
-                                    >
+                                    <option value={roleOptionMember}>
                                         {roleOptionMember}
                                     </option>
-                                    <option
-                                        value={roleOptionSystemAdmin}
-                                    >
+                                    <option value={roleOptionSystemAdmin}>
                                         {roleOptionSystemAdmin}
                                     </option>
                                 </select>
@@ -574,7 +633,7 @@ export default class AddBot extends React.Component {
                             <div className='col-md-5 col-sm-8 col-sm-offset-4'>
                                 <FormattedMarkdownMessage
                                     id='admin.manage_roles.additionalRoles'
-                                    defaultMessage='Select additional permissions for the account. [Read more about roles and permissions](!https://about.mattermost.com/default-permissions).'
+                                    defaultMessage='Select additional permissions for the account. [Read more about roles and permissions](!https://about.securCom.me/default-permissions).'
                                 />
                             </div>
                         </div>
@@ -592,14 +651,24 @@ export default class AddBot extends React.Component {
                                 <input
                                     id='postAll'
                                     type='checkbox'
-                                    checked={this.state.postAll || this.state.role === roleOptionSystemAdmin}
+                                    checked={
+                                        this.state.postAll ||
+                                        this.state.role ===
+                                            roleOptionSystemAdmin
+                                    }
                                     onChange={this.updatePostAll}
-                                    disabled={!this.props.editingUserHasManageSystem || this.state.role === roleOptionSystemAdmin}
+                                    disabled={
+                                        !this.props
+                                            .editingUserHasManageSystem ||
+                                        this.state.role ===
+                                            roleOptionSystemAdmin
+                                    }
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='bot.add.post_all.help'
-                                        defaultMessage='Bot will have access to post to all Mattermost channels including direct messages.'
+                                        defaultMessage='Bot will have access to post to all SCC channels including direct messages.'
                                     />
                                 </div>
                             </div>
@@ -618,14 +687,26 @@ export default class AddBot extends React.Component {
                                 <input
                                     id='postChannels'
                                     type='checkbox'
-                                    checked={this.state.postChannels || this.state.role === roleOptionSystemAdmin || this.state.postAll}
+                                    checked={
+                                        this.state.postChannels ||
+                                        this.state.role ===
+                                            roleOptionSystemAdmin ||
+                                        this.state.postAll
+                                    }
                                     onChange={this.updatePostChannels}
-                                    disabled={!this.props.editingUserHasManageSystem || this.state.role === roleOptionSystemAdmin || this.state.postAll}
+                                    disabled={
+                                        !this.props
+                                            .editingUserHasManageSystem ||
+                                        this.state.role ===
+                                            roleOptionSystemAdmin ||
+                                        this.state.postAll
+                                    }
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='bot.add.post_channels.help'
-                                        defaultMessage='Bot will have access to post to all Mattermost public channels.'
+                                        defaultMessage='Bot will have access to post to all SCC public channels.'
                                     />
                                 </div>
                             </div>
@@ -635,6 +716,7 @@ export default class AddBot extends React.Component {
                                 type='backstage'
                                 errors={[this.state.error]}
                             />
+
                             <Link
                                 className='btn btn-link btn-sm'
                                 to={`/${this.props.team.name}/integrations/bots`}

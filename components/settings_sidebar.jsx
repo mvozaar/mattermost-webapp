@@ -16,7 +16,9 @@ export default class SettingsSidebar extends React.Component {
     handleClick(tab, e) {
         e.preventDefault();
         this.props.updateTab(tab.name);
-        $(e.target).closest('.settings-modal').addClass('display--content');
+        $(e.target)
+            .closest('.settings-modal')
+            .addClass('display--content');
     }
     componentDidMount() {
         if (UserAgent.isFirefox()) {
@@ -32,20 +34,14 @@ export default class SettingsSidebar extends React.Component {
             }
 
             return (
-                <li
-                    id={`${tab.name}Li`}
-                    key={key}
-                    className={className}
-                >
+                <li id={`${tab.name}Li`} key={key} className={className}>
                     <button
                         id={`${tab.name}Button`}
                         className='cursor--pointer style--none'
                         onClick={this.handleClick.bind(null, tab)}
                     >
-                        <i
-                            className={tab.icon}
-                            title={tab.iconTitle}
-                        />
+                        <i className={tab.icon} title={tab.iconTitle} />
+
                         {tab.uiName}
                     </button>
                 </li>
@@ -54,10 +50,7 @@ export default class SettingsSidebar extends React.Component {
 
         return (
             <div>
-                <ul
-                    id='tabList'
-                    className='nav nav-pills nav-stacked'
-                >
+                <ul id='tabList' className='nav nav-pills nav-stacked'>
                     {tabList}
                 </ul>
             </div>
@@ -66,11 +59,13 @@ export default class SettingsSidebar extends React.Component {
 }
 
 SettingsSidebar.propTypes = {
-    tabs: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        uiName: PropTypes.string.isRequired,
-        icon: PropTypes.string.isRequired,
-    })).isRequired,
+    tabs: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            uiName: PropTypes.string.isRequired,
+            icon: PropTypes.string.isRequired,
+        }),
+    ).isRequired,
     activeTab: PropTypes.string,
     updateTab: PropTypes.func.isRequired,
 };

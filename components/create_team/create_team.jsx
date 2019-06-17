@@ -13,7 +13,6 @@ import TeamUrl from 'components/create_team/components/team_url';
 
 export default class CreateTeam extends React.PureComponent {
     static propTypes = {
-
         /*
          * Object containing information on the current team, used to define BackButton's url
          */
@@ -40,7 +39,7 @@ export default class CreateTeam extends React.PureComponent {
         match: PropTypes.shape({
             url: PropTypes.string.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -54,7 +53,7 @@ export default class CreateTeam extends React.PureComponent {
     updateParent = (state) => {
         this.setState(state);
         this.props.history.push('/create_team/' + state.wizard);
-    }
+    };
 
     render() {
         const {
@@ -75,14 +74,15 @@ export default class CreateTeam extends React.PureComponent {
 
         return (
             <div>
-                <AnnouncementBar/>
-                <BackButton url={url}/>
+                <AnnouncementBar />
+                <BackButton url={url} />
                 <div className='col-sm-12'>
                     <div className='signup-team__container'>
                         <SiteNameAndDescription
                             customDescriptionText={customDescriptionText}
                             siteName={siteName}
                         />
+
                         <div className='signup__content'>
                             <Switch>
                                 <Route
@@ -95,6 +95,7 @@ export default class CreateTeam extends React.PureComponent {
                                         />
                                     )}
                                 />
+
                                 <Route
                                     path={`${this.props.match.url}/team_url`}
                                     render={(props) => (
@@ -105,7 +106,8 @@ export default class CreateTeam extends React.PureComponent {
                                         />
                                     )}
                                 />
-                                <Redirect to={`${match.url}/display_name`}/>
+
+                                <Redirect to={`${match.url}/display_name`} />
                             </Switch>
                         </div>
                     </div>

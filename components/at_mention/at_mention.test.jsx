@@ -13,22 +13,38 @@ import AtMention from 'components/at_mention/at_mention.jsx';
 describe('components/AtMention', () => {
     const baseProps = {
         currentUserId: 'abc1',
-        teammateNameDisplay: General.TEAMMATE_NAME_DISPLAY.SHOW_NICKNAME_FULLNAME,
+        teammateNameDisplay:
+            General.TEAMMATE_NAME_DISPLAY.SHOW_NICKNAME_FULLNAME,
         usersByUsername: {
-            currentuser: {id: 'abc1', username: 'currentuser', first_name: 'First', last_name: 'Last'},
-            user1: {id: 'abc2', username: 'user1', first_name: 'Other', last_name: 'User', nickname: 'Nick'},
-            'userdot.': {id: 'abc3', username: 'userdot.', first_name: 'Dot', last_name: 'Matrix'},
+            'currentuser': {
+                id: 'abc1',
+                username: 'currentuser',
+                first_name: 'First',
+                last_name: 'Last',
+            },
+
+            'user1': {
+                id: 'abc2',
+                username: 'user1',
+                first_name: 'Other',
+                last_name: 'User',
+                nickname: 'Nick',
+            },
+
+            'userdot.': {
+                id: 'abc3',
+                username: 'userdot.',
+                first_name: 'Dot',
+                last_name: 'Matrix',
+            },
         },
     };
 
     test('should match snapshot when mentioning user', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='user1'
-            >
+            <AtMention {...baseProps} mentionName='user1'>
                 {'(at)-user1'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -39,10 +55,12 @@ describe('components/AtMention', () => {
             <AtMention
                 {...baseProps}
                 mentionName='user1'
-                teammateNameDisplay={General.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME}
+                teammateNameDisplay={
+                    General.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME
+                }
             >
                 {'(at)-user1'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -50,12 +68,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when mentioning user followed by punctuation', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='user1...'
-            >
+            <AtMention {...baseProps} mentionName='user1...'>
                 {'(at)-user1'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -63,12 +78,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when mentioning user containing punctuation', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='userdot.'
-            >
+            <AtMention {...baseProps} mentionName='userdot.'>
                 {'(at)-userdot.'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -76,12 +88,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when mentioning user containing and followed by punctuation', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='userdot..'
-            >
+            <AtMention {...baseProps} mentionName='userdot..'>
                 {'(at)-userdot..'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -89,12 +98,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when mentioning user with mixed case', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='USeR1'
-            >
+            <AtMention {...baseProps} mentionName='USeR1'>
                 {'(at)-USeR1'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -102,12 +108,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when mentioning current user', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='currentUser'
-            >
+            <AtMention {...baseProps} mentionName='currentUser'>
                 {'(at)-currentUser'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -115,12 +118,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when mentioning all', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='all'
-            >
+            <AtMention {...baseProps} mentionName='all'>
                 {'(at)-all'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -128,12 +128,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when mentioning all with mixed case', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='aLL'
-            >
+            <AtMention {...baseProps} mentionName='aLL'>
                 {'(at)-aLL'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -141,12 +138,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when not mentioning a user', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='notauser'
-            >
+            <AtMention {...baseProps} mentionName='notauser'>
                 {'(at)-notauser'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -154,12 +148,9 @@ describe('components/AtMention', () => {
 
     test('should match snapshot when not mentioning a user with mixed case', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName='NOTAuser'
-            >
+            <AtMention {...baseProps} mentionName='NOTAuser'>
                 {'(at)-NOTAuser'}
-            </AtMention>
+            </AtMention>,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -167,12 +158,9 @@ describe('components/AtMention', () => {
 
     test('should have placement state based on ref position of click handler', () => {
         const wrapper = shallow(
-            <AtMention
-                {...baseProps}
-                mentionName={'user1'}
-            >
+            <AtMention {...baseProps} mentionName={'user1'}>
                 {'(at)-user1'}
-            </AtMention>
+            </AtMention>,
         );
 
         const instance = wrapper.instance();
@@ -185,7 +173,9 @@ describe('components/AtMention', () => {
             },
         };
 
-        wrapper.instance().handleClick({preventDefault: jest.fn(), target: AtMention});
+        wrapper
+            .instance()
+            .handleClick({preventDefault: jest.fn(), target: AtMention});
         expect(wrapper.state('placement')).toEqual('top');
 
         instance.overlayRef = {
@@ -197,7 +187,9 @@ describe('components/AtMention', () => {
             },
         };
 
-        wrapper.instance().handleClick({preventDefault: jest.fn(), target: AtMention});
+        wrapper
+            .instance()
+            .handleClick({preventDefault: jest.fn(), target: AtMention});
         expect(wrapper.state('placement')).toEqual('bottom');
 
         instance.overlayRef = {
@@ -209,7 +201,9 @@ describe('components/AtMention', () => {
             },
         };
 
-        wrapper.instance().handleClick({preventDefault: jest.fn(), target: AtMention});
+        wrapper
+            .instance()
+            .handleClick({preventDefault: jest.fn(), target: AtMention});
         expect(wrapper.state('placement')).toEqual('left');
     });
 });

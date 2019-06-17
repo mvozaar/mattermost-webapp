@@ -7,14 +7,8 @@ import React from 'react';
 import Setting from './setting.jsx';
 
 export default class TextSetting extends React.Component {
-    static validTypes = [
-        'input',
-        'textarea',
-        'number',
-        'email',
-        'tel',
-        'url',
-    ];
+    static validTypes = ['input', 'textarea', 'number', 'email', 'tel', 'url'];
+
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.node.isRequired,
@@ -22,10 +16,8 @@ export default class TextSetting extends React.Component {
         placeholder: PropTypes.string,
         helpText: PropTypes.node,
         footer: PropTypes.node,
-        value: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]).isRequired,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
         inputClassName: PropTypes.string,
         maxLength: PropTypes.number,
         resizable: PropTypes.bool,
@@ -48,7 +40,7 @@ export default class TextSetting extends React.Component {
         } else {
             this.props.onChange(this.props.id, e.target.value);
         }
-    }
+    };
 
     render() {
         const {resizable} = this.props;
@@ -75,7 +67,9 @@ export default class TextSetting extends React.Component {
                 />
             );
         } else {
-            type = ['input', 'email', 'tel', 'number', 'url'].includes(type) ? type : 'input';
+            type = ['input', 'email', 'tel', 'number', 'url'].includes(type)
+                ? type
+                : 'input';
 
             input = (
                 <input

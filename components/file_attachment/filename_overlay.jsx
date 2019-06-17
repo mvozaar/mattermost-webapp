@@ -12,7 +12,6 @@ import {localizeMessage} from 'utils/utils.jsx';
 
 export default class FilenameOverlay extends React.PureComponent {
     static propTypes = {
-
         /*
          * File detailed information
          */
@@ -64,7 +63,9 @@ export default class FilenameOverlay extends React.PureComponent {
                     trigger={['hover', 'focus']}
                     delayShow={1000}
                     placement='top'
-                    overlay={<Tooltip id='file-name__tooltip'>{fileName}</Tooltip>}
+                    overlay={
+                        <Tooltip id='file-name__tooltip'>{fileName}</Tooltip>
+                    }
                 >
                     <a
                         href='#'
@@ -72,7 +73,7 @@ export default class FilenameOverlay extends React.PureComponent {
                         className='post-image__name'
                         rel='noopener noreferrer'
                     >
-                        <AttachmentIcon className='icon'/>
+                        <AttachmentIcon className='icon' />
                         {trimmedFilename}
                     </a>
                 </OverlayTrigger>
@@ -92,7 +93,10 @@ export default class FilenameOverlay extends React.PureComponent {
                         placement='top'
                         overlay={
                             <Tooltip id='file-name__tooltip'>
-                                {localizeMessage('file_attachment.download', 'Download')}
+                                {localizeMessage(
+                                    'file_attachment.download',
+                                    'Download',
+                                )}
                             </Tooltip>
                         }
                     >
@@ -102,12 +106,10 @@ export default class FilenameOverlay extends React.PureComponent {
             );
         } else {
             filenameOverlay = (
-                <span className='post-image__name'>
-                    {trimmedFilename}
-                </span>
+                <span className='post-image__name'>{trimmedFilename}</span>
             );
         }
 
-        return (filenameOverlay);
+        return filenameOverlay;
     }
 }

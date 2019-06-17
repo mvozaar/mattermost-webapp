@@ -15,7 +15,9 @@ export default class EmojiMap {
     }
 
     has(name) {
-        return Emoji.EmojiIndicesByAlias.has(name) || this.customEmojis.has(name);
+        return (
+            Emoji.EmojiIndicesByAlias.has(name) || this.customEmojis.has(name)
+        );
     }
 
     hasSystemEmoji(name) {

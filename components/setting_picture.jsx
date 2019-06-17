@@ -48,7 +48,8 @@ export default class SettingPicture extends Component {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.file !== this.props.file) {
             this.setState({image: null});
 
@@ -65,7 +66,7 @@ export default class SettingPicture extends Component {
     handleCancel = (e) => {
         this.setState({removeSrc: false, setDefaultSrc: false});
         this.props.updateSection(e);
-    }
+    };
 
     handleSave = (e) => {
         e.preventDefault();
@@ -76,22 +77,22 @@ export default class SettingPicture extends Component {
         } else {
             this.props.onSubmit();
         }
-    }
+    };
 
     handleRemoveSrc = (e) => {
         e.preventDefault();
         this.setState({removeSrc: true});
-    }
+    };
 
     handleSetDefaultSrc = (e) => {
         e.preventDefault();
         this.setState({setDefaultSrc: true});
-    }
+    };
 
     handleFileChange = (e) => {
         this.setState({removeSrc: false, setDefaultSrc: false});
         this.props.onFileChange(e);
-    }
+    };
 
     setPicture = (file) => {
         if (file) {
@@ -99,8 +100,13 @@ export default class SettingPicture extends Component {
 
             var reader = new FileReader();
             reader.onload = (e) => {
-                const orientation = FileUtils.getExifOrientation(e.target.result);
-                const orientationStyles = FileUtils.getOrientationStyles(orientation);
+                const orientation = FileUtils.getExifOrientation(
+                    e.target.result,
+                );
+
+                const orientationStyles = FileUtils.getOrientationStyles(
+                    orientation,
+                );
 
                 this.setState({
                     image: this.previewBlob,
@@ -109,7 +115,7 @@ export default class SettingPicture extends Component {
             };
             reader.readAsArrayBuffer(file);
         }
-    }
+    };
 
     renderImg = () => {
         const imageContext = this.props.imageContext;
@@ -151,6 +157,7 @@ export default class SettingPicture extends Component {
                     src={this.props.src}
                 />
             );
+
             if (!this.props.onRemove && !this.props.onSetDefault) {
                 return imageElement;
             }
@@ -164,6 +171,7 @@ export default class SettingPicture extends Component {
                         defaultMessage='Remove this icon'
                     />
                 );
+
                 handler = this.handleRemoveSrc;
             } else if (this.props.onSetDefault) {
                 title = (
@@ -172,23 +180,18 @@ export default class SettingPicture extends Component {
                         defaultMessage='Remove profile picture'
                     />
                 );
+
                 handler = this.handleSetDefaultSrc;
             }
 
             return (
                 <div className={`${imageContext}-img__container`}>
-                    <div className='img-preview__image'>
-                        {imageElement}
-                    </div>
+                    <div className='img-preview__image'>{imageElement}</div>
                     <OverlayTrigger
                         trigger={['hover', 'focus']}
                         delayShow={Constants.OVERLAY_TIME_DELAY}
                         placement='right'
-                        overlay={(
-                            <Tooltip id='removeIcon'>
-                                {title}
-                            </Tooltip>
-                        )}
+                        overlay={<Tooltip id='removeIcon'>{title}</Tooltip>}
                     >
                         <a
                             className={`${imageContext}-img__remove`}
@@ -201,7 +204,7 @@ export default class SettingPicture extends Component {
             );
         }
         return null;
-    }
+    };
 
     render() {
         const imageContext = this.props.imageContext;
@@ -209,7 +212,11 @@ export default class SettingPicture extends Component {
         const img = this.renderImg();
 
         let confirmButtonClass = 'btn btn-sm';
-        if (this.props.submitActive || this.state.removeSrc || this.state.setDefaultSrc) {
+        if (
+            this.props.submitActive ||
+            this.state.removeSrc ||
+            this.state.setDefaultSrc
+        ) {
             confirmButtonClass += ' btn-primary';
         } else {
             confirmButtonClass += ' btn-inactive disabled';
@@ -238,16 +245,25 @@ export default class SettingPicture extends Component {
                 <li className='col-xs-12 section-title'>{this.props.title}</li>
                 <li className='col-xs-offset-3 col-xs-8'>
                     <ul className='setting-list'>
-                        {img ? <li className='setting-list-item'> {img} </li> : ''}
+                        {img ? (
+                            <li className='setting-list-item'> {img} </li>
+                        ) : (
+                            ''
+                        )}
+
                         <li className='setting-list-item padding-top x2'>
                             {helpText}
                         </li>
                         <li className='setting-list-item'>
-                            <hr/>
+                            <hr />
                             <FormError
-                                errors={[this.props.clientError, this.props.serverError]}
+                                errors={[
+                                    this.props.clientError,
+                                    this.props.serverError,
+                                ]}
                                 type={'modal'}
                             />
+
                             <div
                                 className='btn btn-sm btn-primary btn-file sel-btn'
                                 disabled={this.props.loadingPicture}
@@ -256,6 +272,7 @@ export default class SettingPicture extends Component {
                                     id='setting_picture.select'
                                     defaultMessage='Select'
                                 />
+
                                 <input
                                     ref='input'
                                     accept='.jpg,.png,.bmp'
@@ -266,11 +283,18 @@ export default class SettingPicture extends Component {
                             </div>
                             <a
                                 className={confirmButtonClass}
-                                onClick={this.props.loadingPicture ? () => true : this.handleSave}
+                                onClick={
+                                    this.props.loadingPicture
+                                        ? () => true
+                                        : this.handleSave
+                                }
                             >
                                 <LoadingWrapper
                                     loading={this.props.loadingPicture}
-                                    text={localizeMessage('setting_picture.uploading', 'Uploading...')}
+                                    text={localizeMessage(
+                                        'setting_picture.uploading',
+                                        'Uploading...',
+                                    )}
                                 >
                                     <FormattedMessage
                                         id='setting_picture.save'

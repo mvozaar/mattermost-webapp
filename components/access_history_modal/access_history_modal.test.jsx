@@ -16,23 +16,21 @@ describe('components/AccessHistoryModal', () => {
         actions: {
             getUserAudits: jest.fn(),
         },
+
         userAudits: [],
         currentUserId: '',
     };
 
     test('should match snapshot when no audits exist', () => {
-        const wrapper = shallow(
-            <AccessHistoryModal {...baseProps}/>
-        );
+        const wrapper = shallow(<AccessHistoryModal {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(LoadingScreen).exists()).toBe(true);
         expect(wrapper.find(AuditTable).exists()).toBe(false);
     });
 
     test('should match snapshot when audits exist', () => {
-        const wrapper = shallow(
-            <AccessHistoryModal {...baseProps}/>
-        );
+        const wrapper = shallow(<AccessHistoryModal {...baseProps} />);
 
         wrapper.setProps({userAudits: ['audit1', 'audit2']});
         expect(wrapper).toMatchSnapshot();
@@ -44,19 +42,16 @@ describe('components/AccessHistoryModal', () => {
         const actions = {
             getUserAudits: jest.fn(),
         };
+
         const props = {...baseProps, actions};
-        const wrapper = shallow(
-            <AccessHistoryModal {...props}/>
-        );
+        const wrapper = shallow(<AccessHistoryModal {...props} />);
 
         wrapper.instance().onShow();
         expect(actions.getUserAudits).toHaveBeenCalledTimes(2);
     });
 
     test('should match state when onHide is called', () => {
-        const wrapper = shallow(
-            <AccessHistoryModal {...baseProps}/>
-        );
+        const wrapper = shallow(<AccessHistoryModal {...baseProps} />);
 
         wrapper.setState({show: true});
         wrapper.instance().onHide();

@@ -11,16 +11,27 @@ import ConfigurationBar from './configuration_bar.jsx';
 
 function mapStateToProps(state) {
     return {
-        dismissedExpiringLicense: Boolean(state.views.notice.hasBeenDismissed[AnnouncementBarMessages.LICENSE_EXPIRING]),
+        dismissedExpiringLicense: Boolean(
+            state.views.notice.hasBeenDismissed[
+                AnnouncementBarMessages.LICENSE_EXPIRING
+            ],
+        ),
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            dismissNotice,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                dismissNotice,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConfigurationBar);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ConfigurationBar);

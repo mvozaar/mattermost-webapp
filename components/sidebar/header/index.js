@@ -17,7 +17,9 @@ function mapStateToProps(state) {
 
     const enableTutorial = config.EnableTutorial === 'true';
 
-    const showTutorialTip = getInt(state, Preferences.TUTORIAL_STEP, currentUser.id) === TutorialSteps.MENU_POPOVER && !Utils.isMobile();
+    const showTutorialTip =
+        getInt(state, Preferences.TUTORIAL_STEP, currentUser.id) ===
+            TutorialSteps.MENU_POPOVER && !Utils.isMobile();
 
     return {
         enableTutorial,

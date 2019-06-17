@@ -11,9 +11,7 @@ describe('components/UnreadChannelIndicator', () => {
         function emptyFunction() {} //eslint-disable-line no-empty-function
 
         const wrapper = shallow(
-            <UnreadChannelIndicator
-                onClick={emptyFunction}
-            />
+            <UnreadChannelIndicator onClick={emptyFunction} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -23,10 +21,7 @@ describe('components/UnreadChannelIndicator', () => {
         function emptyFunction() {} //eslint-disable-line no-empty-function
 
         const wrapper = shallow(
-            <UnreadChannelIndicator
-                onClick={emptyFunction}
-                show={true}
-            />
+            <UnreadChannelIndicator onClick={emptyFunction} show={true} />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -40,7 +35,7 @@ describe('components/UnreadChannelIndicator', () => {
                 onClick={emptyFunction}
                 show={true}
                 content='foo'
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -54,7 +49,7 @@ describe('components/UnreadChannelIndicator', () => {
                 onClick={emptyFunction}
                 show={true}
                 content={<div>{'foo'}</div>}
-            />
+            />,
         );
 
         expect(wrapper).toMatchSnapshot();
@@ -70,7 +65,7 @@ describe('components/UnreadChannelIndicator', () => {
                 show={true}
                 content={<div>{'foo'}</div>}
                 name={name}
-            />
+            />,
         );
 
         wrapper.find('#unreadIndicator' + name).simulate('click');

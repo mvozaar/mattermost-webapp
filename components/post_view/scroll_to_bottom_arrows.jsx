@@ -26,11 +26,8 @@ export default class ScrollToBottomArrows extends React.PureComponent {
         }
 
         return (
-            <div
-                className={className}
-                onClick={this.props.onClick}
-            >
-                <ScrollToBottomIcon/>
+            <div className={className} onClick={this.props.onClick}>
+                <ScrollToBottomIcon />
             </div>
         );
     }

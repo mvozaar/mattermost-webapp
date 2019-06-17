@@ -23,17 +23,27 @@ function mapStateToProps(state) {
         canUploadFiles: canUploadFiles(config),
         locale: getCurrentLocale(state),
         pluginFileUploadMethods: state.plugins.components.FileUploadMethod,
-        pluginFilesWillUploadHooks: state.plugins.components.FilesWillUploadHook,
+        pluginFilesWillUploadHooks:
+            state.plugins.components.FilesWillUploadHook,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            uploadFile,
-            handleFileUploadEnd,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                uploadFile,
+                handleFileUploadEnd,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})(FileUpload);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+    null,
+    {withRef: true},
+)(FileUpload);

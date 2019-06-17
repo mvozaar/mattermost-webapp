@@ -29,9 +29,7 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <JoinLeaveSection {...defaultProps}/>
-        );
+        const wrapper = shallow(<JoinLeaveSection {...defaultProps} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find(SettingItemMax).exists()).toEqual(false);
@@ -44,9 +42,7 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
     });
 
     test('should match state on handleOnChange', () => {
-        const wrapper = shallow(
-            <JoinLeaveSection {...defaultProps}/>
-        );
+        const wrapper = shallow(<JoinLeaveSection {...defaultProps} />);
 
         let value = 'false';
         wrapper.setState({joinLeaveState: 'true'});
@@ -60,15 +56,18 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
 
     test('should call props.actions.savePreferences and props.onUpdateSection on handleSubmit', () => {
         const actions = {
-            savePreferences: jest.fn().mockImplementation(() => Promise.resolve({data: true})),
+            savePreferences: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve({data: true})),
         };
+
         const onUpdateSection = jest.fn();
         const wrapper = shallow(
             <JoinLeaveSection
                 {...defaultProps}
                 actions={actions}
                 onUpdateSection={onUpdateSection}
-            />
+            />,
         );
 
         const joinLeavePreference = {
@@ -80,14 +79,21 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
 
         wrapper.instance().handleSubmit();
         expect(actions.savePreferences).toHaveBeenCalledTimes(1);
-        expect(actions.savePreferences).toHaveBeenCalledWith('current_user_id', [joinLeavePreference]);
+        expect(actions.savePreferences).toHaveBeenCalledWith(
+            'current_user_id',
+            [joinLeavePreference],
+        );
+
         expect(onUpdateSection).toHaveBeenCalledTimes(1);
 
         wrapper.setState({joinLeaveState: 'false'});
         joinLeavePreference.value = 'false';
         wrapper.instance().handleSubmit();
         expect(actions.savePreferences).toHaveBeenCalledTimes(2);
-        expect(actions.savePreferences).toHaveBeenCalledWith('current_user_id', [joinLeavePreference]);
+        expect(actions.savePreferences).toHaveBeenCalledWith(
+            'current_user_id',
+            [joinLeavePreference],
+        );
     });
 
     test('should match state and call props.onUpdateSection on handleUpdateSection', () => {
@@ -96,7 +102,7 @@ describe('components/user_settings/advanced/JoinLeaveSection', () => {
             <JoinLeaveSection
                 {...defaultProps}
                 onUpdateSection={onUpdateSection}
-            />
+            />,
         );
 
         wrapper.setState({joinLeaveState: 'false'});

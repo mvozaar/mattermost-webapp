@@ -25,17 +25,13 @@ describe('components/multiselect/multiselect', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <MultiSelect {...baseProps}/>
-        );
+        const wrapper = shallow(<MultiSelect {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot for page 2', () => {
-        const wrapper = shallow(
-            <MultiSelect {...baseProps}/>
-        );
+        const wrapper = shallow(<MultiSelect {...baseProps} />);
 
         wrapper.find('.filter-control__next').simulate('click');
         wrapper.update();

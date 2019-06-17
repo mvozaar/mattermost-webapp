@@ -13,6 +13,7 @@ describe('components/integrations/AbstractOutgoingWebhook', () => {
             id: 'test-team-id',
             name: 'test',
         },
+
         action: emptyFunction,
         enablePostUsernameOverride: false,
         enablePostIconOverride: false,
@@ -24,19 +25,25 @@ describe('components/integrations/AbstractOutgoingWebhook', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<AbstractOutgoingWebhook {...props}/>);
+        const wrapper = shallow(<AbstractOutgoingWebhook {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should render username in case of enablePostUsernameOverride is true ', () => {
         const usernameTrueProps = {...props, enablePostUsernameOverride: true};
-        const wrapper = shallow(<AbstractOutgoingWebhook {...usernameTrueProps}/>);
+        const wrapper = shallow(
+            <AbstractOutgoingWebhook {...usernameTrueProps} />,
+        );
+
         expect(wrapper.find('#username')).toHaveLength(1);
     });
 
     test('should render username in case of enablePostUsernameOverride is true ', () => {
         const iconUrlTrueProps = {...props, enablePostIconOverride: true};
-        const wrapper = shallow(<AbstractOutgoingWebhook {...iconUrlTrueProps}/>);
+        const wrapper = shallow(
+            <AbstractOutgoingWebhook {...iconUrlTrueProps} />,
+        );
+
         expect(wrapper.find('#iconURL')).toHaveLength(1);
     });
 });

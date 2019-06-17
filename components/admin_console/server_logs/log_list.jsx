@@ -11,7 +11,6 @@ const NEXT_BUTTON_TIMEOUT = 500;
 
 export default class Logs extends React.PureComponent {
     static propTypes = {
-
         /*
          * Array of logs to render
          */
@@ -20,7 +19,7 @@ export default class Logs extends React.PureComponent {
         perPage: PropTypes.number.isRequired,
         nextPage: PropTypes.func.isRequired,
         previousPage: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -49,16 +48,19 @@ export default class Logs extends React.PureComponent {
         e.preventDefault();
 
         this.setState({nextDisabled: true});
-        this.nextTimeoutId = setTimeout(() => this.setState({nextDisabled: false}), NEXT_BUTTON_TIMEOUT);
+        this.nextTimeoutId = setTimeout(
+            () => this.setState({nextDisabled: false}),
+            NEXT_BUTTON_TIMEOUT,
+        );
 
         this.props.nextPage();
-    }
+    };
 
     previousPage = (e) => {
         e.preventDefault();
 
         this.props.previousPage();
-    }
+    };
 
     render() {
         let content = null;
@@ -76,7 +78,8 @@ export default class Logs extends React.PureComponent {
                         id='admin.logs.next'
                         defaultMessage='Next'
                     />
-                    <NextIcon additionalClassName='margin-left'/>
+
+                    <NextIcon additionalClassName='margin-left' />
                 </button>
             );
         }
@@ -92,10 +95,7 @@ export default class Logs extends React.PureComponent {
                         defaultMessage='Previous Icon'
                     >
                         {(title) => (
-                            <i
-                                className='fa fa-angle-left'
-                                title={title}
-                            />
+                            <i className='fa fa-angle-left' title={title} />
                         )}
                     </FormattedMessage>
                     <FormattedMessage
@@ -118,24 +118,17 @@ export default class Logs extends React.PureComponent {
                 style.color = 'red';
             }
 
-            content.push(<br key={'br_' + i}/>);
+            content.push(<br key={'br_' + i} />);
             content.push(
-                <span
-                    key={'log_' + i}
-                    style={style}
-                >
+                <span key={'log_' + i} style={style}>
                     {this.props.logs[i]}
-                </span>
+                </span>,
             );
         }
 
         return (
             <div>
-                <div
-                    tabIndex='-1'
-                    ref={this.logPanel}
-                    className='log__panel'
-                >
+                <div tabIndex='-1' ref={this.logPanel} className='log__panel'>
                     {content}
                 </div>
                 <div className='padding-top padding-bottom x2 filter-controls'>

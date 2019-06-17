@@ -7,14 +7,11 @@ import PropTypes from 'prop-types';
 import menuItem from './menu_item.jsx';
 
 export const MenuItemExternalLinkImpl = ({url, text}) => (
-    <a
-        target='_blank'
-        rel='noopener noreferrer'
-        href={url}
-    >
+    <a target='_blank' rel='noopener noreferrer' href={url}>
         {text}
     </a>
 );
+
 MenuItemExternalLinkImpl.propTypes = {
     url: PropTypes.string.isRequired,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,

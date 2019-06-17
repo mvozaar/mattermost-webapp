@@ -32,7 +32,7 @@ export default class MFAController extends React.Component {
     handleOnClick = (e) => {
         e.preventDefault();
         emitUserLoggedOutEvent('/login');
-    }
+    };
 
     render() {
         let backButton;
@@ -43,7 +43,7 @@ export default class MFAController extends React.Component {
                         className='style--none color--link'
                         onClick={this.handleOnClick}
                     >
-                        <LogoutIcon/>
+                        <LogoutIcon />
                         <FormattedMessage
                             id='web.header.logout'
                             defaultMessage='Logout'
@@ -52,7 +52,7 @@ export default class MFAController extends React.Component {
                 </div>
             );
         } else {
-            backButton = (<BackButton/>);
+            backButton = <BackButton />;
         }
 
         return (
@@ -73,6 +73,7 @@ export default class MFAController extends React.Component {
                                     className='signup-team-logo'
                                     src={logoImage}
                                 />
+
                                 <div id='mfa'>
                                     <Switch>
                                         <Route
@@ -80,17 +81,22 @@ export default class MFAController extends React.Component {
                                             render={(props) => (
                                                 <Setup
                                                     state={this.state}
-                                                    updateParent={this.updateParent}
+                                                    updateParent={
+                                                        this.updateParent
+                                                    }
                                                     {...props}
                                                 />
                                             )}
                                         />
+
                                         <Route
                                             path={`${this.props.match.url}/confirm`}
                                             render={(props) => (
                                                 <Confirm
                                                     state={this.state}
-                                                    updateParent={this.updateParent}
+                                                    updateParent={
+                                                        this.updateParent
+                                                    }
                                                     {...props}
                                                 />
                                             )}

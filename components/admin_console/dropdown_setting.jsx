@@ -16,26 +16,23 @@ export default class DropdownSetting extends React.Component {
         disabled: PropTypes.bool,
         setByEnv: PropTypes.bool.isRequired,
         helpText: PropTypes.node,
-    }
+    };
 
     static defaultProps = {
         isDisabled: false,
-    }
+    };
 
     handleChange = (e) => {
         this.props.onChange(this.props.id, e.target.value);
-    }
+    };
 
     render() {
         const options = [];
         for (const {value, text} of this.props.values) {
             options.push(
-                <option
-                    value={value}
-                    key={value}
-                >
+                <option value={value} key={value}>
                     {text}
-                </option>
+                </option>,
             );
         }
 

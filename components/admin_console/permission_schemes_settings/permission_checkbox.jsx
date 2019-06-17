@@ -14,23 +14,19 @@ export default class PermissionCheckbox extends React.PureComponent {
 
     static defaultProps = {
         value: '',
-    }
+    };
 
     render() {
         const {value} = this.props;
         let icon = null;
         let extraClass = '';
         if (value === 'checked') {
-            icon = (<CheckboxCheckedIcon/>);
+            icon = <CheckboxCheckedIcon />;
             extraClass = 'checked';
         } else if (value === 'intermediate') {
-            icon = (<CheckboxPartialIcon/>);
+            icon = <CheckboxPartialIcon />;
             extraClass = 'intermediate';
         }
-        return (
-            <div className={'permission-check ' + extraClass}>
-                {icon}
-            </div>
-        );
+        return <div className={'permission-check ' + extraClass}>{icon}</div>;
     }
 }

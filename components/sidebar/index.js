@@ -14,7 +14,10 @@ import {
 
 import Permissions from 'mattermost-redux/constants/permissions';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {getBool as getBoolPreference, getSidebarPreferences} from 'mattermost-redux/selectors/entities/preferences';
+import {
+    getBool as getBoolPreference,
+    getSidebarPreferences,
+} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {haveITeamPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
@@ -29,15 +32,29 @@ import Sidebar from './sidebar.jsx';
 function mapStateToProps(state) {
     const config = getConfig(state);
     const currentChannel = getCurrentChannel(state);
-    const currentTeammate = currentChannel && currentChannel.teammate_id && getCurrentChannel(state, currentChannel.teammate_id);
+    const currentTeammate =
+        currentChannel &&
+        currentChannel.teammate_id &&
+        getCurrentChannel(state, currentChannel.teammate_id);
     const currentTeam = getCurrentTeam(state);
 
-    const canCreatePublicChannel = haveITeamPermission(state, {team: currentTeam.id, permission: Permissions.CREATE_PUBLIC_CHANNEL});
-    const canCreatePrivateChannel = haveITeamPermission(state, {team: currentTeam.id, permission: Permissions.CREATE_PRIVATE_CHANNEL});
+    const canCreatePublicChannel = haveITeamPermission(state, {
+        team: currentTeam.id,
+        permission: Permissions.CREATE_PUBLIC_CHANNEL,
+    });
+
+    const canCreatePrivateChannel = haveITeamPermission(state, {
+        team: currentTeam.id,
+        permission: Permissions.CREATE_PRIVATE_CHANNEL,
+    });
 
     const sidebarPrefs = getSidebarPreferences(state);
     const lastUnreadChannel = state.views.channel.keepChannelIdAsUnread;
-    const unreadChannelIds = getSortedUnreadChannelIds(state, lastUnreadChannel);
+    const unreadChannelIds = getSortedUnreadChannelIds(
+        state,
+        lastUnreadChannel,
+    );
+
     const orderedChannelIds = getOrderedChannelIds(
         state,
         lastUnreadChannel,
@@ -51,7 +68,7 @@ function mapStateToProps(state) {
         state,
         Preferences.CATEGORY_SIDEBAR_SETTINGS,
         'channel_switcher_section',
-        'true'
+        'true',
     );
 
     return {
@@ -72,12 +89,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            close,
-            switchToChannelById,
-            openModal,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                close,
+                switchToChannelById,
+                openModal,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Sidebar);

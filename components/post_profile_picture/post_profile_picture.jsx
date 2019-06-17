@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ProfilePicture from 'components/profile_picture';
-import MattermostLogo from 'components/svg/mattermost_logo';
+import SecurComLogo from 'components/svg/securcom_logo';
 
 import Constants, {UserStatuses} from 'utils/constants';
 import * as PostUtils from 'utils/post_utils';
@@ -42,9 +42,17 @@ export default class PostProfilePicture extends React.PureComponent {
             src = Utils.imageURLForUser(post.user_id);
         }
 
-        if (!fromAutoResponder && fromWebhook && !post.props.use_user_icon && this.props.enablePostIconOverride) {
+        if (
+            !fromAutoResponder &&
+            fromWebhook &&
+            !post.props.use_user_icon &&
+            this.props.enablePostIconOverride
+        ) {
             if (post.props.override_icon_url) {
-                src = PostUtils.getImageSrc(post.props.override_icon_url, this.props.hasImageProxy);
+                src = PostUtils.getImageSrc(
+                    post.props.override_icon_url,
+                    this.props.hasImageProxy,
+                );
             } else {
                 src = Constants.DEFAULT_WEBHOOK_LOGO;
             }
@@ -62,24 +70,21 @@ export default class PostProfilePicture extends React.PureComponent {
     };
 
     render() {
-        const {
-            compactDisplay,
-            isBusy,
-            isRHS,
-            post,
-            user,
-            isBot,
-        } = this.props;
+        const {compactDisplay, isBusy, isRHS, post, user, isBot} = this.props;
         const isSystemMessage = PostUtils.isSystemMessage(post);
         const fromWebhook = PostUtils.isFromWebhook(post);
         if (isSystemMessage && !compactDisplay && !fromWebhook && !isBot) {
-            return <MattermostLogo className='icon'/>;
+            return <SecurComLogo className='icon' />;
         }
 
         const fromAutoResponder = PostUtils.fromAutoResponder(post);
 
         const hasMention = !fromAutoResponder && !fromWebhook;
-        const src = this.getProfilePicSrcForPost(fromAutoResponder, fromWebhook);
+        const src = this.getProfilePicSrcForPost(
+            fromAutoResponder,
+            fromWebhook,
+        );
+
         const status = this.getStatus(fromAutoResponder, fromWebhook, user);
 
         return (

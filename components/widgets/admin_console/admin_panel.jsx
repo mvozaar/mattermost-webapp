@@ -8,14 +8,8 @@ import {FormattedMessage} from 'react-intl';
 import FormattedMarkdownMessage from 'components/formatted_markdown_message';
 
 const AdminPanel = (props) => (
-    <div
-        className={'AdminPanel ' + props.className}
-        id={props.id}
-    >
-        <div
-            className='header'
-            onClick={props.onHeaderClick}
-        >
+    <div className={'AdminPanel ' + props.className} id={props.id}>
+        <div className='header' onClick={props.onHeaderClick}>
             <div>
                 <h3>
                     <FormattedMessage
@@ -31,11 +25,7 @@ const AdminPanel = (props) => (
                     />
                 </span>
             </div>
-            {props.button &&
-                <div className='button'>
-                    {props.button}
-                </div>
-            }
+            {props.button && <div className='button'>{props.button}</div>}
         </div>
         {props.children}
     </div>

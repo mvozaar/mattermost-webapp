@@ -3,7 +3,10 @@
 
 import {Permissions} from 'mattermost-redux/constants/index';
 
-import {rolesFromMapping, mappingValueFromRoles} from 'utils/policy_roles_adapter';
+import {
+    rolesFromMapping,
+    mappingValueFromRoles,
+} from 'utils/policy_roles_adapter';
 
 describe('PolicyRolesAdapter', () => {
     let roles = {};
@@ -19,6 +22,7 @@ describe('PolicyRolesAdapter', () => {
                     Permissions.MANAGE_PRIVATE_CHANNEL_MEMBERS,
                 ],
             },
+
             team_user: {
                 name: 'team_user',
                 permissions: [
@@ -32,12 +36,12 @@ describe('PolicyRolesAdapter', () => {
                     Permissions.DELETE_PRIVATE_CHANNEL,
                 ],
             },
+
             channel_admin: {
                 name: 'channel_admin',
-                permissions: [
-                    Permissions.MANAGE_CHANNEL_ROLES,
-                ],
+                permissions: [Permissions.MANAGE_CHANNEL_ROLES],
             },
+
             team_admin: {
                 name: 'team_admin',
                 permissions: [
@@ -45,6 +49,7 @@ describe('PolicyRolesAdapter', () => {
                     Permissions.DELETE_OTHERS_POSTS,
                 ],
             },
+
             system_admin: {
                 name: 'system_admin',
                 permissions: [
@@ -56,18 +61,19 @@ describe('PolicyRolesAdapter', () => {
                     Permissions.EDIT_POST,
                 ],
             },
+
             system_user: {
                 name: 'system_user',
-                permissions: [
-                    Permissions.CREATE_TEAM,
-                ],
+                permissions: [Permissions.CREATE_TEAM],
             },
         };
+
         const teamPolicies = {
             restrictTeamInvite: 'all',
             restrictPublicChannelCreation: 'all',
             restrictPrivateChannelCreation: 'all',
         };
+
         const channelPolicies = {
             restrictPublicChannelManagement: 'all',
             restrictPublicChannelDeletion: 'all',
@@ -75,6 +81,7 @@ describe('PolicyRolesAdapter', () => {
             restrictPrivateChannelManageMembers: 'all',
             restrictPrivateChannelDeletion: 'all',
         };
+
         const restrictPostDelete = 'all';
         const allowEditPost = 'always';
         policies = {
@@ -113,36 +120,72 @@ describe('PolicyRolesAdapter', () => {
         describe('enableTeamCreation', () => {
             test('true', () => {
                 roles.system_user.permissions = [];
-                const updatedRoles = rolesFromMapping({enableTeamCreation: 'true'}, roles);
+                const updatedRoles = rolesFromMapping(
+                    {enableTeamCreation: 'true'},
+                    roles,
+                );
                 expect(Object.values(updatedRoles).length).toEqual(1);
-                expect(updatedRoles.system_user.permissions).toEqual(expect.arrayContaining([Permissions.CREATE_TEAM]));
+                expect(updatedRoles.system_user.permissions).toEqual(
+                    expect.arrayContaining([Permissions.CREATE_TEAM]),
+                );
             });
 
             test('false', () => {
                 roles.system_user.permissions = [Permissions.CREATE_TEAM];
-                const updatedRoles = rolesFromMapping({enableTeamCreation: 'false'}, roles);
+                const updatedRoles = rolesFromMapping(
+                    {enableTeamCreation: 'false'},
+                    roles,
+                );
                 expect(Object.values(updatedRoles).length).toEqual(1);
-                expect(updatedRoles.system_user.permissions).not.toEqual(expect.arrayContaining([Permissions.CREATE_TEAM]));
+                expect(updatedRoles.system_user.permissions).not.toEqual(
+                    expect.arrayContaining([Permissions.CREATE_TEAM]),
+                );
             });
         });
 
         describe('enableOnlyAdminIntegrations', () => {
             test('true', () => {
                 roles.system_user.permissions = [Permissions.MANAGE_OAUTH];
-                roles.team_user.permissions = [Permissions.MANAGE_INCOMING_WEBHOOKS, Permissions.MANAGE_OUTGOING_WEBHOOKS, Permissions.MANAGE_SLASH_COMMANDS];
-                const updatedRoles = rolesFromMapping({enableOnlyAdminIntegrations: 'true'}, roles);
+                roles.team_user.permissions = [
+                    Permissions.MANAGE_INCOMING_WEBHOOKS,
+                    Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                    Permissions.MANAGE_SLASH_COMMANDS,
+                ];
+                const updatedRoles = rolesFromMapping(
+                    {enableOnlyAdminIntegrations: 'true'},
+                    roles,
+                );
                 expect(Object.values(updatedRoles).length).toEqual(2);
-                expect(updatedRoles.system_user.permissions).not.toEqual(expect.arrayContaining([Permissions.MANAGE_OAUTH]));
-                expect(updatedRoles.team_user.permissions).not.toEqual(expect.arrayContaining([Permissions.MANAGE_INCOMING_WEBHOOKS, Permissions.MANAGE_OUTGOING_WEBHOOKS, Permissions.MANAGE_SLASH_COMMANDS]));
+                expect(updatedRoles.system_user.permissions).not.toEqual(
+                    expect.arrayContaining([Permissions.MANAGE_OAUTH]),
+                );
+                expect(updatedRoles.team_user.permissions).not.toEqual(
+                    expect.arrayContaining([
+                        Permissions.MANAGE_INCOMING_WEBHOOKS,
+                        Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                        Permissions.MANAGE_SLASH_COMMANDS,
+                    ]),
+                );
             });
 
             test('false', () => {
                 roles.system_user.permissions = [];
                 roles.team_user.permissions = [];
-                const updatedRoles = rolesFromMapping({enableOnlyAdminIntegrations: 'false'}, roles);
+                const updatedRoles = rolesFromMapping(
+                    {enableOnlyAdminIntegrations: 'false'},
+                    roles,
+                );
                 expect(Object.values(updatedRoles).length).toEqual(2);
-                expect(updatedRoles.system_user.permissions).toEqual(expect.arrayContaining([Permissions.MANAGE_OAUTH]));
-                expect(updatedRoles.team_user.permissions).toEqual(expect.arrayContaining([Permissions.MANAGE_INCOMING_WEBHOOKS, Permissions.MANAGE_OUTGOING_WEBHOOKS, Permissions.MANAGE_SLASH_COMMANDS]));
+                expect(updatedRoles.system_user.permissions).toEqual(
+                    expect.arrayContaining([Permissions.MANAGE_OAUTH]),
+                );
+                expect(updatedRoles.team_user.permissions).toEqual(
+                    expect.arrayContaining([
+                        Permissions.MANAGE_INCOMING_WEBHOOKS,
+                        Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                        Permissions.MANAGE_SLASH_COMMANDS,
+                    ]),
+                );
             });
         });
 
@@ -159,7 +202,10 @@ describe('PolicyRolesAdapter', () => {
                 let value = mappingValueFromRoles('enableTeamCreation', roles);
                 expect(value).toEqual('true');
 
-                removePermissionFromRole(Permissions.CREATE_TEAM, roles.system_user);
+                removePermissionFromRole(
+                    Permissions.CREATE_TEAM,
+                    roles.system_user,
+                );
                 value = mappingValueFromRoles('enableTeamCreation', roles);
                 expect(value).toEqual('false');
             });
@@ -167,18 +213,48 @@ describe('PolicyRolesAdapter', () => {
 
         describe('enableOnlyAdminIntegrations', () => {
             test('returns the expected policy value for a enableOnlyAdminIntegrations policy', () => {
-                addPermissionToRole(Permissions.MANAGE_INCOMING_WEBHOOKS, roles.team_user);
-                addPermissionToRole(Permissions.MANAGE_OUTGOING_WEBHOOKS, roles.team_user);
-                addPermissionToRole(Permissions.MANAGE_SLASH_COMMANDS, roles.team_user);
-                addPermissionToRole(Permissions.MANAGE_OAUTH, roles.system_user);
-                let value = mappingValueFromRoles('enableOnlyAdminIntegrations', roles);
+                addPermissionToRole(
+                    Permissions.MANAGE_INCOMING_WEBHOOKS,
+                    roles.team_user,
+                );
+                addPermissionToRole(
+                    Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                    roles.team_user,
+                );
+                addPermissionToRole(
+                    Permissions.MANAGE_SLASH_COMMANDS,
+                    roles.team_user,
+                );
+                addPermissionToRole(
+                    Permissions.MANAGE_OAUTH,
+                    roles.system_user,
+                );
+                let value = mappingValueFromRoles(
+                    'enableOnlyAdminIntegrations',
+                    roles,
+                );
                 expect(value).toEqual('false');
 
-                removePermissionFromRole(Permissions.MANAGE_INCOMING_WEBHOOKS, roles.team_user);
-                removePermissionFromRole(Permissions.MANAGE_OUTGOING_WEBHOOKS, roles.team_user);
-                removePermissionFromRole(Permissions.MANAGE_SLASH_COMMANDS, roles.team_user);
-                removePermissionFromRole(Permissions.MANAGE_OAUTH, roles.system_user);
-                value = mappingValueFromRoles('enableOnlyAdminIntegrations', roles);
+                removePermissionFromRole(
+                    Permissions.MANAGE_INCOMING_WEBHOOKS,
+                    roles.team_user,
+                );
+                removePermissionFromRole(
+                    Permissions.MANAGE_OUTGOING_WEBHOOKS,
+                    roles.team_user,
+                );
+                removePermissionFromRole(
+                    Permissions.MANAGE_SLASH_COMMANDS,
+                    roles.team_user,
+                );
+                removePermissionFromRole(
+                    Permissions.MANAGE_OAUTH,
+                    roles.system_user,
+                );
+                value = mappingValueFromRoles(
+                    'enableOnlyAdminIntegrations',
+                    roles,
+                );
                 expect(value).toEqual('true');
             });
         });

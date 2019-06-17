@@ -15,7 +15,6 @@ import ViewImageModal from 'components/view_image';
 
 export default class FileAttachmentList extends React.Component {
     static propTypes = {
-
         /*
          * The post the files are attached to
          */
@@ -39,7 +38,7 @@ export default class FileAttachmentList extends React.Component {
         isEmbedVisible: PropTypes.bool,
 
         locale: PropTypes.string.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -55,21 +54,19 @@ export default class FileAttachmentList extends React.Component {
 
     hidePreviewModal = () => {
         this.setState({showPreviewModal: false});
-    }
+    };
 
     render() {
-        const {
-            compactDisplay,
-            fileInfos,
-            fileCount,
-            locale,
-        } = this.props;
+        const {compactDisplay, fileInfos, fileCount, locale} = this.props;
 
         if (compactDisplay === false) {
             if (fileInfos && fileInfos.length === 1) {
                 const fileType = getFileType(fileInfos[0].extension);
 
-                if (fileType === FileTypes.IMAGE || fileType === FileTypes.SVG) {
+                if (
+                    fileType === FileTypes.IMAGE ||
+                    fileType === FileTypes.SVG
+                ) {
                     return (
                         <SingleImageView
                             fileInfo={fileInfos[0]}
@@ -79,9 +76,7 @@ export default class FileAttachmentList extends React.Component {
                     );
                 }
             } else if (fileCount === 1 && this.props.isEmbedVisible) {
-                return (
-                    <div style={style.minHeightPlaceholder}/>
-                );
+                return <div style={style.minHeightPlaceholder} />;
             }
         }
 
@@ -97,7 +92,7 @@ export default class FileAttachmentList extends React.Component {
                         index={i}
                         handleImageClick={this.handleImageClick}
                         compactDisplay={compactDisplay}
-                    />
+                    />,
                 );
             }
         } else if (fileCount > 0) {
@@ -107,16 +102,14 @@ export default class FileAttachmentList extends React.Component {
                     <div
                         key={`fileCount-${i}`}
                         className='post-image__column post-image__column--placeholder'
-                    />
+                    />,
                 );
             }
         }
 
         return (
             <React.Fragment>
-                <div className='post-image__columns clearfix'>
-                    {postFiles}
-                </div>
+                <div className='post-image__columns clearfix'>{postFiles}</div>
                 <ViewImageModal
                     show={this.state.showPreviewModal}
                     onModalDismissed={this.hidePreviewModal}

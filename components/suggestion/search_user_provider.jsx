@@ -37,24 +37,21 @@ class SearchUserSuggestion extends Suggestion {
                 onClick={this.handleClick}
                 {...Suggestion.baseProps}
             >
-                <SelectIcon/>
+                <SelectIcon />
                 <img
                     alt={''}
                     className='profile-img rounded'
                     src={Utils.imageURLForUser(item)}
                 />
+
                 <div className='mention--align'>
-                    <span>
-                        {username}
-                    </span>
+                    <span>{username}</span>
                     <BotBadge
                         show={Boolean(item.is_bot)}
                         className='badge-autocomplete'
                     />
-                    <span className='mention__fullname'>
-                        {' '}
-                        {description}
-                    </span>
+
+                    <span className='mention__fullname'> {description}</span>
                 </div>
             </div>
         );
@@ -63,30 +60,27 @@ class SearchUserSuggestion extends Suggestion {
 
 export default class SearchUserProvider extends Provider {
     handlePretextChanged(pretext, resultsCallback) {
-        const captured = (/\bfrom:\s*(\S*)$/i).exec(pretext.toLowerCase());
+        const captured = /\bfrom:\s*(\S*)$/i.exec(pretext.toLowerCase());
         if (captured) {
             const usernamePrefix = captured[1];
 
             this.startNewRequest(usernamePrefix);
 
-            autocompleteUsersInTeam(
-                usernamePrefix,
-                (data) => {
-                    if (this.shouldCancelDispatch(usernamePrefix)) {
-                        return;
-                    }
-
-                    const users = Object.assign([], data.users);
-                    const mentions = users.map((user) => user.username);
-
-                    resultsCallback({
-                        matchedPretext: usernamePrefix,
-                        terms: mentions,
-                        items: users,
-                        component: SearchUserSuggestion,
-                    });
+            autocompleteUsersInTeam(usernamePrefix, (data) => {
+                if (this.shouldCancelDispatch(usernamePrefix)) {
+                    return;
                 }
-            );
+
+                const users = Object.assign([], data.users);
+                const mentions = users.map((user) => user.username);
+
+                resultsCallback({
+                    matchedPretext: usernamePrefix,
+                    terms: mentions,
+                    items: users,
+                    component: SearchUserSuggestion,
+                });
+            });
         }
 
         return Boolean(captured);

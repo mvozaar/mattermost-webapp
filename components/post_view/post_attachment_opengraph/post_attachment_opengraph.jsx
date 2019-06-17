@@ -19,7 +19,6 @@ const DIMENSIONS_NEAREST_POINT_IMAGE = {
 
 export default class PostAttachmentOpenGraph extends React.PureComponent {
     static propTypes = {
-
         /**
          * The link to display the open graph data for
          */
@@ -65,11 +64,15 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
         actions: PropTypes.shape({
             editPost: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     getBestImageUrl = () => {
-        return getBestImageUrl(this.props.openGraphData, this.props.post.metadata.images, this.props.hasImageProxy);
-    }
+        return getBestImageUrl(
+            this.props.openGraphData,
+            this.props.post.metadata.images,
+            this.props.hasImageProxy,
+        );
+    };
 
     isLargeImage = (imageUrl) => {
         if (!imageUrl) {
@@ -93,7 +96,7 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
         const imageRatio = width / height;
 
         return width >= largeImageMinWidth && imageRatio >= largeImageMinRatio;
-    }
+    };
 
     renderImageToggle() {
         return (
@@ -154,13 +157,13 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
         const props = Object.assign({}, this.props.post.props);
         props[PostTypes.REMOVE_LINK_PREVIEW] = 'true';
 
-        const patchedPost = ({
+        const patchedPost = {
             id: this.props.post.id,
             props,
-        });
+        };
 
         return this.props.actions.editPost(patchedPost);
-    }
+    };
 
     hasPreviewBeenRemoved() {
         const {post} = this.props;
@@ -213,11 +216,12 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
             body = (
                 <div className={'attachment__body attachment__body--opengraph'}>
                     <div>
-                        {this.truncateText(data.description)}
-                        {' '}
+                        {this.truncateText(data.description)}{' '}
                         {imageUrl && hasLargeImage && this.renderImageToggle()}
                     </div>
-                    {(imageUrl && hasLargeImage) && this.renderLargeImage(imageUrl)}
+                    {imageUrl &&
+                        hasLargeImage &&
+                        this.renderLargeImage(imageUrl)}
                 </div>
             );
         }
@@ -225,24 +229,51 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
         return (
             <div className='attachment attachment--opengraph'>
                 <div className='attachment__content'>
-                    <div className={'clearfix attachment__container attachment__container--opengraph'}>
-                        <div className={'attachment__body__wrap attachment__body__wrap--opengraph'}>
-                            <span className='sitename'>{this.truncateText(data.site_name)}</span>
+                    <div
+                        className={
+                            'clearfix attachment__container attachment__container--opengraph'
+                        }
+                    >
+                        <div
+                            className={
+                                'attachment__body__wrap attachment__body__wrap--opengraph'
+                            }
+                        >
+                            <span className='sitename'>
+                                {this.truncateText(data.site_name)}
+                            </span>
                             {removePreviewButton}
-                            <h1 className={'attachment__title attachment__title--opengraph' + (data.title ? '' : ' is-url')}>
+                            <h1
+                                className={
+                                    'attachment__title attachment__title--opengraph' +
+                                    (data.title ? '' : ' is-url')
+                                }
+                            >
                                 <a
                                     className='attachment__title-link attachment__title-link--opengraph'
-                                    href={useSafeUrl(data.url || this.props.link)}
+                                    href={useSafeUrl(
+                                        data.url || this.props.link,
+                                    )}
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    title={data.title || data.url || this.props.link}
+                                    title={
+                                        data.title ||
+                                        data.url ||
+                                        this.props.link
+                                    }
                                 >
-                                    {this.truncateText(data.title || data.url || this.props.link)}
+                                    {this.truncateText(
+                                        data.title ||
+                                            data.url ||
+                                            this.props.link,
+                                    )}
                                 </a>
                             </h1>
                             {body}
                         </div>
-                        {(imageUrl && !hasLargeImage) && this.renderSmallImage(imageUrl)}
+                        {imageUrl &&
+                            !hasLargeImage &&
+                            this.renderSmallImage(imageUrl)}
                     </div>
                 </div>
             </div>
@@ -251,7 +282,11 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
 }
 
 export function getBestImageUrl(openGraphData, imagesMetadata, hasImageProxy) {
-    if (!openGraphData || !openGraphData.images || openGraphData.images.length === 0) {
+    if (
+        !openGraphData ||
+        !openGraphData.images ||
+        openGraphData.images.length === 0
+    ) {
         return null;
     }
 
@@ -259,7 +294,10 @@ export function getBestImageUrl(openGraphData, imagesMetadata, hasImageProxy) {
     const images = openGraphData.images.map((image) => {
         const imageUrl = image.secure_url || image.url;
 
-        if ((image.width && image.height) || !(imagesMetadata && imagesMetadata[imageUrl])) {
+        if (
+            (image.width && image.height) ||
+            !(imagesMetadata && imagesMetadata[imageUrl])
+        ) {
             // The image already includes dimensions or we don't have the missing dimensions
             return image;
         }
@@ -271,7 +309,12 @@ export function getBestImageUrl(openGraphData, imagesMetadata, hasImageProxy) {
         };
     });
 
-    const bestImage = getNearestPoint(DIMENSIONS_NEAREST_POINT_IMAGE, images, 'width', 'height');
+    const bestImage = getNearestPoint(
+        DIMENSIONS_NEAREST_POINT_IMAGE,
+        images,
+        'width',
+        'height',
+    );
 
     return getImageSrc(bestImage.secure_url || bestImage.url, hasImageProxy);
 }

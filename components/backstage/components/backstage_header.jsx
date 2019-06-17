@@ -28,9 +28,12 @@ export default class BackstageHeader extends React.Component {
                     >
                         <i
                             className='fa fa-angle-right'
-                            title={formatMessage({id: 'generic_icons.breadcrumb', defaultMessage: 'Breadcrumb Icon'})}
+                            title={formatMessage({
+                                id: 'generic_icons.breadcrumb',
+                                defaultMessage: 'Breadcrumb Icon',
+                            })}
                         />
-                    </span>
+                    </span>,
                 );
             }
 
@@ -39,9 +42,7 @@ export default class BackstageHeader extends React.Component {
 
         return (
             <div className='backstage-header'>
-                <h1>
-                    {children}
-                </h1>
+                <h1>{children}</h1>
             </div>
         );
     }

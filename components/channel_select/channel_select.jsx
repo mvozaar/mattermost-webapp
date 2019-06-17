@@ -29,42 +29,42 @@ export default class ChannelSelect extends React.PureComponent {
 
     render() {
         const options = [
-            <option
-                key=''
-                value=''
-            >
-                {Utils.localizeMessage('channel_select.placeholder', '--- Select a channel ---')}
+            <option key='' value=''>
+                {Utils.localizeMessage(
+                    'channel_select.placeholder',
+                    '--- Select a channel ---',
+                )}
             </option>,
         ];
 
         this.props.channels.forEach((channel) => {
             const channelName = channel.display_name || channel.name;
-            if (channel.type === Constants.OPEN_CHANNEL && this.props.selectOpen) {
+            if (
+                channel.type === Constants.OPEN_CHANNEL &&
+                this.props.selectOpen
+            ) {
                 options.push(
-                    <option
-                        key={channel.id}
-                        value={channel.id}
-                    >
+                    <option key={channel.id} value={channel.id}>
                         {channelName}
-                    </option>
+                    </option>,
                 );
-            } else if (channel.type === Constants.PRIVATE_CHANNEL && this.props.selectPrivate) {
+            } else if (
+                channel.type === Constants.PRIVATE_CHANNEL &&
+                this.props.selectPrivate
+            ) {
                 options.push(
-                    <option
-                        key={channel.id}
-                        value={channel.id}
-                    >
+                    <option key={channel.id} value={channel.id}>
                         {channelName}
-                    </option>
+                    </option>,
                 );
-            } else if (channel.type === Constants.DM_CHANNEL && this.props.selectDm) {
+            } else if (
+                channel.type === Constants.DM_CHANNEL &&
+                this.props.selectDm
+            ) {
                 options.push(
-                    <option
-                        key={channel.id}
-                        value={channel.id}
-                    >
+                    <option key={channel.id} value={channel.id}>
                         {channelName}
-                    </option>
+                    </option>,
                 );
             }
         });

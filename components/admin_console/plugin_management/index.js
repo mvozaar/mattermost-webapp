@@ -23,15 +23,22 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            uploadPlugin,
-            removePlugin,
-            getPlugins,
-            getPluginStatuses,
-            enablePlugin,
-            disablePlugin,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                uploadPlugin,
+                removePlugin,
+                getPlugins,
+                getPluginStatuses,
+                enablePlugin,
+                disablePlugin,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PluginManagement);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PluginManagement);

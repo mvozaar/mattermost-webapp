@@ -101,20 +101,19 @@ export default class ManageTimezones extends React.PureComponent {
             timezone,
         };
 
-        actions.updateMe(updatedUser).
-            then(({data, error: err}) => {
-                if (data) {
-                    this.props.updateSection('');
-                } else if (err) {
-                    let serverError;
-                    if (err.message) {
-                        serverError = err.message;
-                    } else {
-                        serverError = err;
-                    }
-                    this.setState({serverError, isSaving: false});
+        actions.updateMe(updatedUser).then(({data, error: err}) => {
+            if (data) {
+                this.props.updateSection('');
+            } else if (err) {
+                let serverError;
+                if (err.message) {
+                    serverError = err.message;
+                } else {
+                    serverError = err;
                 }
-            });
+                this.setState({serverError, isSaving: false});
+            }
+        });
     };
 
     handleAutomaticTimezone = (e) => {
@@ -137,22 +136,19 @@ export default class ManageTimezones extends React.PureComponent {
 
     render() {
         const {timezones} = this.props;
-        const {
-            useAutomaticTimezone,
-            automaticTimezone,
-        } = this.state;
+        const {useAutomaticTimezone, automaticTimezone} = this.state;
 
         let serverError;
         if (this.state.serverError) {
-            serverError = <label className='has-error'>{this.state.serverError}</label>;
+            serverError = (
+                <label className='has-error'>{this.state.serverError}</label>
+            );
         }
 
         const inputs = [];
 
         const timezoneRegion = (
-            <div
-                className='section-describe padding-top'
-            >
+            <div className='section-describe padding-top'>
                 {useAutomaticTimezone && getTimezoneRegion(automaticTimezone)}
             </div>
         );
@@ -168,10 +164,12 @@ export default class ManageTimezones extends React.PureComponent {
                         onChange={this.handleAutomaticTimezone}
                         disabled={noTimezonesFromServer}
                     />
+
                     <FormattedMessage
                         id='user.settings.timezones.automatic'
                         defaultMessage='Set automatically'
                     />
+
                     {timezoneRegion}
                 </label>
             </div>
@@ -204,6 +202,7 @@ export default class ManageTimezones extends React.PureComponent {
                         openOnFocus={true}
                         disabled={noTimezonesFromServer}
                     />
+
                     {serverError}
                 </div>
             </div>
@@ -217,12 +216,12 @@ export default class ManageTimezones extends React.PureComponent {
 
         inputs.push(
             <div>
-                <br/>
+                <br />
                 <FormattedHTMLMessage
                     id='user.settings.timezones.promote'
                     defaultMessage='Select the time zone used for timestamps in the user interface and email notifications.'
                 />
-            </div>
+            </div>,
         );
 
         return (
@@ -243,4 +242,3 @@ export default class ManageTimezones extends React.PureComponent {
         );
     }
 }
-

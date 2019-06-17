@@ -12,7 +12,6 @@ export const DEFAULT_NUM_PER_PAGE = 50;
 
 export default class ListModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * loadItems is a function that receives the params (pageNumber, searchTerm) and should return an object
          * with the shape {items: [], totalCount: 0}.
@@ -70,7 +69,7 @@ export default class ListModal extends React.PureComponent {
          * DEFAULT_NUM_PER_PAGE.
          */
         numPerPage: PropTypes.number,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -94,45 +93,40 @@ export default class ListModal extends React.PureComponent {
 
     handleHide = () => {
         this.setState({show: false});
-    }
+    };
 
     handleExit = () => {
         if (this.props.onHide) {
             this.props.onHide();
         }
-    }
+    };
 
     renderRows() {
         if (this.state.loading) {
             return (
                 <div>
-                    <LoadingScreen
-                        position='absolute'
-                        key='loading'
-                    />
+                    <LoadingScreen position='absolute' key='loading' />
                 </div>
             );
         }
-        return this.state.items.map((item) => (
-            this.props.renderRow(item, this)
-        ));
+        return this.state.items.map((item) => this.props.renderRow(item, this));
     }
 
     onNext = () => {
         const nextPage = this.state.page + 1;
         this.onPageChange(nextPage);
-    }
+    };
 
     onPrev = () => {
         const prevPage = this.state.page - 1;
         this.onPageChange(prevPage);
-    }
+    };
 
     onPageChange = async (page) => {
         this.setState({loading: true});
         const items = await this.props.loadItems(page, this.state.searchTerm);
         this.setState({page, items, loading: false});
-    }
+    };
 
     onSearchInput = async (event) => {
         const {target} = event;
@@ -141,11 +135,11 @@ export default class ListModal extends React.PureComponent {
         const result = await this.props.loadItems(0, searchTerm);
         const {items, totalCount} = result;
         this.setState({loading: false, items, totalCount});
-    }
+    };
 
     paginationRange() {
-        let startCount = (this.state.page * this.numPerPage) + 1;
-        const endCount = (startCount + this.state.items.length) - 1;
+        let startCount = this.state.page * this.numPerPage + 1;
+        const endCount = startCount + this.state.items.length - 1;
         if (endCount === 0) {
             startCount = 0;
         }
@@ -166,14 +160,16 @@ export default class ListModal extends React.PureComponent {
                         <Modal.Title componentClass='h1'>
                             <span className='name'>{this.props.titleText}</span>
                         </Modal.Title>
-                        {this.props.titleBarButtonText && this.props.titleBarButtonOnClick &&
-                            <a
-                                className='btn btn-md btn-primary'
-                                href='#'
-                                onClick={this.props.titleBarButtonOnClick}
-                            >
-                                {this.props.titleBarButtonText}
-                            </a>}
+                        {this.props.titleBarButtonText &&
+                            this.props.titleBarButtonOnClick && (
+                                <a
+                                    className='btn btn-md btn-primary'
+                                    href='#'
+                                    onClick={this.props.titleBarButtonOnClick}
+                                >
+                                    {this.props.titleBarButtonText}
+                                </a>
+                            )}
                     </Modal.Header>
                     <Modal.Body>
                         <div className='filtered-user-list'>
@@ -182,7 +178,9 @@ export default class ListModal extends React.PureComponent {
                                     <input
                                         id='searchUsersInput'
                                         className='form-control filter-textbox'
-                                        placeholder={this.props.searchPlaceholderText}
+                                        placeholder={
+                                            this.props.searchPlaceholderText
+                                        }
                                         onChange={this.onSearchInput}
                                     />
                                 </div>
@@ -201,36 +199,39 @@ export default class ListModal extends React.PureComponent {
                                 </div>
                             </div>
                             <div className='more-modal__list'>
-                                <div>
-                                    {this.renderRows()}
-                                </div>
+                                <div>{this.renderRows()}</div>
                             </div>
                             <div className='filter-controls'>
-                                {this.state.page > 0 &&
-                                <button
-                                    onClick={this.onPrev}
-                                    className='btn btn-link filter-control filter-control__prev'
-                                >
-                                    <FormattedMessage
-                                        id='filtered_user_list.prev'
-                                        defaultMessage='Previous'
-                                    />
-                                </button>}
-                                {(this.state.items.length >= this.props.numPerPage) && endCount !== this.state.totalCount &&
-                                <button
-                                    onClick={this.onNext}
-                                    className='btn btn-link filter-control filter-control__next'
-                                >
-                                    <FormattedMessage
-                                        id='filtered_user_list.next'
-                                        defaultMessage='Next'
-                                    />
-                                </button>}
+                                {this.state.page > 0 && (
+                                    <button
+                                        onClick={this.onPrev}
+                                        className='btn btn-link filter-control filter-control__prev'
+                                    >
+                                        <FormattedMessage
+                                            id='filtered_user_list.prev'
+                                            defaultMessage='Previous'
+                                        />
+                                    </button>
+                                )}
+
+                                {this.state.items.length >=
+                                    this.props.numPerPage &&
+                                    endCount !== this.state.totalCount && (
+                                        <button
+                                            onClick={this.onNext}
+                                            className='btn btn-link filter-control filter-control__next'
+                                        >
+                                            <FormattedMessage
+                                                id='filtered_user_list.next'
+                                                defaultMessage='Next'
+                                            />
+                                        </button>
+                                    )}
                             </div>
                         </div>
                     </Modal.Body>
                 </Modal>
-            </div >
+            </div>
         );
     }
 }

@@ -14,7 +14,7 @@ export default class SidebarTutorialTip extends React.PureComponent {
     static propTypes = {
         townSquareDisplayName: PropTypes.string,
         offTopicDisplayName: PropTypes.string,
-    }
+    };
 
     render = () => {
         const screens = [];
@@ -40,10 +40,12 @@ export default class SidebarTutorialTip extends React.PureComponent {
                 <p>
                     <FormattedMarkdownMessage
                         id='sidebar.tutorialScreen1.body'
-                        defaultMessage={'**Channels** organize conversations across different topics. They\'re open to everyone on your team. To send private communications use **Direct Messages** for a single person or **Private Channels** for multiple people.'}
+                        defaultMessage={
+                            "**Channels** organize conversations across different topics. They're open to everyone on your team. To send private communications use **Direct Messages** for a single person or **Private Channels** for multiple people."
+                        }
                     />
                 </p>
-            </div>
+            </div>,
         );
 
         screens.push(
@@ -51,7 +53,7 @@ export default class SidebarTutorialTip extends React.PureComponent {
                 <h4>
                     <FormattedMessage
                         id='sidebar.tutorialScreen2.title'
-                        defaultMessage='"{townsquare}" and "{offtopic}" channels'
+                        defaultMessage="'{townsquare}' and '{offtopic}' channels"
                         values={{
                             townsquare: townSquareDisplayName,
                             offtopic: offTopicDisplayName,
@@ -82,7 +84,7 @@ export default class SidebarTutorialTip extends React.PureComponent {
                         }}
                     />
                 </p>
-            </div>
+            </div>,
         );
 
         screens.push(
@@ -96,16 +98,16 @@ export default class SidebarTutorialTip extends React.PureComponent {
                 <p>
                     <FormattedMarkdownMessage
                         id='sidebar.tutorialScreen3.body1'
-                        defaultMessage='Click **"More..."** to create a new channel or join an existing one.'
+                        defaultMessage="Click **'More...'** to create a new channel or join an existing one."
                     />
                 </p>
                 <p>
                     <FormattedMarkdownMessage
                         id='sidebar.tutorialScreen3.body2'
-                        defaultMessage='You can also create a new channel by clicking the **"+" symbol** next to the public or private channel header.'
+                        defaultMessage="You can also create a new channel by clicking the **'+' symbol** next to the public or private channel header."
                     />
                 </p>
-            </div>
+            </div>,
         );
 
         return (
@@ -116,6 +118,5 @@ export default class SidebarTutorialTip extends React.PureComponent {
                 diagnosticsTag='tutorial_tip_2_channels'
             />
         );
-    }
+    };
 }
-

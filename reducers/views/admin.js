@@ -13,29 +13,32 @@ const initialState = {
 
 function navigationBlock(state = initialState, action) {
     switch (action.type) {
-    case ActionTypes.SET_NAVIGATION_BLOCKED:
-        return {...state, blocked: action.blocked};
-    case ActionTypes.DEFER_NAVIGATION:
-        return {
-            ...state,
-            onNavigationConfirmed: action.onNavigationConfirmed,
-            showNavigationPrompt: true,
-        };
-    case ActionTypes.CANCEL_NAVIGATION:
-        return {
-            ...state,
-            onNavigationConfirmed: null,
-            showNavigationPrompt: false,
-        };
-    case ActionTypes.CONFIRM_NAVIGATION:
-        return {
-            ...state,
-            blocked: false,
-            onNavigationConfirmed: null,
-            showNavigationPrompt: false,
-        };
-    default:
-        return state;
+        case ActionTypes.SET_NAVIGATION_BLOCKED:
+            return {...state, blocked: action.blocked};
+        case ActionTypes.DEFER_NAVIGATION:
+            return {
+                ...state,
+                onNavigationConfirmed: action.onNavigationConfirmed,
+                showNavigationPrompt: true,
+            };
+
+        case ActionTypes.CANCEL_NAVIGATION:
+            return {
+                ...state,
+                onNavigationConfirmed: null,
+                showNavigationPrompt: false,
+            };
+
+        case ActionTypes.CONFIRM_NAVIGATION:
+            return {
+                ...state,
+                blocked: false,
+                onNavigationConfirmed: null,
+                showNavigationPrompt: false,
+            };
+
+        default:
+            return state;
     }
 }
 

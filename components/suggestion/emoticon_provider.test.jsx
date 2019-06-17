@@ -22,6 +22,7 @@ describe('components/EmoticonProvider', () => {
         ['thumbsup-custom', {name: 'thumbsup-custom', category: 'custom'}],
         ['lithuania-custom', {name: 'lithuania-custom', category: 'custom'}],
     ]);
+
     const emojiMap = new EmojiMap(customEmojis);
 
     it('should not suggest emojis when partial name < MIN_EMOTICON_LENGTH', () => {
@@ -79,14 +80,18 @@ describe('components/EmoticonProvider', () => {
         const pretext = ':blacklisted';
         const recentEmojis = ['blacklisted-1'];
 
-        const blacklistedEmojis = EMOJI_CATEGORY_SUGGESTION_BLACKLIST.map((category, index) => {
-            const name = `blacklisted-${index}`;
-            return [name, {name, category}];
-        });
+        const blacklistedEmojis = EMOJI_CATEGORY_SUGGESTION_BLACKLIST.map(
+            (category, index) => {
+                const name = `blacklisted-${index}`;
+                return [name, {name, category}];
+            },
+        );
+
         const customEmojisWithBlacklist = new Map([
             ...blacklistedEmojis,
             ['not-blacklisted', {name: 'not-blacklisted', category: 'custom'}],
         ]);
+
         const emojiMapWithBlacklist = new EmojiMap(customEmojisWithBlacklist);
 
         getEmojiMap.mockReturnValue(emojiMapWithBlacklist);
@@ -140,7 +145,14 @@ describe('components/EmoticonProvider', () => {
 
     it('should suggest emojis ordered by recently used first (custom and system)', () => {
         const pretext = ':thu';
-        const recentEmojis = ['thumbsdown-custom', 'lithuania-custom', 'thumbsup', '-1', 'smile'];
+        const recentEmojis = [
+            'thumbsdown-custom',
+            'lithuania-custom',
+            'thumbsup',
+            '-1',
+            'smile',
+        ];
+
         getEmojiMap.mockReturnValue(emojiMap);
         getRecentEmojis.mockReturnValue(recentEmojis);
 
@@ -158,7 +170,13 @@ describe('components/EmoticonProvider', () => {
 
     it('should suggest emojis ordered by recently used first with partial name match', () => {
         const pretext = ':umbs';
-        const recentEmojis = ['lithuania-custom', 'thumbsup-custom', '+1', 'smile'];
+        const recentEmojis = [
+            'lithuania-custom',
+            'thumbsup-custom',
+            '+1',
+            'smile',
+        ];
+
         getEmojiMap.mockReturnValue(emojiMap);
         getRecentEmojis.mockReturnValue(recentEmojis);
 

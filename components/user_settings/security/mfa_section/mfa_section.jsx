@@ -49,6 +49,7 @@ export default class MfaSection extends React.PureComponent {
             this.setState({
                 serverError: error.message,
             });
+
             return;
         }
 
@@ -123,11 +124,7 @@ export default class MfaSection extends React.PureComponent {
             );
         } else {
             content = (
-                <a
-                    className='btn btn-primary'
-                    href='#'
-                    onClick={this.setupMfa}
-                >
+                <a className='btn btn-primary' href='#' onClick={this.setupMfa}>
                     <FormattedMessage
                         id='user.settings.mfa.add'
                         defaultMessage='Add MFA to your account'
@@ -139,7 +136,7 @@ export default class MfaSection extends React.PureComponent {
         return (
             <div className='padding-top'>
                 {content}
-                <br/>
+                <br />
             </div>
         );
     };

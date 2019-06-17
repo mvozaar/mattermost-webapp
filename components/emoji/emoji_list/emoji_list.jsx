@@ -22,7 +22,6 @@ const EMOJI_SEARCH_DELAY_MILLISECONDS = 200;
 
 export default class EmojiList extends React.Component {
     static propTypes = {
-
         /**
          * Custom emojis on the system.
          */
@@ -34,7 +33,6 @@ export default class EmojiList extends React.Component {
         scrollToTop: PropTypes.func.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * Get pages of custom emojis.
              */
@@ -45,7 +43,7 @@ export default class EmojiList extends React.Component {
              */
             searchCustomEmojis: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -62,12 +60,14 @@ export default class EmojiList extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.getCustomEmojis(0, EMOJI_PER_PAGE + 1, Emoji.SORT_BY_NAME, true).then(({data}) => {
-            this.setState({loading: false});
-            if (data && data.length < EMOJI_PER_PAGE) {
-                this.setState({missingPages: false});
-            }
-        });
+        this.props.actions
+            .getCustomEmojis(0, EMOJI_PER_PAGE + 1, Emoji.SORT_BY_NAME, true)
+            .then(({data}) => {
+                this.setState({loading: false});
+                if (data && data.length < EMOJI_PER_PAGE) {
+                    this.setState({missingPages: false});
+                }
+            });
     }
 
     nextPage = (e) => {
@@ -77,15 +77,17 @@ export default class EmojiList extends React.Component {
 
         const next = this.state.page + 1;
         this.setState({nextLoading: true});
-        this.props.actions.getCustomEmojis(next, EMOJI_PER_PAGE, Emoji.SORT_BY_NAME, true).then(({data}) => {
-            this.setState({page: next, nextLoading: false});
-            if (data && data.length < EMOJI_PER_PAGE) {
-                this.setState({missingPages: false});
-            }
+        this.props.actions
+            .getCustomEmojis(next, EMOJI_PER_PAGE, Emoji.SORT_BY_NAME, true)
+            .then(({data}) => {
+                this.setState({page: next, nextLoading: false});
+                if (data && data.length < EMOJI_PER_PAGE) {
+                    this.setState({missingPages: false});
+                }
 
-            this.props.scrollToTop();
-        });
-    }
+                this.props.scrollToTop();
+            });
+    };
 
     previousPage = (e) => {
         if (e) {
@@ -94,7 +96,7 @@ export default class EmojiList extends React.Component {
 
         this.setState({page: this.state.page - 1, nextLoading: false});
         this.props.scrollToTop();
-    }
+    };
 
     onSearchChange = (e) => {
         if (!e || !e.target) {
@@ -113,15 +115,22 @@ export default class EmojiList extends React.Component {
 
             this.setState({loading: true});
 
-            const {data} = await this.props.actions.searchCustomEmojis(term, {}, true);
+            const {data} = await this.props.actions.searchCustomEmojis(
+                term,
+                {},
+                true,
+            );
 
             if (data) {
-                this.setState({searchEmojis: data.map((em) => em.id), loading: false});
+                this.setState({
+                    searchEmojis: data.map((em) => em.id),
+                    loading: false,
+                });
             } else {
                 this.setState({searchEmojis: [], loading: false});
             }
         }, EMOJI_SEARCH_DELAY_MILLISECONDS);
-    }
+    };
 
     deleteFromSearch = (emojiId) => {
         if (!this.state.searchEmojis) {
@@ -137,7 +146,7 @@ export default class EmojiList extends React.Component {
         const newSearchEmojis = [...this.state.searchEmojis];
         newSearchEmojis.splice(index, 1);
         this.setState({searchEmojis: newSearchEmojis});
-    }
+    };
 
     render() {
         const searchEmojis = this.state.searchEmojis;
@@ -152,11 +161,14 @@ export default class EmojiList extends React.Component {
                     className='backstage-list__item backstage-list__empty'
                 >
                     <td colSpan='4'>
-                        <LoadingScreen key='loading'/>
+                        <LoadingScreen key='loading' />
                     </td>
-                </tr>
+                </tr>,
             );
-        } else if (this.props.emojiIds.length === 0 || (searchEmojis && searchEmojis.length === 0)) {
+        } else if (
+            this.props.emojiIds.length === 0 ||
+            (searchEmojis && searchEmojis.length === 0)
+        ) {
             emojis.push(
                 <tr
                     key='empty'
@@ -168,7 +180,7 @@ export default class EmojiList extends React.Component {
                             defaultMessage='No custom emoji found'
                         />
                     </td>
-                </tr>
+                </tr>,
             );
         } else if (searchEmojis) {
             searchEmojis.forEach((emojiId) => {
@@ -177,20 +189,23 @@ export default class EmojiList extends React.Component {
                         key={'emoji_search_item' + emojiId}
                         emojiId={emojiId}
                         onDelete={this.deleteFromSearch}
-                    />
+                    />,
                 );
             });
         } else {
             const pageStart = this.state.page * EMOJI_PER_PAGE;
             const pageEnd = pageStart + EMOJI_PER_PAGE;
-            const emojisToDisplay = this.props.emojiIds.slice(pageStart, pageEnd);
+            const emojisToDisplay = this.props.emojiIds.slice(
+                pageStart,
+                pageEnd,
+            );
 
             emojisToDisplay.forEach((emojiId) => {
                 emojis.push(
                     <EmojiListItem
                         key={'emoji_list_item' + emojiId}
                         emojiId={emojiId}
-                    />
+                    />,
                 );
             });
 
@@ -201,7 +216,8 @@ export default class EmojiList extends React.Component {
                             id='filtered_user_list.next'
                             defaultMessage='Next'
                         />
-                        <NextIcon additionalClassName='margin-left'/>
+
+                        <NextIcon additionalClassName='margin-left' />
                     </span>
                 );
 
@@ -224,7 +240,7 @@ export default class EmojiList extends React.Component {
                         className='btn btn-link'
                         onClick={this.previousPage}
                     >
-                        <PreviousIcon additionalClassName='margin-right'/>
+                        <PreviousIcon additionalClassName='margin-right' />
                         <FormattedMessage
                             id='filtered_user_list.prev'
                             defaultMessage='Previous'
@@ -238,11 +254,14 @@ export default class EmojiList extends React.Component {
             <div>
                 <div className='backstage-filters'>
                     <div className='backstage-filter__search'>
-                        <SearchIcon/>
+                        <SearchIcon />
                         <LocalizedInput
                             type='search'
                             className='form-control'
-                            placeholder={{id: t('emoji_list.search'), defaultMessage: 'Search Custom Emoji'}}
+                            placeholder={{
+                                id: t('emoji_list.search'),
+                                defaultMessage: 'Search Custom Emoji',
+                            }}
                             onChange={this.onSearchChange}
                             style={style.search}
                         />
@@ -292,9 +311,7 @@ export default class EmojiList extends React.Component {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {emojis}
-                        </tbody>
+                        <tbody>{emojis}</tbody>
                     </table>
                 </div>
                 <div className='filter-controls padding-top x2'>

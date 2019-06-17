@@ -14,7 +14,6 @@ import SpinnerButton from 'components/spinner_button.jsx';
 
 export default class AbstractOutgoingWebhook extends React.Component {
     static propTypes = {
-
         /**
          * The current team
          */
@@ -31,8 +30,8 @@ export default class AbstractOutgoingWebhook extends React.Component {
         footer: PropTypes.object.isRequired,
 
         /**
-        * The spinner loading text to render, has id and defaultMessage
-        */
+         * The spinner loading text to render, has id and defaultMessage
+         */
         loading: PropTypes.object.isRequired,
 
         /**
@@ -64,7 +63,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
          * Whether to allow configuration of the default post icon.
          */
         enablePostIconOverride: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -92,7 +91,8 @@ export default class AbstractOutgoingWebhook extends React.Component {
         return {
             displayName: hook.display_name || '',
             description: hook.description || '',
-            contentType: hook.content_type || 'application/x-www-form-urlencoded',
+            contentType:
+                hook.content_type || 'application/x-www-form-urlencoded',
             channelId: hook.channel_id || '',
             triggerWords,
             triggerWhen: hook.trigger_when || 0,
@@ -102,7 +102,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
             username: hook.username || '',
             iconURL: hook.icon_url || '',
         };
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -178,61 +178,61 @@ export default class AbstractOutgoingWebhook extends React.Component {
         };
 
         this.props.action(hook).then(() => this.setState({saving: false}));
-    }
+    };
 
     updateDisplayName = (e) => {
         this.setState({
             displayName: e.target.value,
         });
-    }
+    };
 
     updateDescription = (e) => {
         this.setState({
             description: e.target.value,
         });
-    }
+    };
 
     updateContentType = (e) => {
         this.setState({
             contentType: e.target.value,
         });
-    }
+    };
 
     updateChannelId = (e) => {
         this.setState({
             channelId: e.target.value,
         });
-    }
+    };
 
     updateTriggerWords = (e) => {
         this.setState({
             triggerWords: e.target.value,
         });
-    }
+    };
 
     updateTriggerWhen = (e) => {
         this.setState({
             triggerWhen: e.target.value,
         });
-    }
+    };
 
     updateCallbackUrls = (e) => {
         this.setState({
             callbackUrls: e.target.value,
         });
-    }
+    };
 
     updateUsername = (e) => {
         this.setState({
             username: e.target.value,
         });
-    }
+    };
 
     updateIconURL = (e) => {
         this.setState({
             iconURL: e.target.value,
         });
-    }
+    };
 
     render() {
         const contentTypeOption1 = 'application/x-www-form-urlencoded';
@@ -245,7 +245,9 @@ export default class AbstractOutgoingWebhook extends React.Component {
         return (
             <div className='backstage-content'>
                 <BackstageHeader>
-                    <Link to={`/${this.props.team.name}/integrations/outgoing_webhooks`}>
+                    <Link
+                        to={`/${this.props.team.name}/integrations/outgoing_webhooks`}
+                    >
                         <FormattedMessage
                             id='installed_outgoing_webhooks.header'
                             defaultMessage='Outgoing Webhooks'
@@ -280,6 +282,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     value={this.state.displayName}
                                     onChange={this.updateDisplayName}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_outgoing_webhook.displayName.help'
@@ -307,6 +310,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     value={this.state.description}
                                     onChange={this.updateDescription}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_outgoing_webhook.description.help'
@@ -331,14 +335,10 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     value={this.state.contentType}
                                     onChange={this.updateContentType}
                                 >
-                                    <option
-                                        value={contentTypeOption1}
-                                    >
+                                    <option value={contentTypeOption1}>
                                         {contentTypeOption1}
                                     </option>
-                                    <option
-                                        value={contentTypeOption2}
-                                    >
+                                    <option value={contentTypeOption2}>
                                         {contentTypeOption2}
                                     </option>
                                 </select>
@@ -379,6 +379,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     onChange={this.updateChannelId}
                                     selectOpen={true}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_outgoing_webhook.channel.help'
@@ -406,6 +407,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     value={this.state.triggerWords}
                                     onChange={this.updateTriggerWords}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_outgoing_webhook.triggerWords.help'
@@ -430,15 +432,17 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     value={this.state.triggerWhen}
                                     onChange={this.updateTriggerWhen}
                                 >
-                                    <option
-                                        value='0'
-                                    >
-                                        {localizeMessage('add_outgoing_webhook.triggerWordsTriggerWhenFullWord', 'First word matches a trigger word exactly')}
+                                    <option value='0'>
+                                        {localizeMessage(
+                                            'add_outgoing_webhook.triggerWordsTriggerWhenFullWord',
+                                            'First word matches a trigger word exactly',
+                                        )}
                                     </option>
-                                    <option
-                                        value='1'
-                                    >
-                                        {localizeMessage('add_outgoing_webhook.triggerWordsTriggerWhenStartsWith', 'First word starts with a trigger word')}
+                                    <option value='1'>
+                                        {localizeMessage(
+                                            'add_outgoing_webhook.triggerWordsTriggerWhenStartsWith',
+                                            'First word starts with a trigger word',
+                                        )}
                                     </option>
                                 </select>
                                 <div className='form__help'>
@@ -468,6 +472,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     value={this.state.callbackUrls}
                                     onChange={this.updateCallbackUrls}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_outgoing_webhook.callbackUrls.help'
@@ -475,7 +480,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                         values={{
                                             link: (
                                                 <a
-                                                    href='https://about.mattermost.com/default-allow-internal-connections-settings-documentation/'
+                                                    href='https://about.securCom.me/default-allow-internal-connections-settings-documentation/'
                                                     target='_blank'
                                                     rel='noopener noreferrer'
                                                 >
@@ -490,7 +495,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        {this.props.enablePostUsernameOverride &&
+                        {this.props.enablePostUsernameOverride && (
                             <div className='form-group'>
                                 <label
                                     className='control-label col-sm-4'
@@ -510,16 +515,18 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                         value={this.state.username}
                                         onChange={this.updateUsername}
                                     />
+
                                     <div className='form__help'>
                                         <FormattedMessage
                                             id='add_outgoing_webhook.username.help'
-                                            defaultMessage='Choose the username this integration will post as. Usernames can be up to 22 characters, and may contain lowercase letters, numbers and the symbols "-", "_", and ".".'
+                                            defaultMessage="Choose the username this integration will post as. Usernames can be up to 22 characters, and may contain lowercase letters, numbers and the symbols '-', '_', and '.'."
                                         />
                                     </div>
                                 </div>
                             </div>
-                        }
-                        {this.props.enablePostIconOverride &&
+                        )}
+
+                        {this.props.enablePostIconOverride && (
                             <div className='form-group'>
                                 <label
                                     className='control-label col-sm-4'
@@ -539,6 +546,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                         value={this.state.iconURL}
                                         onChange={this.updateIconURL}
                                     />
+
                                     <div className='form__help'>
                                         <FormattedMessage
                                             id='add_outgoing_webhook.icon_url.help'
@@ -547,12 +555,17 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        }
+                        )}
+
                         <div className='backstage-form__footer'>
                             <FormError
                                 type='backstage'
-                                errors={[this.props.serverError, this.state.clientError]}
+                                errors={[
+                                    this.props.serverError,
+                                    this.state.clientError,
+                                ]}
                             />
+
                             <Link
                                 className='btn btn-link btn-sm'
                                 to={`/${this.props.team.name}/integrations/outgoing_webhooks`}
@@ -566,13 +579,18 @@ export default class AbstractOutgoingWebhook extends React.Component {
                                 className='btn btn-primary'
                                 type='submit'
                                 spinning={this.state.saving}
-                                spinningText={localizeMessage(this.props.loading.id, this.props.loading.defaultMessage)}
+                                spinningText={localizeMessage(
+                                    this.props.loading.id,
+                                    this.props.loading.defaultMessage,
+                                )}
                                 onClick={this.handleSubmit}
                                 id='saveWebhook'
                             >
                                 <FormattedMessage
                                     id={footerToRender.id}
-                                    defaultMessage={footerToRender.defaultMessage}
+                                    defaultMessage={
+                                        footerToRender.defaultMessage
+                                    }
                                 />
                             </SpinnerButton>
                             {renderExtra}

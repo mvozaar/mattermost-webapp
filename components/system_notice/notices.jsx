@@ -24,70 +24,87 @@ export default [
         title: (
             <FormattedMarkdownMessage
                 id='system_notice.title'
-                defaultMessage='**Notice**\nfrom Mattermost'
+                defaultMessage='**Notice**\\nfrom SCC'
             />
         ),
+
         icon: mattermostIcon,
         body: (
             <FormattedMarkdownMessage
                 id='system_notice.body.api3'
-                defaultMessage='If you’ve created or installed integrations in the last two years, find out how [recent changes](!https://about.mattermost.com/default-apiv3-deprecation-guide) may have affected them.'
+                defaultMessage='If you\u2019ve created or installed integrations in the last two years, find out how [recent changes](!https://about.securCom.me/default-apiv3-deprecation-guide) may have affected them.'
             />
         ),
+
         allowForget: true,
         show: (serverVersion, config) => {
-            if (config.InstallationDate >= new Date(2018, 5, 16, 0, 0, 0, 0).getTime()) {
+            if (
+                config.InstallationDate >=
+                new Date(2018, 5, 16, 0, 0, 0, 0).getTime()
+            ) {
                 return false;
             }
             return true;
         },
     },
+
     {
         name: 'advanced_permissions',
         adminOnly: true,
         title: (
             <FormattedMarkdownMessage
                 id='system_notice.title'
-                defaultMessage='**Notice**\nfrom Mattermost'
+                defaultMessage='**Notice**\\nfrom SCC'
             />
         ),
+
         icon: mattermostIcon,
         body: (
             <FormattedMarkdownMessage
                 id='system_notice.body.permissions'
-                defaultMessage='Some policy and permission System Console settings have moved with the release of [advanced permissions](!https://about.mattermost.com/default-advanced-permissions) in Enterprise E10 and E20.'
+                defaultMessage='Some policy and permission System Console settings have moved with the release of [advanced permissions](!https://about.securCom.me/default-advanced-permissions) in Enterprise E10 and E20.'
             />
         ),
+
         allowForget: true,
         show: (serverVersion, config, license) => {
             if (license.IsLicensed === 'false') {
                 return false;
             }
-            if (config.InstallationDate > new Date(2018, 5, 16, 0, 0, 0, 0).getTime()) {
+            if (
+                config.InstallationDate >
+                new Date(2018, 5, 16, 0, 0, 0, 0).getTime()
+            ) {
                 return false;
             }
-            if (license.IsLicensed === 'true' && license.IssuedAt > new Date(2018, 5, 16, 0, 0, 0, 0).getTime()) {
+            if (
+                license.IsLicensed === 'true' &&
+                license.IssuedAt > new Date(2018, 5, 16, 0, 0, 0, 0).getTime()
+            ) {
                 return false;
             }
             return true;
         },
     },
+
     {
         name: 'ee_upgrade_advice',
         adminOnly: true,
         title: (
             <FormattedMarkdownMessage
                 id='system_notice.title'
-                defaultMessage='**Notice**\nfrom Mattermost'
+                defaultMessage='**Notice**\\nfrom SCC'
             />
         ),
+
         icon: mattermostIcon,
         body: (
             <FormattedMarkdownMessage
                 id='system_notice.body.ee_upgrade_advice'
-                defaultMessage='Enterprise Edition is recommended to ensure optimal operation and reliability. [Learn more](!https://mattermost.com/performance).'
+                defaultMessage='Enterprise Edition is recommended to ensure optimal operation and reliability. [Learn more](!https://securCom.me/performance).'
             />
         ),
+
         allowForget: false,
         show: (serverVersion, config, license, analytics) => {
             const USERS_THRESHOLD = 10000;

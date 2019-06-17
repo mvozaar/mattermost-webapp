@@ -22,10 +22,8 @@ export default class SidebarChannelButtonOrLink extends React.PureComponent {
         channelType: PropTypes.string.isRequired,
         channelId: PropTypes.string.isRequired,
         channelName: PropTypes.string.isRequired,
-        displayName: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.object,
-        ]).isRequired,
+        displayName: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+            .isRequired,
         channelStatus: PropTypes.string,
         handleClose: PropTypes.func,
         hasDraft: PropTypes.bool.isRequired,
@@ -36,28 +34,25 @@ export default class SidebarChannelButtonOrLink extends React.PureComponent {
         teammateDeletedAt: PropTypes.number,
         teammateIsBot: PropTypes.bool,
         channelIsArchived: PropTypes.bool.isRequired,
-    }
+    };
 
-    overlayTriggerAttr = ['hover', 'focus']
+    overlayTriggerAttr = ['hover', 'focus'];
 
     trackChannelSelectedEvent = () => {
         mark('SidebarChannelLink#click');
         trackEvent('ui', 'ui_channel_selected');
-    }
+    };
 
     handleClick = () => {
         this.trackChannelSelectedEvent();
         browserHistory.push(this.props.link);
-    }
+    };
 
     render = () => {
         let badge = null;
         if (this.props.badge) {
             badge = (
-                <span
-                    id='unreadMentions'
-                    className='badge'
-                >
+                <span id='unreadMentions' className='badge'>
                     {this.props.unreadMentions}
                 </span>
             );
@@ -75,6 +70,7 @@ export default class SidebarChannelButtonOrLink extends React.PureComponent {
                     teammateDeletedAt={this.props.teammateDeletedAt}
                     teammateIsBot={this.props.teammateIsBot}
                 />
+
                 <span className='sidebar-item__name'>
                     <span>{this.props.displayName}</span>
                 </span>
@@ -128,6 +124,7 @@ export default class SidebarChannelButtonOrLink extends React.PureComponent {
                     {this.props.displayName}
                 </Tooltip>
             );
+
             element = (
                 <OverlayTrigger
                     trigger={this.overlayTriggerAttr}
@@ -140,11 +137,12 @@ export default class SidebarChannelButtonOrLink extends React.PureComponent {
             );
         }
         return element;
-    }
+    };
 }
 
 const style = {
     channelTooltip: {
         paddingLeft: '8px',
-        maxWidth: '228px'},
+        maxWidth: '228px',
+    },
 };

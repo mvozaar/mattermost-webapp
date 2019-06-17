@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 import {Preferences} from 'mattermost-redux/constants';
-import {getTheme, getBool} from 'mattermost-redux/selectors/entities/preferences';
+import {
+    getTheme,
+    getBool,
+} from 'mattermost-redux/selectors/entities/preferences';
 
 import {getIsRhsExpanded, getIsRhsOpen} from 'selectors/rhs';
 
@@ -11,7 +14,13 @@ import PostMessageView from './post_message_view.jsx';
 
 function mapStateToProps(state) {
     return {
-        enableFormatting: getBool(state, Preferences.CATEGORY_ADVANCED_SETTINGS, 'formatting', true),
+        enableFormatting: getBool(
+            state,
+            Preferences.CATEGORY_ADVANCED_SETTINGS,
+            'formatting',
+            true,
+        ),
+
         isRHSExpanded: getIsRhsExpanded(state),
         isRHSOpen: getIsRhsOpen(state),
         pluginPostTypes: state.plugins.postTypes,

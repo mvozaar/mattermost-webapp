@@ -5,31 +5,47 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import {IgnoreChannelMentions, NotificationLevels, NotificationSections} from 'utils/constants.jsx';
+import {
+    IgnoreChannelMentions,
+    NotificationLevels,
+    NotificationSections,
+} from 'utils/constants.jsx';
 import {t} from 'utils/i18n';
 
-export default function Describe({section, isCollapsed, memberNotifyLevel, globalNotifyLevel, ignoreChannelMentions}) {
+export default function Describe({
+    section,
+    isCollapsed,
+    memberNotifyLevel,
+    globalNotifyLevel,
+    ignoreChannelMentions,
+}) {
     if (memberNotifyLevel === NotificationLevels.DEFAULT && globalNotifyLevel) {
         t('channel_notifications.levels.default');
         t('channel_notifications.levels.all');
         t('channel_notifications.levels.mention');
         t('channel_notifications.levels.none');
-        const levelsFormattedMessageId = 'channel_notifications.levels.' + globalNotifyLevel;
+        const levelsFormattedMessageId =
+            'channel_notifications.levels.' + globalNotifyLevel;
         return (
             <React.Fragment>
                 <FormattedMessage
                     id='channel_notifications.globalDefault'
                     defaultMessage='Global default'
                 />
+
                 <span>{' ('}</span>
                 <FormattedMessage
                     id={levelsFormattedMessageId}
                     defaultMessage={globalNotifyLevel}
                 />
+
                 <span>{')'}</span>
             </React.Fragment>
         );
-    } else if (memberNotifyLevel === NotificationLevels.MENTION && section === NotificationSections.MARK_UNREAD) {
+    } else if (
+        memberNotifyLevel === NotificationLevels.MENTION &&
+        section === NotificationSections.MARK_UNREAD
+    ) {
         if (isCollapsed) {
             return (
                 <FormattedMessage
@@ -72,7 +88,8 @@ export default function Describe({section, isCollapsed, memberNotifyLevel, globa
             />
         );
     } else if (
-        (section === NotificationSections.DESKTOP || section === NotificationSections.PUSH) &&
+        (section === NotificationSections.DESKTOP ||
+            section === NotificationSections.PUSH) &&
         memberNotifyLevel === NotificationLevels.ALL
     ) {
         return (

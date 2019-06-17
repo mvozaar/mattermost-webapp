@@ -16,7 +16,6 @@ import FormattedMarkdownMessage from 'components/formatted_markdown_message.jsx'
 
 export default class TeamUrl extends React.PureComponent {
     static propTypes = {
-
         /*
          * Object containing team's display_name and name
          */
@@ -31,7 +30,6 @@ export default class TeamUrl extends React.PureComponent {
          * Object with redux action creators
          */
         actions: PropTypes.shape({
-
             /*
              * Action creator to check if a team already exists
              */
@@ -42,7 +40,7 @@ export default class TeamUrl extends React.PureComponent {
              */
             createTeam: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -62,7 +60,7 @@ export default class TeamUrl extends React.PureComponent {
         const newState = this.props.state;
         newState.wizard = 'display_name';
         this.props.updateParent(newState);
-    }
+    };
 
     submitNext = async (e) => {
         e.preventDefault();
@@ -70,50 +68,73 @@ export default class TeamUrl extends React.PureComponent {
         const name = ReactDOM.findDOMNode(this.refs.name).value.trim();
         const cleanedName = URL.cleanUpUrlable(name);
         const urlRegex = /^[a-z]+([a-z\-0-9]+|(__)?)[a-z0-9]+$/g;
-        const {actions: {checkIfTeamExists, createTeam}} = this.props;
+        const {
+            actions: {checkIfTeamExists, createTeam},
+        } = this.props;
 
         if (!name) {
-            this.setState({nameError: (
-                <FormattedMessage
-                    id='create_team.team_url.required'
-                    defaultMessage='This field is required'
-                />),
+            this.setState({
+                nameError: (
+                    <FormattedMessage
+                        id='create_team.team_url.required'
+                        defaultMessage='This field is required'
+                    />
+                ),
             });
+
             return;
         }
 
-        if (cleanedName.length < Constants.MIN_TEAMNAME_LENGTH || cleanedName.length > Constants.MAX_TEAMNAME_LENGTH) {
-            this.setState({nameError: (
-                <FormattedMessage
-                    id='create_team.team_url.charLength'
-                    defaultMessage='Name must be {min} or more characters up to a maximum of {max}'
-                    values={{
-                        min: Constants.MIN_TEAMNAME_LENGTH,
-                        max: Constants.MAX_TEAMNAME_LENGTH,
-                    }}
-                />),
+        if (
+            cleanedName.length < Constants.MIN_TEAMNAME_LENGTH ||
+            cleanedName.length > Constants.MAX_TEAMNAME_LENGTH
+        ) {
+            this.setState({
+                nameError: (
+                    <FormattedMessage
+                        id='create_team.team_url.charLength'
+                        defaultMessage='Name must be {min} or more characters up to a maximum of {max}'
+                        values={{
+                            min: Constants.MIN_TEAMNAME_LENGTH,
+                            max: Constants.MAX_TEAMNAME_LENGTH,
+                        }}
+                    />
+                ),
             });
+
             return;
         }
 
         if (cleanedName !== name || !urlRegex.test(name)) {
-            this.setState({nameError: (
-                <FormattedMessage
-                    id='create_team.team_url.regex'
-                    defaultMessage="Use only lower case letters, numbers and dashes. Must start with a letter and can't end in a dash."
-                />),
+            this.setState({
+                nameError: (
+                    <FormattedMessage
+                        id='create_team.team_url.regex'
+                        defaultMessage="Use only lower case letters, numbers and dashes. Must start with a letter and can't end in a dash."
+                    />
+                ),
             });
+
             return;
         }
 
-        for (let index = 0; index < Constants.RESERVED_TEAM_NAMES.length; index++) {
-            if (cleanedName.indexOf(Constants.RESERVED_TEAM_NAMES[index]) === 0) {
-                this.setState({nameError: (
-                    <FormattedMarkdownMessage
-                        id='create_team.team_url.taken'
-                        defaultMessage='This URL [starts with a reserved word](!https://docs.mattermost.com/help/getting-started/creating-teams.html#team-url) or is unavailable. Please try another.'
-                    />),
+        for (
+            let index = 0;
+            index < Constants.RESERVED_TEAM_NAMES.length;
+            index++
+        ) {
+            if (
+                cleanedName.indexOf(Constants.RESERVED_TEAM_NAMES[index]) === 0
+            ) {
+                this.setState({
+                    nameError: (
+                        <FormattedMarkdownMessage
+                            id='create_team.team_url.taken'
+                            defaultMessage='This URL [starts with a reserved word](!https://docs.securCom.me/help/getting-started/creating-teams.html#team-url) or is unavailable. Please try another.'
+                        />
+                    ),
                 });
+
                 return;
             }
         }
@@ -126,12 +147,15 @@ export default class TeamUrl extends React.PureComponent {
         const {exists} = await checkIfTeamExists(name);
 
         if (exists) {
-            this.setState({nameError: (
-                <FormattedMessage
-                    id='create_team.team_url.unavailable'
-                    defaultMessage='This URL is taken or unavailable. Please try another.'
-                />),
+            this.setState({
+                nameError: (
+                    <FormattedMessage
+                        id='create_team.team_url.unavailable'
+                        defaultMessage='This URL is taken or unavailable. Please try another.'
+                    />
+                ),
             });
+
             this.setState({isLoading: false});
             return;
         }
@@ -139,31 +163,35 @@ export default class TeamUrl extends React.PureComponent {
         const {data, error} = await createTeam(teamSignup.team);
 
         if (data) {
-            this.props.history.push('/' + data.name + '/channels/' + Constants.DEFAULT_CHANNEL);
+            this.props.history.push(
+                '/' + data.name + '/channels/' + Constants.DEFAULT_CHANNEL,
+            );
+
             trackEvent('signup', 'signup_team_03_complete');
         } else if (error) {
             this.setState({nameError: error.message});
             this.setState({isLoading: false});
         }
-    }
+    };
 
     handleFocus = (e) => {
         e.preventDefault();
         e.currentTarget.select();
-    }
+    };
 
     render() {
         let nameError = null;
         let nameDivClass = 'form-group';
         if (this.state.nameError) {
-            nameError = <label className='control-label'>{this.state.nameError}</label>;
+            nameError = (
+                <label className='control-label'>{this.state.nameError}</label>
+            );
+
             nameDivClass += ' has-error';
         }
 
         const title = `${URL.getSiteURL()}/`;
-        const urlTooltip = (
-            <Tooltip id='urlTooltip'>{title}</Tooltip>
-        );
+        const urlTooltip = <Tooltip id='urlTooltip'>{title}</Tooltip>;
 
         let finishMessage = (
             <FormattedMessage
@@ -189,6 +217,7 @@ export default class TeamUrl extends React.PureComponent {
                         className='signup-team-logo'
                         src={logoImage}
                     />
+
                     <h2>
                         <FormattedMessage
                             id='create_team.team_url.teamUrl'
@@ -216,7 +245,9 @@ export default class TeamUrl extends React.PureComponent {
                                         className='form-control'
                                         placeholder=''
                                         maxLength='128'
-                                        defaultValue={this.props.state.team.name}
+                                        defaultValue={
+                                            this.props.state.team.name
+                                        }
                                         autoFocus={true}
                                         onFocus={this.handleFocus}
                                         spellCheck='false'
@@ -264,10 +295,7 @@ export default class TeamUrl extends React.PureComponent {
                         </Button>
                     </div>
                     <div className='margin--extra'>
-                        <a
-                            href='#'
-                            onClick={this.submitBack}
-                        >
+                        <a href='#' onClick={this.submitBack}>
                             <FormattedMessage
                                 id='create_team.team_url.back'
                                 defaultMessage='Back to previous step'

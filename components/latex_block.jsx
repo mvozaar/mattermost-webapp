@@ -8,7 +8,7 @@ import {FormattedMessage} from 'react-intl';
 export default class LatexBlock extends React.Component {
     static propTypes = {
         content: PropTypes.string.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -27,16 +27,15 @@ export default class LatexBlock extends React.Component {
     render() {
         if (this.state.katex == null) {
             return (
-                <div
-                    className='post-body--code tex'
-                >
-                    {this.props.content}
-                </div>
+                <div className='post-body--code tex'>{this.props.content}</div>
             );
         }
 
         try {
-            const html = this.state.katex.renderToString(this.props.content, {throwOnError: false, displayMode: true});
+            const html = this.state.katex.renderToString(this.props.content, {
+                throwOnError: false,
+                displayMode: true,
+            });
 
             return (
                 <div
@@ -46,9 +45,7 @@ export default class LatexBlock extends React.Component {
             );
         } catch (e) {
             return (
-                <div
-                    className='post-body--code tex'
-                >
+                <div className='post-body--code tex'>
                     <FormattedMessage
                         id='katex.error'
                         defaultMessage="Couldn't compile your Latex code. Please review the syntax and try again."

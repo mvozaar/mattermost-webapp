@@ -11,7 +11,7 @@ export default class PinPostSearchHint extends PureComponent {
     static propTypes = {
         dataRetentionEnableMessageDeletion: PropTypes.bool,
         dataRetentionMessageRetentionDays: PropTypes.string,
-    }
+    };
 
     render() {
         return (
@@ -26,18 +26,22 @@ export default class PinPostSearchHint extends PureComponent {
                     <li>
                         <FormattedMessage
                             id='search_results.noResults.partialPhraseSuggestion'
-                            defaultMessage='If you&#39;re searching a partial phrase (ex. searching "rea", looking for "reach" or "reaction"), append a * to your search term.'
+                            defaultMessage="If you're searching a partial phrase (ex. searching 'rea', looking for 'reach' or 'reaction'), append a * to your search term."
                         />
                     </li>
                     <li>
                         <FormattedMessage
                             id='search_results.noResults.stopWordsSuggestion'
-                            defaultMessage='Two letter searches and common words like "this", "a" and "is" won&#39;t appear in search results due to the excessive results returned.'
+                            defaultMessage="Two letter searches and common words like 'this', 'a' and 'is' won't appear in search results due to the excessive results returned."
                         />
                     </li>
-                    {this.props.dataRetentionEnableMessageDeletion &&
-                        <DataRetentionHint dataRetentionMessageRetentionDays={this.props.dataRetentionMessageRetentionDays}/>
-                    }
+                    {this.props.dataRetentionEnableMessageDeletion && (
+                        <DataRetentionHint
+                            dataRetentionMessageRetentionDays={
+                                this.props.dataRetentionMessageRetentionDays
+                            }
+                        />
+                    )}
                 </ul>
             </React.Fragment>
         );

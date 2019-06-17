@@ -46,7 +46,8 @@ export default class PermissionsSchemeSummary extends React.Component {
         if (this.state.serverError) {
             serverError = (
                 <div className='permission-scheme-summary-error-message'>
-                    <i className='fa fa-exclamation-circle'/> {this.state.serverError}
+                    <i className='fa fa-exclamation-circle' />{' '}
+                    {this.state.serverError}
                 </div>
             );
         }
@@ -67,7 +68,10 @@ export default class PermissionsSchemeSummary extends React.Component {
         const confirmButton = (
             <LoadingWrapper
                 loading={this.state.deleting}
-                text={Utils.localizeMessage('admin.permissions.permissionsSchemeSummary.deleting', 'Deleting...')}
+                text={Utils.localizeMessage(
+                    'admin.permissions.permissionsSchemeSummary.deleting',
+                    'Deleting...',
+                )}
             >
                 <FormattedMessage
                     id='admin.permissions.permissionsSchemeSummary.deleteConfirmButton'
@@ -86,48 +90,53 @@ export default class PermissionsSchemeSummary extends React.Component {
                 onCancel={this.handleDeleteCanceled}
             />
         );
-    }
+    };
 
     stopPropagation = (e) => {
         e.stopPropagation();
-    }
+    };
 
     handleDeleteCanceled = () => {
         this.setState({
             showConfirmModal: false,
         });
-    }
+    };
 
     handleDeleteConfirmed = async () => {
         this.setState({deleting: true, serverError: null});
-        const data = await this.props.actions.deleteScheme(this.props.scheme.id);
+        const data = await this.props.actions.deleteScheme(
+            this.props.scheme.id,
+        );
+
         if (data.error) {
             this.setState({deleting: false, serverError: data.error.message});
         } else {
             this.setState({deleting: false, showConfirmModal: false});
         }
-    }
+    };
 
     delete = (e) => {
         e.stopPropagation();
         this.setState({showConfirmModal: true, serverError: null});
-    }
+    };
 
     goToEdit = () => {
-        this.props.history.push('/admin_console/user_management/permissions/team_override_scheme/' + this.props.scheme.id);
-    }
+        this.props.history.push(
+            '/admin_console/user_management/permissions/team_override_scheme/' +
+                this.props.scheme.id,
+        );
+    };
 
     render = () => {
         const scheme = this.props.scheme;
 
-        let teams = this.props.teams ? this.props.teams.map((team) => (
-            <span
-                className='team'
-                key={team.id}
-            >
-                {team.display_name}
-            </span>
-        )) : [];
+        let teams = this.props.teams
+            ? this.props.teams.map((team) => (
+                  <span className='team' key={team.id}>
+                      {team.display_name}
+                  </span>
+              ))
+            : [];
 
         let extraTeams = null;
         if (teams.length > MAX_TEAMS_PER_SCHEME_SUMMARY) {
@@ -145,38 +154,35 @@ export default class PermissionsSchemeSummary extends React.Component {
                         </Tooltip>
                     }
                 >
-                    <span
-                        className='team'
-                        key='extra-teams'
-                    >
+                    <span className='team' key='extra-teams'>
                         <FormattedMessage
                             id='admin.permissions.permissionsSchemeSummary.moreTeams'
                             defaultMessage='+{number} more'
-                            values={{number: teams.length - MAX_TEAMS_PER_SCHEME_SUMMARY}}
+                            values={{
+                                number:
+                                    teams.length - MAX_TEAMS_PER_SCHEME_SUMMARY,
+                            }}
                         />
                     </span>
                 </OverlayTrigger>
             );
+
             teams = teams.slice(0, MAX_TEAMS_PER_SCHEME_SUMMARY);
         }
         const confirmModal = this.renderConfirmModal();
 
         return (
-            <div
-                className='permissions-scheme-summary'
-                onClick={this.goToEdit}
-            >
+            <div className='permissions-scheme-summary' onClick={this.goToEdit}>
                 <div onClick={this.stopPropagation}>{confirmModal}</div>
-                <div
-                    className='permissions-scheme-summary--header'
-                >
-                    <div className='title'>
-                        {scheme.display_name}
-                    </div>
+                <div className='permissions-scheme-summary--header'>
+                    <div className='title'>{scheme.display_name}</div>
                     <div className='actions'>
                         <Link
                             className='edit-button'
-                            to={'/admin_console/user_management/permissions/team_override_scheme/' + scheme.id}
+                            to={
+                                '/admin_console/user_management/permissions/team_override_scheme/' +
+                                scheme.id
+                            }
                         >
                             <FormattedMessage
                                 id='admin.permissions.permissionsSchemeSummary.edit'
@@ -184,10 +190,7 @@ export default class PermissionsSchemeSummary extends React.Component {
                             />
                         </Link>
                         {'-'}
-                        <a
-                            className='delete-button'
-                            onClick={this.delete}
-                        >
+                        <a className='delete-button' onClick={this.delete}>
                             <FormattedMessage
                                 id='admin.permissions.permissionsSchemeSummary.delete'
                                 defaultMessage='Delete'

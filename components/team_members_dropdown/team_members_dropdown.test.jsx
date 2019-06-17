@@ -43,6 +43,7 @@ describe('components/team_members_dropdown', () => {
             roles: 'channel_admin',
             scheme_admin: 'system_admin',
         },
+
         teamUrl: '',
         currentTeam: team,
         index: 0,
@@ -60,28 +61,23 @@ describe('components/team_members_dropdown', () => {
     };
 
     test('should match snapshot for team_members_dropdown', () => {
-        const wrapper = shallow(
-            <TeamMembersDropdown {...baseProps}/>
-        );
+        const wrapper = shallow(<TeamMembersDropdown {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot opening dropdown upwards', () => {
         const wrapper = shallow(
-            <TeamMembersDropdown
-                {...baseProps}
-                index={4}
-                totalUsers={5}
-            />
+            <TeamMembersDropdown {...baseProps} index={4} totalUsers={5} />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with group-constrained team', () => {
         baseProps.currentTeam.group_constrained = true;
-        const wrapper = shallow(
-            <TeamMembersDropdown {...baseProps}/>
-        );
+        const wrapper = shallow(<TeamMembersDropdown {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

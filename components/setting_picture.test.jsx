@@ -21,63 +21,56 @@ describe('components/SettingItemMin', () => {
     };
 
     test('should match snapshot, profile picture on source', () => {
-        const wrapper = shallow(
-            <SettingPicture {...baseProps}/>
-        );
+        const wrapper = shallow(<SettingPicture {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, profile picture on file', () => {
         const props = {...baseProps, file: {file: {}}, src: ''};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, user icon on source', () => {
         const props = {...baseProps, onSetDefault: jest.fn()};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, team icon on source', () => {
         const props = {...baseProps, onRemove: jest.fn(), imageContext: 'team'};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, team icon on file', () => {
-        const props = {...baseProps, onRemove: jest.fn(), imageContext: 'team', file: {file: {}}, src: ''};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const props = {
+            ...baseProps,
+            onRemove: jest.fn(),
+            imageContext: 'team',
+            file: {file: {}},
+            src: '',
+        };
+
+        const wrapper = shallow(<SettingPicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on loading picture', () => {
         const props = {...baseProps, loadingPicture: true};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot with active Save button', () => {
         const props = {...baseProps, submitActive: true};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
 
         wrapper.setState({removeSrc: false});
         expect(wrapper).toMatchSnapshot();
@@ -90,9 +83,8 @@ describe('components/SettingItemMin', () => {
 
     test('should match state and call props.updateSection on handleCancel', () => {
         const props = {...baseProps, updateSection: jest.fn()};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
+
         wrapper.setState({removeSrc: true});
         const evt = {preventDefault: jest.fn()};
 
@@ -106,9 +98,8 @@ describe('components/SettingItemMin', () => {
 
     test('should call props.onRemove on handleSave', () => {
         const props = {...baseProps, onRemove: jest.fn()};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
+
         wrapper.setState({removeSrc: true});
         const evt = {preventDefault: jest.fn()};
 
@@ -118,9 +109,8 @@ describe('components/SettingItemMin', () => {
 
     test('should call props.onSetDefault on handleSave', () => {
         const props = {...baseProps, onSetDefault: jest.fn()};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
+
         wrapper.setState({setDefaultSrc: true});
         const evt = {preventDefault: jest.fn()};
 
@@ -130,9 +120,8 @@ describe('components/SettingItemMin', () => {
 
     test('should match state and call props.onSubmit on handleSave', () => {
         const props = {...baseProps, onSubmit: jest.fn()};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
+
         wrapper.setState({removeSrc: false});
         const evt = {preventDefault: jest.fn()};
 
@@ -145,9 +134,8 @@ describe('components/SettingItemMin', () => {
 
     test('should match state on handleRemoveSrc', () => {
         const props = {...baseProps, onSubmit: jest.fn()};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
+
         wrapper.setState({removeSrc: false});
         const evt = {preventDefault: jest.fn()};
         wrapper.instance().handleRemoveSrc(evt);
@@ -157,9 +145,8 @@ describe('components/SettingItemMin', () => {
 
     test('should match state and call props.onFileChange on handleFileChange', () => {
         const props = {...baseProps, onFileChange: jest.fn()};
-        const wrapper = shallow(
-            <SettingPicture {...props}/>
-        );
+        const wrapper = shallow(<SettingPicture {...props} />);
+
         wrapper.setState({removeSrc: true});
         const evt = {preventDefault: jest.fn()};
 

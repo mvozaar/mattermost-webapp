@@ -65,7 +65,7 @@ export default class UserSettingsDisplay extends React.Component {
             autoUpdateTimezone: PropTypes.func.isRequired,
             savePreferences: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -106,30 +106,35 @@ export default class UserSettingsDisplay extends React.Component {
             name: Preferences.USE_MILITARY_TIME,
             value: this.state.militaryTime,
         };
+
         const teammateNameDisplayPreference = {
             user_id: userId,
             category: Preferences.CATEGORY_DISPLAY_SETTINGS,
             name: Preferences.NAME_NAME_FORMAT,
             value: this.state.teammateNameDisplay,
         };
+
         const channelDisplayModePreference = {
             user_id: userId,
             category: Preferences.CATEGORY_DISPLAY_SETTINGS,
             name: Preferences.CHANNEL_DISPLAY_MODE,
             value: this.state.channelDisplayMode,
         };
+
         const messageDisplayPreference = {
             user_id: userId,
             category: Preferences.CATEGORY_DISPLAY_SETTINGS,
             name: Preferences.MESSAGE_DISPLAY,
             value: this.state.messageDisplay,
         };
+
         const collapseDisplayPreference = {
             user_id: userId,
             category: Preferences.CATEGORY_DISPLAY_SETTINGS,
             name: Preferences.COLLAPSE_DISPLAY,
             value: this.state.collapseDisplay,
         };
+
         const linkPreviewDisplayPreference = {
             user_id: userId,
             category: Preferences.CATEGORY_DISPLAY_SETTINGS,
@@ -151,15 +156,15 @@ export default class UserSettingsDisplay extends React.Component {
         await this.props.actions.savePreferences(userId, preferences);
 
         this.updateSection('');
-    }
+    };
 
     handleClockRadio = (militaryTime) => {
         this.setState({militaryTime});
-    }
+    };
 
     handleTeammateNameDisplayRadio = (teammateNameDisplay) => {
         this.setState({teammateNameDisplay});
-    }
+    };
 
     handleChannelDisplayModeRadio(channelDisplayMode) {
         this.setState({channelDisplayMode});
@@ -184,7 +189,7 @@ export default class UserSettingsDisplay extends React.Component {
     updateSection = (section) => {
         this.updateState();
         this.props.updateSection(section);
-    }
+    };
 
     updateState = () => {
         const newState = getDisplayStateFromProps(this.props);
@@ -193,7 +198,7 @@ export default class UserSettingsDisplay extends React.Component {
         }
 
         this.setState({isSaving: false});
-    }
+    };
 
     createSection(props) {
         const {
@@ -222,7 +227,9 @@ export default class UserSettingsDisplay extends React.Component {
                 <span className='font-weight--normal'>
                     <FormattedMessage
                         id={firstOption.radionButtonText.moreId}
-                        defaultMessage={firstOption.radionButtonText.moreMessage}
+                        defaultMessage={
+                            firstOption.radionButtonText.moreMessage
+                        }
                     />
                 </span>
             );
@@ -241,7 +248,9 @@ export default class UserSettingsDisplay extends React.Component {
                 <span className='font-weight--normal'>
                     <FormattedMessage
                         id={secondOption.radionButtonText.moreId}
-                        defaultMessage={secondOption.radionButtonText.moreMessage}
+                        defaultMessage={
+                            secondOption.radionButtonText.moreMessage
+                        }
                     />
                 </span>
             );
@@ -258,10 +267,7 @@ export default class UserSettingsDisplay extends React.Component {
         }
 
         const messageTitle = (
-            <FormattedMessage
-                id={title.id}
-                defaultMessage={title.message}
-            />
+            <FormattedMessage id={title.id} defaultMessage={title.message} />
         );
 
         const messageDesc = (
@@ -305,11 +311,14 @@ export default class UserSettingsDisplay extends React.Component {
                                 type='radio'
                                 name={name}
                                 checked={format[2]}
-                                onChange={() => this.handleOnChange(thirdDisplay)}
+                                onChange={() =>
+                                    this.handleOnChange(thirdDisplay)
+                                }
                             />
+
                             {thirdMessage}
                         </label>
-                        <br/>
+                        <br />
                     </div>
                 );
             }
@@ -323,13 +332,16 @@ export default class UserSettingsDisplay extends React.Component {
                                 type='radio'
                                 name={name}
                                 checked={format[0]}
-                                onChange={() => this.handleOnChange(firstDisplay)}
+                                onChange={() =>
+                                    this.handleOnChange(firstDisplay)
+                                }
                             />
+
                             {firstMessage}
                             {moreColon}
                             {firstMessageMore}
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     <div className='radio'>
                         <label>
@@ -338,17 +350,20 @@ export default class UserSettingsDisplay extends React.Component {
                                 type='radio'
                                 name={name}
                                 checked={format[1]}
-                                onChange={() => this.handleOnChange(secondDisplay)}
+                                onChange={() =>
+                                    this.handleOnChange(secondDisplay)
+                                }
                             />
+
                             {secondMessage}
                             {moreColon}
                             {secondMessageMore}
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     {thirdSection}
                     <div>
-                        <br/>
+                        <br />
                         {messageDesc}
                     </div>
                 </div>,
@@ -364,7 +379,8 @@ export default class UserSettingsDisplay extends React.Component {
                         server_error={this.state.serverError}
                         updateSection={this.updateSection}
                     />
-                    <div className='divider-dark'/>
+
+                    <div className='divider-dark' />
                 </div>
             );
         }
@@ -383,11 +399,15 @@ export default class UserSettingsDisplay extends React.Component {
                 <SettingItemMin
                     title={messageTitle}
                     describe={describe}
-                    focused={this.props.prevActiveSection === this.prevSections[section]}
+                    focused={
+                        this.props.prevActiveSection ===
+                        this.prevSections[section]
+                    }
                     section={section}
                     updateSection={this.updateSection}
                 />
-                <div className='divider-dark'/>
+
+                <div className='divider-dark' />
             </div>
         );
     }
@@ -402,6 +422,7 @@ export default class UserSettingsDisplay extends React.Component {
                 id: t('user.settings.display.collapseDisplay'),
                 message: 'Default appearance of image previews',
             },
+
             firstOption: {
                 value: 'false',
                 radionButtonText: {
@@ -409,6 +430,7 @@ export default class UserSettingsDisplay extends React.Component {
                     message: 'On',
                 },
             },
+
             secondOption: {
                 value: 'true',
                 radionButtonText: {
@@ -416,9 +438,11 @@ export default class UserSettingsDisplay extends React.Component {
                     message: 'Off',
                 },
             },
+
             description: {
                 id: t('user.settings.display.collapseDesc'),
-                message: 'Set whether previews of image links and image attachment thumbnails show as expanded or collapsed by default. This setting can also be controlled using the slash commands /expand and /collapse.',
+                message:
+                    'Set whether previews of image links and image attachment thumbnails show as expanded or collapsed by default. This setting can also be controlled using the slash commands /expand and /collapse.',
             },
         });
 
@@ -434,6 +458,7 @@ export default class UserSettingsDisplay extends React.Component {
                     id: t('user.settings.display.linkPreviewDisplay'),
                     message: 'Website Link Previews',
                 },
+
                 firstOption: {
                     value: 'true',
                     radionButtonText: {
@@ -441,6 +466,7 @@ export default class UserSettingsDisplay extends React.Component {
                         message: 'On',
                     },
                 },
+
                 secondOption: {
                     value: 'false',
                     radionButtonText: {
@@ -448,11 +474,14 @@ export default class UserSettingsDisplay extends React.Component {
                         message: 'Off',
                     },
                 },
+
                 description: {
                     id: t('user.settings.display.linkPreviewDesc'),
-                    message: 'When available, the first web link in a message will show a preview of the website content below the message.',
+                    message:
+                        'When available, the first web link in a message will show a preview of the website content below the message.',
                 },
             });
+
             this.prevSections.message_display = 'linkpreview';
         } else {
             this.prevSections.message_display = this.prevSections.linkpreview;
@@ -467,6 +496,7 @@ export default class UserSettingsDisplay extends React.Component {
                 id: t('user.settings.display.clockDisplay'),
                 message: 'Clock Display',
             },
+
             firstOption: {
                 value: 'false',
                 radionButtonText: {
@@ -474,6 +504,7 @@ export default class UserSettingsDisplay extends React.Component {
                     message: '12-hour clock (example: 4:00 PM)',
                 },
             },
+
             secondOption: {
                 value: 'true',
                 radionButtonText: {
@@ -481,6 +512,7 @@ export default class UserSettingsDisplay extends React.Component {
                     message: '24-hour clock (example: 16:00)',
                 },
             },
+
             description: {
                 id: t('user.settings.display.preferTime'),
                 message: 'Select how you prefer time displayed.',
@@ -496,6 +528,7 @@ export default class UserSettingsDisplay extends React.Component {
                 id: t('user.settings.display.teammateNameDisplayTitle'),
                 message: 'Teammate Name Display',
             },
+
             firstOption: {
                 value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_USERNAME,
                 radionButtonText: {
@@ -503,13 +536,19 @@ export default class UserSettingsDisplay extends React.Component {
                     message: 'Show username',
                 },
             },
+
             secondOption: {
                 value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_NICKNAME_FULLNAME,
                 radionButtonText: {
-                    id: t('user.settings.display.teammateNameDisplayNicknameFullname'),
-                    message: 'Show nickname if one exists, otherwise show first and last name',
+                    id: t(
+                        'user.settings.display.teammateNameDisplayNicknameFullname',
+                    ),
+
+                    message:
+                        'Show nickname if one exists, otherwise show first and last name',
                 },
             },
+
             thirdOption: {
                 value: Constants.TEAMMATE_NAME_DISPLAY.SHOW_FULLNAME,
                 radionButtonText: {
@@ -517,9 +556,11 @@ export default class UserSettingsDisplay extends React.Component {
                     message: 'Show first and last name',
                 },
             },
+
             description: {
                 id: t('user.settings.display.teammateNameDisplayDescription'),
-                message: 'Set how to display other user\'s names in posts and the Direct Messages list.',
+                message:
+                    "Set how to display other user's names in posts and the Direct Messages list.",
             },
         });
 
@@ -532,12 +573,15 @@ export default class UserSettingsDisplay extends React.Component {
                         <ManageTimezones
                             user={this.props.user}
                             timezones={this.props.timezones}
-                            useAutomaticTimezone={userTimezone.useAutomaticTimezone}
+                            useAutomaticTimezone={
+                                userTimezone.useAutomaticTimezone
+                            }
                             automaticTimezone={userTimezone.automaticTimezone}
                             manualTimezone={userTimezone.manualTimezone}
                             updateSection={this.updateSection}
                         />
-                        <div className='divider-dark'/>
+
+                        <div className='divider-dark' />
                     </div>
                 );
             } else {
@@ -551,11 +595,14 @@ export default class UserSettingsDisplay extends React.Component {
                                 />
                             }
                             width='medium'
-                            describe={getTimezoneRegion(this.props.currentUserTimezone)}
+                            describe={getTimezoneRegion(
+                                this.props.currentUserTimezone,
+                            )}
                             section={'timezone'}
                             updateSection={this.updateSection}
                         />
-                        <div className='divider-dark'/>
+
+                        <div className='divider-dark' />
                     </div>
                 );
             }
@@ -570,6 +617,7 @@ export default class UserSettingsDisplay extends React.Component {
                 id: t('user.settings.display.messageDisplayTitle'),
                 message: 'Message Display',
             },
+
             firstOption: {
                 value: Preferences.MESSAGE_DISPLAY_CLEAN,
                 radionButtonText: {
@@ -579,18 +627,22 @@ export default class UserSettingsDisplay extends React.Component {
                     moreMessage: 'Easy to scan and read.',
                 },
             },
+
             secondOption: {
                 value: Preferences.MESSAGE_DISPLAY_COMPACT,
                 radionButtonText: {
                     id: t('user.settings.display.messageDisplayCompact'),
                     message: 'Compact',
                     moreId: t('user.settings.display.messageDisplayCompactDes'),
-                    moreMessage: 'Fit as many messages on the screen as we can.',
+                    moreMessage:
+                        'Fit as many messages on the screen as we can.',
                 },
             },
+
             description: {
                 id: t('user.settings.display.messageDisplayDescription'),
-                message: 'Select how messages in a channel should be displayed.',
+                message:
+                    'Select how messages in a channel should be displayed.',
             },
         });
 
@@ -603,6 +655,7 @@ export default class UserSettingsDisplay extends React.Component {
                 id: t('user.settings.display.channelDisplayTitle'),
                 message: 'Channel Display',
             },
+
             firstOption: {
                 value: Preferences.CHANNEL_DISPLAY_MODE_FULL_SCREEN,
                 radionButtonText: {
@@ -610,6 +663,7 @@ export default class UserSettingsDisplay extends React.Component {
                     message: 'Full width',
                 },
             },
+
             secondOption: {
                 value: Preferences.CHANNEL_DISPLAY_MODE_CENTERED,
                 radionButtonText: {
@@ -617,6 +671,7 @@ export default class UserSettingsDisplay extends React.Component {
                     message: 'Fixed width, centered',
                 },
             },
+
             description: {
                 id: t('user.settings.display.channeldisplaymode'),
                 message: 'Select the width of the center channel.',
@@ -636,7 +691,8 @@ export default class UserSettingsDisplay extends React.Component {
                         locale={userLocale}
                         updateSection={this.updateSection}
                     />
-                    <div className='divider-dark'/>
+
+                    <div className='divider-dark' />
                 </div>
             );
         } else {
@@ -644,7 +700,8 @@ export default class UserSettingsDisplay extends React.Component {
             if (I18n.isLanguageAvailable(userLocale)) {
                 locale = I18n.getLanguageInfo(userLocale).name;
             } else {
-                locale = I18n.getLanguageInfo(this.props.defaultClientLocale).name;
+                locale = I18n.getLanguageInfo(this.props.defaultClientLocale)
+                    .name;
             }
 
             languagesSection = (
@@ -658,11 +715,15 @@ export default class UserSettingsDisplay extends React.Component {
                         }
                         width='medium'
                         describe={locale}
-                        focused={this.props.prevActiveSection === this.prevSections.languages}
+                        focused={
+                            this.props.prevActiveSection ===
+                            this.prevSections.languages
+                        }
                         section={'languages'}
                         updateSection={this.updateSection}
                     />
-                    <div className='divider-dark'/>
+
+                    <div className='divider-dark' />
                 </div>
             );
         }
@@ -681,9 +742,13 @@ export default class UserSettingsDisplay extends React.Component {
                         setRequireConfirm={this.props.setRequireConfirm}
                         setEnforceFocus={this.props.setEnforceFocus}
                         allowCustomThemes={this.props.allowCustomThemes}
-                        focused={this.props.prevActiveSection === this.prevSections.theme}
+                        focused={
+                            this.props.prevActiveSection ===
+                            this.prevSections.theme
+                        }
                     />
-                    <div className='divider-dark'/>
+
+                    <div className='divider-dark' />
                 </div>
             );
         }
@@ -701,13 +766,10 @@ export default class UserSettingsDisplay extends React.Component {
                     >
                         <span aria-hidden='true'>{'×'}</span>
                     </button>
-                    <h4
-                        className='modal-title'
-                        ref='title'
-                    >
+                    <h4 className='modal-title' ref='title'>
                         <div className='modal-back'>
                             <span onClick={this.props.collapseModal}>
-                                <BackIcon/>
+                                <BackIcon />
                             </span>
                         </div>
                         <FormattedMessage
@@ -717,16 +779,13 @@ export default class UserSettingsDisplay extends React.Component {
                     </h4>
                 </div>
                 <div className='user-settings'>
-                    <h3
-                        id='displaySettingsTitle'
-                        className='tab-header'
-                    >
+                    <h3 id='displaySettingsTitle' className='tab-header'>
                         <FormattedMessage
                             id='user.settings.display.title'
                             defaultMessage='Display Settings'
                         />
                     </h3>
-                    <div className='divider-dark first'/>
+                    <div className='divider-dark first' />
                     {themeSection}
                     {clockSection}
                     {teammateNameDisplaySection}

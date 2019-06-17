@@ -33,11 +33,11 @@ export default class AddUsersToTeam extends React.Component {
             addUsersToTeam: PropTypes.func.isRequired,
             loadStatusesForProfilesList: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         currentTeamGroupConstrained: false,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -55,12 +55,20 @@ export default class AddUsersToTeam extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.getProfilesNotInTeam(this.props.currentTeamId, this.props.currentTeamGroupConstrained, 0, USERS_PER_PAGE * 2).then(() => {
-            this.setUsersLoadingState(false);
-        });
+        this.props.actions
+            .getProfilesNotInTeam(
+                this.props.currentTeamId,
+                this.props.currentTeamGroupConstrained,
+                0,
+                USERS_PER_PAGE * 2,
+            )
+            .then(() => {
+                this.setUsersLoadingState(false);
+            });
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.searchTerm !== nextProps.searchTerm) {
             clearTimeout(this.searchTimeoutId);
 
@@ -69,30 +77,35 @@ export default class AddUsersToTeam extends React.Component {
                 return;
             }
 
-            this.searchTimeoutId = setTimeout(
-                async () => {
-                    this.setUsersLoadingState(true);
-                    const {data} = await this.props.actions.searchProfiles(searchTerm, {not_in_team_id: this.props.currentTeamId, group_constrained: this.props.currentTeamGroupConstrained});
-                    if (data) {
-                        this.props.actions.loadStatusesForProfilesList(data);
-                    }
-                    this.setUsersLoadingState(false);
-                },
-                Constants.SEARCH_TIMEOUT_MILLISECONDS
-            );
+            this.searchTimeoutId = setTimeout(async () => {
+                this.setUsersLoadingState(true);
+                const {data} = await this.props.actions.searchProfiles(
+                    searchTerm,
+                    {
+                        not_in_team_id: this.props.currentTeamId,
+                        group_constrained: this.props
+                            .currentTeamGroupConstrained,
+                    },
+                );
+
+                if (data) {
+                    this.props.actions.loadStatusesForProfilesList(data);
+                }
+                this.setUsersLoadingState(false);
+            }, Constants.SEARCH_TIMEOUT_MILLISECONDS);
         }
     }
 
     handleHide = () => {
         this.props.actions.setModalSearchTerm('');
         this.setState({show: false});
-    }
+    };
 
     handleExit = () => {
         if (this.props.onHide) {
             this.props.onHide();
         }
-    }
+    };
 
     handleResponse = (err) => {
         let addError = null;
@@ -104,7 +117,7 @@ export default class AddUsersToTeam extends React.Component {
             saving: false,
             addError,
         });
-    }
+    };
 
     handleSubmit = async (e) => {
         if (e) {
@@ -118,12 +131,16 @@ export default class AddUsersToTeam extends React.Component {
 
         this.setState({saving: true});
 
-        const {error} = await this.props.actions.addUsersToTeam(this.props.currentTeamId, userIds);
+        const {error} = await this.props.actions.addUsersToTeam(
+            this.props.currentTeamId,
+            userIds,
+        );
+
         this.handleResponse(error);
         if (!error) {
             this.handleHide();
         }
-    }
+    };
 
     addValue = (value) => {
         const values = Object.assign([], this.state.values);
@@ -133,30 +150,36 @@ export default class AddUsersToTeam extends React.Component {
         }
 
         this.setState({values});
-    }
+    };
 
     setUsersLoadingState = (loadingState) => {
         this.setState({
             loadingUsers: loadingState,
         });
-    }
+    };
 
     handlePageChange = (page, prevPage) => {
         if (page > prevPage) {
             this.setUsersLoadingState(true);
-            this.props.actions.getProfilesNotInTeam(this.props.currentTeamId, page + 1, USERS_PER_PAGE).then(() => {
-                this.setUsersLoadingState(false);
-            });
+            this.props.actions
+                .getProfilesNotInTeam(
+                    this.props.currentTeamId,
+                    page + 1,
+                    USERS_PER_PAGE,
+                )
+                .then(() => {
+                    this.setUsersLoadingState(false);
+                });
         }
-    }
+    };
 
     handleDelete = (values) => {
         this.setState({values});
-    }
+    };
 
     search = (term) => {
         this.props.actions.setModalSearchTerm(term);
-    }
+    };
 
     renderOption(option, isSelected, onAdd) {
         var rowSelected = '';
@@ -177,13 +200,15 @@ export default class AddUsersToTeam extends React.Component {
                 onClick={() => onAdd(option)}
             >
                 <ProfilePicture
-                    src={Client4.getProfilePictureUrl(option.id, option.last_picture_update)}
+                    src={Client4.getProfilePictureUrl(
+                        option.id,
+                        option.last_picture_update,
+                    )}
                     width='32'
                     height='32'
                 />
-                <div
-                    className='more-modal__details'
-                >
+
+                <div className='more-modal__details'>
                     <div className='more-modal__name'>
                         {displayEntireNameForUser(option)}
                         <BotBadge
@@ -191,13 +216,11 @@ export default class AddUsersToTeam extends React.Component {
                             className='badge-popoverlist'
                         />
                     </div>
-                    <div className='more-modal__description'>
-                        {email}
-                    </div>
+                    <div className='more-modal__description'>{email}</div>
                 </div>
                 <div className='more-modal__actions'>
                     <div className='more-modal__actions--round'>
-                        <AddIcon/>
+                        <AddIcon />
                     </div>
                 </div>
             </div>
@@ -222,7 +245,10 @@ export default class AddUsersToTeam extends React.Component {
         );
 
         const buttonSubmitText = localizeMessage('multiselect.add', 'Add');
-        const buttonSubmitLoadingText = localizeMessage('multiselect.adding', 'Adding...');
+        const buttonSubmitLoadingText = localizeMessage(
+            'multiselect.adding',
+            'Adding...',
+        );
 
         let users = [];
         if (this.props.users) {
@@ -231,7 +257,13 @@ export default class AddUsersToTeam extends React.Component {
 
         let addError = null;
         if (this.state.addError) {
-            addError = (<div className='has-error col-sm-12'><label className='control-label font-weight--normal'>{this.state.addError}</label></div>);
+            addError = (
+                <div className='has-error col-sm-12'>
+                    <label className='control-label font-weight--normal'>
+                        {this.state.addError}
+                    </label>
+                </div>
+            );
         }
 
         return (
@@ -245,16 +277,15 @@ export default class AddUsersToTeam extends React.Component {
                 aria-labelledby='addTeamModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='addTeamModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='addTeamModalLabel'>
                         <FormattedMessage
                             id='add_users_to_team.title'
                             defaultMessage='Add New Members To {teamName} Team'
                             values={{
                                 teamName: (
-                                    <strong>{this.props.currentTeamName}</strong>
+                                    <strong>
+                                        {this.props.currentTeamName}
+                                    </strong>
                                 ),
                             }}
                         />
@@ -280,7 +311,10 @@ export default class AddUsersToTeam extends React.Component {
                         buttonSubmitLoadingText={buttonSubmitLoadingText}
                         saving={this.state.saving}
                         loading={this.state.loadingUsers}
-                        placeholderText={localizeMessage('multiselect.placeholder', 'Search and add members')}
+                        placeholderText={localizeMessage(
+                            'multiselect.placeholder',
+                            'Search and add members',
+                        )}
                     />
                 </Modal.Body>
             </Modal>

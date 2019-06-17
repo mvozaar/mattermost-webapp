@@ -16,6 +16,7 @@ export const MenuItemActionImpl = ({onClick, text, extraText, id}) => (
         {extraText && <span className='extra-text'>{extraText}</span>}
     </button>
 );
+
 MenuItemActionImpl.propTypes = {
     onClick: PropTypes.func.isRequired,
     text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,

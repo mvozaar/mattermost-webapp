@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {FormattedMessage, intlShape} from 'react-intl';
 
 import {Preferences} from 'utils/constants.jsx';
-import MattermostLogo from 'components/svg/mattermost_logo';
+import SecurComLogo from 'components/svg/securcom_logo';
 
 export default class SystemNotice extends React.PureComponent {
     static propTypes = {
@@ -24,7 +24,7 @@ export default class SystemNotice extends React.PureComponent {
             dismissNotice: PropTypes.func.isRequired,
             getStandardAnalytics: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static contextTypes = {
         intl: intlShape.isRequired,
@@ -37,7 +37,10 @@ export default class SystemNotice extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.isSystemAdmin !== this.props.isSystemAdmin && this.props.isSystemAdmin) {
+        if (
+            prevProps.isSystemAdmin !== this.props.isSystemAdmin &&
+            this.props.isSystemAdmin
+        ) {
             this.props.actions.getStandardAnalytics();
         }
     }
@@ -58,14 +61,21 @@ export default class SystemNotice extends React.PureComponent {
                 continue;
             }
 
-            if (!notice.show(this.props.serverVersion, this.props.config, this.props.license, this.props.analytics)) {
+            if (
+                !notice.show(
+                    this.props.serverVersion,
+                    this.props.config,
+                    this.props.license,
+                    this.props.analytics,
+                )
+            ) {
                 continue;
             }
 
             return notice;
         }
         return null;
-    }
+    };
 
     hide = (remind = false) => {
         const notice = this.getCurrentNotice();
@@ -74,24 +84,26 @@ export default class SystemNotice extends React.PureComponent {
         }
 
         if (!remind) {
-            this.props.actions.savePreferences(this.props.currentUserId, [{
-                user_id: this.props.currentUserId,
-                category: Preferences.CATEGORY_SYSTEM_NOTICE,
-                name: notice.name,
-                value: 'dismissed',
-            }]);
+            this.props.actions.savePreferences(this.props.currentUserId, [
+                {
+                    user_id: this.props.currentUserId,
+                    category: Preferences.CATEGORY_SYSTEM_NOTICE,
+                    name: notice.name,
+                    value: 'dismissed',
+                },
+            ]);
         }
 
         this.props.actions.dismissNotice(notice.name);
-    }
+    };
 
     hideAndRemind = () => {
         this.hide(true);
-    }
+    };
 
     hideAndForget = () => {
         this.hide(false);
-    }
+    };
 
     render() {
         const notice = this.getCurrentNotice();
@@ -107,8 +119,13 @@ export default class SystemNotice extends React.PureComponent {
                 <div className='system-notice__info'>
                     <i
                         className='fa fa-eye'
-                        title={formatMessage({id: 'system_notice.adminVisible.icon', defaultMessage: 'Only visible to System Admins Icon'})}
+                        title={formatMessage({
+                            id: 'system_notice.adminVisible.icon',
+                            defaultMessage:
+                                'Only visible to System Admins Icon',
+                        })}
                     />
+
                     <FormattedMessage
                         id='system_notice.adminVisible'
                         defaultMessage='Only visible to System Admins'
@@ -118,20 +135,14 @@ export default class SystemNotice extends React.PureComponent {
         }
 
         return (
-            <div
-                className='system-notice bg--white shadow--2'
-            >
+            <div className='system-notice bg--white shadow--2'>
                 <div className='system-notice__header'>
                     <div className='system-notice__logo'>
-                        <MattermostLogo/>
+                        <SecurComLogo />
                     </div>
-                    <div className='system-notice__title'>
-                        {notice.title}
-                    </div>
+                    <div className='system-notice__title'>{notice.title}</div>
                 </div>
-                <div className='system-notice__body'>
-                    {notice.body}
-                </div>
+                <div className='system-notice__body'>{notice.body}</div>
                 {visibleMessage}
                 <div className='system-notice__footer'>
                     <button
@@ -144,7 +155,7 @@ export default class SystemNotice extends React.PureComponent {
                             defaultMessage='Remind me later'
                         />
                     </button>
-                    {notice.allowForget &&
+                    {notice.allowForget && (
                         <button
                             id='systemnotice_dontshow'
                             className='btn btn-transparent'
@@ -154,7 +165,8 @@ export default class SystemNotice extends React.PureComponent {
                                 id='system_notice.dont_show'
                                 defaultMessage="Don't show again"
                             />
-                        </button>}
+                        </button>
+                    )}
                 </div>
             </div>
         );

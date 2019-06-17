@@ -5,7 +5,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
-import {checkDialogElementForError, checkIfErrorsMatchElements} from 'mattermost-redux/utils/integration_utils';
+import {
+    checkDialogElementForError,
+    checkIfErrorsMatchElements,
+} from 'mattermost-redux/utils/integration_utils';
 
 import SpinnerButton from 'components/spinner_button';
 
@@ -27,7 +30,7 @@ export default class InteractiveDialog extends React.Component {
         actions: PropTypes.shape({
             submitInteractiveDialog: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -96,11 +99,11 @@ export default class InteractiveDialog extends React.Component {
         }
 
         this.handleHide(true);
-    }
+    };
 
     onHide = () => {
         this.handleHide(false);
-    }
+    };
 
     handleHide = (submitted = false) => {
         const {url, callbackId, state, notifyOnCancel} = this.props;
@@ -117,12 +120,12 @@ export default class InteractiveDialog extends React.Component {
         }
 
         this.setState({show: false});
-    }
+    };
 
     onChange = (name, value) => {
         const values = {...this.state.values, [name]: value};
         this.setState({values});
-    }
+    };
 
     render() {
         const {title, iconUrl, submitLabel, elements} = this.props;
@@ -133,6 +136,7 @@ export default class InteractiveDialog extends React.Component {
                 defaultMessage='Submit'
             />
         );
+
         if (submitLabel) {
             submitText = submitLabel;
         }
@@ -165,7 +169,8 @@ export default class InteractiveDialog extends React.Component {
                         componentClass='h1'
                         id='interactiveDialogModalLabel'
                     >
-                        {icon}{title}
+                        {icon}
+                        {title}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -207,7 +212,10 @@ export default class InteractiveDialog extends React.Component {
                         className='btn btn-primary save-button'
                         onClick={this.handleSubmit}
                         spinning={this.state.submitting}
-                        spinningText={localizeMessage('interactive_dialog.submitting', 'Submitting...')}
+                        spinningText={localizeMessage(
+                            'interactive_dialog.submitting',
+                            'Submitting...',
+                        )}
                     >
                         {submitText}
                     </SpinnerButton>

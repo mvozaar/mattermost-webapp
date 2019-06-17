@@ -44,40 +44,83 @@ jest.mock('selectors/local_storage', () => ({
 }));
 
 describe('channel view actions', () => {
-    const channel1 = {id: 'channelid1', name: 'channel1', display_name: 'Channel 1', type: 'O', team_id: 'teamid1'};
-    const townsquare = {id: 'channelid2', name: General.DEFAULT_CHANNEL, display_name: 'Town Square', type: 'O', team_id: 'teamid1'};
-    const gmChannel = {id: 'gmchannelid', name: 'gmchannel', display_name: 'GM Channel 1', type: 'G'};
+    const channel1 = {
+        id: 'channelid1',
+        name: 'channel1',
+        display_name: 'Channel 1',
+        type: 'O',
+        team_id: 'teamid1',
+    };
+    const townsquare = {
+        id: 'channelid2',
+        name: General.DEFAULT_CHANNEL,
+        display_name: 'Town Square',
+        type: 'O',
+        team_id: 'teamid1',
+    };
+    const gmChannel = {
+        id: 'gmchannelid',
+        name: 'gmchannel',
+        display_name: 'GM Channel 1',
+        type: 'G',
+    };
     const team1 = {id: 'teamid1', name: 'team1'};
 
     const initialState = {
         entities: {
             users: {
                 currentUserId: 'userid1',
-                profiles: {userid1: {id: 'userid1', username: 'username1', roles: 'system_user'}, userid2: {id: 'userid2', username: 'username2', roles: 'system_user'}},
+                profiles: {
+                    userid1: {
+                        id: 'userid1',
+                        username: 'username1',
+                        roles: 'system_user',
+                    },
+                    userid2: {
+                        id: 'userid2',
+                        username: 'username2',
+                        roles: 'system_user',
+                    },
+                },
                 profilesInChannel: {},
             },
+
             teams: {
                 currentTeamId: 'teamid1',
                 teams: {teamid1: team1},
             },
+
             channels: {
                 currentChannelId: 'channelid1',
-                channels: {channelid1: channel1, channelid2: townsquare, gmchannelid: gmChannel},
-                myMembers: {gmchannelid: {channel_id: 'gmchannelid', user_id: 'userid1'}},
+                channels: {
+                    channelid1: channel1,
+                    channelid2: townsquare,
+                    gmchannelid: gmChannel,
+                },
+                myMembers: {
+                    gmchannelid: {
+                        channel_id: 'gmchannelid',
+                        user_id: 'userid1',
+                    },
+                },
             },
+
             general: {
                 config: {},
                 serverVersion: '5.12.0',
             },
+
             roles: {
                 roles: {
                     system_user: {permissions: ['join_public_channels']},
                 },
             },
+
             preferences: {
                 myPreferences: {},
             },
         },
+
         views: {
             channel: {
                 loadingPosts: {},
@@ -95,18 +138,30 @@ describe('channel view actions', () => {
     describe('switchToChannel', () => {
         test('switch to public channel', () => {
             store.dispatch(Actions.switchToChannel(channel1));
-            expect(browserHistory.push).toHaveBeenCalledWith(`/${team1.name}/channels/${channel1.name}`);
+            expect(browserHistory.push).toHaveBeenCalledWith(
+                `/${team1.name}/channels/${channel1.name}`,
+            );
         });
 
         test('switch to fake direct channel', async () => {
-            await store.dispatch(Actions.switchToChannel({fake: true, userId: 'userid2', name: 'username2'}));
+            await store.dispatch(
+                Actions.switchToChannel({
+                    fake: true,
+                    userId: 'userid2',
+                    name: 'username2',
+                }),
+            );
             expect(openDirectChannelToUserId).toHaveBeenCalledWith('userid2');
-            expect(browserHistory.push).toHaveBeenCalledWith(`/${team1.name}/messages/@username2`);
+            expect(browserHistory.push).toHaveBeenCalledWith(
+                `/${team1.name}/messages/@username2`,
+            );
         });
 
         test('switch to gm channel', async () => {
             await store.dispatch(Actions.switchToChannel(gmChannel));
-            expect(browserHistory.push).toHaveBeenCalledWith(`/${team1.name}/channels/${gmChannel.name}`);
+            expect(browserHistory.push).toHaveBeenCalledWith(
+                `/${team1.name}/channels/${gmChannel.name}`,
+            );
         });
     });
 
@@ -121,7 +176,9 @@ describe('channel view actions', () => {
     describe('goToLastViewedChannel', () => {
         test('should switch to town square if last viewed channel is current channel', async () => {
             await store.dispatch(Actions.goToLastViewedChannel());
-            expect(browserHistory.push).toHaveBeenCalledWith(`/${team1.name}/channels/${General.DEFAULT_CHANNEL}`);
+            expect(browserHistory.push).toHaveBeenCalledWith(
+                `/${team1.name}/channels/${General.DEFAULT_CHANNEL}`,
+            );
         });
     });
 
@@ -132,30 +189,46 @@ describe('channel view actions', () => {
 
                 PostActions.getPosts.mockReturnValue(() => ({data: posts}));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel'),
+                );
 
                 expect(result.posts).toBe(posts);
 
-                expect(PostActions.getPosts).toHaveBeenCalledWith('channel', 0, Posts.POST_CHUNK_SIZE / 2);
+                expect(PostActions.getPosts).toHaveBeenCalledWith(
+                    'channel',
+                    0,
+                    Posts.POST_CHUNK_SIZE / 2,
+                );
             });
 
             test('when enough posts are received', async () => {
-                const posts = {posts: {}, order: new Array(Posts.POST_CHUNK_SIZE)};
+                const posts = {
+                    posts: {},
+                    order: new Array(Posts.POST_CHUNK_SIZE),
+                };
 
                 PostActions.getPosts.mockReturnValue(() => ({data: posts}));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel'),
+                );
 
                 expect(result.hasMoreBefore).toBe(true);
                 expect(result.hasMoreAfter).toBe(false);
             });
 
             test('when not enough posts are received', async () => {
-                const posts = {posts: {}, order: new Array((Posts.POST_CHUNK_SIZE / 2) - 1)};
+                const posts = {
+                    posts: {},
+                    order: new Array(Posts.POST_CHUNK_SIZE / 2 - 1),
+                };
 
                 PostActions.getPosts.mockReturnValue(() => ({data: posts}));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel'),
+                );
 
                 expect(result.hasMoreBefore).toBe(false);
                 expect(result.hasMoreAfter).toBe(false);
@@ -166,13 +239,21 @@ describe('channel view actions', () => {
             test('should call getPostsAround and return the results', async () => {
                 const posts = {posts: {}, order: []};
 
-                PostActions.getPostsAround.mockReturnValue(() => ({data: posts}));
+                PostActions.getPostsAround.mockReturnValue(() => ({
+                    data: posts,
+                }));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel', 'post'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel', 'post'),
+                );
 
                 expect(result.posts).toBe(posts);
 
-                expect(PostActions.getPostsAround).toHaveBeenCalledWith('channel', 'post', Posts.POST_CHUNK_SIZE / 2);
+                expect(PostActions.getPostsAround).toHaveBeenCalledWith(
+                    'channel',
+                    'post',
+                    Posts.POST_CHUNK_SIZE / 2,
+                );
             });
 
             test('when enough posts are received before and after the focused post', async () => {
@@ -181,13 +262,17 @@ describe('channel view actions', () => {
                     order: [
                         ...new Array(Posts.POST_CHUNK_SIZE / 2), // after
                         'post',
-                        ...new Array(Posts.POST_CHUNK_SIZE / 2), // before
+                        ...new Array(Posts.POST_CHUNK_SIZE / 2),
                     ],
                 };
 
-                PostActions.getPostsAround.mockReturnValue(() => ({data: posts}));
+                PostActions.getPostsAround.mockReturnValue(() => ({
+                    data: posts,
+                }));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel', 'post'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel', 'post'),
+                );
 
                 expect(result.hasMoreAfter).toBe(true);
                 expect(result.hasMoreBefore).toBe(true);
@@ -199,13 +284,17 @@ describe('channel view actions', () => {
                     order: [
                         ...new Array(Posts.POST_CHUNK_SIZE / 2), // after
                         'post',
-                        ...new Array((Posts.POST_CHUNK_SIZE / 2) - 1), // before
+                        ...new Array(Posts.POST_CHUNK_SIZE / 2 - 1),
                     ],
                 };
 
-                PostActions.getPostsAround.mockReturnValue(() => ({data: posts}));
+                PostActions.getPostsAround.mockReturnValue(() => ({
+                    data: posts,
+                }));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel', 'post'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel', 'post'),
+                );
 
                 expect(result.hasMoreAfter).toBe(true);
                 expect(result.hasMoreBefore).toBe(false);
@@ -215,15 +304,19 @@ describe('channel view actions', () => {
                 const posts = {
                     posts: {},
                     order: [
-                        ...new Array((Posts.POST_CHUNK_SIZE / 2) - 1), // after
+                        ...new Array(Posts.POST_CHUNK_SIZE / 2 - 1), // after
                         'post',
-                        ...new Array(Posts.POST_CHUNK_SIZE / 2), // before
+                        ...new Array(Posts.POST_CHUNK_SIZE / 2),
                     ],
                 };
 
-                PostActions.getPostsAround.mockReturnValue(() => ({data: posts}));
+                PostActions.getPostsAround.mockReturnValue(() => ({
+                    data: posts,
+                }));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel', 'post'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel', 'post'),
+                );
 
                 expect(result.hasMoreAfter).toBe(false);
                 expect(result.hasMoreBefore).toBe(true);
@@ -233,15 +326,19 @@ describe('channel view actions', () => {
                 const posts = {
                     posts: {},
                     order: [
-                        ...new Array((Posts.POST_CHUNK_SIZE / 2) - 1), // after
+                        ...new Array(Posts.POST_CHUNK_SIZE / 2 - 1), // after
                         'post',
-                        ...new Array((Posts.POST_CHUNK_SIZE / 2) - 1), // before
+                        ...new Array(Posts.POST_CHUNK_SIZE / 2 - 1),
                     ],
                 };
 
-                PostActions.getPostsAround.mockReturnValue(() => ({data: posts}));
+                PostActions.getPostsAround.mockReturnValue(() => ({
+                    data: posts,
+                }));
 
-                const result = await store.dispatch(Actions.loadInitialPosts('channel', 'post'));
+                const result = await store.dispatch(
+                    Actions.loadInitialPosts('channel', 'post'),
+                );
 
                 expect(result.hasMoreAfter).toBe(false);
                 expect(result.hasMoreBefore).toBe(false);
@@ -251,21 +348,39 @@ describe('channel view actions', () => {
 
     describe('increasePostVisibility', () => {
         test('should dispatch the correct actions', async () => {
-            PostActions.getPostsBefore.mockImplementation((...args) => ({type: 'MOCK_GET_POSTS_BEFORE', args}));
+            PostActions.getPostsBefore.mockImplementation((...args) => ({
+                type: 'MOCK_GET_POSTS_BEFORE',
+                args,
+            }));
 
-            await store.dispatch(Actions.increasePostVisibility('current_channel_id', 'oldest_post_id'));
+            await store.dispatch(
+                Actions.increasePostVisibility(
+                    'current_channel_id',
+                    'oldest_post_id',
+                ),
+            );
 
             expect(store.getActions()).toEqual([
-                {channelId: 'current_channel_id', data: true, type: 'LOADING_POSTS'},
+                {
+                    channelId: 'current_channel_id',
+                    data: true,
+                    type: 'LOADING_POSTS',
+                },
                 {
                     args: ['current_channel_id', 'oldest_post_id', 0, 30],
                     type: 'MOCK_GET_POSTS_BEFORE',
                 },
+
                 {
                     meta: {batch: true},
                     payload: [
-                        {channelId: 'current_channel_id', data: false, type: 'LOADING_POSTS'},
+                        {
+                            channelId: 'current_channel_id',
+                            data: false,
+                            type: 'LOADING_POSTS',
+                        },
                     ],
+
                     type: 'BATCHING_REDUCER.BATCH',
                 },
             ]);
@@ -280,7 +395,9 @@ describe('channel view actions', () => {
 
             PostActions.getPostsBefore.mockReturnValue(() => ({data: posts}));
 
-            await store.dispatch(Actions.increasePostVisibility(channelId, 'oldest_post_id'));
+            await store.dispatch(
+                Actions.increasePostVisibility(channelId, 'oldest_post_id'),
+            );
 
             expect(store.getActions()).toContainEqual({
                 meta: {batch: true},
@@ -290,12 +407,14 @@ describe('channel view actions', () => {
                         channelId,
                         data: false,
                     },
+
                     {
                         type: ActionTypes.INCREASE_POST_VISIBILITY,
                         amount: posts.order.length,
                         data: channelId,
                     },
                 ],
+
                 type: 'BATCHING_REDUCER.BATCH',
             });
         });
@@ -309,7 +428,9 @@ describe('channel view actions', () => {
 
             PostActions.getPostsBefore.mockReturnValue(() => ({data: posts}));
 
-            const result = await store.dispatch(Actions.increasePostVisibility(channelId, 'oldest_post_id'));
+            const result = await store.dispatch(
+                Actions.increasePostVisibility(channelId, 'oldest_post_id'),
+            );
 
             expect(result).toEqual({
                 moreToLoad: true,
@@ -320,12 +441,14 @@ describe('channel view actions', () => {
             const channelId = 'channel1';
             const posts = {
                 posts: {},
-                order: new Array((Posts.POST_CHUNK_SIZE / 2) - 1),
+                order: new Array(Posts.POST_CHUNK_SIZE / 2 - 1),
             };
 
             PostActions.getPostsBefore.mockReturnValue(() => ({data: posts}));
 
-            const result = await store.dispatch(Actions.increasePostVisibility(channelId, 'oldest_post_id'));
+            const result = await store.dispatch(
+                Actions.increasePostVisibility(channelId, 'oldest_post_id'),
+            );
 
             expect(result).toEqual({
                 moreToLoad: false,
@@ -338,7 +461,9 @@ describe('channel view actions', () => {
 
             PostActions.getPostsBefore.mockReturnValue(() => ({error}));
 
-            const result = await store.dispatch(Actions.increasePostVisibility(channelId, 'oldest_post_id'));
+            const result = await store.dispatch(
+                Actions.increasePostVisibility(channelId, 'oldest_post_id'),
+            );
 
             expect(result).toEqual({
                 error,
@@ -362,7 +487,9 @@ describe('channel view actions', () => {
                 },
             });
 
-            const result = await store.dispatch(Actions.increasePostVisibility(channelId, 'oldest_post_id'));
+            const result = await store.dispatch(
+                Actions.increasePostVisibility(channelId, 'oldest_post_id'),
+            );
 
             expect(result).toBe(true);
 
@@ -385,7 +512,9 @@ describe('channel view actions', () => {
                 },
             });
 
-            const result = await store.dispatch(Actions.increasePostVisibility(channelId, 'oldest_post_id'));
+            const result = await store.dispatch(
+                Actions.increasePostVisibility(channelId, 'oldest_post_id'),
+            );
 
             expect(result).toBe(true);
 

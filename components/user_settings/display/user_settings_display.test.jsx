@@ -33,15 +33,14 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
         defaultClientLocale: 'en',
         canCreatePublicChannel: true,
         canCreatePrivateChannel: true,
-        timezones: [
-            'America/New_York',
-            'America/Los_Angeles',
-        ],
+        timezones: ['America/New_York', 'America/Los_Angeles'],
+
         userTimezone: {
             useAutomaticTimezone: 'true',
             automaticTimezone: 'America/New_York',
             manualTimezone: '',
         },
+
         actions: {
             getSupportedTimezones: jest.fn(),
             autoUpdateTimezone: jest.fn(),
@@ -50,13 +49,13 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     };
 
     test('should match snapshot, no active section', () => {
-        const wrapper = shallow(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = shallow(<UserSettingsDisplay {...requiredProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, collapse section', () => {
         const props = {...requiredProps, activeSection: 'collapse'};
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -66,7 +65,8 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
             activeSection: 'linkpreview',
             enableLinkPreviews: false,
         };
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -76,43 +76,48 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
             activeSection: 'linkpreview',
             enableLinkPreviews: true,
         };
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, clock section', () => {
         const props = {...requiredProps, activeSection: 'clock'};
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, teammate name display section', () => {
-        const props = {...requiredProps, activeSection: 'teammate_name_display'};
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+        const props = {
+            ...requiredProps,
+            activeSection: 'teammate_name_display',
+        };
+
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, timezone section', () => {
         const props = {...requiredProps, activeSection: 'timezone'};
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, message display section', () => {
         const props = {...requiredProps, activeSection: 'message_display'};
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, channel display mode section', () => {
         const props = {...requiredProps, activeSection: 'channel_display_mode'};
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, languages section', () => {
         const props = {...requiredProps, activeSection: 'languages'};
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -122,7 +127,8 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
             activeSection: 'theme',
             enableThemeSelection: false,
         };
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -132,7 +138,8 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
             activeSection: 'theme',
             enableThemeSelection: true,
         };
-        const wrapper = shallow(<UserSettingsDisplay {...props}/>);
+
+        const wrapper = shallow(<UserSettingsDisplay {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -140,7 +147,7 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
         const updateSection = jest.fn();
 
         const props = {...requiredProps, updateSection};
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...props}/>);
+        const wrapper = mountWithIntl(<UserSettingsDisplay {...props} />);
 
         await wrapper.instance().handleSubmit();
         expect(updateSection).toHaveBeenCalledWith('');
@@ -149,7 +156,7 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     test('should have called updateSection', () => {
         const updateSection = jest.fn();
         const props = {...requiredProps, updateSection};
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...props}/>);
+        const wrapper = mountWithIntl(<UserSettingsDisplay {...props} />);
 
         wrapper.instance().updateSection('');
         expect(updateSection).toHaveBeenCalledWith('');
@@ -161,7 +168,7 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     test('should have called closeModal', () => {
         const closeModal = jest.fn();
         const props = {...requiredProps, closeModal};
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...props}/>);
+        const wrapper = mountWithIntl(<UserSettingsDisplay {...props} />);
 
         wrapper.find('#closeButton').simulate('click');
         expect(closeModal).toHaveBeenCalled();
@@ -170,14 +177,16 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     test('should have called collapseModal', () => {
         const collapseModal = jest.fn();
         const props = {...requiredProps, collapseModal};
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...props}/>);
+        const wrapper = mountWithIntl(<UserSettingsDisplay {...props} />);
 
         wrapper.find('.fa-angle-left').simulate('click');
         expect(collapseModal).toHaveBeenCalled();
     });
 
     test('should update militaryTime state', () => {
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <UserSettingsDisplay {...requiredProps} />,
+        );
 
         wrapper.instance().handleClockRadio('false');
         expect(wrapper.state('militaryTime')).toBe('false');
@@ -187,7 +196,9 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     });
 
     test('should update teammateNameDisplay state', () => {
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <UserSettingsDisplay {...requiredProps} />,
+        );
 
         wrapper.instance().handleTeammateNameDisplayRadio('username');
         expect(wrapper.state('teammateNameDisplay')).toBe('username');
@@ -200,7 +211,9 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     });
 
     test('should update channelDisplayMode state', () => {
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <UserSettingsDisplay {...requiredProps} />,
+        );
 
         wrapper.instance().handleChannelDisplayModeRadio('full');
         expect(wrapper.state('channelDisplayMode')).toBe('full');
@@ -210,7 +223,9 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     });
 
     test('should update messageDisplay state', () => {
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <UserSettingsDisplay {...requiredProps} />,
+        );
 
         wrapper.instance().handlemessageDisplayRadio('clean');
         expect(wrapper.state('messageDisplay')).toBe('clean');
@@ -220,7 +235,9 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     });
 
     test('should update collapseDisplay state', () => {
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <UserSettingsDisplay {...requiredProps} />,
+        );
 
         wrapper.instance().handleCollapseRadio('false');
         expect(wrapper.state('collapseDisplay')).toBe('false');
@@ -230,7 +247,9 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     });
 
     test('should update linkPreviewDisplay state', () => {
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <UserSettingsDisplay {...requiredProps} />,
+        );
 
         wrapper.instance().handleLinkPreviewRadio('false');
         expect(wrapper.state('linkPreviewDisplay')).toBe('false');
@@ -240,7 +259,9 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     });
 
     test('should update display state', () => {
-        const wrapper = mountWithIntl(<UserSettingsDisplay {...requiredProps}/>);
+        const wrapper = mountWithIntl(
+            <UserSettingsDisplay {...requiredProps} />,
+        );
 
         wrapper.instance().handleOnChange({display: 'linkPreviewDisplay'});
         expect(wrapper.state('display')).toBe('linkPreviewDisplay');

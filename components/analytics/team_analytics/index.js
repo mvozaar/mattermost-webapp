@@ -17,7 +17,9 @@ const LAST_ANALYTICS_TEAM = 'last_analytics_team';
 function mapStateToProps(state) {
     const teams = getTeamsList(state);
     const teamId = BrowserStore.getGlobalItem(LAST_ANALYTICS_TEAM, null);
-    const initialTeam = state.entities.teams.teams[teamId] || (teams.length > 0 ? teams[0] : null);
+    const initialTeam =
+        state.entities.teams.teams[teamId] ||
+        (teams.length > 0 ? teams[0] : null);
 
     return {
         initialTeam,
@@ -29,11 +31,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getTeams,
-            getProfilesInTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getTeams,
+                getProfilesInTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamAnalytics);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TeamAnalytics);

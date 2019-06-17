@@ -6,8 +6,15 @@ import PropTypes from 'prop-types';
 
 import {FormattedMessage, intlShape} from 'react-intl';
 
-import {isLicenseExpired, isLicenseExpiring, isLicensePastGracePeriod} from 'utils/license_utils.jsx';
-import {AnnouncementBarTypes, AnnouncementBarMessages} from 'utils/constants.jsx';
+import {
+    isLicenseExpired,
+    isLicenseExpiring,
+    isLicensePastGracePeriod,
+} from 'utils/license_utils.jsx';
+import {
+    AnnouncementBarTypes,
+    AnnouncementBarMessages,
+} from 'utils/constants.jsx';
 
 import {t} from 'utils/i18n';
 
@@ -16,7 +23,7 @@ import FormattedMarkdownMessage from 'components/formatted_markdown_message';
 import AnnouncementBar from '../announcement_bar.jsx';
 import TextDismissableBar from '../text_dismissable_bar';
 
-const RENEWAL_LINK = 'https://licensing.mattermost.com/renew';
+const RENEWAL_LINK = 'https://licensing.securCom.me/renew';
 
 export default class ConfigurationAnnouncementBar extends React.PureComponent {
     static propTypes = {
@@ -36,13 +43,20 @@ export default class ConfigurationAnnouncementBar extends React.PureComponent {
     };
 
     dismissExpiringLicense = () => {
-        this.props.actions.dismissNotice(AnnouncementBarMessages.LICENSE_EXPIRING);
-    }
+        this.props.actions.dismissNotice(
+            AnnouncementBarMessages.LICENSE_EXPIRING,
+        );
+    };
 
     render() {
         // System administrators
         if (this.props.canViewSystemErrors) {
-            const renewalLink = RENEWAL_LINK + '?id=' + this.props.license.id + '&user_count=' + this.props.totalUsers;
+            const renewalLink =
+                RENEWAL_LINK +
+                '?id=' +
+                this.props.license.id +
+                '&user_count=' +
+                this.props.totalUsers;
             if (isLicensePastGracePeriod()) {
                 return (
                     <AnnouncementBar
@@ -88,7 +102,13 @@ export default class ConfigurationAnnouncementBar extends React.PureComponent {
                                 id={AnnouncementBarMessages.LICENSE_EXPIRING}
                                 defaultMessage='Enterprise license expires on {date, date, long}. [Please renew](!{link}).'
                                 values={{
-                                    date: new Date(parseInt(this.props.license.ExpiresAt, 10)),
+                                    date: new Date(
+                                        parseInt(
+                                            this.props.license.ExpiresAt,
+                                            10,
+                                        ),
+                                    ),
+
                                     link: renewalLink,
                                 }}
                             />
@@ -98,7 +118,8 @@ export default class ConfigurationAnnouncementBar extends React.PureComponent {
             }
         } else {
             // Regular users
-            if (isLicensePastGracePeriod()) { //eslint-disable-line no-lonely-if
+            if (isLicensePastGracePeriod()) {
+                //eslint-disable-line no-lonely-if
                 return (
                     <AnnouncementBar
                         type={AnnouncementBarTypes.CRITICAL}
@@ -115,12 +136,14 @@ export default class ConfigurationAnnouncementBar extends React.PureComponent {
 
         const {formatMessage} = this.context.intl;
 
-        if (this.props.config.SendEmailNotifications !== 'true' &&
+        if (
+            this.props.config.SendEmailNotifications !== 'true' &&
             this.props.config.EnablePreviewModeBanner === 'true'
         ) {
             const emailMessage = formatMessage({
                 id: AnnouncementBarMessages.PREVIEW_MODE,
-                defaultMessage: 'Preview Mode: Email notifications have not been configured',
+                defaultMessage:
+                    'Preview Mode: Email notifications have not been configured',
             });
 
             return (
@@ -132,15 +155,20 @@ export default class ConfigurationAnnouncementBar extends React.PureComponent {
             );
         }
 
-        if (this.props.canViewSystemErrors && this.props.config.SiteURL === '') {
+        if (
+            this.props.canViewSystemErrors &&
+            this.props.config.SiteURL === ''
+        ) {
             let id;
             let defaultMessage;
             if (this.props.config.EnableSignUpWithGitLab === 'true') {
                 id = t('announcement_bar.error.site_url_gitlab.full');
-                defaultMessage = 'Please configure your [Site URL](https://docs.mattermost.com/administration/config-settings.html#site-url) in the [System Console](/admin_console/general/configuration) or in gitlab.rb if you\'re using GitLab Mattermost.';
+                defaultMessage =
+                    "Please configure your [Site URL](https://docs.securCom.me/administration/config-settings.html#site-url) in the [System Console](/admin_console/general/configuration) or in gitlab.rb if you're using GitLab SCC.";
             } else {
                 id = t('announcement_bar.error.site_url.full');
-                defaultMessage = 'Please configure your [Site URL](https://docs.mattermost.com/administration/config-settings.html#site-url) in the [System Console](/admin_console/general/configuration).';
+                defaultMessage =
+                    'Please configure your [Site URL](https://docs.securCom.me/administration/config-settings.html#site-url) in the [System Console](/admin_console/general/configuration).';
             }
 
             const siteURLMessage = formatMessage({id, defaultMessage});

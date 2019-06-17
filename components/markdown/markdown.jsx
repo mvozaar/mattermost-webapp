@@ -9,7 +9,6 @@ import * as TextFormatting from 'utils/text_formatting.jsx';
 
 export default class Markdown extends React.PureComponent {
     static propTypes = {
-
         /*
          * An object mapping channel names to channels for the current team
          */
@@ -99,18 +98,26 @@ export default class Markdown extends React.PureComponent {
             return <span>{this.props.message}</span>;
         }
 
-        const options = Object.assign({
-            autolinkedUrlSchemes: this.props.autolinkedUrlSchemes,
-            siteURL: this.props.siteURL,
-            mentionKeys: this.props.mentionKeys,
-            atMentions: true,
-            channelNamesMap: this.props.channelNamesMap,
-            proxyImages: this.props.hasImageProxy && this.props.proxyImages,
-            team: this.props.team,
-            minimumHashtagLength: this.props.minimumHashtagLength,
-        }, this.props.options);
+        const options = Object.assign(
+            {
+                autolinkedUrlSchemes: this.props.autolinkedUrlSchemes,
+                siteURL: this.props.siteURL,
+                mentionKeys: this.props.mentionKeys,
+                atMentions: true,
+                channelNamesMap: this.props.channelNamesMap,
+                proxyImages: this.props.hasImageProxy && this.props.proxyImages,
+                team: this.props.team,
+                minimumHashtagLength: this.props.minimumHashtagLength,
+            },
 
-        const htmlFormattedText = TextFormatting.formatText(this.props.message, options);
+            this.props.options,
+        );
+
+        const htmlFormattedText = TextFormatting.formatText(
+            this.props.message,
+            options,
+        );
+
         return messageHtmlToComponent(htmlFormattedText, this.props.isRHS, {
             imageProps: this.props.imageProps,
             imagesMetadata: this.props.imagesMetadata,

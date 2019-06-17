@@ -12,12 +12,7 @@ export default class SearchIcon extends React.PureComponent {
                 id='generic_icons.search'
                 defaultMessage='Search Icon'
             >
-                {(title) => (
-                    <i
-                        className='fa fa-search'
-                        title={title}
-                    />
-                )}
+                {(title) => <i className='fa fa-search' title={title} />}
             </FormattedMessage>
         );
     }

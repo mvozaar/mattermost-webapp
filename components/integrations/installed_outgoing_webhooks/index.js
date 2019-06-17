@@ -18,11 +18,15 @@ import InstalledOutgoingWebhook from './installed_outgoing_webhooks.jsx';
 function mapStateToProps(state) {
     const config = getConfig(state);
     const teamId = getCurrentTeamId(state);
-    const canManageOthersWebhooks = haveITeamPermission(state, {team: teamId, permission: Permissions.MANAGE_OTHERS_OUTGOING_WEBHOOKS});
+    const canManageOthersWebhooks = haveITeamPermission(state, {
+        team: teamId,
+        permission: Permissions.MANAGE_OTHERS_OUTGOING_WEBHOOKS,
+    });
+
     const outgoingHooks = getOutgoingHooks(state);
-    const outgoingWebhooks = Object.keys(outgoingHooks).
-        map((key) => outgoingHooks[key]).
-        filter((outgoingWebhook) => outgoingWebhook.team_id === teamId);
+    const outgoingWebhooks = Object.keys(outgoingHooks)
+        .map((key) => outgoingHooks[key])
+        .filter((outgoingWebhook) => outgoingWebhook.team_id === teamId);
     const enableOutgoingWebhooks = config.EnableOutgoingWebhooks === 'true';
 
     return {
@@ -37,12 +41,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadOutgoingHooksAndProfilesForTeam,
-            removeOutgoingHook: Actions.removeOutgoingHook,
-            regenOutgoingHookToken: Actions.regenOutgoingHookToken,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadOutgoingHooksAndProfilesForTeam,
+                removeOutgoingHook: Actions.removeOutgoingHook,
+                regenOutgoingHookToken: Actions.regenOutgoingHookToken,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InstalledOutgoingWebhook);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(InstalledOutgoingWebhook);

@@ -33,27 +33,26 @@ describe('components/user_settings/notifications/DesktopNotificationSettings', (
     };
 
     test('should match snapshot, on max setting', () => {
-        const wrapper = shallow(
-            <DesktopNotificationSettings {...baseProps}/>
-        );
+        const wrapper = shallow(<DesktopNotificationSettings {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on min setting', () => {
         const props = {...baseProps, active: false};
-        const wrapper = shallow(
-            <DesktopNotificationSettings {...props}/>
-        );
+        const wrapper = shallow(<DesktopNotificationSettings {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should call props.updateSection and props.cancel on handleMinUpdateSection', () => {
-        const props = {...baseProps, updateSection: jest.fn(), cancel: jest.fn()};
-        const wrapper = shallow(
-            <DesktopNotificationSettings {...props}/>
-        );
+        const props = {
+            ...baseProps,
+            updateSection: jest.fn(),
+            cancel: jest.fn(),
+        };
+
+        const wrapper = shallow(<DesktopNotificationSettings {...props} />);
 
         wrapper.instance().handleMinUpdateSection('');
         expect(props.updateSection).toHaveBeenCalledTimes(1);
@@ -70,9 +69,7 @@ describe('components/user_settings/notifications/DesktopNotificationSettings', (
 
     test('should call props.updateSection on handleMaxUpdateSection', () => {
         const props = {...baseProps, updateSection: jest.fn()};
-        const wrapper = shallow(
-            <DesktopNotificationSettings {...props}/>
-        );
+        const wrapper = shallow(<DesktopNotificationSettings {...props} />);
 
         wrapper.instance().handleMaxUpdateSection('');
         expect(props.updateSection).toHaveBeenCalledTimes(1);
@@ -85,24 +82,27 @@ describe('components/user_settings/notifications/DesktopNotificationSettings', (
 
     test('should call props.setParentState on handleOnChange', () => {
         const props = {...baseProps, setParentState: jest.fn()};
-        const wrapper = shallow(
-            <DesktopNotificationSettings {...props}/>
-        );
+        const wrapper = shallow(<DesktopNotificationSettings {...props} />);
 
         wrapper.instance().handleOnChange({
-            currentTarget: {getAttribute: (key) => {
-                return {'data-key': 'dataKey', 'data-value': 'dataValue'}[key];
-            }},
+            currentTarget: {
+                getAttribute: (key) => {
+                    return {'data-key': 'dataKey', 'data-value': 'dataValue'}[
+                        key
+                    ];
+                },
+            },
         });
 
         expect(props.setParentState).toHaveBeenCalledTimes(1);
-        expect(props.setParentState).toHaveBeenCalledWith('dataKey', 'dataValue');
+        expect(props.setParentState).toHaveBeenCalledWith(
+            'dataKey',
+            'dataValue',
+        );
     });
 
     test('should match snapshot, on buildMaximizedSetting', () => {
-        const wrapper = shallow(
-            <DesktopNotificationSettings {...baseProps}/>
-        );
+        const wrapper = shallow(<DesktopNotificationSettings {...baseProps} />);
 
         expect(wrapper.instance().buildMaximizedSetting()).toMatchSnapshot();
 
@@ -111,9 +111,7 @@ describe('components/user_settings/notifications/DesktopNotificationSettings', (
     });
 
     test('should match snapshot, on buildMinimizedSetting', () => {
-        const wrapper = shallow(
-            <DesktopNotificationSettings {...baseProps}/>
-        );
+        const wrapper = shallow(<DesktopNotificationSettings {...baseProps} />);
 
         expect(wrapper.instance().buildMinimizedSetting()).toMatchSnapshot();
 

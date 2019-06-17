@@ -31,12 +31,15 @@ import * as Utils from 'utils/utils.jsx';
 import {Constants, StoragePrefixes} from 'utils/constants.jsx';
 
 export function clearCommentDraftUploads() {
-    return actionOnGlobalItemsWithPrefix(StoragePrefixes.COMMENT_DRAFT, (key, value) => {
-        if (value) {
-            return {...value, uploadsInProgress: []};
-        }
-        return value;
-    });
+    return actionOnGlobalItemsWithPrefix(
+        StoragePrefixes.COMMENT_DRAFT,
+        (key, value) => {
+            if (value) {
+                return {...value, uploadsInProgress: []};
+            }
+            return value;
+        },
+    );
 }
 
 export function updateCommentDraft(rootId, draft) {
@@ -44,11 +47,20 @@ export function updateCommentDraft(rootId, draft) {
 }
 
 export function makeOnMoveHistoryIndex(rootId, direction) {
-    const getMessageInHistory = makeGetMessageInHistoryItem(Posts.MESSAGE_TYPES.COMMENT);
+    const getMessageInHistory = makeGetMessageInHistoryItem(
+        Posts.MESSAGE_TYPES.COMMENT,
+    );
 
     return () => (dispatch, getState) => {
-        const draft = getPostDraft(getState(), StoragePrefixes.COMMENT_DRAFT, rootId);
-        if (draft.message !== '' && draft.message !== getMessageInHistory(getState())) {
+        const draft = getPostDraft(
+            getState(),
+            StoragePrefixes.COMMENT_DRAFT,
+            rootId,
+        );
+        if (
+            draft.message !== '' &&
+            draft.message !== getMessageInHistory(getState())
+        ) {
             return;
         }
 
@@ -60,7 +72,12 @@ export function makeOnMoveHistoryIndex(rootId, direction) {
 
         const nextMessageInHistory = getMessageInHistory(getState());
 
-        dispatch(updateCommentDraft(rootId, {...draft, message: nextMessageInHistory}));
+        dispatch(
+            updateCommentDraft(rootId, {
+                ...draft,
+                message: nextMessageInHistory,
+            }),
+        );
     };
 }
 
@@ -126,7 +143,7 @@ export function submitCommand(channelId, rootId, draft) {
             if (error.sendMessage) {
                 await dispatch(submitPost(channelId, rootId, draft));
             } else {
-                throw (error);
+                throw error;
             }
         }
     };
@@ -134,7 +151,11 @@ export function submitCommand(channelId, rootId, draft) {
 
 export function makeOnSubmit(channelId, rootId, latestPostId) {
     return (options = {}) => async (dispatch, getState) => {
-        const draft = getPostDraft(getState(), StoragePrefixes.COMMENT_DRAFT, rootId);
+        const draft = getPostDraft(
+            getState(),
+            StoragePrefixes.COMMENT_DRAFT,
+            rootId,
+        );
         const {message} = draft;
 
         dispatch(addMessageIntoHistory(message));
@@ -147,7 +168,9 @@ export function makeOnSubmit(channelId, rootId, latestPostId) {
         const emojiMap = new EmojiMap(emojis);
 
         if (isReaction && emojiMap.has(isReaction[2])) {
-            dispatch(submitReaction(latestPostId, isReaction[1], isReaction[2]));
+            dispatch(
+                submitReaction(latestPostId, isReaction[1], isReaction[2]),
+            );
         } else if (message.indexOf('/') === 0 && !options.ignoreSlash) {
             await dispatch(submitCommand(channelId, rootId, draft));
         } else {
@@ -176,7 +199,10 @@ function makeGetCurrentUsersLatestPost(channelId, rootId) {
                     post.user_id !== userId ||
                     (post.props && post.props.from_webhook) ||
                     post.state === Constants.POST_DELETED ||
-                    (post.type && post.type.startsWith(Constants.SYSTEM_MESSAGE_PREFIX)) ||
+                    (post.type &&
+                        post.type.startsWith(
+                            Constants.SYSTEM_MESSAGE_PREFIX,
+                        )) ||
                     isPostPendingOrFailed(post)
                 ) {
                     continue;
@@ -194,12 +220,15 @@ function makeGetCurrentUsersLatestPost(channelId, rootId) {
             }
 
             return lastPost;
-        }
+        },
     );
 }
 
 export function makeOnEditLatestPost(channelId, rootId) {
-    const getCurrentUsersLatestPost = makeGetCurrentUsersLatestPost(channelId, rootId);
+    const getCurrentUsersLatestPost = makeGetCurrentUsersLatestPost(
+        channelId,
+        rootId,
+    );
     const getCommentCount = makeGetCommentCountForPost();
 
     return () => (dispatch, getState) => {
@@ -211,12 +240,14 @@ export function makeOnEditLatestPost(channelId, rootId) {
             return {data: false};
         }
 
-        return dispatch(PostActions.setEditingPost(
-            lastPost.id,
-            getCommentCount(state, {post: lastPost}),
-            'reply_textbox',
-            Utils.localizeMessage('create_comment.commentTitle', 'Comment'),
-            true
-        ));
+        return dispatch(
+            PostActions.setEditingPost(
+                lastPost.id,
+                getCommentCount(state, {post: lastPost}),
+                'reply_textbox',
+                Utils.localizeMessage('create_comment.commentTitle', 'Comment'),
+                true,
+            ),
+        );
     };
 }

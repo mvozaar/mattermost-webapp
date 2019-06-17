@@ -18,10 +18,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            convertChannelToPrivate,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                convertChannelToPrivate,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConvertChannelModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ConvertChannelModal);

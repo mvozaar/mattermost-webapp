@@ -12,7 +12,7 @@ export default class FailedPostOptions extends React.PureComponent {
             createPost: PropTypes.func.isRequired,
             removePost: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     retryPost = (e) => {
         e.preventDefault();
@@ -20,33 +20,25 @@ export default class FailedPostOptions extends React.PureComponent {
         const post = {...this.props.post};
         Reflect.deleteProperty(post, 'id');
         this.props.actions.createPost(post);
-    }
+    };
 
     cancelPost = (e) => {
         e.preventDefault();
 
         this.props.actions.removePost(this.props.post);
-    }
+    };
 
     render() {
         return (
             <span className='pending-post-actions'>
-                <a
-                    className='post-retry'
-                    href='#'
-                    onClick={this.retryPost}
-                >
+                <a className='post-retry' href='#' onClick={this.retryPost}>
                     <FormattedMessage
                         id='pending_post_actions.retry'
                         defaultMessage='Retry'
                     />
                 </a>
                 {' - '}
-                <a
-                    className='post-cancel'
-                    href='#'
-                    onClick={this.cancelPost}
-                >
+                <a className='post-cancel' href='#' onClick={this.cancelPost}>
                     <FormattedMessage
                         id='pending_post_actions.cancel'
                         defaultMessage='Cancel'

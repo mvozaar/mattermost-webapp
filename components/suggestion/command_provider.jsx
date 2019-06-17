@@ -31,9 +31,7 @@ export class CommandSuggestion extends Suggestion {
                 <div className='command__title'>
                     {item.suggestion + ' ' + item.hint}
                 </div>
-                <div className='command__desc'>
-                    {item.description}
-                </div>
+                <div className='command__desc'>{item.description}</div>
             </div>
         );
     }
@@ -43,19 +41,25 @@ export default class CommandProvider extends Provider {
     handlePretextChanged(pretext, resultCallback) {
         if (pretext.startsWith('/')) {
             const command = pretext.toLowerCase();
-            Client4.getCommandsList(getCurrentTeamId(store.getState())).then(
-                (data) => {
+            Client4.getCommandsList(getCurrentTeamId(store.getState()))
+                .then((data) => {
                     let matches = [];
                     data.forEach((cmd) => {
                         if (!cmd.auto_complete) {
                             return;
                         }
 
-                        if (cmd.trigger !== 'shortcuts' || !UserAgent.isMobile()) {
+                        if (
+                            cmd.trigger !== 'shortcuts' ||
+                            !UserAgent.isMobile()
+                        ) {
                             if (('/' + cmd.trigger).indexOf(command) === 0) {
                                 const s = '/' + cmd.trigger;
                                 let hint = '';
-                                if (cmd.auto_complete_hint && cmd.auto_complete_hint.length !== 0) {
+                                if (
+                                    cmd.auto_complete_hint &&
+                                    cmd.auto_complete_hint.length !== 0
+                                ) {
                                     hint = cmd.auto_complete_hint;
                                 }
                                 matches.push({
@@ -67,10 +71,14 @@ export default class CommandProvider extends Provider {
                         }
                     });
 
-                    matches = matches.sort((a, b) => a.suggestion.localeCompare(b.suggestion));
+                    matches = matches.sort((a, b) =>
+                        a.suggestion.localeCompare(b.suggestion),
+                    );
 
                     // pull out the suggested commands from the returned data
-                    const terms = matches.map((suggestion) => suggestion.suggestion);
+                    const terms = matches.map(
+                        (suggestion) => suggestion.suggestion,
+                    );
 
                     resultCallback({
                         matchedPretext: command,
@@ -78,10 +86,10 @@ export default class CommandProvider extends Provider {
                         items: matches,
                         component: CommandSuggestion,
                     });
-                }
-            ).catch(
-                () => {} //eslint-disable-line no-empty-function
-            );
+                })
+                .catch(
+                    () => {}, //eslint-disable-line no-empty-function
+                );
 
             return true;
         }

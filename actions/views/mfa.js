@@ -27,4 +27,3 @@ export function generateMfaSecret() {
         return dispatch(UserActions.generateMfaSecret(currentUserId));
     };
 }
-

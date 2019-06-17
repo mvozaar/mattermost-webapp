@@ -10,10 +10,17 @@ import PostReaction from './post_reaction';
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addReaction,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addReaction,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(null, mapDispatchToProps)(PostReaction);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(PostReaction);

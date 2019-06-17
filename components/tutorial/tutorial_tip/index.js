@@ -22,11 +22,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            closeRhsMenu,
-            savePreferences,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                closeRhsMenu,
+                savePreferences,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TutorialTip);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TutorialTip);

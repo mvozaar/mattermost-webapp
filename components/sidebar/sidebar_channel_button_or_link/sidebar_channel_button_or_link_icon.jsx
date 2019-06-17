@@ -28,32 +28,24 @@ export default class SidebarChannelButtonOrLinkIcon extends React.PureComponent 
     render() {
         let icon = null;
         if (this.props.channelIsArchived) {
-            icon = (
-                <ArchiveIcon className='icon icon__archive'/>
-            );
+            icon = <ArchiveIcon className='icon icon__archive' />;
         } else if (this.props.hasDraft) {
-            icon = (
-                <DraftIcon className='icon icon__draft'/>
-            );
+            icon = <DraftIcon className='icon icon__draft' />;
         } else if (this.props.channelType === Constants.OPEN_CHANNEL) {
-            icon = (
-                <GlobeIcon className='icon icon__globe'/>
-            );
+            icon = <GlobeIcon className='icon icon__globe' />;
         } else if (this.props.channelType === Constants.PRIVATE_CHANNEL) {
-            icon = (
-                <LockIcon className='icon icon__lock'/>
-            );
+            icon = <LockIcon className='icon icon__lock' />;
         } else if (this.props.channelType === Constants.GM_CHANNEL) {
-            icon = <div className='status status--group'>{this.props.membersCount}</div>;
+            icon = (
+                <div className='status status--group'>
+                    {this.props.membersCount}
+                </div>
+            );
         } else if (this.props.channelType === Constants.DM_CHANNEL) {
             if (this.props.teammateId && this.props.teammateDeletedAt) {
-                icon = (
-                    <ArchiveIcon className='icon icon__archive'/>
-                );
+                icon = <ArchiveIcon className='icon icon__archive' />;
             } else if (this.props.teammateId && this.props.teammateIsBot) {
-                icon = (
-                    <BotIcon className='icon icon__bot'/>
-                );
+                icon = <BotIcon className='icon icon__bot' />;
             } else {
                 icon = (
                     <StatusIcon

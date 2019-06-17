@@ -14,7 +14,12 @@ describe('components/MoreDirectChannels', () => {
         currentTeamId: 'team_id',
         currentTeamName: 'team_name',
         searchTerm: '',
-        users: [{id: 'user_id_1', delete_at: 0}, {id: 'user_id_2', delete_at: 0}, {id: 'user_id_3', delete_at: 0}],
+        users: [
+            {id: 'user_id_1', delete_at: 0},
+            {id: 'user_id_2', delete_at: 0},
+            {id: 'user_id_3', delete_at: 0},
+        ],
+
         groupChannels: [],
         statuses: {user_id_1: 'online', user_id_2: 'away'},
         currentChannelMembers: [{id: 'user_id_1'}, {id: 'user_id_2'}],
@@ -33,8 +38,12 @@ describe('components/MoreDirectChannels', () => {
             searchProfiles: emptyFunction,
             setModalSearchTerm: emptyFunction,
             loadStatusesForProfilesList: emptyFunction,
-            openDirectChannelToUserId: jest.fn().mockResolvedValue({data: {name: 'dm'}}),
-            openGroupChannelToUserIds: jest.fn().mockResolvedValue({data: {name: 'group'}}),
+            openDirectChannelToUserId: jest
+                .fn()
+                .mockResolvedValue({data: {name: 'dm'}}),
+            openGroupChannelToUserIds: jest
+                .fn()
+                .mockResolvedValue({data: {name: 'group'}}),
             getTotalUsersStats: jest.fn(() => {
                 return new Promise((resolve) => {
                     process.nextTick(() => resolve());
@@ -44,8 +53,12 @@ describe('components/MoreDirectChannels', () => {
     };
 
     test('should match snapshot', () => {
-        const props = {...baseProps, actions: {...baseProps.actions, getStatusesByIds: jest.fn()}};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const props = {
+            ...baseProps,
+            actions: {...baseProps.actions, getStatusesByIds: jest.fn()},
+        };
+
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
         expect(wrapper).toMatchSnapshot();
 
         // on componentDidMount
@@ -56,26 +69,50 @@ describe('components/MoreDirectChannels', () => {
         expect(props.actions.getStatusesByIds).toBeCalledWith(['user_id_3']);
 
         // on componentWillReceiveProps
-        wrapper.setProps({statuses: {user_id_1: 'online', user_id_2: 'away', user_id_3: 'offline'}});
+        wrapper.setProps({
+            statuses: {
+                user_id_1: 'online',
+                user_id_2: 'away',
+                user_id_3: 'offline',
+            },
+        });
+
         expect(props.actions.getStatusesByIds).toHaveBeenCalledTimes(1);
     });
 
     test('should call actions.getStatusesByIds on loadProfilesMissingStatus', () => {
-        const props = {...baseProps, actions: {...baseProps.actions, getStatusesByIds: jest.fn()}};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const props = {
+            ...baseProps,
+            actions: {...baseProps.actions, getStatusesByIds: jest.fn()},
+        };
 
-        wrapper.instance().loadProfilesMissingStatus(props.users, props.statuses);
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
+
+        wrapper
+            .instance()
+            .loadProfilesMissingStatus(props.users, props.statuses);
         expect(props.actions.getStatusesByIds).toHaveBeenCalledTimes(2);
         expect(props.actions.getStatusesByIds).toBeCalledWith(['user_id_3']);
 
-        props.statuses = {user_id_1: 'online', user_id_2: 'away', user_id_3: 'offline'};
-        wrapper.instance().loadProfilesMissingStatus(props.users, props.statuses);
+        props.statuses = {
+            user_id_1: 'online',
+            user_id_2: 'away',
+            user_id_3: 'offline',
+        };
+
+        wrapper
+            .instance()
+            .loadProfilesMissingStatus(props.users, props.statuses);
         expect(props.actions.getStatusesByIds).toHaveBeenCalledTimes(2);
     });
 
     test('should call actions.setModalSearchTerm and match state on handleHide', () => {
-        const props = {...baseProps, actions: {...baseProps.actions, setModalSearchTerm: jest.fn()}};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const props = {
+            ...baseProps,
+            actions: {...baseProps.actions, setModalSearchTerm: jest.fn()},
+        };
+
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
 
         wrapper.setState({show: true});
 
@@ -87,7 +124,7 @@ describe('components/MoreDirectChannels', () => {
 
     test('should match state on setUsersLoadingState', () => {
         const props = {...baseProps};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
 
         wrapper.setState({loadingUsers: true});
         wrapper.instance().setUsersLoadingState(false);
@@ -99,8 +136,12 @@ describe('components/MoreDirectChannels', () => {
     });
 
     test('should call on search', () => {
-        const props = {...baseProps, actions: {...baseProps.actions, setModalSearchTerm: jest.fn()}};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const props = {
+            ...baseProps,
+            actions: {...baseProps.actions, setModalSearchTerm: jest.fn()},
+        };
+
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
 
         wrapper.instance().search('user_search');
         expect(props.actions.setModalSearchTerm).toHaveBeenCalledTimes(1);
@@ -109,7 +150,7 @@ describe('components/MoreDirectChannels', () => {
 
     test('should match state on handleDelete', () => {
         const props = {...baseProps};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
 
         wrapper.setState({values: [{id: 'user_id_1'}]});
         wrapper.instance().handleDelete([{id: 'user_id_2'}]);
@@ -118,39 +159,62 @@ describe('components/MoreDirectChannels', () => {
 
     test('should match renderOption snapshot', () => {
         const props = {...baseProps};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
 
-        expect(wrapper.instance().renderOption({id: 'user_id_1', delete_at: 0}, true, jest.fn())).toMatchSnapshot();
+        expect(
+            wrapper
+                .instance()
+                .renderOption({id: 'user_id_1', delete_at: 0}, true, jest.fn()),
+        ).toMatchSnapshot();
     });
 
     test('should match output on renderValue', () => {
-        const wrapper = shallow(<MoreDirectChannels {...baseProps}/>);
+        const wrapper = shallow(<MoreDirectChannels {...baseProps} />);
 
-        expect(wrapper.instance().renderValue({data: {id: 'user_id_2', username: 'username'}})).toEqual('username');
+        expect(
+            wrapper
+                .instance()
+                .renderValue({data: {id: 'user_id_2', username: 'username'}}),
+        ).toEqual('username');
     });
 
     test('should match output on handleSubmitImmediatelyOn', () => {
-        const wrapper = shallow(<MoreDirectChannels {...baseProps}/>);
+        const wrapper = shallow(<MoreDirectChannels {...baseProps} />);
 
-        expect(wrapper.instance().handleSubmitImmediatelyOn({id: 'current_user_id', delete_at: 0})).toEqual(true);
-        expect(wrapper.instance().handleSubmitImmediatelyOn({id: 'user_id_2', delete_at: 123})).toEqual(true);
-        expect(wrapper.instance().handleSubmitImmediatelyOn({id: 'user_id_2', delete_at: 0})).toEqual(false);
+        expect(
+            wrapper.instance().handleSubmitImmediatelyOn({
+                id: 'current_user_id',
+                delete_at: 0,
+            }),
+        ).toEqual(true);
+        expect(
+            wrapper
+                .instance()
+                .handleSubmitImmediatelyOn({id: 'user_id_2', delete_at: 123}),
+        ).toEqual(true);
+        expect(
+            wrapper
+                .instance()
+                .handleSubmitImmediatelyOn({id: 'user_id_2', delete_at: 0}),
+        ).toEqual(false);
     });
 
     test('should render the group channel option', () => {
         const props = {...baseProps};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
         const channel = {
             profiles: [{id: 'user_id_2', username: 'username'}],
             type: 'G',
         };
 
-        expect(wrapper.instance().renderOption(channel, false, jest.fn())).toMatchSnapshot();
+        expect(
+            wrapper.instance().renderOption(channel, false, jest.fn()),
+        ).toMatchSnapshot();
     });
 
     test('should not open a DM or GM if no user Ids', () => {
         const props = {...baseProps, currentChannelMembers: []};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
 
         wrapper.instance().handleSubmit();
         expect(wrapper.state('saving')).toEqual(false);
@@ -158,8 +222,12 @@ describe('components/MoreDirectChannels', () => {
     });
 
     test('should open a DM', (done) => {
-        const props = {...baseProps, currentChannelMembers: [{id: 'user_id_1'}]};
-        const wrapper = shallow(<MoreDirectChannels {...props}/>);
+        const props = {
+            ...baseProps,
+            currentChannelMembers: [{id: 'user_id_1'}],
+        };
+
+        const wrapper = shallow(<MoreDirectChannels {...props} />);
         const handleHide = jest.fn();
         const exitToChannel = null;
 
@@ -167,18 +235,27 @@ describe('components/MoreDirectChannels', () => {
         wrapper.instance().exitToChannel = exitToChannel;
         wrapper.instance().handleSubmit();
         expect(wrapper.state('saving')).toEqual(true);
-        expect(props.actions.openDirectChannelToUserId).toHaveBeenCalledTimes(1);
-        expect(props.actions.openDirectChannelToUserId).toHaveBeenCalledWith('user_id_1');
+        expect(props.actions.openDirectChannelToUserId).toHaveBeenCalledTimes(
+            1,
+        );
+
+        expect(props.actions.openDirectChannelToUserId).toHaveBeenCalledWith(
+            'user_id_1',
+        );
+
         process.nextTick(() => {
             expect(wrapper.state('saving')).toEqual(false);
             expect(handleHide).toBeCalled();
-            expect(wrapper.instance().exitToChannel).toEqual(`/${props.currentTeamName}/channels/dm`);
+            expect(wrapper.instance().exitToChannel).toEqual(
+                `/${props.currentTeamName}/channels/dm`,
+            );
+
             done();
         });
     });
 
     test('should open a GM', (done) => {
-        const wrapper = shallow(<MoreDirectChannels {...baseProps}/>);
+        const wrapper = shallow(<MoreDirectChannels {...baseProps} />);
         const handleHide = jest.fn();
         const exitToChannel = null;
 
@@ -186,12 +263,19 @@ describe('components/MoreDirectChannels', () => {
         wrapper.instance().exitToChannel = exitToChannel;
         wrapper.instance().handleSubmit();
         expect(wrapper.state('saving')).toEqual(true);
-        expect(baseProps.actions.openGroupChannelToUserIds).toHaveBeenCalledTimes(1);
-        expect(baseProps.actions.openGroupChannelToUserIds).toHaveBeenCalledWith(['user_id_1', 'user_id_2']);
+        expect(
+            baseProps.actions.openGroupChannelToUserIds,
+        ).toHaveBeenCalledTimes(1);
+        expect(
+            baseProps.actions.openGroupChannelToUserIds,
+        ).toHaveBeenCalledWith(['user_id_1', 'user_id_2']);
         process.nextTick(() => {
             expect(wrapper.state('saving')).toEqual(false);
             expect(handleHide).toBeCalled();
-            expect(wrapper.instance().exitToChannel).toEqual(`/${baseProps.currentTeamName}/channels/group`);
+            expect(wrapper.instance().exitToChannel).toEqual(
+                `/${baseProps.currentTeamName}/channels/group`,
+            );
+
             done();
         });
     });

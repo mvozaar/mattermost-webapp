@@ -6,8 +6,15 @@ import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import iNoBounce from 'inobounce';
 
-import {startPeriodicStatusUpdates, stopPeriodicStatusUpdates} from 'actions/status_actions.jsx';
-import {startPeriodicSync, stopPeriodicSync, reconnect} from 'actions/websocket_actions.jsx';
+import {
+    startPeriodicStatusUpdates,
+    stopPeriodicStatusUpdates,
+} from 'actions/status_actions.jsx';
+import {
+    startPeriodicSync,
+    stopPeriodicSync,
+    reconnect,
+} from 'actions/websocket_actions.jsx';
 import * as GlobalActions from 'actions/global_actions.jsx';
 import Constants from 'utils/constants.jsx';
 import * as UserAgent from 'utils/user_agent.jsx';
@@ -20,7 +27,7 @@ import ChannelController from 'components/channel_layout/channel_controller';
 const BackstageController = makeAsyncComponent(loadBackstageController);
 
 let wakeUpInterval;
-let lastTime = (new Date()).getTime();
+let lastTime = new Date().getTime();
 const WAKEUP_CHECK_INTERVAL = 30000; // 30 seconds
 const WAKEUP_THRESHOLD = 60000; // 60 seconds
 const UNREAD_CHECK_TIME_MILLISECONDS = 10000;
@@ -69,8 +76,9 @@ export default class NeedsTeam extends React.Component {
         clearInterval(wakeUpInterval);
 
         wakeUpInterval = setInterval(() => {
-            const currentTime = (new Date()).getTime();
-            if (currentTime > (lastTime + WAKEUP_THRESHOLD)) { // ignore small delays
+            const currentTime = new Date().getTime();
+            if (currentTime > lastTime + WAKEUP_THRESHOLD) {
+                // ignore small delays
                 console.log('computer woke up - fetching latest'); //eslint-disable-line no-console
                 reconnect(false);
             }
@@ -89,12 +97,14 @@ export default class NeedsTeam extends React.Component {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.match.params.team !== nextProps.match.params.team) {
             const team = this.updateCurrentTeam(nextProps);
             this.setState({
                 team,
             });
+
             if (!team) {
                 this.joinTeam(nextProps);
             }
@@ -146,21 +156,33 @@ export default class NeedsTeam extends React.Component {
         if (this.props.currentUser) {
             this.props.actions.viewChannel('');
         }
-    }
+    };
 
     handleFocus = () => {
         this.props.actions.markChannelAsRead(this.props.currentChannelId);
         window.isActive = true;
 
-        if (new Date().getTime() - this.blurTime > UNREAD_CHECK_TIME_MILLISECONDS) {
-            this.props.actions.fetchMyChannelsAndMembers(this.props.currentTeamId).then(loadProfilesForSidebar);
+        if (
+            new Date().getTime() - this.blurTime >
+            UNREAD_CHECK_TIME_MILLISECONDS
+        ) {
+            this.props.actions
+                .fetchMyChannelsAndMembers(this.props.currentTeamId)
+                .then(loadProfilesForSidebar);
         }
-    }
+    };
 
     joinTeam = async (props) => {
-        const {data: team} = await this.props.actions.getTeamByName(props.match.params.team);
+        const {data: team} = await this.props.actions.getTeamByName(
+            props.match.params.team,
+        );
+
         if (team) {
-            const {error} = await props.actions.addUserToTeam(team.id, props.currentUser && props.currentUser.id);
+            const {error} = await props.actions.addUserToTeam(
+                team.id,
+                props.currentUser && props.currentUser.id,
+            );
+
             if (error) {
                 props.history.push('/error?type=team_not_found');
             } else {
@@ -170,7 +192,7 @@ export default class NeedsTeam extends React.Component {
         } else {
             props.history.push('/error?type=team_not_found');
         }
-    }
+    };
 
     initTeam = (team) => {
         // If current team is set, then this is not first load
@@ -180,37 +202,50 @@ export default class NeedsTeam extends React.Component {
         this.props.actions.setPreviousTeamId(team.id);
         GlobalActions.emitCloseRightHandSide();
 
-        this.props.actions.fetchMyChannelsAndMembers(team.id).then(
-            () => {
-                this.setState({
-                    finishedFetchingChannels: true,
-                });
-            }
-        );
+        this.props.actions.fetchMyChannelsAndMembers(team.id).then(() => {
+            this.setState({
+                finishedFetchingChannels: true,
+            });
+        });
 
         this.props.actions.loadStatusesForChannelAndSidebar();
         loadProfilesForSidebar();
 
         return team;
-    }
+    };
 
     updateCurrentTeam = (props) => {
         // First check to make sure you're in the current team
         // for the current url.
-        const team = props.teamsList ? props.teamsList.find((teamObj) => teamObj.name === props.match.params.team) : null;
+        const team = props.teamsList
+            ? props.teamsList.find(
+                  (teamObj) => teamObj.name === props.match.params.team,
+              )
+            : null;
         if (team) {
             this.initTeam(team);
             return team;
         }
         return null;
-    }
+    };
 
     onShortcutKeyDown = (e) => {
-        if (e.shiftKey && Utils.cmdOrCtrlPressed(e) && Utils.isKeyPressed(e, Constants.KeyCodes.L)) {
+        if (
+            e.shiftKey &&
+            Utils.cmdOrCtrlPressed(e) &&
+            Utils.isKeyPressed(e, Constants.KeyCodes.L)
+        ) {
             const sidebar = document.getElementById('sidebar-right');
             if (sidebar) {
-                if (sidebar.className.match('sidebar--right sidebar--right--expanded move--left')) {
-                    const replyTextbox = document.getElementById('reply_textbox');
+                if (
+                    sidebar.className.match(
+                        'sidebar--right sidebar--right--expanded move--left',
+                    )
+                ) {
+                    const replyTextbox = document.getElementById(
+                        'reply_textbox',
+                    );
+
                     if (replyTextbox) {
                         replyTextbox.focus();
                     }
@@ -222,11 +257,14 @@ export default class NeedsTeam extends React.Component {
                 }
             }
         }
-    }
+    };
 
     render() {
-        if (this.state.team === null || this.state.finishedFetchingChannels === false) {
-            return <div/>;
+        if (
+            this.state.team === null ||
+            this.state.finishedFetchingChannels === false
+        ) {
+            return <div />;
         }
         const teamType = this.state.team ? this.state.team.type : '';
 
@@ -236,10 +274,9 @@ export default class NeedsTeam extends React.Component {
                     path={'/:team/integrations'}
                     component={BackstageController}
                 />
-                <Route
-                    path={'/:team/emoji'}
-                    component={BackstageController}
-                />
+
+                <Route path={'/:team/emoji'} component={BackstageController} />
+
                 <Route
                     render={(renderProps) => (
                         <ChannelController

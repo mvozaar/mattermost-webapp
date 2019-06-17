@@ -15,7 +15,7 @@ import AdminNavbarDropdown from 'components/admin_console/admin_navbar_dropdown'
 export default class SidebarHeader extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
-    }
+    };
 
     render() {
         const me = this.props.currentUser;
@@ -30,7 +30,10 @@ export default class SidebarHeader extends React.Component {
                 <img
                     alt={''}
                     className='user__picture'
-                    src={Client4.getProfilePictureUrl(me.id, me.last_picture_update)}
+                    src={Client4.getProfilePictureUrl(
+                        me.id,
+                        me.last_picture_update,
+                    )}
                 />
             );
         }
@@ -48,9 +51,9 @@ export default class SidebarHeader extends React.Component {
                         </div>
                         <div className='user__name'>{'@' + me.username}</div>
                     </div>
-                    <MenuIcon className='menu-icon'/>
+                    <MenuIcon className='menu-icon' />
                 </div>
-                <AdminNavbarDropdown/>
+                <AdminNavbarDropdown />
             </MenuWrapper>
         );
     }

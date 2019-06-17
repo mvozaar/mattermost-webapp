@@ -49,7 +49,8 @@ export default class PermalinkView extends React.PureComponent {
         document.body.classList.remove('app__body');
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.match.params.postid !== nextProps.match.params.postid) {
             this.doPermalinkEvent(nextProps);
         }
@@ -60,11 +61,11 @@ export default class PermalinkView extends React.PureComponent {
         const postId = props.match.params.postid;
         await this.props.actions.focusPost(postId, this.props.returnTo);
         this.setState({valid: true});
-    }
+    };
 
     isStateValid = () => {
         return this.state.valid && this.props.channelId && this.props.teamName;
-    }
+    };
 
     render() {
         const {
@@ -77,43 +78,38 @@ export default class PermalinkView extends React.PureComponent {
         const {formatMessage} = this.context.intl;
 
         if (!this.isStateValid()) {
-            return (
-                <div
-                    id='app-content'
-                    className='app__content'
-                />
-            );
+            return <div id='app-content' className='app__content' />;
         }
 
         return (
-            <div
-                id='app-content'
-                className='app__content'
-            >
-                <ChannelHeader
-                    channelId={channelId}
-                />
+            <div id='app-content' className='app__content'>
+                <ChannelHeader channelId={channelId} />
+
                 <PostView
                     channelId={channelId}
                     focusedPostId={match.params.postid}
                 />
+
                 <div id='archive-link-home'>
-                    <Link
-                        to={'/' + teamName + '/channels/' + channelName}
-                    >
-                        {channelIsArchived &&
+                    <Link to={'/' + teamName + '/channels/' + channelName}>
+                        {channelIsArchived && (
                             <FormattedMarkdownMessage
                                 id='center_panel.permalink.archivedChannel'
                                 defaultMessage='You are viewing an **archived channel**. '
                             />
-                        }
+                        )}
+
                         <FormattedMessage
                             id='center_panel.recent'
                             defaultMessage='Click here to jump to recent messages. '
                         />
+
                         <i
                             className='fa fa-arrow-down'
-                            title={formatMessage({id: 'center_panel.recent.icon', defaultMessage: 'Jump to recent messages Icon'})}
+                            title={formatMessage({
+                                id: 'center_panel.recent.icon',
+                                defaultMessage: 'Jump to recent messages Icon',
+                            })}
                         />
                     </Link>
                 </div>

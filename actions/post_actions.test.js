@@ -16,7 +16,10 @@ const mockStore = configureStore([thunk]);
 jest.mock('mattermost-redux/actions/posts', () => ({
     addReaction: (...args) => ({type: 'MOCK_ADD_REACTION', args}),
     createPost: (...args) => ({type: 'MOCK_CREATE_POST', args}),
-    createPostImmediately: (...args) => ({type: 'MOCK_CREATE_POST_IMMEDIATELY', args}),
+    createPostImmediately: (...args) => ({
+        type: 'MOCK_CREATE_POST_IMMEDIATELY',
+        args,
+    }),
     flagPost: (...args) => ({type: 'MOCK_FLAG_POST', args}),
     unflagPost: (...args) => ({type: 'MOCK_UNFLAG_POST', args}),
     pinPost: (...args) => ({type: 'MOCK_PIN_POST', args}),
@@ -37,7 +40,10 @@ jest.mock('actions/storage', () => {
 });
 
 jest.mock('utils/user_agent', () => ({
-    isIosClassic: jest.fn().mockReturnValueOnce(true).mockReturnValue(false),
+    isIosClassic: jest
+        .fn()
+        .mockReturnValueOnce(true)
+        .mockReturnValue(false),
 }));
 
 const POST_CREATED_TIME = Date.now();
@@ -45,8 +51,19 @@ const POST_CREATED_TIME = Date.now();
 // This mocks the Date.now() function so it returns a constant value
 global.Date.now = jest.fn(() => POST_CREATED_TIME);
 
-const INCREASED_POST_VISIBILITY = {amount: 1, data: 'current_channel_id', type: 'INCREASE_POST_VISIBILITY'};
-const STOP_TYPING = {type: 'stop_typing', data: {id: 'current_channel_idundefined', now: POST_CREATED_TIME, userId: 'some_user_id'}};
+const INCREASED_POST_VISIBILITY = {
+    amount: 1,
+    data: 'current_channel_id',
+    type: 'INCREASE_POST_VISIBILITY',
+};
+const STOP_TYPING = {
+    type: 'stop_typing',
+    data: {
+        id: 'current_channel_idundefined',
+        now: POST_CREATED_TIME,
+        userId: 'some_user_id',
+    },
+};
 
 describe('Actions.Posts', () => {
     const latestPost = {
@@ -56,25 +73,30 @@ describe('Actions.Posts', () => {
         channel_id: 'current_channel_id',
         type: 'normal,',
     };
+
     const initialState = {
         entities: {
             posts: {
                 posts: {
                     [latestPost.id]: latestPost,
                 },
+
                 postsInChannel: {
                     current_channel_id: [
                         {order: [latestPost.id], recent: true},
                     ],
                 },
+
                 postsInThread: {},
                 messagesHistory: {
                     index: {
                         [Posts.MESSAGE_TYPES.COMMENT]: 0,
                     },
+
                     messages: ['test message'],
                 },
             },
+
             channels: {
                 currentChannelId: 'current_channel_id',
                 myMembers: {
@@ -84,10 +106,12 @@ describe('Actions.Posts', () => {
                         roles: 'channel_role',
                     },
                 },
+
                 channels: {
                     current_channel_id: {team_id: 'team_id'},
                 },
             },
+
             preferences: {
                 myPreferences: {
                     'display_settings--name_format': {
@@ -98,6 +122,7 @@ describe('Actions.Posts', () => {
                     },
                 },
             },
+
             teams: {
                 currentTeamId: 'team-1',
                 teams: {
@@ -107,10 +132,12 @@ describe('Actions.Posts', () => {
                         displayName: 'Team 1',
                     },
                 },
+
                 myMembers: {
                     'team-1': {roles: 'team_role'},
                 },
             },
+
             users: {
                 currentUserId: 'current_user_id',
                 profiles: {
@@ -124,38 +151,52 @@ describe('Actions.Posts', () => {
                     },
                 },
             },
+
             general: {
                 license: {IsLicensed: 'false'},
                 serverVersion: '5.4.0',
                 config: {PostEditTimeLimit: -1},
             },
+
             roles: {
                 roles: {
                     system_role: {
                         permissions: ['edit_post'],
                     },
+
                     team_role: {
                         permissions: [],
                     },
+
                     channel_role: {
                         permissions: [],
                     },
                 },
             },
+
             emojis: {customEmoji: {}},
             search: {results: []},
         },
+
         views: {
             posts: {
                 editingPost: {},
             },
+
             rhs: {searchTerms: ''},
         },
     };
 
     test('handleNewPost', async () => {
         const testStore = await mockStore(initialState);
-        const newPost = {id: 'new_post_id', channel_id: 'current_channel_id', message: 'new message', type: Constants.PostTypes.ADD_TO_CHANNEL, user_id: 'some_user_id', create_at: POST_CREATED_TIME};
+        const newPost = {
+            id: 'new_post_id',
+            channel_id: 'current_channel_id',
+            message: 'new message',
+            type: Constants.PostTypes.ADD_TO_CHANNEL,
+            user_id: 'some_user_id',
+            create_at: POST_CREATED_TIME,
+        };
         const msg = {data: {team_id: 'team_id', mentions: ['current_user_id']}};
 
         await testStore.dispatch(Actions.handleNewPost(newPost, msg));
@@ -172,37 +213,64 @@ describe('Actions.Posts', () => {
     test('setEditingPost', async () => {
         // should allow to edit and should fire an action
         let testStore = mockStore({...initialState});
-        const {data} = await testStore.dispatch(Actions.setEditingPost('latest_post_id', 0, 'test', 'title'));
+        const {data} = await testStore.dispatch(
+            Actions.setEditingPost('latest_post_id', 0, 'test', 'title'),
+        );
         expect(data).toEqual(true);
 
-        expect(testStore.getActions()).toEqual(
-            [{data: {commentCount: 0, isRHS: false, postId: 'latest_post_id', refocusId: 'test', title: 'title'}, type: ActionTypes.SHOW_EDIT_POST_MODAL}]
-        );
+        expect(testStore.getActions()).toEqual([
+            {
+                data: {
+                    commentCount: 0,
+                    isRHS: false,
+                    postId: 'latest_post_id',
+                    refocusId: 'test',
+                    title: 'title',
+                },
+                type: ActionTypes.SHOW_EDIT_POST_MODAL,
+            },
+        ]);
 
         const general = {
             license: {IsLicensed: 'true'},
             serverVersion: '5.4.0',
             config: {PostEditTimeLimit: -1},
         };
+
         const withLicenseState = {...initialState};
         withLicenseState.entities.general = general;
 
         testStore = mockStore(withLicenseState);
 
-        const {data: withLicenseData} = await testStore.dispatch(Actions.setEditingPost('latest_post_id', 0, 'test', 'title'));
-        expect(withLicenseData).toEqual(true);
-        expect(testStore.getActions()).toEqual(
-            [{data: {commentCount: 0, isRHS: false, postId: 'latest_post_id', refocusId: 'test', title: 'title'}, type: ActionTypes.SHOW_EDIT_POST_MODAL}]
+        const {data: withLicenseData} = await testStore.dispatch(
+            Actions.setEditingPost('latest_post_id', 0, 'test', 'title'),
         );
+        expect(withLicenseData).toEqual(true);
+        expect(testStore.getActions()).toEqual([
+            {
+                data: {
+                    commentCount: 0,
+                    isRHS: false,
+                    postId: 'latest_post_id',
+                    refocusId: 'test',
+                    title: 'title',
+                },
+                type: ActionTypes.SHOW_EDIT_POST_MODAL,
+            },
+        ]);
 
         // should not allow edit for pending post
         const newLatestPost = {...latestPost, pending_post_id: latestPost.id};
         const withPendingPostState = {...initialState};
-        withPendingPostState.entities.posts.posts[latestPost.id] = newLatestPost;
+        withPendingPostState.entities.posts.posts[
+            latestPost.id
+        ] = newLatestPost;
 
         testStore = mockStore(withPendingPostState);
 
-        const {data: withPendingPostData} = await testStore.dispatch(Actions.setEditingPost('latest_post_id', 0, 'test', 'title'));
+        const {data: withPendingPostData} = await testStore.dispatch(
+            Actions.setEditingPost('latest_post_id', 0, 'test', 'title'),
+        );
         expect(withPendingPostData).toEqual(false);
         expect(testStore.getActions()).toEqual([]);
     });
@@ -211,7 +279,9 @@ describe('Actions.Posts', () => {
         const testStore = await mockStore(initialState);
 
         await testStore.dispatch(Actions.hideEditPostModal());
-        expect(testStore.getActions()).toEqual([{type: ActionTypes.HIDE_EDIT_POST_MODAL}]);
+        expect(testStore.getActions()).toEqual([
+            {type: ActionTypes.HIDE_EDIT_POST_MODAL},
+        ]);
     });
 
     test('searchForTerm', async () => {
@@ -228,17 +298,29 @@ describe('Actions.Posts', () => {
 
     test('createPost', async () => {
         const testStore = await mockStore(initialState);
-        const newPost = {id: 'new_post_id', channel_id: 'current_channel_id', message: 'new message'};
-        const newReply = {id: 'reply_post_id', channel_id: 'current_channel_id', message: 'new message', root_id: 'new_post_id'};
+        const newPost = {
+            id: 'new_post_id',
+            channel_id: 'current_channel_id',
+            message: 'new message',
+        };
+        const newReply = {
+            id: 'reply_post_id',
+            channel_id: 'current_channel_id',
+            message: 'new message',
+            root_id: 'new_post_id',
+        };
         const files = [];
 
-        const immediateExpectedState = [{
-            args: [newPost, files],
-            type: 'MOCK_CREATE_POST_IMMEDIATELY',
-        }, {
-            args: ['draft_current_channel_id', null],
-            type: 'MOCK_SET_GLOBAL_ITEM',
-        }];
+        const immediateExpectedState = [
+            {
+                args: [newPost, files],
+                type: 'MOCK_CREATE_POST_IMMEDIATELY',
+            },
+            {
+                args: ['draft_current_channel_id', null],
+                type: 'MOCK_SET_GLOBAL_ITEM',
+            },
+        ];
 
         await testStore.dispatch(Actions.createPost(newPost, files));
         expect(testStore.getActions()).toEqual(immediateExpectedState);
@@ -248,7 +330,8 @@ describe('Actions.Posts', () => {
             {
                 args: [newReply, files],
                 type: 'MOCK_CREATE_POST',
-            }, {
+            },
+            {
                 args: ['comment_draft_new_post_id', null],
                 type: 'MOCK_SET_GLOBAL_ITEM',
             },
@@ -261,7 +344,9 @@ describe('Actions.Posts', () => {
     test('addReaction', async () => {
         const testStore = await mockStore(initialState);
 
-        await testStore.dispatch(Actions.addReaction('post_id_1', 'emoji_name_1'));
+        await testStore.dispatch(
+            Actions.addReaction('post_id_1', 'emoji_name_1'),
+        );
         expect(testStore.getActions()).toEqual([
             {args: ['post_id_1', 'emoji_name_1'], type: 'MOCK_ADD_REACTION'},
             {args: ['emoji_name_1'], type: 'MOCK_ADD_RECENT_EMOJI'},
@@ -269,50 +354,80 @@ describe('Actions.Posts', () => {
     });
 
     test('flagPost', async () => {
-        const testStore = await mockStore({...initialState, views: {rhs: {rhsState: RHSStates.FLAG}}});
+        const testStore = await mockStore({
+            ...initialState,
+            views: {rhs: {rhsState: RHSStates.FLAG}},
+        });
 
         const post = testStore.getState().entities.posts.posts[latestPost.id];
 
         await testStore.dispatch(Actions.flagPost(post.id));
         expect(testStore.getActions()).toEqual([
             {args: [post.id], type: 'MOCK_FLAG_POST'},
-            {data: {posts: {[post.id]: post}, order: [post.id]}, type: SearchTypes.RECEIVED_SEARCH_POSTS},
+            {
+                data: {posts: {[post.id]: post}, order: [post.id]},
+                type: SearchTypes.RECEIVED_SEARCH_POSTS,
+            },
         ]);
     });
 
     test('unflagPost', async () => {
-        const testStore = await mockStore({views: {rhs: {rhsState: RHSStates.FLAG}}, entities: {...initialState.entities, search: {results: [latestPost.id]}}});
+        const testStore = await mockStore({
+            views: {rhs: {rhsState: RHSStates.FLAG}},
+            entities: {
+                ...initialState.entities,
+                search: {results: [latestPost.id]},
+            },
+        });
 
         const post = testStore.getState().entities.posts.posts[latestPost.id];
 
         await testStore.dispatch(Actions.unflagPost(post.id));
         expect(testStore.getActions()).toEqual([
             {args: [post.id], type: 'MOCK_UNFLAG_POST'},
-            {data: {posts: [], order: []}, type: SearchTypes.RECEIVED_SEARCH_POSTS},
+            {
+                data: {posts: [], order: []},
+                type: SearchTypes.RECEIVED_SEARCH_POSTS,
+            },
         ]);
     });
 
     test('pinPost', async () => {
-        const testStore = await mockStore({...initialState, views: {rhs: {rhsState: RHSStates.PIN}}});
+        const testStore = await mockStore({
+            ...initialState,
+            views: {rhs: {rhsState: RHSStates.PIN}},
+        });
 
         const post = testStore.getState().entities.posts.posts[latestPost.id];
 
         await testStore.dispatch(Actions.pinPost(post.id));
         expect(testStore.getActions()).toEqual([
             {args: [post.id], type: 'MOCK_PIN_POST'},
-            {data: {posts: {[post.id]: post}, order: [post.id]}, type: SearchTypes.RECEIVED_SEARCH_POSTS},
+            {
+                data: {posts: {[post.id]: post}, order: [post.id]},
+                type: SearchTypes.RECEIVED_SEARCH_POSTS,
+            },
         ]);
     });
 
     test('unpinPost', async () => {
-        const testStore = await mockStore({views: {rhs: {rhsState: RHSStates.PIN}}, entities: {...initialState.entities, search: {results: [latestPost.id]}}});
+        const testStore = await mockStore({
+            views: {rhs: {rhsState: RHSStates.PIN}},
+            entities: {
+                ...initialState.entities,
+                search: {results: [latestPost.id]},
+            },
+        });
 
         const post = testStore.getState().entities.posts.posts[latestPost.id];
 
         await testStore.dispatch(Actions.unpinPost(post.id));
         expect(testStore.getActions()).toEqual([
             {args: [post.id], type: 'MOCK_UNPIN_POST'},
-            {data: {posts: [], order: []}, type: SearchTypes.RECEIVED_SEARCH_POSTS},
+            {
+                data: {posts: [], order: []},
+                type: SearchTypes.RECEIVED_SEARCH_POSTS,
+            },
         ]);
     });
 });

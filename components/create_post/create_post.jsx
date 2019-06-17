@@ -9,8 +9,16 @@ import {Posts} from 'mattermost-redux/constants';
 import {sortFileInfos} from 'mattermost-redux/utils/file_utils';
 
 import * as GlobalActions from 'actions/global_actions.jsx';
-import Constants, {StoragePrefixes, ModalIdentifiers} from 'utils/constants.jsx';
-import {containsAtChannel, postMessageOnKeyPress, shouldFocusMainTextbox, isErrorInvalidSlashCommand} from 'utils/post_utils.jsx';
+import Constants, {
+    StoragePrefixes,
+    ModalIdentifiers,
+} from 'utils/constants.jsx';
+import {
+    containsAtChannel,
+    postMessageOnKeyPress,
+    shouldFocusMainTextbox,
+    isErrorInvalidSlashCommand,
+} from 'utils/post_utils.jsx';
 import {getTable, formatMarkdownTableMessage} from 'utils/paste.jsx';
 import * as UserAgent from 'utils/user_agent.jsx';
 import * as Utils from 'utils/utils.jsx';
@@ -44,30 +52,29 @@ function trimRight(str) {
 
 export default class CreatePost extends React.Component {
     static propTypes = {
-
         /**
-        *  ref passed from channelView for EmojiPickerOverlay
-        */
+         *  ref passed from channelView for EmojiPickerOverlay
+         */
         getChannelView: PropTypes.func,
 
         /**
-        *  Data used in notifying user for @all and @channel
-        */
+         *  Data used in notifying user for @all and @channel
+         */
         currentChannelMembersCount: PropTypes.number,
 
         /**
-        *  Data used in multiple places of the component
-        */
+         *  Data used in multiple places of the component
+         */
         currentChannel: PropTypes.object,
 
         /**
-        *  Data used in executing commands for channel actions passed down to client4 function
-        */
+         *  Data used in executing commands for channel actions passed down to client4 function
+         */
         currentTeamId: PropTypes.string,
 
         /**
-        *  Data used for posting message
-        */
+         *  Data used for posting message
+         */
         currentUserId: PropTypes.string,
 
         /**
@@ -76,28 +83,28 @@ export default class CreatePost extends React.Component {
         codeBlockOnCtrlEnter: PropTypes.bool,
 
         /**
-        *  Flag used for handling submit
-        */
+         *  Flag used for handling submit
+         */
         ctrlSend: PropTypes.bool,
 
         /**
-        *  Flag used for adding a class center to Postbox based on user pref
-        */
+         *  Flag used for adding a class center to Postbox based on user pref
+         */
         fullWidthTextBox: PropTypes.bool,
 
         /**
-        *  Data used for deciding if tutorial tip is to be shown
-        */
+         *  Data used for deciding if tutorial tip is to be shown
+         */
         showTutorialTip: PropTypes.bool.isRequired,
 
         /**
-        *  Data used populating message state when triggered by shortcuts
-        */
+         *  Data used populating message state when triggered by shortcuts
+         */
         messageInHistoryItem: PropTypes.string,
 
         /**
-        *  Data used for populating message state from previous draft
-        */
+         *  Data used for populating message state from previous draft
+         */
         draft: PropTypes.shape({
             message: PropTypes.string.isRequired,
             uploadsInProgress: PropTypes.array.isRequired,
@@ -105,24 +112,24 @@ export default class CreatePost extends React.Component {
         }).isRequired,
 
         /**
-        *  Data used dispatching handleViewAction
-        */
+         *  Data used dispatching handleViewAction
+         */
         commentCountForPost: PropTypes.number,
 
         /**
-        *  Data used dispatching handleViewAction ex: edit post
-        */
+         *  Data used dispatching handleViewAction ex: edit post
+         */
         latestReplyablePostId: PropTypes.string,
         locale: PropTypes.string.isRequired,
 
         /**
-        *  Data used for calling edit of post
-        */
+         *  Data used for calling edit of post
+         */
         currentUsersLatestPost: PropTypes.object,
 
         /**
-        *  Set if the channel is read only.
-        */
+         *  Set if the channel is read only.
+         */
         readOnlyChannel: PropTypes.bool,
 
         /**
@@ -167,58 +174,58 @@ export default class CreatePost extends React.Component {
          */
         isTimezoneEnabled: PropTypes.bool.isRequired,
         actions: PropTypes.shape({
-
             /**
-            *  func called after message submit.
-            */
+             *  func called after message submit.
+             */
             addMessageIntoHistory: PropTypes.func.isRequired,
 
             /**
-            *  func called for navigation through messages by Up arrow
-            */
+             *  func called for navigation through messages by Up arrow
+             */
             moveHistoryIndexBack: PropTypes.func.isRequired,
 
             /**
-            *  func called for navigation through messages by Down arrow
-            */
+             *  func called for navigation through messages by Down arrow
+             */
             moveHistoryIndexForward: PropTypes.func.isRequired,
 
             /**
-            *  func called for adding a reaction
-            */
+             *  func called for adding a reaction
+             */
             addReaction: PropTypes.func.isRequired,
 
             /**
-            *  func called for posting message
-            */
+             *  func called for posting message
+             */
             onSubmitPost: PropTypes.func.isRequired,
 
             /**
-            *  func called for removing a reaction
-            */
+             *  func called for removing a reaction
+             */
             removeReaction: PropTypes.func.isRequired,
 
             /**
-            *  func called on load of component to clear drafts
-            */
+             *  func called on load of component to clear drafts
+             */
             clearDraftUploads: PropTypes.func.isRequired,
 
             runMessageWillBePostedHooks: PropTypes.func.isRequired,
 
             /**
-            *  func called for setting drafts
-            */
+             *  func called for setting drafts
+             */
             setDraft: PropTypes.func.isRequired,
 
             /**
-            *  func called for editing posts
-            */
+             *  func called for editing posts
+             */
             setEditingPost: PropTypes.func.isRequired,
 
             /**
              *  func called for opening the last replayable post in the RHS
              */
-            selectPostFromRightHandSideSearchByPostId: PropTypes.func.isRequired,
+            selectPostFromRightHandSideSearchByPostId:
+                PropTypes.func.isRequired,
 
             /**
              * Function to open a modal
@@ -234,7 +241,7 @@ export default class CreatePost extends React.Component {
 
             scrollPostListToBottom: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static contextTypes = {
         intl: intlShape.isRequired,
@@ -242,7 +249,7 @@ export default class CreatePost extends React.Component {
 
     static defaultProps = {
         latestReplyablePostId: '',
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -264,14 +271,23 @@ export default class CreatePost extends React.Component {
         this.draftsForChannel = {};
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
-        const enableSendButton = this.handleEnableSendButton(this.state.message, this.props.draft.fileInfos);
-        this.props.actions.clearDraftUploads(StoragePrefixes.DRAFT, (key, value) => {
-            if (value) {
-                return {...value, uploadsInProgress: []};
-            }
-            return value;
-        });
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
+        const enableSendButton = this.handleEnableSendButton(
+            this.state.message,
+            this.props.draft.fileInfos,
+        );
+
+        this.props.actions.clearDraftUploads(
+            StoragePrefixes.DRAFT,
+            (key, value) => {
+                if (value) {
+                    return {...value, uploadsInProgress: []};
+                }
+                return value;
+            },
+        );
+
         this.onOrientationChange();
 
         // wait to load these since they may have changed since the component was constructed (particularly in the case of skipping the tutorial)
@@ -287,7 +303,8 @@ export default class CreatePost extends React.Component {
         this.setOrientationListeners();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.currentChannel.id !== this.props.currentChannel.id) {
             const draft = nextProps.draft;
 
@@ -313,18 +330,36 @@ export default class CreatePost extends React.Component {
     }
 
     setOrientationListeners = () => {
-        if ((window.screen.orientation) && ('onchange' in window.screen.orientation)) {
-            window.screen.orientation.addEventListener('change', this.onOrientationChange);
+        if (
+            window.screen.orientation &&
+            'onchange' in window.screen.orientation
+        ) {
+            window.screen.orientation.addEventListener(
+                'change',
+                this.onOrientationChange,
+            );
         } else if ('onorientationchange' in window) {
-            window.addEventListener('orientationchange', this.onOrientationChange);
+            window.addEventListener(
+                'orientationchange',
+                this.onOrientationChange,
+            );
         }
     };
 
     removeOrientationListeners = () => {
-        if ((window.screen.orientation) && ('onchange' in window.screen.orientation)) {
-            window.screen.orientation.removeEventListener('change', this.onOrientationChange);
+        if (
+            window.screen.orientation &&
+            'onchange' in window.screen.orientation
+        ) {
+            window.screen.orientation.removeEventListener(
+                'change',
+                this.onOrientationChange,
+            );
         } else if ('onorientationchange' in window) {
-            window.removeEventListener('orientationchange', this.onOrientationChange);
+            window.removeEventListener(
+                'orientationchange',
+                this.onOrientationChange,
+            );
         }
     };
 
@@ -338,7 +373,10 @@ export default class CreatePost extends React.Component {
         const LANDSCAPE_ANGLE = 90;
         let orientation = 'portrait';
         if (window.orientation) {
-            orientation = Math.abs(window.orientation) === LANDSCAPE_ANGLE ? 'landscape' : 'portrait';
+            orientation =
+                Math.abs(window.orientation) === LANDSCAPE_ANGLE
+                    ? 'landscape'
+                    : 'portrait';
         }
 
         if (window.screen.orientation) {
@@ -346,22 +384,26 @@ export default class CreatePost extends React.Component {
         }
 
         this.setState({orientation});
-        if (prevOrientation && orientation !== prevOrientation && (document.activeElement || {}).id === 'post_textbox') {
+        if (
+            prevOrientation &&
+            orientation !== prevOrientation &&
+            (document.activeElement || {}).id === 'post_textbox'
+        ) {
             this.refs.textbox.getWrappedInstance().blur();
         }
-    }
+    };
 
     handlePostError = (postError) => {
         this.setState({postError});
-    }
+    };
 
     toggleEmojiPicker = () => {
         this.setState({showEmojiPicker: !this.state.showEmojiPicker});
-    }
+    };
 
     hideEmojiPicker = () => {
         this.setState({showEmojiPicker: false});
-    }
+    };
 
     doSubmit = async (e) => {
         const channelId = this.props.currentChannel.id;
@@ -369,7 +411,10 @@ export default class CreatePost extends React.Component {
             e.preventDefault();
         }
 
-        if (this.props.draft.uploadsInProgress.length > 0 || this.state.submitting) {
+        if (
+            this.props.draft.uploadsInProgress.length > 0 ||
+            this.state.submitting
+        ) {
             return;
         }
 
@@ -377,7 +422,11 @@ export default class CreatePost extends React.Component {
         let ignoreSlash = false;
         const serverError = this.state.serverError;
 
-        if (serverError && isErrorInvalidSlashCommand(serverError) && serverError.submittedMessage === message) {
+        if (
+            serverError &&
+            isErrorInvalidSlashCommand(serverError) &&
+            serverError.submittedMessage === message
+        ) {
             message = serverError.submittedMessage;
             ignoreSlash = true;
         }
@@ -386,7 +435,10 @@ export default class CreatePost extends React.Component {
         post.file_ids = [];
         post.message = message;
 
-        if (post.message.trim().length === 0 && this.props.draft.fileInfos.length === 0) {
+        if (
+            post.message.trim().length === 0 &&
+            this.props.draft.fileInfos.length === 0
+        ) {
             return;
         }
 
@@ -404,12 +456,20 @@ export default class CreatePost extends React.Component {
 
         const isReaction = Utils.REACTION_PATTERN.exec(post.message);
         if (post.message.indexOf('/') === 0 && !ignoreSlash) {
-            this.setState({message: '', postError: null, enableSendButton: false});
+            this.setState({
+                message: '',
+                postError: null,
+                enableSendButton: false,
+            });
+
             const args = {};
             args.channel_id = channelId;
             args.team_id = this.props.currentTeamId;
 
-            const {error} = await this.props.actions.executeCommand(post.message, args);
+            const {error} = await this.props.actions.executeCommand(
+                post.message,
+                args,
+            );
 
             if (error) {
                 if (error.sendMessage) {
@@ -420,6 +480,7 @@ export default class CreatePost extends React.Component {
                             ...error,
                             submittedMessage: post.message,
                         },
+
                         message: post.message,
                     });
                 }
@@ -446,23 +507,24 @@ export default class CreatePost extends React.Component {
         this.draftsForChannel[channelId] = null;
 
         const fasterThanHumanWillClick = 150;
-        const forceFocus = (Date.now() - this.lastBlurAt < fasterThanHumanWillClick);
+        const forceFocus =
+            Date.now() - this.lastBlurAt < fasterThanHumanWillClick;
 
         this.focusTextbox(forceFocus);
-    }
+    };
 
     handleNotifyAllConfirmation = (e) => {
         this.hideNotifyAllModal();
         this.doSubmit(e);
-    }
+    };
 
     hideNotifyAllModal = () => {
         this.setState({showConfirmModal: false});
-    }
+    };
 
     showNotifyAllModal = () => {
         this.setState({showConfirmModal: true});
-    }
+    };
 
     getStatusFromSlashCommand = () => {
         const {message} = this.state;
@@ -475,23 +537,30 @@ export default class CreatePost extends React.Component {
     };
 
     isStatusSlashCommand = (command) => {
-        return command === 'online' || command === 'away' ||
-            command === 'dnd' || command === 'offline';
+        return (
+            command === 'online' ||
+            command === 'away' ||
+            command === 'dnd' ||
+            command === 'offline'
+        );
     };
 
     handleSubmit = async (e) => {
-        const {
-            currentChannel: updateChannel,
-            userIsOutOfOffice,
-        } = this.props;
+        const {currentChannel: updateChannel, userIsOutOfOffice} = this.props;
 
         const currentMembersCount = this.props.currentChannelMembersCount;
-        const notificationsToChannel = this.props.enableConfirmNotificationsToChannel;
-        if (notificationsToChannel &&
+        const notificationsToChannel = this.props
+            .enableConfirmNotificationsToChannel;
+        if (
+            notificationsToChannel &&
             currentMembersCount > Constants.NOTIFY_ALL_MEMBERS &&
-            containsAtChannel(this.state.message)) {
+            containsAtChannel(this.state.message)
+        ) {
             if (this.props.isTimezoneEnabled) {
-                const {data} = await this.props.actions.getChannelTimezones(this.props.currentChannel.id);
+                const {data} = await this.props.actions.getChannelTimezones(
+                    this.props.currentChannel.id,
+                );
+
                 if (data) {
                     this.setState({channelTimezoneCount: data.length});
                 } else {
@@ -529,7 +598,9 @@ export default class CreatePost extends React.Component {
             return;
         }
 
-        const isDirectOrGroup = ((updateChannel.type === Constants.DM_CHANNEL) || (updateChannel.type === Constants.GM_CHANNEL));
+        const isDirectOrGroup =
+            updateChannel.type === Constants.DM_CHANNEL ||
+            updateChannel.type === Constants.GM_CHANNEL;
         if (!isDirectOrGroup && trimRight(this.state.message) === '/purpose') {
             const editChannelPurposeModalData = {
                 modalId: ModalIdentifiers.EDIT_CHANNEL_PURPOSE,
@@ -550,15 +621,10 @@ export default class CreatePost extends React.Component {
         }
 
         await this.doSubmit(e);
-    }
+    };
 
     sendMessage = async (originalPost) => {
-        const {
-            actions,
-            currentChannel,
-            currentUserId,
-            draft,
-        } = this.props;
+        const {actions, currentChannel, currentUserId, draft} = this.props;
 
         let post = originalPost;
 
@@ -592,7 +658,7 @@ export default class CreatePost extends React.Component {
         });
 
         return {data: true};
-    }
+    };
 
     sendReaction(isReaction) {
         const channelId = this.props.currentChannel.id;
@@ -614,12 +680,24 @@ export default class CreatePost extends React.Component {
         if (this.refs.textbox && (keepFocus || !UserAgent.isMobile())) {
             this.refs.textbox.getWrappedInstance().focus();
         }
-    }
+    };
 
     postMsgKeyPress = (e) => {
         const {ctrlSend, codeBlockOnCtrlEnter} = this.props;
 
-        const {allowSending, withClosedCodeBlock, ignoreKeyPress, message} = postMessageOnKeyPress(e, this.state.message, ctrlSend, codeBlockOnCtrlEnter, Date.now(), this.lastChannelSwitchAt);
+        const {
+            allowSending,
+            withClosedCodeBlock,
+            ignoreKeyPress,
+            message,
+        } = postMessageOnKeyPress(
+            e,
+            this.state.message,
+            ctrlSend,
+            codeBlockOnCtrlEnter,
+            Date.now(),
+            this.lastChannelSwitchAt,
+        );
 
         if (ignoreKeyPress) {
             e.preventDefault();
@@ -641,17 +719,20 @@ export default class CreatePost extends React.Component {
         }
 
         this.emitTypingEvent();
-    }
+    };
 
     emitTypingEvent = () => {
         const channelId = this.props.currentChannel.id;
         GlobalActions.emitLocalUserTypingEvent(channelId, '');
-    }
+    };
 
     handleChange = (e) => {
         const message = e.target.value;
         const channelId = this.props.currentChannel.id;
-        const enableSendButton = this.handleEnableSendButton(message, this.props.draft.fileInfos);
+        const enableSendButton = this.handleEnableSendButton(
+            message,
+            this.props.draft.fileInfos,
+        );
 
         let serverError = this.state.serverError;
         if (isErrorInvalidSlashCommand(serverError)) {
@@ -671,10 +752,14 @@ export default class CreatePost extends React.Component {
 
         this.props.actions.setDraft(StoragePrefixes.DRAFT + channelId, draft);
         this.draftsForChannel[channelId] = draft;
-    }
+    };
 
     pasteHandler = (e) => {
-        if (!e.clipboardData || !e.clipboardData.items || e.target.id !== 'post_textbox') {
+        if (
+            !e.clipboardData ||
+            !e.clipboardData.items ||
+            e.target.id !== 'post_textbox'
+        ) {
             return;
         }
 
@@ -685,14 +770,17 @@ export default class CreatePost extends React.Component {
 
         e.preventDefault();
 
-        const message = formatMarkdownTableMessage(table, this.state.message.trim());
+        const message = formatMarkdownTableMessage(
+            table,
+            this.state.message.trim(),
+        );
 
         this.setState({message});
-    }
+    };
 
     handleFileUploadChange = () => {
         this.focusTextbox();
-    }
+    };
 
     handleUploadStart = (clientIds, channelId) => {
         const uploadsInProgress = [
@@ -711,12 +799,16 @@ export default class CreatePost extends React.Component {
         // this is a bit redundant with the code that sets focus when the file input is clicked,
         // but this also resets the focus after a drag and drop
         this.focusTextbox();
-    }
+    };
 
     handleUploadProgress = ({clientId, name, percent, type}) => {
-        const uploadsProgressPercent = {...this.state.uploadsProgressPercent, [clientId]: {percent, name, type}};
+        const uploadsProgressPercent = {
+            ...this.state.uploadsProgressPercent,
+            [clientId]: {percent, name, type},
+        };
+
         this.setState({uploadsProgressPercent});
-    }
+    };
 
     handleFileUploadComplete = (fileInfos, clientIds, channelId) => {
         const draft = {...this.draftsForChannel[channelId]};
@@ -727,18 +819,23 @@ export default class CreatePost extends React.Component {
                 const index = draft.uploadsInProgress.indexOf(clientIds[i]);
 
                 if (index !== -1) {
-                    draft.uploadsInProgress = draft.uploadsInProgress.filter((item, itemIndex) => index !== itemIndex);
+                    draft.uploadsInProgress = draft.uploadsInProgress.filter(
+                        (item, itemIndex) => index !== itemIndex,
+                    );
                 }
             }
         }
 
         if (draft.fileInfos) {
-            draft.fileInfos = sortFileInfos(draft.fileInfos.concat(fileInfos), this.props.locale);
+            draft.fileInfos = sortFileInfos(
+                draft.fileInfos.concat(fileInfos),
+                this.props.locale,
+            );
         }
 
         this.draftsForChannel[channelId] = draft;
         this.props.actions.setDraft(StoragePrefixes.DRAFT + channelId, draft);
-    }
+    };
 
     handleUploadError = (err, clientId, channelId) => {
         const draft = {...this.draftsForChannel[channelId]};
@@ -752,18 +849,26 @@ export default class CreatePost extends React.Component {
             const index = draft.uploadsInProgress.indexOf(clientId);
 
             if (index !== -1) {
-                const uploadsInProgress = draft.uploadsInProgress.filter((item, itemIndex) => index !== itemIndex);
+                const uploadsInProgress = draft.uploadsInProgress.filter(
+                    (item, itemIndex) => index !== itemIndex,
+                );
+
                 const modifiedDraft = {
                     ...draft,
                     uploadsInProgress,
                 };
-                this.props.actions.setDraft(StoragePrefixes.DRAFT + channelId, modifiedDraft);
+
+                this.props.actions.setDraft(
+                    StoragePrefixes.DRAFT + channelId,
+                    modifiedDraft,
+                );
+
                 this.draftsForChannel[channelId] = modifiedDraft;
             }
         }
 
         this.setState({serverError});
-    }
+    };
 
     removePreview = (id) => {
         let modifiedDraft = {};
@@ -779,19 +884,26 @@ export default class CreatePost extends React.Component {
             index = draft.uploadsInProgress.indexOf(id);
 
             if (index !== -1) {
-                const uploadsInProgress = draft.uploadsInProgress.filter((item, itemIndex) => index !== itemIndex);
+                const uploadsInProgress = draft.uploadsInProgress.filter(
+                    (item, itemIndex) => index !== itemIndex,
+                );
 
                 modifiedDraft = {
                     ...draft,
                     uploadsInProgress,
                 };
 
-                if (this.refs.fileUpload && this.refs.fileUpload.getWrappedInstance()) {
+                if (
+                    this.refs.fileUpload &&
+                    this.refs.fileUpload.getWrappedInstance()
+                ) {
                     this.refs.fileUpload.getWrappedInstance().cancelUpload(id);
                 }
             }
         } else {
-            const fileInfos = draft.fileInfos.filter((item, itemIndex) => index !== itemIndex);
+            const fileInfos = draft.fileInfos.filter(
+                (item, itemIndex) => index !== itemIndex,
+            );
 
             modifiedDraft = {
                 ...draft,
@@ -799,14 +911,21 @@ export default class CreatePost extends React.Component {
             };
         }
 
-        this.props.actions.setDraft(StoragePrefixes.DRAFT + channelId, modifiedDraft);
+        this.props.actions.setDraft(
+            StoragePrefixes.DRAFT + channelId,
+            modifiedDraft,
+        );
+
         this.draftsForChannel[channelId] = modifiedDraft;
-        const enableSendButton = this.handleEnableSendButton(this.state.message, draft.fileInfos);
+        const enableSendButton = this.handleEnableSendButton(
+            this.state.message,
+            draft.fileInfos,
+        );
 
         this.setState({enableSendButton});
 
         this.handleFileUploadChange();
-    }
+    };
 
     focusTextboxIfNecessary = (e) => {
         // Focus should go to the RHS when it is expanded
@@ -824,10 +943,13 @@ export default class CreatePost extends React.Component {
         if (shouldFocusMainTextbox(e, document.activeElement)) {
             this.focusTextbox();
         }
-    }
+    };
 
     documentKeyHandler = (e) => {
-        if ((e.ctrlKey || e.metaKey) && Utils.isKeyPressed(e, KeyCodes.FORWARD_SLASH)) {
+        if (
+            (e.ctrlKey || e.metaKey) &&
+            Utils.isKeyPressed(e, KeyCodes.FORWARD_SLASH)
+        ) {
             e.preventDefault();
 
             GlobalActions.toggleShortcutsModal();
@@ -835,12 +957,12 @@ export default class CreatePost extends React.Component {
         }
 
         this.focusTextboxIfNecessary(e);
-    }
+    };
 
     getFileCount = () => {
         const draft = this.props.draft;
         return draft.fileInfos.length + draft.uploadsInProgress.length;
-    }
+    };
 
     getFileUploadTarget = () => {
         if (this.refs.textbox) {
@@ -848,11 +970,11 @@ export default class CreatePost extends React.Component {
         }
 
         return null;
-    }
+    };
 
     getCreatePostControls = () => {
         return this.refs.createPostControls;
-    }
+    };
 
     fillMessageFromHistory() {
         const lastMessage = this.props.messageInHistoryItem;
@@ -867,9 +989,20 @@ export default class CreatePost extends React.Component {
         const ctrlOrMetaKeyPressed = e.ctrlKey || e.metaKey;
         const messageIsEmpty = this.state.message.length === 0;
         const draftMessageIsEmpty = this.props.draft.message.length === 0;
-        const ctrlEnterKeyCombo = (this.props.ctrlSend || this.props.codeBlockOnCtrlEnter) && Utils.isKeyPressed(e, KeyCodes.ENTER) && ctrlOrMetaKeyPressed;
-        const upKeyOnly = !ctrlOrMetaKeyPressed && !e.altKey && !e.shiftKey && Utils.isKeyPressed(e, KeyCodes.UP);
-        const shiftUpKeyCombo = !ctrlOrMetaKeyPressed && !e.altKey && e.shiftKey && Utils.isKeyPressed(e, KeyCodes.UP);
+        const ctrlEnterKeyCombo =
+            (this.props.ctrlSend || this.props.codeBlockOnCtrlEnter) &&
+            Utils.isKeyPressed(e, KeyCodes.ENTER) &&
+            ctrlOrMetaKeyPressed;
+        const upKeyOnly =
+            !ctrlOrMetaKeyPressed &&
+            !e.altKey &&
+            !e.shiftKey &&
+            Utils.isKeyPressed(e, KeyCodes.UP);
+        const shiftUpKeyCombo =
+            !ctrlOrMetaKeyPressed &&
+            !e.altKey &&
+            e.shiftKey &&
+            Utils.isKeyPressed(e, KeyCodes.UP);
         const ctrlKeyCombo = ctrlOrMetaKeyPressed && !e.altKey && !e.shiftKey;
 
         if (ctrlEnterKeyCombo) {
@@ -878,12 +1011,20 @@ export default class CreatePost extends React.Component {
             this.editLastPost(e);
         } else if (shiftUpKeyCombo && messageIsEmpty) {
             this.replyToLastPost(e);
-        } else if (ctrlKeyCombo && draftMessageIsEmpty && Utils.isKeyPressed(e, KeyCodes.UP)) {
+        } else if (
+            ctrlKeyCombo &&
+            draftMessageIsEmpty &&
+            Utils.isKeyPressed(e, KeyCodes.UP)
+        ) {
             this.loadPrevMessage(e);
-        } else if (ctrlKeyCombo && draftMessageIsEmpty && Utils.isKeyPressed(e, KeyCodes.DOWN)) {
+        } else if (
+            ctrlKeyCombo &&
+            draftMessageIsEmpty &&
+            Utils.isKeyPressed(e, KeyCodes.DOWN)
+        ) {
             this.loadNextMessage(e);
         }
-    }
+    };
 
     editLastPost = (e) => {
         e.preventDefault();
@@ -895,15 +1036,26 @@ export default class CreatePost extends React.Component {
 
         let type;
         if (lastPost.root_id && lastPost.root_id.length > 0) {
-            type = Utils.localizeMessage('create_post.comment', Posts.MESSAGE_TYPES.COMMENT);
+            type = Utils.localizeMessage(
+                'create_post.comment',
+                Posts.MESSAGE_TYPES.COMMENT,
+            );
         } else {
-            type = Utils.localizeMessage('create_post.post', Posts.MESSAGE_TYPES.POST);
+            type = Utils.localizeMessage(
+                'create_post.post',
+                Posts.MESSAGE_TYPES.POST,
+            );
         }
         if (this.refs.textbox) {
             this.refs.textbox.getWrappedInstance().blur();
         }
-        this.props.actions.setEditingPost(lastPost.id, this.props.commentCountForPost, 'post_textbox', type);
-    }
+        this.props.actions.setEditingPost(
+            lastPost.id,
+            this.props.commentCountForPost,
+            'post_textbox',
+            type,
+        );
+    };
 
     replyToLastPost = (e) => {
         e.preventDefault();
@@ -913,40 +1065,46 @@ export default class CreatePost extends React.Component {
             replyBox.focus();
         }
         if (latestReplyablePostId) {
-            this.props.actions.selectPostFromRightHandSideSearchByPostId(latestReplyablePostId);
+            this.props.actions.selectPostFromRightHandSideSearchByPostId(
+                latestReplyablePostId,
+            );
         }
-    }
+    };
 
     loadPrevMessage = (e) => {
         e.preventDefault();
-        this.props.actions.moveHistoryIndexBack(Posts.MESSAGE_TYPES.POST).then(() => this.fillMessageFromHistory());
-    }
+        this.props.actions
+            .moveHistoryIndexBack(Posts.MESSAGE_TYPES.POST)
+            .then(() => this.fillMessageFromHistory());
+    };
 
     loadNextMessage = (e) => {
         e.preventDefault();
-        this.props.actions.moveHistoryIndexForward(Posts.MESSAGE_TYPES.POST).then(() => this.fillMessageFromHistory());
-    }
+        this.props.actions
+            .moveHistoryIndexForward(Posts.MESSAGE_TYPES.POST)
+            .then(() => this.fillMessageFromHistory());
+    };
 
     handleBlur = () => {
         this.lastBlurAt = Date.now();
-    }
+    };
 
     showPostDeletedModal = () => {
         this.setState({
             showPostDeletedModal: true,
         });
-    }
+    };
 
     hidePostDeletedModal = () => {
         this.setState({
             showPostDeletedModal: false,
         });
-    }
+    };
 
     handleEmojiClose = () => {
         this.setState({showEmojiPicker: false});
         this.focusTextbox();
-    }
+    };
 
     handleEmojiClick = (emoji) => {
         const emojiAlias = emoji.name || emoji.aliases[0];
@@ -960,7 +1118,9 @@ export default class CreatePost extends React.Component {
             this.setState({message: ':' + emojiAlias + ': '});
         } else {
             //check whether there is already a blank at the end of the current message
-            const newMessage = ((/\s+$/).test(this.state.message)) ? this.state.message + ':' + emojiAlias + ': ' : this.state.message + ' :' + emojiAlias + ': ';
+            const newMessage = /\s+$/.test(this.state.message)
+                ? this.state.message + ':' + emojiAlias + ': '
+                : this.state.message + ' :' + emojiAlias + ': ';
 
             this.setState({message: newMessage});
         }
@@ -968,18 +1128,20 @@ export default class CreatePost extends React.Component {
         this.setState({showEmojiPicker: false});
 
         this.focusTextbox();
-    }
+    };
 
     handleGifClick = (gif) => {
         if (this.state.message === '') {
             this.setState({message: gif});
         } else {
-            const newMessage = ((/\s+$/).test(this.state.message)) ? this.state.message + gif : this.state.message + ' ' + gif;
+            const newMessage = /\s+$/.test(this.state.message)
+                ? this.state.message + gif
+                : this.state.message + ' ' + gif;
             this.setState({message: newMessage});
         }
         this.setState({showEmojiPicker: false});
         this.focusTextbox();
-    }
+    };
 
     createTutorialTip() {
         const screens = [];
@@ -1004,7 +1166,7 @@ export default class CreatePost extends React.Component {
                         defaultMessage='Click the **Attachment** button to upload an image or a file.'
                     />
                 </p>
-            </div>
+            </div>,
         );
 
         return (
@@ -1024,7 +1186,7 @@ export default class CreatePost extends React.Component {
 
     handleHeightChange = (height, maxHeight) => {
         this.setState({renderScrollbar: height > maxHeight});
-    }
+    };
 
     render() {
         const {
@@ -1091,12 +1253,19 @@ export default class CreatePost extends React.Component {
 
         let postError = null;
         if (this.state.postError) {
-            const postErrorClass = 'post-error' + (this.state.errorClass ? (' ' + this.state.errorClass) : '');
-            postError = <label className={postErrorClass}>{this.state.postError}</label>;
+            const postErrorClass =
+                'post-error' +
+                (this.state.errorClass ? ' ' + this.state.errorClass : '');
+            postError = (
+                <label className={postErrorClass}>{this.state.postError}</label>
+            );
         }
 
         let preview = null;
-        if (!readOnlyChannel && (draft.fileInfos.length > 0 || draft.uploadsInProgress.length > 0)) {
+        if (
+            !readOnlyChannel &&
+            (draft.fileInfos.length > 0 || draft.uploadsInProgress.length > 0)
+        ) {
             preview = (
                 <FilePreview
                     fileInfos={draft.fileInfos}
@@ -1155,7 +1324,10 @@ export default class CreatePost extends React.Component {
                 <span
                     role='button'
                     tabIndex='0'
-                    aria-label={formatMessage({id: 'create_post.open_emoji_picker', defaultMessage: 'Open emoji picker'})}
+                    aria-label={formatMessage({
+                        id: 'create_post.open_emoji_picker',
+                        defaultMessage: 'Open emoji picker',
+                    })}
                     className='emoji-picker__container'
                 >
                     <EmojiPickerOverlay
@@ -1168,9 +1340,13 @@ export default class CreatePost extends React.Component {
                         enableGifPicker={this.props.enableGifPicker}
                         topOffset={-7}
                     />
+
                     <EmojiIcon
                         id='emojiPickerButton'
-                        className={'icon icon--emoji ' + (this.state.showEmojiPicker ? 'active' : '')}
+                        className={
+                            'icon icon--emoji ' +
+                            (this.state.showEmojiPicker ? 'active' : '')
+                        }
                         onClick={this.toggleEmojiPicker}
                     />
                 </span>
@@ -1179,11 +1355,18 @@ export default class CreatePost extends React.Component {
 
         let createMessage;
         if (readOnlyChannel) {
-            createMessage = Utils.localizeMessage('create_post.read_only', 'This channel is read-only. Only members with permission can post here.');
+            createMessage = Utils.localizeMessage(
+                'create_post.read_only',
+                'This channel is read-only. Only members with permission can post here.',
+            );
         } else {
             createMessage = formatMessage(
-                {id: 'create_post.write', defaultMessage: 'Write to {channelDisplayName}'},
-                {channelDisplayName: currentChannel.display_name}
+                {
+                    id: 'create_post.write',
+                    defaultMessage: 'Write to {channelDisplayName}',
+                },
+
+                {channelDisplayName: currentChannel.display_name},
             );
         }
 
@@ -1200,7 +1383,11 @@ export default class CreatePost extends React.Component {
                 className={centerClass}
                 onSubmit={this.handleSubmit}
             >
-                <div className={'post-create' + attachmentsDisabled + scrollbarClass}>
+                <div
+                    className={
+                        'post-create' + attachmentsDisabled + scrollbarClass
+                    }
+                >
                     <div className='post-create-body'>
                         <div className='post-body__cell'>
                             <Textbox
@@ -1210,7 +1397,9 @@ export default class CreatePost extends React.Component {
                                 onComposition={this.emitTypingEvent}
                                 onHeightChange={this.handleHeightChange}
                                 handlePostError={this.handlePostError}
-                                value={readOnlyChannel ? '' : this.state.message}
+                                value={
+                                    readOnlyChannel ? '' : this.state.message
+                                }
                                 onBlur={this.handleBlur}
                                 emojiEnabled={this.props.enableEmojiPicker}
                                 createMessage={createMessage}
@@ -1222,6 +1411,7 @@ export default class CreatePost extends React.Component {
                                 badConnection={this.props.badConnection}
                                 listenForMentionKeyClick={true}
                             />
+
                             <span
                                 ref='createPostControls'
                                 className='post-body__actions'
@@ -1231,27 +1421,28 @@ export default class CreatePost extends React.Component {
                                 <a
                                     role='button'
                                     tabIndex='0'
-                                    aria-label={formatMessage({id: 'create_post.send_message', defaultMessage: 'Send a message'})}
+                                    aria-label={formatMessage({
+                                        id: 'create_post.send_message',
+                                        defaultMessage: 'Send a message',
+                                    })}
                                     className={sendButtonClass}
                                     onClick={this.handleSubmit}
                                 >
                                     <i
                                         className='fa fa-paper-plane'
-                                        title={formatMessage({id: 'create_post.icon', defaultMessage: 'Send Post Icon'})}
+                                        title={formatMessage({
+                                            id: 'create_post.icon',
+                                            defaultMessage: 'Send Post Icon',
+                                        })}
                                     />
                                 </a>
                             </span>
                         </div>
                         {tutorialTip}
                     </div>
-                    <div
-                        id='postCreateFooter'
-                        className={postFooterClassName}
-                    >
-                        <MsgTyping
-                            channelId={currentChannel.id}
-                            postId=''
-                        />
+                    <div id='postCreateFooter' className={postFooterClassName}>
+                        <MsgTyping channelId={currentChannel.id} postId='' />
+
                         {postError}
                         {preview}
                         {serverError}
@@ -1261,6 +1452,7 @@ export default class CreatePost extends React.Component {
                     show={this.state.showPostDeletedModal}
                     onHide={this.hidePostDeletedModal}
                 />
+
                 <ConfirmModal
                     title={notifyAllTitle}
                     message={notifyAllMessage}

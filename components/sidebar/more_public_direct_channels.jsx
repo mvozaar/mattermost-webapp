@@ -34,12 +34,14 @@ export default class MorePublicDirectChannels extends React.PureComponent {
 
     handleSelect = (key) => {
         this.setState({key});
-    }
+    };
 
     render() {
         return (
             <Modal
-                dialogClassName={'more-modal more-direct-channels more-public-direct-channels'}
+                dialogClassName={
+                    'more-modal more-direct-channels more-public-direct-channels'
+                }
                 show={this.state.show}
                 onHide={this.handleHide}
                 onExited={this.handleExit}
@@ -47,10 +49,7 @@ export default class MorePublicDirectChannels extends React.PureComponent {
                 aria-labelledby='morePublicModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='morePublicModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='morePublicModalLabel'>
                         <FormattedMessage
                             id='more_public_direct_channels.title'
                             defaultMessage='Channels and Direct Messages'
@@ -68,7 +67,10 @@ export default class MorePublicDirectChannels extends React.PureComponent {
                     >
                         <Tab
                             eventKey='channels'
-                            title={localizeMessage('more_public_direct_channels.channels', 'Channels')}
+                            title={localizeMessage(
+                                'more_public_direct_channels.channels',
+                                'Channels',
+                            )}
                         >
                             <MorePublicChannels
                                 handleNewChannel={this.props.handleNewChannel}
@@ -78,7 +80,10 @@ export default class MorePublicDirectChannels extends React.PureComponent {
                         </Tab>
                         <Tab
                             eventKey='dm'
-                            title={localizeMessage('more_public_direct_channels.direct_messages', 'Direct Messages')}
+                            title={localizeMessage(
+                                'more_public_direct_channels.direct_messages',
+                                'Direct Messages',
+                            )}
                         >
                             <MoreDirectMessages
                                 onModalDismissed={this.handleHide}

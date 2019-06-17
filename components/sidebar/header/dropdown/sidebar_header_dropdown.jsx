@@ -36,12 +36,12 @@ export default class SidebarHeaderDropdown extends React.PureComponent {
     toggleShortcutsModal = (e) => {
         e.preventDefault();
         GlobalActions.toggleShortcutsModal();
-    }
+    };
 
     showGetTeamInviteLinkModal = (e) => {
         e.preventDefault();
         GlobalActions.showGetTeamInviteLinkModal();
-    }
+    };
 
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown);
@@ -52,14 +52,21 @@ export default class SidebarHeaderDropdown extends React.PureComponent {
     }
 
     handleKeyDown = (e) => {
-        if (cmdOrCtrlPressed(e) && e.shiftKey && isKeyPressed(e, Constants.KeyCodes.A)) {
-            this.props.actions.openModal({ModalId: ModalIdentifiers.USER_SETTINGS, dialogType: UserSettingsModal});
+        if (
+            cmdOrCtrlPressed(e) &&
+            e.shiftKey &&
+            isKeyPressed(e, Constants.KeyCodes.A)
+        ) {
+            this.props.actions.openModal({
+                ModalId: ModalIdentifiers.USER_SETTINGS,
+                dialogType: UserSettingsModal,
+            });
         }
-    }
+    };
 
     handleEmitUserLoggedOutEvent = () => {
         GlobalActions.emitUserLoggedOutEvent();
-    }
+    };
 
     render() {
         const currentUser = this.props.currentUser;
@@ -77,7 +84,8 @@ export default class SidebarHeaderDropdown extends React.PureComponent {
                     teamDisplayName={this.props.teamDisplayName}
                     teamId={this.props.teamId}
                 />
-                <MainMenu id='sidebarDropdownMenu'/>
+
+                <MainMenu id='sidebarDropdownMenu' />
             </MenuWrapper>
         );
     }

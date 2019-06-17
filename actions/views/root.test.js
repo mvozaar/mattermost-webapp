@@ -43,7 +43,10 @@ describe('root view actions', () => {
         const testStore = await mockStore({});
 
         await testStore.dispatch(Actions.loadMeAndConfig());
-        expect(testStore.getActions()).toEqual([{type: 'MOCK_GET_CLIENT_CONFIG'}, {type: 'MOCK_GET_LICENSE_CONFIG'}]);
+        expect(testStore.getActions()).toEqual([
+            {type: 'MOCK_GET_CLIENT_CONFIG'},
+            {type: 'MOCK_GET_LICENSE_CONFIG'},
+        ]);
     });
 
     test('loadMeAndConfig, with user logged in', async () => {
@@ -53,6 +56,10 @@ describe('root view actions', () => {
         localStorage.setItem('was_logged_in', 'true');
 
         await testStore.dispatch(Actions.loadMeAndConfig());
-        expect(testStore.getActions()).toEqual([{type: 'MOCK_GET_CLIENT_CONFIG'}, {type: 'MOCK_GET_LICENSE_CONFIG'}, {type: 'MOCK_LOAD_ME'}]);
+        expect(testStore.getActions()).toEqual([
+            {type: 'MOCK_GET_CLIENT_CONFIG'},
+            {type: 'MOCK_GET_LICENSE_CONFIG'},
+            {type: 'MOCK_LOAD_ME'},
+        ]);
     });
 });

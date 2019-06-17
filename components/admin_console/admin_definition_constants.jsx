@@ -14,7 +14,7 @@ const SECTION_NONE = (
         <td>
             <FormattedMessage
                 id='admin.connectionSecurityNoneDescription'
-                defaultMessage='Mattermost will connect over an insecure connection.'
+                defaultMessage='SCC will connect over an insecure connection.'
             />
         </td>
     </tr>
@@ -31,7 +31,7 @@ const SECTION_TLS = (
         <td>
             <FormattedMessage
                 id='admin.connectionSecurityTlsDescription'
-                defaultMessage='Encrypts the communication between Mattermost and your server.'
+                defaultMessage='Encrypts the communication between SCC and your server.'
             />
         </td>
     </tr>
@@ -55,10 +55,7 @@ const SECTION_STARTTLS = (
 );
 
 export const CONNECTION_SECURITY_HELP_TEXT_EMAIL = (
-    <table
-        className='table table-bordered table-margin--none'
-        cellPadding='5'
-    >
+    <table className='table table-bordered table-margin--none' cellPadding='5'>
         <tbody>
             {SECTION_NONE}
             {SECTION_TLS}
@@ -68,10 +65,7 @@ export const CONNECTION_SECURITY_HELP_TEXT_EMAIL = (
 );
 
 export const CONNECTION_SECURITY_HELP_TEXT_LDAP = (
-    <table
-        className='table table-bordered table-margin--none'
-        cellPadding='5'
-    >
+    <table className='table table-bordered table-margin--none' cellPadding='5'>
         <tbody>
             {SECTION_NONE}
             {SECTION_TLS}
@@ -81,10 +75,7 @@ export const CONNECTION_SECURITY_HELP_TEXT_LDAP = (
 );
 
 export const CONNECTION_SECURITY_HELP_TEXT_WEBSERVER = (
-    <table
-        className='table table-bordered table-margin--none'
-        cellPadding='5'
-    >
+    <table className='table table-bordered table-margin--none' cellPadding='5'>
         <tbody>
             {SECTION_NONE}
             {SECTION_TLS}
@@ -109,7 +100,7 @@ export const WEBSERVER_MODE_HELP_TEXT = (
                     <td>
                         <FormattedMessage
                             id='admin.webserverModeGzipDescription'
-                            defaultMessage='The Mattermost server will serve static files compressed with gzip.'
+                            defaultMessage='The SCC server will serve static files compressed with gzip.'
                         />
                     </td>
                 </tr>
@@ -123,7 +114,7 @@ export const WEBSERVER_MODE_HELP_TEXT = (
                     <td>
                         <FormattedMessage
                             id='admin.webserverModeUncompressedDescription'
-                            defaultMessage='The Mattermost server will serve static files uncompressed.'
+                            defaultMessage='The SCC server will serve static files uncompressed.'
                         />
                     </td>
                 </tr>
@@ -137,7 +128,7 @@ export const WEBSERVER_MODE_HELP_TEXT = (
                     <td>
                         <FormattedMessage
                             id='admin.webserverModeDisabledDescription'
-                            defaultMessage='The Mattermost server will not serve static files.'
+                            defaultMessage='The SCC server will not serve static files.'
                         />
                     </td>
                 </tr>
@@ -158,11 +149,13 @@ export const LOG_LEVEL_OPTIONS = [
         display_name: 'DEBUG',
         display_name_default: 'DEBUG',
     },
+
     {
         value: 'INFO',
         display_name: 'INFO',
         display_name_default: 'INFO',
     },
+
     {
         value: 'ERROR',
         display_name: 'ERROR',

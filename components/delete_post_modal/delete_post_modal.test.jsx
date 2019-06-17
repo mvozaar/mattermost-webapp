@@ -25,22 +25,21 @@ describe('components/delete_post_modal', () => {
         actions: {
             deleteAndRemovePost: jest.fn(),
         },
+
         onHide: jest.fn(),
     };
 
     test('should match snapshot for delete_post_modal with 0 comments', () => {
-        const wrapper = shallow(
-            <DeletePostModal {...baseProps}/>
-        );
+        const wrapper = shallow(<DeletePostModal {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot for delete_post_modal with 1 comment', () => {
         const commentCount = 1;
         const props = {...baseProps, commentCount};
-        const wrapper = shallow(
-            <DeletePostModal {...props}/>
-        );
+        const wrapper = shallow(<DeletePostModal {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -57,16 +56,13 @@ describe('components/delete_post_modal', () => {
             post: postObj,
         };
 
-        const wrapper = shallow(
-            <DeletePostModal {...props}/>
-        );
+        const wrapper = shallow(<DeletePostModal {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should focus delete button on enter', () => {
-        const wrapper = shallow(
-            <DeletePostModal {...baseProps}/>
-        );
+        const wrapper = shallow(<DeletePostModal {...baseProps} />);
 
         const deletePostBtn = {focus: jest.fn()};
         wrapper.instance().deletePostBtn = deletePostBtn;
@@ -76,9 +72,7 @@ describe('components/delete_post_modal', () => {
     });
 
     test('should match state when onHide is called', () => {
-        const wrapper = shallow(
-            <DeletePostModal {...baseProps}/>
-        );
+        const wrapper = shallow(<DeletePostModal {...baseProps} />);
 
         wrapper.setState({show: true});
         wrapper.instance().onHide();
@@ -86,12 +80,13 @@ describe('components/delete_post_modal', () => {
     });
 
     test('should match state when the cancel button is clicked', () => {
-        const wrapper = shallow(
-            <DeletePostModal {...baseProps}/>
-        );
+        const wrapper = shallow(<DeletePostModal {...baseProps} />);
 
         wrapper.setState({show: true});
-        wrapper.find('button').at(0).simulate('click');
+        wrapper
+            .find('button')
+            .at(0)
+            .simulate('click');
         expect(wrapper.state('show')).toEqual(false);
     });
 
@@ -104,9 +99,8 @@ describe('components/delete_post_modal', () => {
                 deleteAndRemovePost,
             },
         };
-        const wrapper = shallow(
-            <DeletePostModal {...props}/>
-        );
+
+        const wrapper = shallow(<DeletePostModal {...props} />);
 
         wrapper.setState({show: true});
         wrapper.instance().handleDelete();
@@ -124,26 +118,30 @@ describe('components/delete_post_modal', () => {
             channelName: 'channel_name',
             teamName: 'team_name',
             actions: {
-                deleteAndRemovePost: jest.fn().mockReturnValueOnce({data: true}),
+                deleteAndRemovePost: jest
+                    .fn()
+                    .mockReturnValueOnce({data: true}),
             },
         };
-        const wrapper = shallow(
-            <DeletePostModal {...props}/>
-        );
+
+        const wrapper = shallow(<DeletePostModal {...props} />);
 
         await wrapper.instance().handleDelete();
         expect(browserHistory.push).toHaveBeenCalledTimes(1);
-        expect(browserHistory.push).toHaveBeenCalledWith('/team_name/channels/channel_name');
+        expect(browserHistory.push).toHaveBeenCalledWith(
+            '/team_name/channels/channel_name',
+        );
     });
 
     test('should have called props.onHide when Modal.onExited is called', () => {
         const onHide = jest.fn();
         const props = {...baseProps, onHide};
-        const wrapper = shallow(
-            <DeletePostModal {...props}/>
-        );
+        const wrapper = shallow(<DeletePostModal {...props} />);
 
-        wrapper.find(Modal).props().onExited();
+        wrapper
+            .find(Modal)
+            .props()
+            .onExited();
         expect(onHide).toHaveBeenCalledTimes(1);
     });
 });

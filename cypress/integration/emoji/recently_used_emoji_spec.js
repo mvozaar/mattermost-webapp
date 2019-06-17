@@ -24,10 +24,14 @@ describe('Recent Emoji', () => {
         const firstEmoji = 200;
 
         // 4. Show emoji list
-        cy.get('#emojiPickerButton').should('be.visible').click();
+        cy.get('#emojiPickerButton')
+            .should('be.visible')
+            .click();
 
         // 5. Click emoji with random index
-        cy.get('.emoji-picker__item').eq(firstEmoji).click();
+        cy.get('.emoji-picker__item')
+            .eq(firstEmoji)
+            .click();
 
         // 6. Submit post
         cy.get('#create_post').submit();
@@ -42,19 +46,33 @@ describe('Recent Emoji', () => {
         const secondEmoji = 100;
 
         // 10. Click chosen emoji
-        cy.get('.emoji-picker__item').eq(secondEmoji).click();
+        cy.get('.emoji-picker__item')
+            .eq(secondEmoji)
+            .click();
 
         // 11. Show emoji list
         cy.get('#emojiPickerButton').click();
 
         // * Assert first emoji should equal with second recent emoji
-        cy.get('.emoji-picker__item').eq(firstEmoji + 2).find('img').then(($el) => {
-            cy.get('.emoji-picker__item').eq(1).find('img').should('have.attr', 'class', $el.attr('class'));
-        });
+        cy.get('.emoji-picker__item')
+            .eq(firstEmoji + 2)
+            .find('img')
+            .then(($el) => {
+                cy.get('.emoji-picker__item')
+                    .eq(1)
+                    .find('img')
+                    .should('have.attr', 'class', $el.attr('class'));
+            });
 
         // * Assert second emoji should equal with first recent emoji
-        cy.get('.emoji-picker__item').eq(secondEmoji + 1).find('img').then(($el) => {
-            cy.get('.emoji-picker__item').eq(0).find('img').should('have.attr', 'class', $el.attr('class'));
-        });
+        cy.get('.emoji-picker__item')
+            .eq(secondEmoji + 1)
+            .find('img')
+            .then(($el) => {
+                cy.get('.emoji-picker__item')
+                    .eq(0)
+                    .find('img')
+                    .should('have.attr', 'class', $el.attr('class'));
+            });
     });
 });

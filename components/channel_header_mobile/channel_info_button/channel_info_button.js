@@ -36,13 +36,13 @@ export default class NavbarInfoButton extends React.PureComponent {
         };
 
         actions.openModal(modalData);
-    }
+    };
 
     hide = () => {
         if (this.refs.headerOverlay) {
             this.refs.headerOverlay.hide();
         }
-    }
+    };
 
     render() {
         const {channel, isReadOnly} = this.props;
@@ -59,19 +59,17 @@ export default class NavbarInfoButton extends React.PureComponent {
             let addOne;
             if (!isReadOnly) {
                 const link = (
-                    <a
-                        href='#'
-                        onClick={this.showEditChannelHeaderModal}
-                    >
+                    <a href='#' onClick={this.showEditChannelHeaderModal}>
                         <FormattedMessage
                             id='navbar.click'
                             defaultMessage='Click here'
                         />
                     </a>
                 );
+
                 addOne = (
                     <React.Fragment>
-                        <br/>
+                        <br />
                         <FormattedMessage
                             id='navbar.clickToAddHeader'
                             defaultMessage='{clickHere} to add one.'
@@ -87,6 +85,7 @@ export default class NavbarInfoButton extends React.PureComponent {
                         id='navbar.noHeader'
                         defaultMessage='No channel header yet.'
                     />
+
                     {addOne}
                 </div>
             );
@@ -100,10 +99,7 @@ export default class NavbarInfoButton extends React.PureComponent {
                 id='header-popover'
             >
                 {popoverContent}
-                <div
-                    className='close visible-xs-block'
-                    onClick={this.hide}
-                >
+                <div className='close visible-xs-block' onClick={this.hide}>
                     {'×'}
                 </div>
             </Popover>
@@ -119,10 +115,7 @@ export default class NavbarInfoButton extends React.PureComponent {
                 rootClose={true}
             >
                 <button className='navbar-toggle navbar-right__icon navbar-info-button pull-right'>
-                    <InfoIcon
-                        className='icon icon__info'
-                        aria-hidden='true'
-                    />
+                    <InfoIcon className='icon icon__info' aria-hidden='true' />
                 </button>
             </OverlayTrigger>
         );

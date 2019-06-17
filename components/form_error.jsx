@@ -45,9 +45,7 @@ export default class FormError extends React.Component {
         if (this.props.type === 'modal') {
             return (
                 <div className='form-group'>
-                    <label className='col-sm-12 has-error'>
-                        {message}
-                    </label>
+                    <label className='col-sm-12 has-error'>{message}</label>
                 </div>
             );
         }
@@ -55,9 +53,7 @@ export default class FormError extends React.Component {
         if (this.props.type === 'backstage') {
             return (
                 <div className='pull-left has-error'>
-                    <label className='control-label'>
-                        {message}
-                    </label>
+                    <label className='control-label'>{message}</label>
                 </div>
             );
         }
@@ -65,9 +61,7 @@ export default class FormError extends React.Component {
         if (this.props.margin) {
             return (
                 <div className='form-group has-error'>
-                    <label className='control-label'>
-                        {message}
-                    </label>
+                    <label className='control-label'>{message}</label>
                 </div>
             );
         }
@@ -75,7 +69,7 @@ export default class FormError extends React.Component {
         return (
             <div className='col-sm-12 has-error'>
                 <label className='control-label'>
-                    <i className='fa fa-exclamation-circle'/> {message}
+                    <i className='fa fa-exclamation-circle' /> {message}
                 </label>
             </div>
         );

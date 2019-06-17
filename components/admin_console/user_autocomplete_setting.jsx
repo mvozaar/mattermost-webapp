@@ -30,11 +30,11 @@ export default class UserAutocompleteSetting extends React.Component {
 
     handleChange = (e) => {
         this.props.onChange(this.props.id, e.target.value);
-    }
+    };
 
     handleUserSelected = (user) => {
         this.props.onChange(this.props.id, user.username);
-    }
+    };
 
     render() {
         return (
@@ -43,9 +43,7 @@ export default class UserAutocompleteSetting extends React.Component {
                 helpText={this.props.helpText}
                 inputId={this.props.id}
             >
-                <div
-                    className='admin-setting-user__dropdown'
-                >
+                <div className='admin-setting-user__dropdown'>
                     <SuggestionBox
                         id={'admin_user_setting_' + this.props.id}
                         className='form-control'

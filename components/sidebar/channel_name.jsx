@@ -20,25 +20,29 @@ export default class ChannelName extends React.PureComponent {
 
     sectionTypeFormatMessageId = (sectionType) => {
         switch (sectionType) {
-        case 'public':
-            return t('sidebar.types.public');
-        case 'private':
-            return t('sidebar.types.private');
-        case 'direct':
-            return t('sidebar.types.direct');
-        case 'favorite':
-            return t('sidebar.types.favorite');
-        case 'unreads':
-            return t('sidebar.types.unreads');
-        case 'recent':
-            return t('sidebar.types.recent');
-        default:
-            return t('sidebar.types.alpha');
+            case 'public':
+                return t('sidebar.types.public');
+            case 'private':
+                return t('sidebar.types.private');
+            case 'direct':
+                return t('sidebar.types.direct');
+            case 'favorite':
+                return t('sidebar.types.favorite');
+            case 'unreads':
+                return t('sidebar.types.unreads');
+            case 'recent':
+                return t('sidebar.types.recent');
+            default:
+                return t('sidebar.types.alpha');
         }
-    }
+    };
 
     render() {
-        const {sectionType, channelName, browsePublicDirectChannels} = this.props;
+        const {
+            sectionType,
+            channelName,
+            browsePublicDirectChannels,
+        } = this.props;
 
         let tooltipTriggers = ['hover', 'focus'];
 
@@ -56,10 +60,7 @@ export default class ChannelName extends React.PureComponent {
 
         if (clickableChannelHeader.indexOf(sectionType) !== -1) {
             const createPublicDirectChannelTooltip = (
-                <Tooltip
-                    id='new-group-tooltip'
-                    className='hidden-xs'
-                >
+                <Tooltip id='new-group-tooltip' className='hidden-xs'>
                     <FormattedMessage
                         id='sidebar.browseChannelDirectChannel'
                         defaultMessage='Browse Channels and Direct Messages'

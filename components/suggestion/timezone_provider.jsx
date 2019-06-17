@@ -57,10 +57,13 @@ export default class TimezoneProvider extends Provider {
     }
 
     async filterTimezones(resultsCallback, timezonePrefix) {
-        const filteredTimezones = getSupportedTimezones().filter((t) => (
-            getTimezoneRegion(t).toLowerCase().indexOf(timezonePrefix) >= 0 ||
-                t.toLowerCase().indexOf(timezonePrefix) >= 0
-        ));
+        const filteredTimezones = getSupportedTimezones().filter(
+            (t) =>
+                getTimezoneRegion(t)
+                    .toLowerCase()
+                    .indexOf(timezonePrefix) >= 0 ||
+                t.toLowerCase().indexOf(timezonePrefix) >= 0,
+        );
 
         resultsCallback({
             matchedPretext: timezonePrefix,

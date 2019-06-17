@@ -31,7 +31,7 @@ export default class TeamSelectorModal extends React.Component {
             setModalSearchTerm: PropTypes.func.isRequired,
             searchTeams: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -54,7 +54,8 @@ export default class TeamSelectorModal extends React.Component {
         });
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (this.props.searchTerm !== nextProps.searchTerm) {
             clearTimeout(this.searchTimeoutId);
 
@@ -63,27 +64,24 @@ export default class TeamSelectorModal extends React.Component {
                 return;
             }
 
-            this.searchTimeoutId = setTimeout(
-                async () => {
-                    this.setTeamsLoadingState(true);
-                    await this.props.actions.searchTeams(searchTerm);
-                    this.setTeamsLoadingState(false);
-                },
-                Constants.SEARCH_TIMEOUT_MILLISECONDS
-            );
+            this.searchTimeoutId = setTimeout(async () => {
+                this.setTeamsLoadingState(true);
+                await this.props.actions.searchTeams(searchTerm);
+                this.setTeamsLoadingState(false);
+            }, Constants.SEARCH_TIMEOUT_MILLISECONDS);
         }
     }
 
     handleHide = () => {
         this.props.actions.setModalSearchTerm('');
         this.setState({show: false});
-    }
+    };
 
     handleExit = () => {
         if (this.props.onModalDismissed) {
             this.props.onModalDismissed();
         }
-    }
+    };
 
     handleSubmit = (e) => {
         if (e) {
@@ -96,10 +94,15 @@ export default class TeamSelectorModal extends React.Component {
 
         this.props.onTeamsSelected(this.state.values);
         this.handleHide();
-    }
+    };
 
     addValue = (value, confirmed = false) => {
-        if (this.props.modalID === ModalIdentifiers.ADD_TEAMS_TO_SCHEME && value.scheme_id !== null && value.scheme_id !== '' && !confirmed) {
+        if (
+            this.props.modalID === ModalIdentifiers.ADD_TEAMS_TO_SCHEME &&
+            value.scheme_id !== null &&
+            value.scheme_id !== '' &&
+            !confirmed
+        ) {
             this.setState({confirmAddModal: true, confirmAddTeam: value});
             return;
         }
@@ -110,13 +113,13 @@ export default class TeamSelectorModal extends React.Component {
         }
 
         this.setState({values, confirmAddModal: false, confirmAddTeam: null});
-    }
+    };
 
     setTeamsLoadingState = (loadingState) => {
         this.setState({
             loadingTeams: loadingState,
         });
-    }
+    };
 
     handlePageChange = (page, prevPage) => {
         if (page > prevPage) {
@@ -125,15 +128,15 @@ export default class TeamSelectorModal extends React.Component {
                 this.setTeamsLoadingState(false);
             });
         }
-    }
+    };
 
     handleDelete = (values) => {
         this.setState({values});
-    }
+    };
 
     search = (term) => {
         this.props.actions.setModalSearchTerm(term);
-    }
+    };
 
     renderOption(option, isSelected, onAdd) {
         var rowSelected = '';
@@ -148,14 +151,12 @@ export default class TeamSelectorModal extends React.Component {
                 className={'more-modal__row clickable ' + rowSelected}
                 onClick={() => onAdd(option)}
             >
-                <div
-                    className='more-modal__details'
-                >
-                    <TeamInfo team={option}/>
+                <div className='more-modal__details'>
+                    <TeamInfo team={option} />
                 </div>
                 <div className='more-modal__actions'>
                     <div className='more-modal__actions--round'>
-                        <i className='fa fa-plus'/>
+                        <i className='fa fa-plus' />
                     </div>
                 </div>
             </div>
@@ -173,32 +174,44 @@ export default class TeamSelectorModal extends React.Component {
                 defaultMessage='Team Override Scheme Change?'
             />
         );
+
         const message = (
             <FormattedMessage
                 id='add_teams_to_scheme.confirmation.message'
                 defaultMessage='This team is already selected in another team scheme, are you sure you want to move it to this team scheme?'
             />
         );
+
         const confirmButtonText = (
             <FormattedMessage
                 id='add_teams_to_scheme.confirmation.accept'
                 defaultMessage='Yes, Move Team'
             />
         );
+
         return (
             <ConfirmModal
                 show={show}
                 title={title}
                 message={message}
                 confirmButtonText={confirmButtonText}
-                onCancel={() => this.setState({confirmAddModal: false, confirmAddTeam: null})}
+                onCancel={() =>
+                    this.setState({
+                        confirmAddModal: false,
+                        confirmAddTeam: null,
+                    })
+                }
                 onConfirm={() => this.addValue(team, true)}
             />
         );
     }
 
     render() {
-        const confirmModal = this.renderConfirmModal(this.state.confirmAddModal, this.state.confirmAddTeam);
+        const confirmModal = this.renderConfirmModal(
+            this.state.confirmAddModal,
+            this.state.confirmAddTeam,
+        );
+
         const numRemainingText = (
             <FormattedMessage
                 id='multiselect.selectTeams'
@@ -211,8 +224,14 @@ export default class TeamSelectorModal extends React.Component {
         let teams = [];
         if (this.props.teams) {
             teams = this.props.teams.filter((team) => team.delete_at === 0);
-            teams = teams.filter((team) => team.scheme_id !== this.currentSchemeId);
-            teams = teams.filter((team) => this.props.alreadySelected.indexOf(team.id) === -1);
+            teams = teams.filter(
+                (team) => team.scheme_id !== this.currentSchemeId,
+            );
+
+            teams = teams.filter(
+                (team) => this.props.alreadySelected.indexOf(team.id) === -1,
+            );
+
             teams.sort((a, b) => {
                 const aName = a.display_name.toUpperCase();
                 const bName = b.display_name.toUpperCase();
@@ -228,7 +247,9 @@ export default class TeamSelectorModal extends React.Component {
 
         return (
             <Modal
-                dialogClassName={'more-modal more-direct-channels team-selector-modal'}
+                dialogClassName={
+                    'more-modal more-direct-channels team-selector-modal'
+                }
                 show={this.state.show}
                 onHide={this.handleHide}
                 onExited={this.handleExit}
@@ -264,7 +285,10 @@ export default class TeamSelectorModal extends React.Component {
                         buttonSubmitText={buttonSubmitText}
                         saving={false}
                         loading={this.state.loadingTeams}
-                        placeholderText={localizeMessage('multiselect.addTeamsPlaceholder', 'Search and add teams')}
+                        placeholderText={localizeMessage(
+                            'multiselect.addTeamsPlaceholder',
+                            'Search and add teams',
+                        )}
                     />
                 </Modal.Body>
             </Modal>

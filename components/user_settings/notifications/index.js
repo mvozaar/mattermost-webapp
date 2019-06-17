@@ -13,7 +13,8 @@ function mapStateToProps(state) {
 
     const siteName = config.SiteName;
     const sendPushNotifications = config.SendPushNotifications === 'true';
-    const enableAutoResponder = config.ExperimentalEnableAutomaticReplies === 'true';
+    const enableAutoResponder =
+        config.ExperimentalEnableAutomaticReplies === 'true';
 
     return {
         siteName,
@@ -28,4 +29,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSettingsNotifications);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UserSettingsNotifications);

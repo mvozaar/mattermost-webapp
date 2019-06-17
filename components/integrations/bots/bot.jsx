@@ -24,50 +24,50 @@ export function matchesFilter(bot, filter, owner) {
     if (owner && owner.username) {
         ownerUsername = owner.username;
     }
-    return !(username.toLowerCase().indexOf(filter) === -1 &&
+    return !(
+        username.toLowerCase().indexOf(filter) === -1 &&
         displayName.toLowerCase().indexOf(filter) === -1 &&
         description.toLowerCase().indexOf(filter) === -1 &&
-        ownerUsername.toLowerCase().indexOf(filter) === -1);
+        ownerUsername.toLowerCase().indexOf(filter) === -1
+    );
 }
 
 export default class Bot extends React.PureComponent {
     static propTypes = {
-
         /**
-        *  Bot that we are displaying
-        */
+         *  Bot that we are displaying
+         */
         bot: PropTypes.object.isRequired,
 
         /**
-        * Owner of the bot we are displaying
-        */
+         * Owner of the bot we are displaying
+         */
         owner: PropTypes.object,
 
         /**
-        * The access tokens of the bot user
-        */
+         * The access tokens of the bot user
+         */
         accessTokens: PropTypes.object.isRequired,
 
         /**
-        * String used for filtering bot items
-        */
+         * String used for filtering bot items
+         */
         filter: PropTypes.string,
 
         actions: PropTypes.shape({
-
             /**
-            * Disable a bot
-            */
+             * Disable a bot
+             */
             disableBot: PropTypes.func.isRequired,
 
             /**
-            * Enable a bot
-            */
+             * Enable a bot
+             */
             enableBot: PropTypes.func.isRequired,
 
             /**
-            * Access token managment
-            */
+             * Access token managment
+             */
             createUserAccessToken: PropTypes.func.isRequired,
             revokeUserAccessToken: PropTypes.func.isRequired,
             enableUserAccessToken: PropTypes.func.isRequired,
@@ -75,8 +75,8 @@ export default class Bot extends React.PureComponent {
         }),
 
         /**
-        *  Only used for routing since backstage is team based.
-        */
+         *  Only used for routing since backstage is team based.
+         */
         team: PropTypes.object.isRequired,
     };
 
@@ -93,32 +93,32 @@ export default class Bot extends React.PureComponent {
 
     enableBot = () => {
         this.props.actions.enableBot(this.props.bot.user_id);
-    }
+    };
 
     disableBot = () => {
         this.props.actions.disableBot(this.props.bot.user_id);
-    }
+    };
 
     enableUserAccessToken = (id) => {
         this.props.actions.enableUserAccessToken(id);
-    }
+    };
 
     disableUserAccessToken = (id) => {
         this.props.actions.disableUserAccessToken(id);
-    }
+    };
 
     confirmRevokeToken = (id) => {
         this.setState({confirmingId: id});
-    }
+    };
 
     revokeTokenConfirmed = () => {
         this.props.actions.revokeUserAccessToken(this.state.confirmingId);
         this.closeConfirm();
-    }
+    };
 
     closeConfirm = () => {
         this.setState({confirmingId: ''});
-    }
+    };
 
     openCreateToken = () => {
         this.setState({
@@ -127,7 +127,7 @@ export default class Bot extends React.PureComponent {
                 description: '',
             },
         });
-    }
+    };
 
     closeCreateToken = () => {
         this.setState({
@@ -136,34 +136,43 @@ export default class Bot extends React.PureComponent {
                 description: '',
             },
         });
-    }
+    };
 
     handleUpdateDescription = (e) => {
         this.setState({
-            token: Object.assign({}, this.state.token, {description: e.target.value}),
+            token: Object.assign({}, this.state.token, {
+                description: e.target.value,
+            }),
         });
-    }
+    };
 
     handleCreateToken = async (e) => {
         e.preventDefault();
 
         if (this.state.token.description === '') {
-            this.setState({error: (
-                <FormattedMessage
-                    id='bot.token.error.description'
-                    defaultMessage='Please enter a description.'
-                />
-            )});
+            this.setState({
+                error: (
+                    <FormattedMessage
+                        id='bot.token.error.description'
+                        defaultMessage='Please enter a description.'
+                    />
+                ),
+            });
+
             return;
         }
 
-        const {data, error} = await this.props.actions.createUserAccessToken(this.props.bot.user_id, this.state.token.description);
+        const {data, error} = await this.props.actions.createUserAccessToken(
+            this.props.bot.user_id,
+            this.state.token.description,
+        );
+
         if (data) {
             this.setState({creatingTokenState: 'CREATED', token: data});
         } else if (error) {
             this.setState({error: error.message});
         }
-    }
+    };
 
     render() {
         const username = this.props.bot.username || '';
@@ -199,7 +208,8 @@ export default class Bot extends React.PureComponent {
                             id='user.settings.tokens.deactivate'
                             defaultMessage='Disable'
                         />
-                    </a>);
+                    </a>
+                );
             } else {
                 disableClass = 'light';
                 disabledText = (
@@ -210,6 +220,7 @@ export default class Bot extends React.PureComponent {
                         />
                     </span>
                 );
+
                 activeLink = (
                     <a
                         name={token.id + '_activate'}
@@ -228,10 +239,7 @@ export default class Bot extends React.PureComponent {
             }
 
             tokenList.push(
-                <div
-                    key={token.id}
-                    className='bot-list__item'
-                >
+                <div key={token.id} className='bot-list__item'>
                     <div className='item-details__row d-flex justify-content-between'>
                         <div className={disableClass}>
                             <div className='whitespace--nowrap overflow--ellipsis'>
@@ -272,7 +280,7 @@ export default class Bot extends React.PureComponent {
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>,
             );
         });
 
@@ -291,7 +299,9 @@ export default class Bot extends React.PureComponent {
                         />
                     </button>
                     {' - '}
-                    <Link to={`/${this.props.team.name}/integrations/bots/edit?id=${this.props.bot.user_id}`}>
+                    <Link
+                        to={`/${this.props.team.name}/integrations/bots/edit?id=${this.props.bot.user_id}`}
+                    >
                         <FormattedMessage
                             id='bots.manage.edit'
                             defaultMessage='Edit'
@@ -328,10 +338,7 @@ export default class Bot extends React.PureComponent {
 
         if (this.state.creatingTokenState === 'OPEN') {
             tokenList.push(
-                <div
-                    key={'create'}
-                    className='bot-list__item'
-                >
+                <div key={'create'} className='bot-list__item'>
                     <div key={'create'}>
                         <form
                             className='form-horizontal'
@@ -379,6 +386,7 @@ export default class Bot extends React.PureComponent {
                                         }
                                         saving={false}
                                     />
+
                                     <button
                                         className='btn btn-sm btn-link'
                                         onClick={this.closeCreateToken}
@@ -392,7 +400,7 @@ export default class Bot extends React.PureComponent {
                             </div>
                         </form>
                     </div>
-                </div>
+                </div>,
             );
         } else if (this.state.creatingTokenState === 'CREATED') {
             tokenList.push(
@@ -401,7 +409,7 @@ export default class Bot extends React.PureComponent {
                     className='bot-list__item alert alert-warning'
                 >
                     <div className='margin-bottom'>
-                        <WarningIcon additionalClassName='margin-right'/>
+                        <WarningIcon additionalClassName='margin-right' />
                         <FormattedMessage
                             id='user.settings.tokens.copy'
                             defaultMessage="Please copy the access token below. You won't be able to see it again!"
@@ -412,6 +420,7 @@ export default class Bot extends React.PureComponent {
                             id='user.settings.tokens.name'
                             defaultMessage='Token Description: '
                         />
+
                         {this.state.token.description}
                     </div>
                     <div className='whitespace--nowrap overflow--ellipsis'>
@@ -419,6 +428,7 @@ export default class Bot extends React.PureComponent {
                             id='user.settings.tokens.id'
                             defaultMessage='Token ID: '
                         />
+
                         {this.state.token.id}
                     </div>
                     <strong className='word-break--all'>
@@ -426,6 +436,7 @@ export default class Bot extends React.PureComponent {
                             id='user.settings.tokens.token'
                             defaultMessage='Access Token: '
                         />
+
                         {this.state.token.token}
                     </strong>
                     <div className='margin-top'>
@@ -439,7 +450,7 @@ export default class Bot extends React.PureComponent {
                             />
                         </button>
                     </div>
-                </div>
+                </div>,
             );
         }
 
@@ -469,11 +480,10 @@ export default class Bot extends React.PureComponent {
                             id='bots.managed_by'
                             defaultMessage='Managed by '
                         />
+
                         {ownerUsername}
                     </div>
-                    <div className='bot-list is-empty'>
-                        {tokenList}
-                    </div>
+                    <div className='bot-list is-empty'>{tokenList}</div>
                 </div>
                 <ConfirmModal
                     title={

@@ -18,9 +18,8 @@ describe('components/SearchableChannelList', () => {
     };
 
     test('should match init snapshot', () => {
-        const wrapper = shallow(
-            <SearchableChannelList {...baseProps}/>
-        );
+        const wrapper = shallow(<SearchableChannelList {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

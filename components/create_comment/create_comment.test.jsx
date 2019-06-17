@@ -25,6 +25,7 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [{}],
             fileInfos: [{}, {}, {}],
         },
+
         enableAddButton: true,
         ctrlSend: false,
         latestPostId,
@@ -56,13 +57,12 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [],
             fileInfos: [],
         };
+
         const enableAddButton = false;
         const ctrlSend = true;
         const props = {...baseProps, draft, enableAddButton, ctrlSend};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -75,12 +75,17 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [],
             fileInfos: [],
         };
-        const ctrlSend = true;
-        const props = {...baseProps, ctrlSend, draft, clearCommentDraftUploads, onResetHistoryIndex};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const ctrlSend = true;
+        const props = {
+            ...baseProps,
+            ctrlSend,
+            draft,
+            clearCommentDraftUploads,
+            onResetHistoryIndex,
+        };
+
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         // should clear draft uploads on mount
         expect(clearCommentDraftUploads).toHaveBeenCalled();
@@ -98,18 +103,14 @@ describe('components/CreateComment', () => {
             fileInfos: [{}, {}, {}],
         };
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
         wrapper.setState({draft});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should correctly change state when toggleEmojiPicker is called', () => {
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
         wrapper.instance().toggleEmojiPicker();
         expect(wrapper.state().showEmojiPicker).toBe(true);
@@ -119,9 +120,7 @@ describe('components/CreateComment', () => {
     });
 
     test('should correctly change state when hideEmojiPicker is called', () => {
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
         wrapper.instance().hideEmojiPicker();
         expect(wrapper.state().showEmojiPicker).toBe(false);
@@ -134,47 +133,58 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [],
             fileInfos: [],
         };
-        const enableAddButton = false;
-        const props = {...baseProps, draft, onUpdateCommentDraft, enableAddButton};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const enableAddButton = false;
+        const props = {
+            ...baseProps,
+            draft,
+            onUpdateCommentDraft,
+            enableAddButton,
+        };
+
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         wrapper.instance().handleEmojiClick({name: 'smile'});
         expect(onUpdateCommentDraft).toHaveBeenCalled();
 
         // Empty message case
         expect(onUpdateCommentDraft.mock.calls[0][0]).toEqual(
-            expect.objectContaining({message: ':smile: '})
+            expect.objectContaining({message: ':smile: '}),
         );
+
         expect(wrapper.state().draft.message).toBe(':smile: ');
 
-        wrapper.setState({draft: {message: 'test', uploadsInProgress: [], fileInfos: []}});
+        wrapper.setState({
+            draft: {message: 'test', uploadsInProgress: [], fileInfos: []},
+        });
+
         wrapper.instance().handleEmojiClick({name: 'smile'});
 
         // Message with no space at the end
         expect(onUpdateCommentDraft.mock.calls[1][0]).toEqual(
-            expect.objectContaining({message: 'test :smile: '})
+            expect.objectContaining({message: 'test :smile: '}),
         );
+
         expect(wrapper.state().draft.message).toBe('test :smile: ');
 
-        wrapper.setState({draft: {message: 'test ', uploadsInProgress: [], fileInfos: []}});
+        wrapper.setState({
+            draft: {message: 'test ', uploadsInProgress: [], fileInfos: []},
+        });
+
         wrapper.instance().handleEmojiClick({name: 'smile'});
 
         // Message with space at the end
         expect(onUpdateCommentDraft.mock.calls[2][0]).toEqual(
-            expect.objectContaining({message: 'test :smile: '})
+            expect.objectContaining({message: 'test :smile: '}),
         );
+
         expect(wrapper.state().draft.message).toBe('test :smile: ');
 
         expect(wrapper.state().showEmojiPicker).toBe(false);
     });
 
     test('handlePostError should update state with the correct error', () => {
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
         wrapper.instance().handlePostError('test error 1');
         expect(wrapper.state().postError).toBe('test error 1');
@@ -190,11 +200,10 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [1, 2, 3],
             fileInfos: [{}, {}, {}],
         };
+
         const props = {...baseProps, draft, updateCommentDraftWithRootId};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         const instance = wrapper.instance();
 
@@ -204,10 +213,14 @@ describe('components/CreateComment', () => {
         instance.handleUploadError(testError1, 1, props.rootId);
 
         expect(updateCommentDraftWithRootId).toHaveBeenCalled();
-        expect(updateCommentDraftWithRootId.mock.calls[0][0]).toEqual(props.rootId);
-        expect(updateCommentDraftWithRootId.mock.calls[0][1]).toEqual(
-            expect.objectContaining({uploadsInProgress: [2, 3]})
+        expect(updateCommentDraftWithRootId.mock.calls[0][0]).toEqual(
+            props.rootId,
         );
+
+        expect(updateCommentDraftWithRootId.mock.calls[0][1]).toEqual(
+            expect.objectContaining({uploadsInProgress: [2, 3]}),
+        );
+
         expect(wrapper.state().serverError.message).toBe(testError1);
         expect(wrapper.state().draft.uploadsInProgress).toEqual([2, 3]);
 
@@ -221,23 +234,29 @@ describe('components/CreateComment', () => {
     });
 
     test('getFileCount should return the correct count', () => {
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
         expect(wrapper.instance().getFileCount()).toBe(3);
 
-        wrapper.setState({draft: {message: 'test', uploadsInProgress: [{}], fileInfos: [{}, {}, {}]}});
+        wrapper.setState({
+            draft: {
+                message: 'test',
+                uploadsInProgress: [{}],
+                fileInfos: [{}, {}, {}],
+            },
+        });
+
         expect(wrapper.instance().getFileCount()).toBe(4);
 
-        wrapper.setState({draft: {message: 'test', uploadsInProgress: [], fileInfos: []}});
+        wrapper.setState({
+            draft: {message: 'test', uploadsInProgress: [], fileInfos: []},
+        });
+
         expect(wrapper.instance().getFileCount()).toBe(0);
     });
 
     test('should correctly change state when showPostDeletedModal is called', () => {
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
         wrapper.instance().showPostDeletedModal();
         expect(wrapper.state().showPostDeletedModal).toBe(true);
@@ -246,9 +265,7 @@ describe('components/CreateComment', () => {
     test('should correctly change state when hidePostDeletedModal is called', () => {
         const resetCreatePostRequest = jest.fn();
         const props = {...baseProps, resetCreatePostRequest};
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         wrapper.instance().hidePostDeletedModal();
         expect(wrapper.state().showPostDeletedModal).toBe(false);
@@ -262,11 +279,10 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [1, 2, 3],
             fileInfos: [{}, {}, {}],
         };
+
         const props = {...baseProps, onUpdateCommentDraft, draft};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         const focusTextbox = jest.fn();
         wrapper.setState({draft});
@@ -275,7 +291,7 @@ describe('components/CreateComment', () => {
 
         expect(onUpdateCommentDraft).toHaveBeenCalled();
         expect(onUpdateCommentDraft.mock.calls[0][0]).toEqual(
-            expect.objectContaining({uploadsInProgress: [1, 2, 3, 4, 5]})
+            expect.objectContaining({uploadsInProgress: [1, 2, 3, 4, 5]}),
         );
 
         expect(wrapper.state().draft.uploadsInProgress === [1, 2, 3, 4, 5]);
@@ -284,17 +300,20 @@ describe('components/CreateComment', () => {
 
     test('handleFileUploadComplete should update comment draft correctly', () => {
         const updateCommentDraftWithRootId = jest.fn();
-        const fileInfos = [{id: '1', name: 'aaa', create_at: 100}, {id: '2', name: 'bbb', create_at: 200}];
+        const fileInfos = [
+            {id: '1', name: 'aaa', create_at: 100},
+            {id: '2', name: 'bbb', create_at: 200},
+        ];
+
         const draft = {
             message: 'Test message',
             uploadsInProgress: [1, 2, 3],
             fileInfos,
         };
+
         const props = {...baseProps, updateCommentDraftWithRootId, draft};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         const instance = wrapper.instance();
         wrapper.setState({draft});
@@ -302,11 +321,23 @@ describe('components/CreateComment', () => {
 
         const uploadCompleteFileInfo = [{id: '3', name: 'ccc', create_at: 300}];
         const expectedNewFileInfos = fileInfos.concat(uploadCompleteFileInfo);
-        instance.handleFileUploadComplete(uploadCompleteFileInfo, [3], null, props.rootId);
+        instance.handleFileUploadComplete(
+            uploadCompleteFileInfo,
+            [3],
+            null,
+            props.rootId,
+        );
+
         expect(updateCommentDraftWithRootId).toHaveBeenCalled();
-        expect(updateCommentDraftWithRootId.mock.calls[0][0]).toEqual(props.rootId);
+        expect(updateCommentDraftWithRootId.mock.calls[0][0]).toEqual(
+            props.rootId,
+        );
+
         expect(updateCommentDraftWithRootId.mock.calls[0][1]).toEqual(
-            expect.objectContaining({uploadsInProgress: [1, 2], fileInfos: expectedNewFileInfos})
+            expect.objectContaining({
+                uploadsInProgress: [1, 2],
+                fileInfos: expectedNewFileInfos,
+            }),
         );
 
         expect(wrapper.state().draft.uploadsInProgress).toEqual([1, 2]);
@@ -314,14 +345,22 @@ describe('components/CreateComment', () => {
     });
 
     it('check for uploadsProgressPercent state on handleUploadProgress callback', () => {
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
-        wrapper.find(FileUpload).prop('onUploadProgress')({clientId: 'clientId', name: 'name', percent: 10, type: 'type'});
-        expect(wrapper.find(FilePreview).prop('uploadsProgressPercent')).toEqual({clientId: {percent: 10, name: 'name', type: 'type'}});
+        wrapper.find(FileUpload).prop('onUploadProgress')({
+            clientId: 'clientId',
+            name: 'name',
+            percent: 10,
+            type: 'type',
+        });
 
-        expect(wrapper.state('uploadsProgressPercent')).toEqual({clientId: {percent: 10, name: 'name', type: 'type'}});
+        expect(
+            wrapper.find(FilePreview).prop('uploadsProgressPercent'),
+        ).toEqual({clientId: {percent: 10, name: 'name', type: 'type'}});
+
+        expect(wrapper.state('uploadsProgressPercent')).toEqual({
+            clientId: {percent: 10, name: 'name', type: 'type'},
+        });
     });
 
     test('calls showPostDeletedModal when createPostErrorId === api.post.create_post.root_id.app_error', () => {
@@ -329,38 +368,41 @@ describe('components/CreateComment', () => {
         const draft = {
             message: 'Test message',
             uploadsInProgress: [1, 2, 3],
-            fileInfos: [{id: '1', name: 'aaa', create_at: 100}, {id: '2', name: 'bbb', create_at: 200}],
+            fileInfos: [
+                {id: '1', name: 'aaa', create_at: 100},
+                {id: '2', name: 'bbb', create_at: 200},
+            ],
         };
+
         const props = {...baseProps, onUpdateCommentDraft, draft};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         const showPostDeletedModal = jest.fn();
         wrapper.instance().showPostDeletedModal = showPostDeletedModal;
-        wrapper.setProps({createPostErrorId: 'api.post.create_post.root_id.app_error'});
+        wrapper.setProps({
+            createPostErrorId: 'api.post.create_post.root_id.app_error',
+        });
+
         expect(showPostDeletedModal).toHaveBeenCalled();
     });
 
     /* Removed due setProps not actually setting the props
-     * test('calls focusTextbox when rootId changes', () => {
-        const draft = {
-            message: 'Test message',
-            uploadsInProgress: [1, 2, 3],
-            fileInfos: [{id: '1', name: 'aaa', create_at: 100}, {id: '2', name: 'bbb', create_at: 200}],
-        };
-        const props = {...baseProps, draft};
-
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
-
-        const focusTextbox = jest.fn();
-        wrapper.instance().focusTextbox = focusTextbox;
-        wrapper.setProps({rootId: 'testid123'});
-        expect(focusTextbox).toHaveBeenCalled();
-    });*/
+           * test('calls focusTextbox when rootId changes', () => {
+              const draft = {
+                  message: 'Test message',
+                  uploadsInProgress: [1, 2, 3],
+                  fileInfos: [{id: '1', name: 'aaa', create_at: 100}, {id: '2', name: 'bbb', create_at: 200}],
+              };
+              const props = {...baseProps, draft};
+               const wrapper = shallowWithIntl(
+                  <CreateComment {...props}/>
+              );
+               const focusTextbox = jest.fn();
+              wrapper.instance().focusTextbox = focusTextbox;
+              wrapper.setProps({rootId: 'testid123'});
+              expect(focusTextbox).toHaveBeenCalled();
+          });*/
 
     test('handleChange should update comment draft correctly', () => {
         const onUpdateCommentDraft = jest.fn();
@@ -369,11 +411,10 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [1, 2, 3],
             fileInfos: [{}, {}, {}],
         };
+
         const props = {...baseProps, onUpdateCommentDraft, draft};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         const testMessage = 'new msg';
         const scrollToBottom = jest.fn();
@@ -382,8 +423,9 @@ describe('components/CreateComment', () => {
 
         expect(onUpdateCommentDraft).toHaveBeenCalled();
         expect(onUpdateCommentDraft.mock.calls[0][0]).toEqual(
-            expect.objectContaining({message: testMessage})
+            expect.objectContaining({message: testMessage}),
         );
+
         expect(wrapper.state().draft.message).toBe(testMessage);
         expect(scrollToBottom).toHaveBeenCalled();
     });
@@ -392,7 +434,8 @@ describe('components/CreateComment', () => {
         const onUpdateCommentDraft = jest.fn();
 
         const error = new Error('No command found');
-        error.server_error_id = 'api.command.execute_command.not_found.app_error';
+        error.server_error_id =
+            'api.command.execute_command.not_found.app_error';
         const onSubmit = jest.fn(() => Promise.reject(error));
 
         const draft = {
@@ -400,24 +443,23 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [1, 2, 3],
             fileInfos: [{}, {}, {}],
         };
+
         const props = {...baseProps, onUpdateCommentDraft, draft, onSubmit};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
 
         await wrapper.instance().handleSubmit({preventDefault: jest.fn()});
 
         expect(onSubmit).toHaveBeenCalledWith({ignoreSlash: false});
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(true);
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(true);
 
         wrapper.instance().handleChange({
             target: {value: 'some valid text'},
         });
 
-        expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+        expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
 
         wrapper.instance().handleSubmit({preventDefault: jest.fn()});
 
@@ -430,11 +472,10 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [1, 2, 3],
             fileInfos: [{}, {}, {}],
         };
+
         const props = {...baseProps, draft};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         const scrollToBottom = jest.fn();
         wrapper.instance().scrollToBottom = scrollToBottom;
@@ -449,11 +490,10 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [],
             fileInfos: [{}, {}, {}],
         };
+
         const props = {...baseProps, draft, onSubmit};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         const preventDefault = jest.fn();
         wrapper.instance().handleSubmit({preventDefault});
@@ -480,13 +520,14 @@ describe('components/CreateComment', () => {
                             uploadsInProgress: [],
                             fileInfos: [{}, {}, {}],
                         },
+
                         onSubmit,
                         channelMembersCount: 1,
                         enableConfirmNotificationsToChannel: true,
                     };
 
                     const wrapper = shallowWithIntl(
-                        <CreateComment {...props}/>
+                        <CreateComment {...props} />,
                     );
 
                     wrapper.instance().handleSubmit({preventDefault});
@@ -503,13 +544,14 @@ describe('components/CreateComment', () => {
                             uploadsInProgress: [],
                             fileInfos: [{}, {}, {}],
                         },
+
                         onSubmit,
                         channelMembersCount: 8,
                         enableConfirmNotificationsToChannel: false,
                     };
 
                     const wrapper = shallowWithIntl(
-                        <CreateComment {...props}/>
+                        <CreateComment {...props} />,
                     );
 
                     wrapper.instance().handleSubmit({preventDefault});
@@ -526,13 +568,14 @@ describe('components/CreateComment', () => {
                             uploadsInProgress: [],
                             fileInfos: [{}, {}, {}],
                         },
+
                         onSubmit,
                         channelMembersCount: 8,
                         enableConfirmNotificationsToChannel: true,
                     };
 
                     const wrapper = shallowWithIntl(
-                        <CreateComment {...props}/>
+                        <CreateComment {...props} />,
                     );
 
                     wrapper.instance().handleSubmit({preventDefault});
@@ -550,14 +593,13 @@ describe('components/CreateComment', () => {
                         uploadsInProgress: [],
                         fileInfos: [{}, {}, {}],
                     },
+
                     onSubmit,
                     channelMembersCount: 8,
                     enableConfirmNotificationsToChannel: true,
                 };
 
-                const wrapper = shallowWithIntl(
-                    <CreateComment {...props}/>
-                );
+                const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
                 wrapper.instance().handleSubmit({preventDefault});
                 expect(onSubmit).not.toHaveBeenCalled();
@@ -573,15 +615,14 @@ describe('components/CreateComment', () => {
                         uploadsInProgress: [],
                         fileInfos: [{}, {}, {}],
                     },
+
                     onSubmit,
                     isTimezoneEnabled: true,
                     channelMembersCount: 8,
                     enableConfirmNotificationsToChannel: true,
                 };
 
-                const wrapper = shallowWithIntl(
-                    <CreateComment {...props}/>
-                );
+                const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
                 await wrapper.instance().handleSubmit({preventDefault});
                 wrapper.setState({channelTimezoneCount: 4});
@@ -601,15 +642,14 @@ describe('components/CreateComment', () => {
                         uploadsInProgress: [],
                         fileInfos: [{}, {}, {}],
                     },
+
                     onSubmit,
                     isTimezoneEnabled: true,
                     channelMembersCount: 8,
                     enableConfirmNotificationsToChannel: true,
                 };
 
-                const wrapper = shallowWithIntl(
-                    <CreateComment {...props}/>
-                );
+                const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
                 await wrapper.instance().handleSubmit({preventDefault});
                 wrapper.setState({channelTimezoneCount: 0});
@@ -624,7 +664,8 @@ describe('components/CreateComment', () => {
 
         it('should allow to force send invalid slash command as a message', async () => {
             const error = new Error('No command found');
-            error.server_error_id = 'api.command.execute_command.not_found.app_error';
+            error.server_error_id =
+                'api.command.execute_command.not_found.app_error';
             const onSubmitWithError = jest.fn(() => Promise.reject(error));
 
             const props = {
@@ -634,31 +675,34 @@ describe('components/CreateComment', () => {
                     uploadsInProgress: [],
                     fileInfos: [{}, {}, {}],
                 },
+
                 onSubmit: onSubmitWithError,
             };
 
-            const wrapper = shallowWithIntl(
-                <CreateComment {...props}/>
-            );
+            const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
-            expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+            expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
 
             await wrapper.instance().handleSubmit({preventDefault});
 
-            expect(onSubmitWithError).toHaveBeenCalledWith({ignoreSlash: false});
+            expect(onSubmitWithError).toHaveBeenCalledWith({
+                ignoreSlash: false,
+            });
+
             expect(preventDefault).toHaveBeenCalled();
-            expect(wrapper.find('[id="postServerError"]').exists()).toBe(true);
+            expect(wrapper.find("[id='postServerError']").exists()).toBe(true);
 
             wrapper.setProps({onSubmit});
             await wrapper.instance().handleSubmit({preventDefault});
 
             expect(onSubmit).toHaveBeenCalledWith({ignoreSlash: true});
-            expect(wrapper.find('[id="postServerError"]').exists()).toBe(false);
+            expect(wrapper.find("[id='postServerError']").exists()).toBe(false);
         });
 
         it('should update global draft state if invalid slash command error occurs', async () => {
             const error = new Error('No command found');
-            error.server_error_id = 'api.command.execute_command.not_found.app_error';
+            error.server_error_id =
+                'api.command.execute_command.not_found.app_error';
             const onSubmitWithError = jest.fn(() => Promise.reject(error));
 
             const props = {
@@ -668,18 +712,21 @@ describe('components/CreateComment', () => {
                     uploadsInProgress: [],
                     fileInfos: [{}, {}, {}],
                 },
+
                 onSubmit: onSubmitWithError,
             };
 
-            const wrapper = shallowWithIntl(
-                <CreateComment {...props}/>
-            );
+            const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
-            const submitPromise = wrapper.instance().handleSubmit({preventDefault});
+            const submitPromise = wrapper
+                .instance()
+                .handleSubmit({preventDefault});
             expect(props.onUpdateCommentDraft).not.toHaveBeenCalled();
 
             await submitPromise;
-            expect(props.onUpdateCommentDraft).toHaveBeenCalledWith(props.draft);
+            expect(props.onUpdateCommentDraft).toHaveBeenCalledWith(
+                props.draft,
+            );
         });
     });
 
@@ -690,25 +737,26 @@ describe('components/CreateComment', () => {
             uploadsInProgress: [4, 5, 6],
             fileInfos: [{id: 1}, {id: 2}, {id: 3}],
         };
+
         const props = {...baseProps, draft, onUpdateCommentDraft};
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         wrapper.setState({draft});
 
         wrapper.instance().removePreview(3);
         expect(onUpdateCommentDraft).toHaveBeenCalled();
         expect(onUpdateCommentDraft.mock.calls[0][0]).toEqual(
-            expect.objectContaining({fileInfos: [{id: 1}, {id: 2}]})
+            expect.objectContaining({fileInfos: [{id: 1}, {id: 2}]}),
         );
+
         expect(wrapper.state().draft.fileInfos).toEqual([{id: 1}, {id: 2}]);
 
         wrapper.instance().removePreview(5);
         expect(onUpdateCommentDraft.mock.calls[1][0]).toEqual(
-            expect.objectContaining({uploadsInProgress: [4, 6]})
+            expect.objectContaining({uploadsInProgress: [4, 6]}),
         );
+
         expect(wrapper.state().draft.uploadsInProgress).toEqual([4, 6]);
     });
 
@@ -719,13 +767,16 @@ describe('components/CreateComment', () => {
             fileInfos: [{}, {}, {}],
         };
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
+
         expect(wrapper.state('draft')).toEqual(draft);
 
         const newDraft = {...draft, message: 'Test message edited'};
-        wrapper.setProps({draft: newDraft, messageInHistory: 'Test message edited'});
+        wrapper.setProps({
+            draft: newDraft,
+            messageInHistory: 'Test message edited',
+        });
+
         expect(wrapper.state('draft')).toEqual(newDraft);
     });
 
@@ -736,38 +787,36 @@ describe('components/CreateComment', () => {
             fileInfos: [{id: 1}, {id: 2}, {id: 3}],
         };
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
+
         wrapper.setState({draft});
         expect(wrapper.state('draft')).toEqual(draft);
 
         wrapper.setProps({rootId: 'new_root_id'});
-        expect(wrapper.state('draft')).toEqual({...draft, uploadsInProgress: [], fileInfos: [{}, {}, {}]});
+        expect(wrapper.state('draft')).toEqual({
+            ...draft,
+            uploadsInProgress: [],
+            fileInfos: [{}, {}, {}],
+        });
     });
 
     test('should match snapshot read only channel', () => {
         const props = {...baseProps, readOnlyChannel: true};
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, emoji picker disabled', () => {
         const props = {...baseProps, enableEmojiPicker: false};
-        const wrapper = shallowWithIntl(
-            <CreateComment {...props}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('check for handleFileUploadChange callback for focus', () => {
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
+
         const instance = wrapper.instance();
         instance.focusTextbox = jest.fn();
 
@@ -778,9 +827,10 @@ describe('components/CreateComment', () => {
     test('should call functions on handleKeyDown', () => {
         const onMoveHistoryIndexBack = jest.fn();
         const onMoveHistoryIndexForward = jest.fn();
-        const onEditLatestPost = jest.fn().
-            mockImplementationOnce(() => ({data: true})).
-            mockImplementationOnce(() => ({data: false}));
+        const onEditLatestPost = jest
+            .fn()
+            .mockImplementationOnce(() => ({data: true}))
+            .mockImplementationOnce(() => ({data: false}));
         const wrapper = shallowWithIntl(
             <CreateComment
                 {...baseProps}
@@ -788,8 +838,9 @@ describe('components/CreateComment', () => {
                 onMoveHistoryIndexBack={onMoveHistoryIndexBack}
                 onMoveHistoryIndexForward={onMoveHistoryIndexForward}
                 onEditLatestPost={onEditLatestPost}
-            />
+            />,
         );
+
         const instance = wrapper.instance();
         instance.commentMsgKeyPress = jest.fn();
         instance.focusTextbox = jest.fn();
@@ -803,6 +854,7 @@ describe('components/CreateComment', () => {
             key: Constants.KeyCodes.ENTER[0],
             keyCode: Constants.KeyCodes.ENTER[1],
         };
+
         instance.handleKeyDown(commentMsgKey);
         expect(instance.commentMsgKeyPress).toHaveBeenCalledTimes(1);
 
@@ -812,6 +864,7 @@ describe('components/CreateComment', () => {
             key: Constants.KeyCodes.UP[0],
             keyCode: Constants.KeyCodes.UP[1],
         };
+
         instance.handleKeyDown(upKey);
         expect(upKey.preventDefault).toHaveBeenCalledTimes(1);
         expect(onMoveHistoryIndexBack).toHaveBeenCalledTimes(1);
@@ -822,17 +875,22 @@ describe('components/CreateComment', () => {
             key: Constants.KeyCodes.DOWN[0],
             keyCode: Constants.KeyCodes.DOWN[1],
         };
+
         instance.handleKeyDown(downKey);
         expect(downKey.preventDefault).toHaveBeenCalledTimes(1);
         expect(onMoveHistoryIndexForward).toHaveBeenCalledTimes(1);
 
-        wrapper.setState({draft: {message: '', fileInfos: [], uploadsInProgress: []}});
+        wrapper.setState({
+            draft: {message: '', fileInfos: [], uploadsInProgress: []},
+        });
+
         const upKeyForEdit = {
             preventDefault: jest.fn(),
             ctrlKey: false,
             key: Constants.KeyCodes.UP[0],
             keyCode: Constants.KeyCodes.UP[1],
         };
+
         instance.handleKeyDown(upKeyForEdit);
         expect(upKeyForEdit.preventDefault).toHaveBeenCalledTimes(1);
         expect(onEditLatestPost).toHaveBeenCalledTimes(1);
@@ -852,9 +910,7 @@ describe('components/CreateComment', () => {
             fileInfos: [],
         };
 
-        const wrapper = shallowWithIntl(
-            <CreateComment {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<CreateComment {...baseProps} />);
 
         wrapper.instance().scrollToBottom = jest.fn();
         expect(wrapper.instance().scrollToBottom).toBeCalledTimes(0);
@@ -879,10 +935,7 @@ describe('components/CreateComment', () => {
         };
 
         const wrapper = shallowWithIntl(
-            <CreateComment
-                {...baseProps}
-                draft={draft}
-            />
+            <CreateComment {...baseProps} draft={draft} />,
         );
 
         wrapper.instance().scrollToBottom = jest.fn();
@@ -906,16 +959,14 @@ describe('components/CreateComment', () => {
         };
 
         const wrapper = shallowWithIntl(
-            <CreateComment
-                {...baseProps}
-                draft={draft}
-            />
+            <CreateComment {...baseProps} draft={draft} />,
         );
 
         const event = {
             target: {
                 id: 'reply_textbox',
             },
+
             preventDefault: jest.fn(),
             clipboardData: {
                 items: [1],

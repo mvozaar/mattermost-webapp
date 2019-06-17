@@ -10,11 +10,13 @@ import AbstractOutgoingWebhook from 'components/integrations/abstract_outgoing_w
 
 const HEADER = {id: t('integrations.add'), defaultMessage: 'Add'};
 const FOOTER = {id: t('add_outgoing_webhook.save'), defaultMessage: 'Save'};
-const LOADING = {id: t('add_outgoing_webhook.saving'), defaultMessage: 'Saving...'};
+const LOADING = {
+    id: t('add_outgoing_webhook.saving'),
+    defaultMessage: 'Saving...',
+};
 
 export default class AddOutgoingWebhook extends React.PureComponent {
     static propTypes = {
-
         /**
          * The current team
          */
@@ -26,7 +28,6 @@ export default class AddOutgoingWebhook extends React.PureComponent {
         createOutgoingHookRequest: PropTypes.object.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * The function to call to add a new outgoing webhook
              */
@@ -42,7 +43,7 @@ export default class AddOutgoingWebhook extends React.PureComponent {
          * Whether to allow configuration of the default post icon.
          */
         enablePostIconOverride: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -57,14 +58,19 @@ export default class AddOutgoingWebhook extends React.PureComponent {
 
         const {data} = await this.props.actions.createOutgoingHook(hook);
         if (data) {
-            browserHistory.push(`/${this.props.team.name}/integrations/confirm?type=outgoing_webhooks&id=${data.id}`);
+            browserHistory.push(
+                `/${this.props.team.name}/integrations/confirm?type=outgoing_webhooks&id=${data.id}`,
+            );
+
             return;
         }
 
         if (this.props.createOutgoingHookRequest.error) {
-            this.setState({serverError: this.props.createOutgoingHookRequest.error.message});
+            this.setState({
+                serverError: this.props.createOutgoingHookRequest.error.message,
+            });
         }
-    }
+    };
 
     render() {
         return (
@@ -76,7 +82,9 @@ export default class AddOutgoingWebhook extends React.PureComponent {
                 renderExtra={''}
                 action={this.addOutgoingHook}
                 serverError={this.state.serverError}
-                enablePostUsernameOverride={this.props.enablePostUsernameOverride}
+                enablePostUsernameOverride={
+                    this.props.enablePostUsernameOverride
+                }
                 enablePostIconOverride={this.props.enablePostIconOverride}
             />
         );

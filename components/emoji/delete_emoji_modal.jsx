@@ -10,14 +10,11 @@ import WarningIcon from 'components/icon/warning_icon';
 export default class DeleteEmoji extends DeleteModalTrigger {
     static propTypes = {
         onDelete: PropTypes.func.isRequired,
-    }
+    };
 
     get triggerTitle() {
         return (
-            <FormattedMessage
-                id='emoji_list.delete'
-                defaultMessage='Delete'
-            />
+            <FormattedMessage id='emoji_list.delete' defaultMessage='Delete' />
         );
     }
 
@@ -33,7 +30,7 @@ export default class DeleteEmoji extends DeleteModalTrigger {
     get modalMessage() {
         return (
             <div className='alert alert-warning'>
-                <WarningIcon additionalClassName='fa-margin--right'/>
+                <WarningIcon additionalClassName='fa-margin--right' />
                 <FormattedMessage
                     id='emoji_list.delete.confirm.msg'
                     defaultMessage='This action permanently deletes the custom emoji. Are you sure you want to delete it?'

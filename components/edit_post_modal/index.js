@@ -26,33 +26,69 @@ function mapStateToProps(state) {
     const currentUserId = getCurrentUserId(state);
     let canDeletePost = false;
     let canEditPost = false;
-    if (editingPost && editingPost.post && editingPost.post.user_id === currentUserId) {
-        canDeletePost = haveIChannelPermission(state, {channel: getCurrentChannelId(state), team: getCurrentTeamId(state), permission: Permissions.DELETE_POST});
-        canEditPost = haveIChannelPermission(state, {channel: getCurrentChannelId(state), team: getCurrentTeamId(state), permission: Permissions.EDIT_POST});
+    if (
+        editingPost &&
+        editingPost.post &&
+        editingPost.post.user_id === currentUserId
+    ) {
+        canDeletePost = haveIChannelPermission(state, {
+            channel: getCurrentChannelId(state),
+            team: getCurrentTeamId(state),
+            permission: Permissions.DELETE_POST,
+        });
+
+        canEditPost = haveIChannelPermission(state, {
+            channel: getCurrentChannelId(state),
+            team: getCurrentTeamId(state),
+            permission: Permissions.EDIT_POST,
+        });
     } else {
-        canDeletePost = haveIChannelPermission(state, {channel: getCurrentChannelId(state), team: getCurrentTeamId(state), permission: Permissions.DELETE_OTHERS_POSTS});
-        canEditPost = haveIChannelPermission(state, {channel: getCurrentChannelId(state), team: getCurrentTeamId(state), permission: Permissions.EDIT_OTHERS_POSTS});
+        canDeletePost = haveIChannelPermission(state, {
+            channel: getCurrentChannelId(state),
+            team: getCurrentTeamId(state),
+            permission: Permissions.DELETE_OTHERS_POSTS,
+        });
+
+        canEditPost = haveIChannelPermission(state, {
+            channel: getCurrentChannelId(state),
+            team: getCurrentTeamId(state),
+            permission: Permissions.EDIT_OTHERS_POSTS,
+        });
     }
 
     return {
         canEditPost,
         canDeletePost,
-        ctrlSend: getBool(state, Preferences.CATEGORY_ADVANCED_SETTINGS, 'send_on_ctrl_enter'),
+        ctrlSend: getBool(
+            state,
+            Preferences.CATEGORY_ADVANCED_SETTINGS,
+            'send_on_ctrl_enter',
+        ),
+
         config,
         editingPost,
-        maxPostSize: parseInt(config.MaxPostSize, 10) || Constants.DEFAULT_CHARACTER_LIMIT,
+        maxPostSize:
+            parseInt(config.MaxPostSize, 10) ||
+            Constants.DEFAULT_CHARACTER_LIMIT,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            addMessageIntoHistory,
-            editPost,
-            hideEditPostModal,
-            openModal,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                addMessageIntoHistory,
+                editPost,
+                hideEditPostModal,
+                openModal,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPostModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(EditPostModal);

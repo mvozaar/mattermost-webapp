@@ -68,7 +68,8 @@ export default class SystemUsersList extends React.Component {
         };
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.teamId !== this.props.teamId) {
             this.setState({page: 0});
         }
@@ -78,11 +79,11 @@ export default class SystemUsersList extends React.Component {
         this.setState({page: this.state.page + 1});
 
         this.props.nextPage(this.state.page + 1);
-    }
+    };
 
     previousPage = () => {
         this.setState({page: this.state.page - 1});
-    }
+    };
 
     search = (term) => {
         this.props.search(term);
@@ -90,63 +91,63 @@ export default class SystemUsersList extends React.Component {
         if (term !== '') {
             this.setState({page: 0});
         }
-    }
+    };
 
     doManageTeams = (user) => {
         this.setState({
             showManageTeamsModal: true,
             user,
         });
-    }
+    };
 
     doManageRoles = (user) => {
         this.setState({
             showManageRolesModal: true,
             user,
         });
-    }
+    };
 
     doManageTokens = (user) => {
         this.setState({
             showManageTokensModal: true,
             user,
         });
-    }
+    };
 
     doManageTeamsDismiss = () => {
         this.setState({
             showManageTeamsModal: false,
             user: null,
         });
-    }
+    };
 
     doManageRolesDismiss = () => {
         this.setState({
             showManageRolesModal: false,
             user: null,
         });
-    }
+    };
 
     doManageTokensDismiss = () => {
         this.setState({
             showManageTokensModal: false,
             user: null,
         });
-    }
+    };
 
     doPasswordReset = (user) => {
         this.setState({
             showPasswordModal: true,
             user,
         });
-    }
+    };
 
     doPasswordResetDismiss = () => {
         this.setState({
             showPasswordModal: false,
             user: null,
         });
-    }
+    };
 
     doPasswordResetSubmit = (user) => {
         this.props.actions.getUser(user.id);
@@ -155,21 +156,21 @@ export default class SystemUsersList extends React.Component {
             showPasswordModal: false,
             user: null,
         });
-    }
+    };
 
     doEmailReset = (user) => {
         this.setState({
             showEmailModal: true,
             user,
         });
-    }
+    };
 
     doEmailResetDismiss = () => {
         this.setState({
             showEmailModal: false,
             user: null,
         });
-    }
+    };
 
     doEmailResetSubmit = (user) => {
         this.props.actions.getUser(user.id);
@@ -178,14 +179,17 @@ export default class SystemUsersList extends React.Component {
             showEmailModal: false,
             user: null,
         });
-    }
+    };
 
     getInfoForUser(user) {
         const info = [];
 
         if (user.auth_service) {
             let service;
-            if (user.auth_service === Constants.LDAP_SERVICE || user.auth_service === Constants.SAML_SERVICE) {
+            if (
+                user.auth_service === Constants.LDAP_SERVICE ||
+                user.auth_service === Constants.SAML_SERVICE
+            ) {
                 service = user.auth_service.toUpperCase();
             } else {
                 service = Utils.toTitleCase(user.auth_service);
@@ -199,7 +203,7 @@ export default class SystemUsersList extends React.Component {
                     values={{
                         service,
                     }}
-                />
+                />,
             );
         } else {
             info.push(
@@ -207,7 +211,7 @@ export default class SystemUsersList extends React.Component {
                     key='admin.user_item.authServiceEmail'
                     id='admin.user_item.authServiceEmail'
                     defaultMessage='**Sign-in Method:** Email'
-                />
+                />,
             );
         }
 
@@ -220,7 +224,7 @@ export default class SystemUsersList extends React.Component {
                         key='admin.user_item.mfaYes'
                         id='admin.user_item.mfaYes'
                         defaultMessage='**MFA**: Yes'
-                    />
+                    />,
                 );
             } else {
                 info.push(
@@ -228,7 +232,7 @@ export default class SystemUsersList extends React.Component {
                         key='admin.user_item.mfaNo'
                         id='admin.user_item.mfaNo'
                         defaultMessage='**MFA**: No'
-                    />
+                    />,
                 );
             }
         }
@@ -295,8 +299,10 @@ export default class SystemUsersList extends React.Component {
                     actions={[SystemUsersDropdown]}
                     actionProps={{
                         mfaEnabled: this.props.mfaEnabled,
-                        enableUserAccessTokens: this.props.enableUserAccessTokens,
-                        experimentalEnableAuthenticationTransfer: this.props.experimentalEnableAuthenticationTransfer,
+                        enableUserAccessTokens: this.props
+                            .enableUserAccessTokens,
+                        experimentalEnableAuthenticationTransfer: this.props
+                            .experimentalEnableAuthenticationTransfer,
                         doPasswordReset: this.doPasswordReset,
                         doEmailReset: this.doEmailReset,
                         doManageTeams: this.doManageTeams,
@@ -311,27 +317,32 @@ export default class SystemUsersList extends React.Component {
                     onTermChange={this.props.onTermChange}
                     rowComponentType={UserListRowWithError}
                 />
+
                 <ManageTeamsModal
                     user={this.state.user}
                     show={this.state.showManageTeamsModal}
                     onModalDismissed={this.doManageTeamsDismiss}
                 />
+
                 <ManageRolesModal
                     user={this.state.user}
                     show={this.state.showManageRolesModal}
                     onModalDismissed={this.doManageRolesDismiss}
                 />
+
                 <ManageTokensModal
                     user={this.state.user}
                     show={this.state.showManageTokensModal}
                     onModalDismissed={this.doManageTokensDismiss}
                 />
+
                 <ResetPasswordModal
                     user={this.state.user}
                     show={this.state.showPasswordModal}
                     onModalSubmit={this.doPasswordResetSubmit}
                     onModalDismissed={this.doPasswordResetDismiss}
                 />
+
                 <ResetEmailModal
                     user={this.state.user}
                     show={this.state.showEmailModal}

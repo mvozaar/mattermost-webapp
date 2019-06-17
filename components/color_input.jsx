@@ -8,7 +8,6 @@ import {ChromePicker} from 'react-color';
 
 class ColorInput extends React.Component {
     static propTypes = {
-
         /*
          * Selected color
          */
@@ -76,10 +75,8 @@ class ColorInput extends React.Component {
                     value={color}
                     readOnly={true}
                 />
-                <span
-                    className='input-group-addon'
-                    onClick={this.togglePicker}
-                >
+
+                <span className='input-group-addon' onClick={this.togglePicker}>
                     <i
                         className='color-icon'
                         style={{
@@ -88,10 +85,7 @@ class ColorInput extends React.Component {
                     />
                 </span>
                 {isOpened && (
-                    <div
-                        ref={this.getColorPicker}
-                        className='color-popover'
-                    >
+                    <div ref={this.getColorPicker} className='color-popover'>
                         <ChromePicker
                             color={color}
                             onChange={this.handleChange}

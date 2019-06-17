@@ -12,12 +12,7 @@ export default class RemoveIcon extends React.PureComponent {
                 id='generic_icons.remove'
                 defaultMessage='Remove Icon'
             >
-                {(title) => (
-                    <i
-                        className='fa fa-remove'
-                        title={title}
-                    />
-                )}
+                {(title) => <i className='fa fa-remove' title={title} />}
             </FormattedMessage>
         );
     }

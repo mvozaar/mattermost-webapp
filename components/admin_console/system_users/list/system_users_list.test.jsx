@@ -35,7 +35,7 @@ describe('components/admin_console/system_users/list', () => {
 
     test('should match default snapshot', () => {
         const props = defaultProps;
-        const wrapper = shallow(<SystemUsersList {...props}/>);
+        const wrapper = shallow(<SystemUsersList {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -53,21 +53,17 @@ describe('components/admin_console/system_users/list', () => {
 
         it('and mfa enabled', () => {
             const wrapper = shallow(
-                <SystemUsersList
-                    {...props}
-                    mfaEnabled={true}
-                />
+                <SystemUsersList {...props} mfaEnabled={true} />,
             );
+
             expect(wrapper).toMatchSnapshot();
         });
 
         it('and mfa disabled', () => {
             const wrapper = shallow(
-                <SystemUsersList
-                    {...props}
-                    mfaEnabled={false}
-                />
+                <SystemUsersList {...props} mfaEnabled={false} />,
             );
+
             expect(wrapper).toMatchSnapshot();
         });
     });

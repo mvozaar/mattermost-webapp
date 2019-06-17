@@ -4,7 +4,11 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getCurrentUserId, getStatusForUserId, getUser} from 'mattermost-redux/selectors/entities/users';
+import {
+    getCurrentUserId,
+    getStatusForUserId,
+    getUser,
+} from 'mattermost-redux/selectors/entities/users';
 import {
     getCurrentTeam,
     getCurrentRelativeTeamUrl,
@@ -50,7 +54,11 @@ function mapStateToProps(state, ownProps) {
     const channelMember = getChannelMembersInChannels(state)[channelId][userId];
 
     let isChannelAdmin = false;
-    if (getRhsState(state) !== 'search' && channelMember != null && channelMember.scheme_admin) {
+    if (
+        getRhsState(state) !== 'search' &&
+        channelMember != null &&
+        channelMember.scheme_admin
+    ) {
         isChannelAdmin = true;
     }
 
@@ -60,7 +68,10 @@ function mapStateToProps(state, ownProps) {
         enableTimezone: areTimezonesEnabledAndSupported(state),
         isTeamAdmin,
         isChannelAdmin,
-        canManageAnyChannelMembersInCurrentTeam: canManageAnyChannelMembersInCurrentTeam(state),
+        canManageAnyChannelMembersInCurrentTeam: canManageAnyChannelMembersInCurrentTeam(
+            state,
+        ),
+
         status: getStatusForUserId(state, userId),
         teamUrl: getCurrentRelativeTeamUrl(state),
         user: getUser(state, userId),
@@ -70,13 +81,20 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            openDirectChannelToUserId,
-            openModal,
-            getMembershipForCurrentEntities,
-            loadBot,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                openDirectChannelToUserId,
+                openModal,
+                getMembershipForCurrentEntities,
+                loadBot,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePopover);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ProfilePopover);

@@ -16,18 +16,17 @@ export default class PreviousIcon extends React.PureComponent {
     };
 
     render() {
-        const className = 'fa fa-1x fa-angle-left' + (this.props.additionalClassName ? ' ' + this.props.additionalClassName : '');
+        const className =
+            'fa fa-1x fa-angle-left' +
+            (this.props.additionalClassName
+                ? ' ' + this.props.additionalClassName
+                : '');
         return (
             <FormattedMessage
                 id='generic_icons.previous'
                 defaultMessage='Previous Icon'
             >
-                {(title) => (
-                    <i
-                        className={className}
-                        title={title}
-                    />
-                )}
+                {(title) => <i className={className} title={title} />}
             </FormattedMessage>
         );
     }

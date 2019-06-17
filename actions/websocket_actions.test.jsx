@@ -45,21 +45,26 @@ jest.mock('stores/redux_store', () => {
                             id: 'user',
                         },
                     },
+
                     statuses: {
                         user: 'away',
                     },
                 },
+
                 general: {
                     config: {},
                 },
+
                 channels: {
                     currentChannelId: 'otherChannel',
                     channels: {},
                 },
+
                 preferences: {
                     myPreferences: {},
                 },
             },
+
             views: {
                 rhs: {
                     selectedChannelId: 'otherChannel',
@@ -77,12 +82,14 @@ jest.mock('actions/views/rhs', () => ({
 
 describe('handlePostEditEvent', () => {
     test('post edited', async () => {
-        const post = '{"id":"test","create_at":123,"update_at":123,"user_id":"user","channel_id":"12345","root_id":"","message":"asd","pending_post_id":"2345","metadata":{}}';
+        const post =
+            "{'id':'test','create_at':123,'update_at':123,'user_id':'user','channel_id':'12345','root_id':'','message':'asd','pending_post_id':'2345','metadata':{}}";
         const expectedAction = {type: 'RECEIVED_POST', data: JSON.parse(post)};
         const msg = {
             data: {
                 post,
             },
+
             broadcast: {
                 channel_id: '1234657',
             },
@@ -99,6 +106,7 @@ describe('handleUserRemovedEvent', () => {
             data: {
                 channel_id: 'otherChannel',
             },
+
             broadcast: {
                 user_id: 'currentUserId',
             },
@@ -125,7 +133,11 @@ describe('handleNewPostEvent', () => {
         const msg = {data: {post: JSON.stringify(post)}};
 
         testStore.dispatch(handleNewPostEvent(msg));
-        expect(getProfilesAndStatusesForPosts).toHaveBeenCalledWith([post], expect.anything(), expect.anything());
+        expect(getProfilesAndStatusesForPosts).toHaveBeenCalledWith(
+            [post],
+            expect.anything(),
+            expect.anything(),
+        );
         expect(handleNewPost).toHaveBeenCalledWith(post, msg);
     });
 
@@ -146,7 +158,12 @@ describe('handleNewPostEvent', () => {
     test('should not set other user to online if post was from autoresponder', () => {
         const testStore = configureStore(initialState);
 
-        const post = {id: 'post1', channel_id: 'channel1', user_id: 'user2', type: Constants.AUTO_RESPONDER};
+        const post = {
+            id: 'post1',
+            channel_id: 'channel1',
+            user_id: 'user2',
+            type: Constants.AUTO_RESPONDER,
+        };
         const msg = {data: {post: JSON.stringify(post)}};
 
         testStore.dispatch(handleNewPostEvent(msg));
@@ -185,6 +202,11 @@ describe('handleNewPostEvents', () => {
                 type: 'BATCHING_REDUCER.BATCH',
             },
         ]);
-        expect(getProfilesAndStatusesForPosts).toHaveBeenCalledWith(posts, expect.anything(), expect.anything());
+
+        expect(getProfilesAndStatusesForPosts).toHaveBeenCalledWith(
+            posts,
+            expect.anything(),
+            expect.anything(),
+        );
     });
 });

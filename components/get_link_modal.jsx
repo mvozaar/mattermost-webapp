@@ -31,7 +31,7 @@ export default class GetLinkModal extends React.PureComponent {
     onHide = () => {
         this.setState({copiedLink: false});
         this.props.onHide();
-    }
+    };
 
     copyLink = () => {
         const textarea = this.refs.textarea;
@@ -47,7 +47,7 @@ export default class GetLinkModal extends React.PureComponent {
         } catch (err) {
             this.setState({copiedLink: false});
         }
-    }
+    };
 
     render() {
         let helpText = null;
@@ -55,8 +55,8 @@ export default class GetLinkModal extends React.PureComponent {
             helpText = (
                 <p>
                     {this.props.helpText}
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                 </p>
             );
         }
@@ -95,7 +95,7 @@ export default class GetLinkModal extends React.PureComponent {
         if (this.state.copiedLink) {
             copyLinkConfirm = (
                 <p className='alert alert-success alert--confirm'>
-                    <SuccessIcon/>
+                    <SuccessIcon />
                     <FormattedMessage
                         id='get_link.clipboard'
                         defaultMessage=' Link copied'
@@ -111,10 +111,7 @@ export default class GetLinkModal extends React.PureComponent {
                 role='dialog'
                 aria-labelledby='getLinkModalLabel'
             >
-                <Modal.Header
-                    id='getLinkModalLabel'
-                    closeButton={true}
-                >
+                <Modal.Header id='getLinkModalLabel' closeButton={true}>
                     <h4 className='modal-title'>{this.props.title}</h4>
                 </Modal.Header>
                 <Modal.Body>

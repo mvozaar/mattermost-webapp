@@ -20,6 +20,7 @@ describe('components/post_view/PostAddChannelMember', () => {
         channel_id: 'channel_id',
         create_at: 1,
     };
+
     const requiredProps = {
         currentUser: {id: 'current_user_id', username: 'current_username'},
         channelType: 'O',
@@ -32,6 +33,7 @@ describe('components/post_view/PostAddChannelMember', () => {
             removePost: jest.fn(),
             addChannelMember: jest.fn(),
         },
+
         noGroupsUsernames: [],
     };
 
@@ -40,7 +42,8 @@ describe('components/post_view/PostAddChannelMember', () => {
             ...requiredProps,
             postId: '',
         };
-        const wrapper = shallow(<PostAddChannelMember {...props}/>);
+
+        const wrapper = shallow(<PostAddChannelMember {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -49,12 +52,13 @@ describe('components/post_view/PostAddChannelMember', () => {
             ...requiredProps,
             channelType: '',
         };
-        const wrapper = shallow(<PostAddChannelMember {...props}/>);
+
+        const wrapper = shallow(<PostAddChannelMember {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, public channel', () => {
-        const wrapper = shallow(<PostAddChannelMember {...requiredProps}/>);
+        const wrapper = shallow(<PostAddChannelMember {...requiredProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -64,7 +68,7 @@ describe('components/post_view/PostAddChannelMember', () => {
             channelType: 'P',
         };
 
-        const wrapper = shallow(<PostAddChannelMember {...props}/>);
+        const wrapper = shallow(<PostAddChannelMember {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -73,32 +77,48 @@ describe('components/post_view/PostAddChannelMember', () => {
             removePost: jest.fn(),
             addChannelMember: jest.fn(),
         };
+
         const props = {...requiredProps, actions};
-        const wrapper = shallow(
-            <PostAddChannelMember {...props}/>
-        );
+        const wrapper = shallow(<PostAddChannelMember {...props} />);
 
         wrapper.find('a').simulate('click');
 
         expect(actions.addChannelMember).toHaveBeenCalledTimes(1);
-        expect(actions.addChannelMember).toHaveBeenCalledWith(post.channel_id, requiredProps.userIds[0]);
+        expect(actions.addChannelMember).toHaveBeenCalledWith(
+            post.channel_id,
+            requiredProps.userIds[0],
+        );
+
         expect(sendAddToChannelEphemeralPost).toHaveBeenCalledTimes(1);
-        expect(sendAddToChannelEphemeralPost).toHaveBeenCalledWith(props.currentUser, props.usernames[0], props.userIds[0], post.channel_id, post.root_id, 2);
+        expect(sendAddToChannelEphemeralPost).toHaveBeenCalledWith(
+            props.currentUser,
+            props.usernames[0],
+            props.userIds[0],
+            post.channel_id,
+            post.root_id,
+            2,
+        );
+
         expect(actions.removePost).toHaveBeenCalledTimes(1);
         expect(actions.removePost).toHaveBeenCalledWith(post);
     });
 
     test('addChannelMember should have been called multiple times', () => {
         const userIds = ['user_id_1', 'user_id_2', 'user_id_3', 'user_id_4'];
-        const usernames = ['username_1', 'username_2', 'username_3', 'username_4'];
+        const usernames = [
+            'username_1',
+            'username_2',
+            'username_3',
+            'username_4',
+        ];
+
         const actions = {
             removePost: jest.fn(),
             addChannelMember: jest.fn(),
         };
+
         const props = {...requiredProps, userIds, usernames, actions};
-        const wrapper = shallow(
-            <PostAddChannelMember {...props}/>
-        );
+        const wrapper = shallow(<PostAddChannelMember {...props} />);
 
         wrapper.find('a').simulate('click');
         expect(actions.addChannelMember).toHaveBeenCalledTimes(4);
@@ -109,7 +129,8 @@ describe('components/post_view/PostAddChannelMember', () => {
             ...requiredProps,
             noGroupsUsernames: ['user_id_2'],
         };
-        const wrapper = shallow(<PostAddChannelMember {...props}/>);
+
+        const wrapper = shallow(<PostAddChannelMember {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 });

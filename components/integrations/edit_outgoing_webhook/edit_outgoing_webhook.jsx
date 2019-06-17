@@ -12,11 +12,13 @@ import LoadingScreen from 'components/loading_screen.jsx';
 
 const HEADER = {id: 'integrations.edit', defaultMessage: 'Edit'};
 const FOOTER = {id: 'update_outgoing_webhook.update', defaultMessage: 'Update'};
-const LOADING = {id: 'update_outgoing_webhook.updating', defaultMessage: 'Updating...'};
+const LOADING = {
+    id: 'update_outgoing_webhook.updating',
+    defaultMessage: 'Updating...',
+};
 
 export default class EditOutgoingWebhook extends React.PureComponent {
     static propTypes = {
-
         /**
          * The current team
          */
@@ -38,7 +40,6 @@ export default class EditOutgoingWebhook extends React.PureComponent {
         updateOutgoingHookRequest: PropTypes.object.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * The function to call to update an outgoing webhook
              */
@@ -51,8 +52,8 @@ export default class EditOutgoingWebhook extends React.PureComponent {
         }).isRequired,
 
         /**
-        * Whether or not outgoing webhooks are enabled.
-        */
+         * Whether or not outgoing webhooks are enabled.
+         */
         enableOutgoingWebhooks: PropTypes.bool,
 
         /**
@@ -64,7 +65,7 @@ export default class EditOutgoingWebhook extends React.PureComponent {
          * Whether to allow configuration of the default post icon.
          */
         enablePostIconOverride: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -92,44 +93,62 @@ export default class EditOutgoingWebhook extends React.PureComponent {
             hook.token = this.props.hook.token;
         }
 
-        const triggerWordsSame = (this.props.hook.trigger_words.length === hook.trigger_words.length) &&
-            this.props.hook.trigger_words.every((v, i) => v === hook.trigger_words[i]);
+        const triggerWordsSame =
+            this.props.hook.trigger_words.length ===
+                hook.trigger_words.length &&
+            this.props.hook.trigger_words.every(
+                (v, i) => v === hook.trigger_words[i],
+            );
 
-        const callbackUrlsSame = (this.props.hook.callback_urls.length === hook.callback_urls.length) &&
-            this.props.hook.callback_urls.every((v, i) => v === hook.callback_urls[i]);
+        const callbackUrlsSame =
+            this.props.hook.callback_urls.length ===
+                hook.callback_urls.length &&
+            this.props.hook.callback_urls.every(
+                (v, i) => v === hook.callback_urls[i],
+            );
 
-        if (this.props.hook.content_type !== hook.content_type ||
-            !triggerWordsSame || !callbackUrlsSame) {
+        if (
+            this.props.hook.content_type !== hook.content_type ||
+            !triggerWordsSame ||
+            !callbackUrlsSame
+        ) {
             this.handleConfirmModal();
         } else {
             await this.submitHook();
         }
-    }
+    };
 
     handleConfirmModal = () => {
         this.setState({showConfirmModal: true});
-    }
+    };
 
     confirmModalDismissed = () => {
         this.setState({showConfirmModal: false});
-    }
+    };
 
     submitHook = async () => {
         this.setState({serverError: ''});
 
-        const {data} = await this.props.actions.updateOutgoingHook(this.newHook);
+        const {data} = await this.props.actions.updateOutgoingHook(
+            this.newHook,
+        );
 
         if (data) {
-            browserHistory.push(`/${this.props.team.name}/integrations/outgoing_webhooks`);
+            browserHistory.push(
+                `/${this.props.team.name}/integrations/outgoing_webhooks`,
+            );
+
             return;
         }
 
         this.setState({showConfirmModal: false});
 
         if (this.props.updateOutgoingHookRequest.error) {
-            this.setState({serverError: this.props.updateOutgoingHookRequest.error.message});
+            this.setState({
+                serverError: this.props.updateOutgoingHookRequest.error.message,
+            });
         }
-    }
+    };
 
     renderExtra = () => {
         const confirmButton = (
@@ -163,11 +182,11 @@ export default class EditOutgoingWebhook extends React.PureComponent {
                 onCancel={this.confirmModalDismissed}
             />
         );
-    }
+    };
 
     render() {
         if (!this.props.hook) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
 
         return (
@@ -180,7 +199,9 @@ export default class EditOutgoingWebhook extends React.PureComponent {
                 action={this.editOutgoingHook}
                 serverError={this.state.serverError}
                 initialHook={this.props.hook}
-                enablePostUsernameOverride={this.props.enablePostUsernameOverride}
+                enablePostUsernameOverride={
+                    this.props.enablePostUsernameOverride
+                }
                 enablePostIconOverride={this.props.enablePostIconOverride}
             />
         );

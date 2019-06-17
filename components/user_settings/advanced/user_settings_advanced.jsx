@@ -37,7 +37,7 @@ export default class AdvancedSettingsDisplay extends React.Component {
             updateUserActive: PropTypes.func.isRequired,
             revokeAllSessions: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -91,13 +91,13 @@ export default class AdvancedSettingsDisplay extends React.Component {
             previewFeaturesEnabled,
             showDeactivateAccountModal,
         };
-    }
+    };
 
     updateSetting = (setting, value) => {
         const settings = this.state.settings;
         settings[setting] = value;
         this.setState(settings);
-    }
+    };
 
     toggleFeature = (feature, checked) => {
         const settings = this.state.settings;
@@ -105,13 +105,16 @@ export default class AdvancedSettingsDisplay extends React.Component {
 
         let enabledFeatures = 0;
         Object.keys(this.state.settings).forEach((setting) => {
-            if (setting.lastIndexOf(Constants.FeatureTogglePrefix) === 0 && this.state.settings[setting] === 'true') {
+            if (
+                setting.lastIndexOf(Constants.FeatureTogglePrefix) === 0 &&
+                this.state.settings[setting] === 'true'
+            ) {
                 enabledFeatures++;
             }
         });
 
         this.setState({settings, enabledFeatures});
-    }
+    };
 
     saveEnabledFeatures = () => {
         const features = [];
@@ -122,7 +125,7 @@ export default class AdvancedSettingsDisplay extends React.Component {
         });
 
         this.handleSubmit(features);
-    }
+    };
 
     handleSubmit = async (settings) => {
         const preferences = [];
@@ -144,42 +147,39 @@ export default class AdvancedSettingsDisplay extends React.Component {
         await actions.savePreferences(userId, preferences);
 
         this.handleUpdateSection('');
-    }
+    };
 
     handleDeactivateAccountSubmit = () => {
         const userId = this.props.currentUser.id;
 
         this.setState({isSaving: true});
 
-        this.props.actions.updateUserActive(userId, false).
-            then(({error}) => {
-                if (error) {
-                    this.setState({serverError: error.message});
-                }
-            });
-
-        this.props.actions.revokeAllSessions(userId).then(
-            ({data, error}) => {
-                if (data) {
-                    emitUserLoggedOutEvent();
-                } else if (error) {
-                    this.setState({serverError: error.message});
-                }
+        this.props.actions.updateUserActive(userId, false).then(({error}) => {
+            if (error) {
+                this.setState({serverError: error.message});
             }
-        );
-    }
+        });
+
+        this.props.actions.revokeAllSessions(userId).then(({data, error}) => {
+            if (data) {
+                emitUserLoggedOutEvent();
+            } else if (error) {
+                this.setState({serverError: error.message});
+            }
+        });
+    };
 
     handleShowDeactivateAccountModal = () => {
         this.setState({
             showDeactivateAccountModal: true,
         });
-    }
+    };
 
     handleHideDeactivateAccountModal = () => {
         this.setState({
             showDeactivateAccountModal: false,
         });
-    }
+    };
 
     handleUpdateSection = (section) => {
         if (!section) {
@@ -187,7 +187,7 @@ export default class AdvancedSettingsDisplay extends React.Component {
         }
         this.setState({isSaving: false});
         this.props.updateSection(section);
-    }
+    };
 
     renderOnOffLabel(enabled) {
         if (enabled === 'false') {
@@ -225,15 +225,23 @@ export default class AdvancedSettingsDisplay extends React.Component {
                                         id='postFormattingOn'
                                         type='radio'
                                         name='formatting'
-                                        checked={this.state.settings.formatting !== 'false'}
-                                        onChange={this.updateSetting.bind(this, 'formatting', 'true')}
+                                        checked={
+                                            this.state.settings.formatting !==
+                                            'false'
+                                        }
+                                        onChange={this.updateSetting.bind(
+                                            this,
+                                            'formatting',
+                                            'true',
+                                        )}
                                     />
+
                                     <FormattedMessage
                                         id='user.settings.advance.on'
                                         defaultMessage='On'
                                     />
                                 </label>
-                                <br/>
+                                <br />
                             </div>
                             <div className='radio'>
                                 <label>
@@ -241,18 +249,26 @@ export default class AdvancedSettingsDisplay extends React.Component {
                                         id='postFormattingOff'
                                         type='radio'
                                         name='formatting'
-                                        checked={this.state.settings.formatting === 'false'}
-                                        onChange={this.updateSetting.bind(this, 'formatting', 'false')}
+                                        checked={
+                                            this.state.settings.formatting ===
+                                            'false'
+                                        }
+                                        onChange={this.updateSetting.bind(
+                                            this,
+                                            'formatting',
+                                            'false',
+                                        )}
                                     />
+
                                     <FormattedMessage
                                         id='user.settings.advance.off'
                                         defaultMessage='Off'
                                     />
                                 </label>
-                                <br/>
+                                <br />
                             </div>
                             <div>
-                                <br/>
+                                <br />
                                 <FormattedMessage
                                     id='user.settings.advance.formattingDesc'
                                     defaultMessage='If enabled, posts will be formatted to create links, show emoji, style the text, and add line breaks. By default, this setting is enabled.'
@@ -278,24 +294,28 @@ export default class AdvancedSettingsDisplay extends React.Component {
                     />
                 }
                 describe={this.renderOnOffLabel(this.state.settings.formatting)}
-                focused={this.props.prevActiveSection === this.prevSections.formatting}
+                focused={
+                    this.props.prevActiveSection ===
+                    this.prevSections.formatting
+                }
                 section={'formatting'}
                 updateSection={this.handleUpdateSection}
             />
         );
-    }
+    };
 
     renderFeatureLabel(feature) {
         switch (feature) {
-        case 'MARKDOWN_PREVIEW':
-            return (
-                <FormattedMessage
-                    id='user.settings.advance.markdown_preview'
-                    defaultMessage='Show markdown preview option in message input box'
-                />
-            );
-        default:
-            return null;
+            case 'MARKDOWN_PREVIEW':
+                return (
+                    <FormattedMessage
+                        id='user.settings.advance.markdown_preview'
+                        defaultMessage='Show markdown preview option in message input box'
+                    />
+                );
+
+            default:
+                return null;
         }
     }
 
@@ -318,14 +338,19 @@ export default class AdvancedSettingsDisplay extends React.Component {
                                 type='radio'
                                 name='sendOnCtrlEnter'
                                 checked={ctrlSendActive[0]}
-                                onChange={this.updateSetting.bind(this, 'send_on_ctrl_enter', 'true')}
+                                onChange={this.updateSetting.bind(
+                                    this,
+                                    'send_on_ctrl_enter',
+                                    'true',
+                                )}
                             />
+
                             <FormattedMessage
                                 id='user.settings.advance.on'
                                 defaultMessage='On'
                             />
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     <div className='radio'>
                         <label>
@@ -334,17 +359,22 @@ export default class AdvancedSettingsDisplay extends React.Component {
                                 type='radio'
                                 name='sendOnCtrlEnter'
                                 checked={ctrlSendActive[1]}
-                                onChange={this.updateSetting.bind(this, 'send_on_ctrl_enter', 'false')}
+                                onChange={this.updateSetting.bind(
+                                    this,
+                                    'send_on_ctrl_enter',
+                                    'false',
+                                )}
                             />
+
                             <FormattedMessage
                                 id='user.settings.advance.off'
                                 defaultMessage='Off'
                             />
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     <div>
-                        <br/>
+                        <br />
                         <FormattedMessage
                             id='user.settings.advance.sendDesc'
                             defaultMessage='If enabled ENTER inserts a new line and CTRL+ENTER submits the message.'
@@ -352,6 +382,7 @@ export default class AdvancedSettingsDisplay extends React.Component {
                     </div>
                 </div>,
             ];
+
             ctrlSendSection = (
                 <SettingItemMax
                     title={
@@ -377,8 +408,13 @@ export default class AdvancedSettingsDisplay extends React.Component {
                             defaultMessage='Send messages on CTRL+ENTER'
                         />
                     }
-                    describe={this.renderOnOffLabel(this.state.settings.send_on_ctrl_enter)}
-                    focused={this.props.prevActiveSection === this.prevSections.advancedCtrlSend}
+                    describe={this.renderOnOffLabel(
+                        this.state.settings.send_on_ctrl_enter,
+                    )}
+                    focused={
+                        this.props.prevActiveSection ===
+                        this.prevSections.advancedCtrlSend
+                    }
                     section={'advancedCtrlSend'}
                     updateSection={this.handleUpdateSection}
                 />
@@ -388,15 +424,16 @@ export default class AdvancedSettingsDisplay extends React.Component {
         const formattingSection = this.renderFormattingSection();
         let formattingSectionDivider = null;
         if (formattingSection) {
-            formattingSectionDivider = <div className='divider-light'/>;
+            formattingSectionDivider = <div className='divider-light' />;
         }
 
         let previewFeaturesSection;
         let previewFeaturesSectionDivider;
-        if (this.state.previewFeaturesEnabled && this.state.preReleaseFeaturesKeys.length > 0) {
-            previewFeaturesSectionDivider = (
-                <div className='divider-light'/>
-            );
+        if (
+            this.state.previewFeaturesEnabled &&
+            this.state.preReleaseFeaturesKeys.length > 0
+        ) {
+            previewFeaturesSectionDivider = <div className='divider-light' />;
 
             if (this.props.activeSection === 'advancedPreviewFeatures') {
                 const inputs = [];
@@ -408,29 +445,42 @@ export default class AdvancedSettingsDisplay extends React.Component {
                             <div className='checkbox'>
                                 <label>
                                     <input
-                                        id={'advancedPreviewFeatures' + feature.label}
+                                        id={
+                                            'advancedPreviewFeatures' +
+                                            feature.label
+                                        }
                                         type='checkbox'
-                                        checked={this.state.settings[Constants.FeatureTogglePrefix + feature.label] === 'true'}
+                                        checked={
+                                            this.state.settings[
+                                                Constants.FeatureTogglePrefix +
+                                                    feature.label
+                                            ] === 'true'
+                                        }
                                         onChange={(e) => {
-                                            this.toggleFeature(feature.label, e.target.checked);
+                                            this.toggleFeature(
+                                                feature.label,
+                                                e.target.checked,
+                                            );
                                         }}
                                     />
+
                                     {this.renderFeatureLabel(key)}
                                 </label>
                             </div>
-                        </div>
+                        </div>,
                     );
                 });
 
                 inputs.push(
                     <div key='advancedPreviewFeatures_helptext'>
-                        <br/>
+                        <br />
                         <FormattedMessage
                             id='user.settings.advance.preReleaseDesc'
                             defaultMessage="Check any pre-released features you'd like to preview.  You may also need to refresh the page before the setting will take effect."
                         />
-                    </div>
+                    </div>,
                 );
+
                 previewFeaturesSection = (
                     <SettingItemMax
                         title={
@@ -449,7 +499,10 @@ export default class AdvancedSettingsDisplay extends React.Component {
             } else {
                 previewFeaturesSection = (
                     <SettingItemMin
-                        title={Utils.localizeMessage('user.settings.advance.preReleaseTitle', 'Preview pre-release features')}
+                        title={Utils.localizeMessage(
+                            'user.settings.advance.preReleaseTitle',
+                            'Preview pre-release features',
+                        )}
                         describe={
                             <FormattedMessage
                                 id='user.settings.advance.enabledFeatures'
@@ -457,7 +510,10 @@ export default class AdvancedSettingsDisplay extends React.Component {
                                 values={{count: this.state.enabledFeatures}}
                             />
                         }
-                        focused={this.props.prevActiveSection === this.prevSections.advancedPreviewFeatures}
+                        focused={
+                            this.props.prevActiveSection ===
+                            this.prevSections.advancedPreviewFeatures
+                        }
                         section={'advancedPreviewFeatures'}
                         updateSection={this.handleUpdateSection}
                     />
@@ -469,7 +525,10 @@ export default class AdvancedSettingsDisplay extends React.Component {
         let makeConfirmationModal = '';
         const currentUser = this.props.currentUser;
 
-        if (currentUser.auth_service === '' && this.props.enableUserDeactivation) {
+        if (
+            currentUser.auth_service === '' &&
+            this.props.enableUserDeactivation
+        ) {
             if (this.props.activeSection === 'deactivateAccount') {
                 deactivateAccountSection = (
                     <SettingItemMax
@@ -482,7 +541,7 @@ export default class AdvancedSettingsDisplay extends React.Component {
                         inputs={[
                             <div key='formattingSetting'>
                                 <div>
-                                    <br/>
+                                    <br />
                                     <FormattedMessage
                                         id='user.settings.advance.deactivateDesc'
                                         defaultMessage='Deactivating your account removes your ability to log in to this server and disables all email and mobile notifications. To reactivate your account, contact your System Administrator.'
@@ -513,7 +572,10 @@ export default class AdvancedSettingsDisplay extends React.Component {
                                 defaultMessage="Click 'Edit' to deactivate your account"
                             />
                         }
-                        focused={this.props.prevActiveSection === this.prevSections.deactivateAccount}
+                        focused={
+                            this.props.prevActiveSection ===
+                            this.prevSections.deactivateAccount
+                        }
                         section={'deactivateAccount'}
                         updateSection={this.handleUpdateSection}
                     />
@@ -564,13 +626,10 @@ export default class AdvancedSettingsDisplay extends React.Component {
                     >
                         <span aria-hidden='true'>{'×'}</span>
                     </button>
-                    <h4
-                        className='modal-title'
-                        ref='title'
-                    >
+                    <h4 className='modal-title' ref='title'>
                         <div className='modal-back'>
                             <span onClick={this.props.collapseModal}>
-                                <BackIcon/>
+                                <BackIcon />
                             </span>
                         </div>
                         <FormattedMessage
@@ -586,7 +645,7 @@ export default class AdvancedSettingsDisplay extends React.Component {
                             defaultMessage='Advanced Settings'
                         />
                     </h3>
-                    <div className='divider-dark first'/>
+                    <div className='divider-dark first' />
                     {ctrlSendSection}
                     <CodeBlockCtrlEnterSection
                         activeSection={this.props.activeSection}
@@ -594,20 +653,22 @@ export default class AdvancedSettingsDisplay extends React.Component {
                         prevActiveSection={this.props.prevActiveSection}
                         renderOnOffLabel={this.renderOnOffLabel}
                     />
+
                     {formattingSectionDivider}
                     {formattingSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     <JoinLeaveSection
                         activeSection={this.props.activeSection}
                         onUpdateSection={this.handleUpdateSection}
                         prevActiveSection={this.props.prevActiveSection}
                         renderOnOffLabel={this.renderOnOffLabel}
                     />
+
                     {previewFeaturesSectionDivider}
                     {previewFeaturesSection}
                     {formattingSectionDivider}
                     {deactivateAccountSection}
-                    <div className='divider-dark'/>
+                    <div className='divider-dark' />
                     {makeConfirmationModal}
                 </div>
             </div>

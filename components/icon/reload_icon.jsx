@@ -12,12 +12,7 @@ export default class ReloadIcon extends React.PureComponent {
                 id='generic_icons.reload'
                 defaultMessage='Reload Icon'
             >
-                {(title) => (
-                    <i
-                        className='fa fa-refresh'
-                        title={title}
-                    />
-                )}
+                {(title) => <i className='fa fa-refresh' title={title} />}
             </FormattedMessage>
         );
     }

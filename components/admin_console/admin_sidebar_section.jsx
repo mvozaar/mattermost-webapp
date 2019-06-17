@@ -39,18 +39,16 @@ export default class AdminSidebarSection extends React.Component {
         if (this.props.children) {
             clonedChildren = (
                 <ul className='nav nav__sub-menu subsections'>
-                    {
-                        React.Children.map(this.props.children, (child) => {
-                            if (child === null) {
-                                return null;
-                            }
+                    {React.Children.map(this.props.children, (child) => {
+                        if (child === null) {
+                            return null;
+                        }
 
-                            return React.cloneElement(child, {
-                                parentLink: link,
-                                subsection: true,
-                            });
-                        })
-                    }
+                        return React.cloneElement(child, {
+                            parentLink: link,
+                            subsection: true,
+                        });
+                    })}
                 </ul>
             );
         }
@@ -76,9 +74,7 @@ export default class AdminSidebarSection extends React.Component {
 
         if (this.props.type === 'text') {
             sidebarItem = (
-                <div
-                    className={`${className}-title`}
-                >
+                <div className={`${className}-title`}>
                     <span className={`${className}-title__text`}>
                         {this.props.title}
                     </span>

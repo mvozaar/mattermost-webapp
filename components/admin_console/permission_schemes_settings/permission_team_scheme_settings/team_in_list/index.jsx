@@ -18,10 +18,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadTeamStats,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadTeamStats,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamInList);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TeamInList);

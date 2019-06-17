@@ -11,10 +11,7 @@ describe('components/link_tooltip/link_tooltip', () => {
     test('should match snapshot', () => {
         ReactDOM.createPortal = (node) => node;
         const wrapper = shallow(
-            <LinkTooltip
-                href={'www.test.com'}
-                title={'test title'}
-            />
+            <LinkTooltip href={'www.test.com'} title={'test title'} />,
         );
 
         expect(wrapper).toMatchSnapshot();

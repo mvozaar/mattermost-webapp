@@ -19,11 +19,13 @@ describe('makeCountUnreadsBelow', () => {
                         post4: {create_at: 4000},
                     },
                 },
+
                 users: {
                     currentUserId: 'user1',
                 },
             },
         };
+
         const postIds = ['post1', 'post2', 'post3', 'post4'];
 
         expect(countUnreadsBelow(state, postIds, 1500)).toBe(3);
@@ -44,11 +46,13 @@ describe('makeCountUnreadsBelow', () => {
                         post4: {create_at: 4000},
                     },
                 },
+
                 users: {
                     currentUserId: 'user1',
                 },
             },
         };
+
         const postIds = ['post1', 'post2', 'post3', 'post4'];
 
         expect(countUnreadsBelow(state, postIds, 500)).toBe(2);
@@ -68,11 +72,13 @@ describe('makeCountUnreadsBelow', () => {
                         post4: {create_at: 4000, user_id: 'user1'},
                     },
                 },
+
                 users: {
                     currentUserId: 'user1',
                 },
             },
         };
+
         const postIds = ['post1', 'post2', 'post3', 'post4'];
 
         expect(countUnreadsBelow(state, postIds, 500)).toBe(2);

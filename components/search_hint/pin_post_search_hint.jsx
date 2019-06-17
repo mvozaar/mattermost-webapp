@@ -11,7 +11,7 @@ export default class PinPostSearchHint extends PureComponent {
     static propTypes = {
         dataRetentionEnableMessageDeletion: PropTypes.bool,
         dataRetentionMessageRetentionDays: PropTypes.string,
-    }
+    };
 
     render() {
         return (
@@ -38,12 +38,18 @@ export default class PinPostSearchHint extends PureComponent {
                     <li>
                         <FormattedMessage
                             id='search_results.usagePin4'
-                            defaultMessage={'To pin a message: Go to the message that you want to pin and click [...] > "Pin to channel".'}
+                            defaultMessage={
+                                "To pin a message: Go to the message that you want to pin and click [...] > 'Pin to channel'."
+                            }
                         />
                     </li>
-                    {this.props.dataRetentionEnableMessageDeletion &&
-                        <DataRetentionHint dataRetentionMessageRetentionDays={this.props.dataRetentionMessageRetentionDays}/>
-                    }
+                    {this.props.dataRetentionEnableMessageDeletion && (
+                        <DataRetentionHint
+                            dataRetentionMessageRetentionDays={
+                                this.props.dataRetentionMessageRetentionDays
+                            }
+                        />
+                    )}
                 </ul>
             </React.Fragment>
         );

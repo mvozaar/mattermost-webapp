@@ -8,7 +8,6 @@ import {FormattedMessage} from 'react-intl';
 
 export default class CopyUrlContextMenu extends React.Component {
     static propTypes = {
-
         // The child component that will be right-clicked on to show the context menu
         children: PropTypes.element,
 
@@ -34,14 +33,12 @@ export default class CopyUrlContextMenu extends React.Component {
         }
 
         this.props.actions.copyToClipboard(link);
-    }
+    };
 
     render() {
         const contextMenu = (
             <ContextMenu id={'copy-url-context-menu' + this.props.menuId}>
-                <MenuItem
-                    onClick={this.copy}
-                >
+                <MenuItem onClick={this.copy}>
                     <FormattedMessage
                         id='copy_url_context_menu.getChannelLink'
                         defaultMessage='Copy Link'
@@ -51,7 +48,9 @@ export default class CopyUrlContextMenu extends React.Component {
         );
 
         const contextMenuTrigger = (
-            <ContextMenuTrigger id={'copy-url-context-menu' + this.props.menuId}>
+            <ContextMenuTrigger
+                id={'copy-url-context-menu' + this.props.menuId}
+            >
                 {this.props.children}
             </ContextMenuTrigger>
         );

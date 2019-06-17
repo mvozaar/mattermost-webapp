@@ -16,19 +16,21 @@ describe('components/post_view/message_attachments/ActionMenu', () => {
                     text: 'One',
                     value: '1',
                 },
+
                 {
                     text: 'Two',
                     value: '2',
                 },
             ],
         },
+
         actions: {
             selectAttachmentMenuAction: jest.fn(),
         },
     };
 
     test('should start with nothing selected', () => {
-        const wrapper = shallow(<ActionMenu {...baseProps}/>);
+        const wrapper = shallow(<ActionMenu {...baseProps} />);
 
         expect(wrapper.state()).toMatchObject({
             selected: undefined,
@@ -44,13 +46,15 @@ describe('components/post_view/message_attachments/ActionMenu', () => {
                 default_option: '2',
             },
         };
-        const wrapper = shallow(<ActionMenu {...props}/>);
+
+        const wrapper = shallow(<ActionMenu {...props} />);
 
         expect(wrapper.state()).toMatchObject({
             selected: {
                 text: 'Two',
                 value: '2',
             },
+
             value: 'Two',
         });
     });

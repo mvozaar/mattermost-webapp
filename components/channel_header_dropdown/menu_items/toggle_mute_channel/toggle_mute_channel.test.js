@@ -15,10 +15,12 @@ describe('components/ChannelHeaderDropdown/MenuItemToggleMuteChannel', () => {
         user: {
             id: 'user_id',
         },
+
         channel: {
             id: 'channel_id',
             type: Constants.OPEN_CHANNEL,
         },
+
         isMuted: false,
         actions: {
             updateChannelNotifyProps: jest.fn(),
@@ -26,7 +28,7 @@ describe('components/ChannelHeaderDropdown/MenuItemToggleMuteChannel', () => {
     };
 
     it('should match snapshot', () => {
-        const wrapper = shallow(<MenuItemToggleMuteChannel {...baseProps}/>);
+        const wrapper = shallow(<MenuItemToggleMuteChannel {...baseProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -38,14 +40,15 @@ describe('components/ChannelHeaderDropdown/MenuItemToggleMuteChannel', () => {
                 updateChannelNotifyProps: jest.fn(),
             },
         };
-        const wrapper = shallow(<MenuItemToggleMuteChannel {...props}/>);
+
+        const wrapper = shallow(<MenuItemToggleMuteChannel {...props} />);
 
         wrapper.find(MenuItemAction).simulate('click');
 
         expect(props.actions.updateChannelNotifyProps).toBeCalledWith(
             props.user.id,
             props.channel.id,
-            {mark_unread: NotificationLevels.ALL}
+            {mark_unread: NotificationLevels.ALL},
         );
     });
 
@@ -57,14 +60,15 @@ describe('components/ChannelHeaderDropdown/MenuItemToggleMuteChannel', () => {
                 updateChannelNotifyProps: jest.fn(),
             },
         };
-        const wrapper = shallow(<MenuItemToggleMuteChannel {...props}/>);
+
+        const wrapper = shallow(<MenuItemToggleMuteChannel {...props} />);
 
         wrapper.find(MenuItemAction).simulate('click');
 
         expect(props.actions.updateChannelNotifyProps).toBeCalledWith(
             props.user.id,
             props.channel.id,
-            {mark_unread: NotificationLevels.MENTION}
+            {mark_unread: NotificationLevels.MENTION},
         );
     });
 
@@ -76,7 +80,8 @@ describe('components/ChannelHeaderDropdown/MenuItemToggleMuteChannel', () => {
                 type: Constants.DM_CHANNEL,
             },
         };
-        const wrapper = shallow(<MenuItemToggleMuteChannel {...props}/>);
+
+        const wrapper = shallow(<MenuItemToggleMuteChannel {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 });

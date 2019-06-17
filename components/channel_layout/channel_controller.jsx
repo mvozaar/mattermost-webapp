@@ -32,34 +32,34 @@ export default class ChannelController extends React.Component {
     };
 
     shouldComponentUpdate(nextProps) {
-        return this.props.teamType !== nextProps.teamType || this.props.pathName !== nextProps.pathName;
+        return (
+            this.props.teamType !== nextProps.teamType ||
+            this.props.pathName !== nextProps.pathName
+        );
     }
 
     render() {
         return (
-            <div
-                id='channel_view'
-                className='channel-view'
-            >
-                <AnnouncementBarController/>
-                <SystemNotice/>
+            <div id='channel_view' className='channel-view'>
+                <AnnouncementBarController />
+                <SystemNotice />
 
                 <div className='container-fluid'>
-                    <SidebarRight/>
-                    <SidebarRightMenu teamType={this.props.teamType}/>
-                    <Route component={TeamSidebar}/>
-                    <Route component={Sidebar}/>
-                    <Route component={CenterChannel}/>
-                    <Pluggable pluggableName='Root'/>
-                    <GetPostLinkModal/>
-                    <GetPublicLinkModal/>
-                    <GetTeamInviteLinkModal/>
-                    <ImportThemeModal/>
-                    <EditPostModal/>
-                    <ResetStatusModal/>
-                    <LeavePrivateChannelModal/>
-                    <ShortcutsModal isMac={Utils.isMac()}/>
-                    <ModalController/>
+                    <SidebarRight />
+                    <SidebarRightMenu teamType={this.props.teamType} />
+                    <Route component={TeamSidebar} />
+                    <Route component={Sidebar} />
+                    <Route component={CenterChannel} />
+                    <Pluggable pluggableName='Root' />
+                    <GetPostLinkModal />
+                    <GetPublicLinkModal />
+                    <GetTeamInviteLinkModal />
+                    <ImportThemeModal />
+                    <EditPostModal />
+                    <ResetStatusModal />
+                    <LeavePrivateChannelModal />
+                    <ShortcutsModal isMac={Utils.isMac()} />
+                    <ModalController />
                 </div>
             </div>
         );

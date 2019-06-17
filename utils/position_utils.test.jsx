@@ -8,8 +8,16 @@ test('Should return placement position for overlay based on bounds, space requir
         bottom: 500,
     };
 
-    expect(popOverOverlayPosition(targetBounds, 1000, {above: 300})).toEqual('top');
-    expect(popOverOverlayPosition(targetBounds, 1000, {above: 500, below: 300})).toEqual('bottom');
-    expect(popOverOverlayPosition(targetBounds, 1000, {above: 450})).toEqual('bottom');
-    expect(popOverOverlayPosition(targetBounds, 1000, {above: 600})).toEqual('left');
+    expect(popOverOverlayPosition(targetBounds, 1000, {above: 300})).toEqual(
+        'top',
+    );
+    expect(
+        popOverOverlayPosition(targetBounds, 1000, {above: 500, below: 300}),
+    ).toEqual('bottom');
+    expect(popOverOverlayPosition(targetBounds, 1000, {above: 450})).toEqual(
+        'bottom',
+    );
+    expect(popOverOverlayPosition(targetBounds, 1000, {above: 600})).toEqual(
+        'left',
+    );
 });

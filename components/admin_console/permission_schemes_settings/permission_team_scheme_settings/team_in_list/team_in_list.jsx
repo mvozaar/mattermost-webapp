@@ -11,16 +11,13 @@ export default class TeamInList extends React.Component {
     static propTypes = {
         team: PropTypes.object.isRequired,
         onRemoveTeam: PropTypes.func,
-    }
+    };
 
     render() {
         const team = this.props.team;
         return (
-            <div
-                className='team'
-                key={team.id}
-            >
-                <TeamInfo team={team}/>
+            <div className='team' key={team.id}>
+                <TeamInfo team={team} />
                 <a
                     className='remove'
                     onClick={() => this.props.onRemoveTeam(team.id)}

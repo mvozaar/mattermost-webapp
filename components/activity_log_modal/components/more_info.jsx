@@ -31,6 +31,7 @@ export default function MoreInfo({
                                     year='numeric'
                                 />
                             ),
+
                             time: (
                                 <FormattedTime
                                     value={firstAccessTime}
@@ -73,11 +74,7 @@ export default function MoreInfo({
     }
 
     return (
-        <a
-            className='theme'
-            href='#'
-            onClick={handleMoreInfo}
-        >
+        <a className='theme' href='#' onClick={handleMoreInfo}>
             <FormattedMessage
                 id='activity_log.moreInfo'
                 defaultMessage='More info'

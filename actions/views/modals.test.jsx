@@ -12,11 +12,9 @@ import {ActionTypes, ModalIdentifiers} from 'utils/constants.jsx';
 class TestModal extends React.Component {
     render() {
         return (
-            <Modal
-                show={true}
-            >
-                <Modal.Header closeButton={true}/>
-                <Modal.Body/>
+            <Modal show={true}>
+                <Modal.Header closeButton={true} />
+                <Modal.Body />
             </Modal>
         );
     }

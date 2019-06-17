@@ -16,59 +16,60 @@ export function matchesFilter(command, filter) {
         return true;
     }
 
-    return command.display_name.toLowerCase().indexOf(filter) !== -1 ||
+    return (
+        command.display_name.toLowerCase().indexOf(filter) !== -1 ||
         command.description.toLowerCase().indexOf(filter) !== -1 ||
-        command.trigger.toLowerCase().indexOf(filter) !== -1;
+        command.trigger.toLowerCase().indexOf(filter) !== -1
+    );
 }
 
 export default class InstalledCommand extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The team data
-        */
+         * The team data
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        * Installed slash command to display
-        */
+         * Installed slash command to display
+         */
         command: PropTypes.object.isRequired,
 
         /**
-        * The function to call when Regenerate Token link is clicked
-        */
+         * The function to call when Regenerate Token link is clicked
+         */
         onRegenToken: PropTypes.func.isRequired,
 
         /**
-        * The function to call when Delete link is clicked
-        */
+         * The function to call when Delete link is clicked
+         */
         onDelete: PropTypes.func.isRequired,
 
         /**
-        * Set to filter command, comes from BackstageList
-        */
+         * Set to filter command, comes from BackstageList
+         */
         filter: PropTypes.string,
 
         /**
-        * The creator user data
-        */
+         * The creator user data
+         */
         creator: PropTypes.object.isRequired,
 
         /**
-        * Set to show edit link
-        */
+         * Set to show edit link
+         */
         canChange: PropTypes.bool.isRequired,
-    }
+    };
 
     handleRegenToken = (e) => {
         e.preventDefault();
 
         this.props.onRegenToken(this.props.command);
-    }
+    };
 
     handleDelete = () => {
         this.props.onDelete(this.props.command);
-    }
+    };
 
     render() {
         const command = this.props.command;
@@ -121,7 +122,9 @@ export default class InstalledCommand extends React.PureComponent {
                         />
                     </button>
                     {' - '}
-                    <Link to={`/${this.props.team.name}/integrations/commands/edit?id=${command.id}`}>
+                    <Link
+                        to={`/${this.props.team.name}/integrations/commands/edit?id=${command.id}`}
+                    >
                         <FormattedMessage
                             id='installed_integrations.edit'
                             defaultMessage='Edit'
@@ -142,12 +145,8 @@ export default class InstalledCommand extends React.PureComponent {
             <div className='backstage-list__item'>
                 <div className='item-details'>
                     <div className='item-details__row'>
-                        <span className='item-details__name'>
-                            {name}
-                        </span>
-                        <span className='item-details__trigger'>
-                            {trigger}
-                        </span>
+                        <span className='item-details__name'>{name}</span>
+                        <span className='item-details__trigger'>{trigger}</span>
                     </div>
                     {description}
                     <div className='item-details__row'>
@@ -159,9 +158,8 @@ export default class InstalledCommand extends React.PureComponent {
                                     token: commandToken,
                                 }}
                             />
-                            <CopyText
-                                value={commandToken}
-                            />
+
+                            <CopyText value={commandToken} />
                         </span>
                     </div>
                     <div className='item-details__row'>

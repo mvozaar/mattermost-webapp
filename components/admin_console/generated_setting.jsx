@@ -47,7 +47,13 @@ export default class GeneratedSetting extends React.Component {
     regenerate(e) {
         e.preventDefault();
 
-        this.props.onChange(this.props.id, crypto.randomBytes(256).toString('base64').substring(0, 32));
+        this.props.onChange(
+            this.props.id,
+            crypto
+                .randomBytes(256)
+                .toString('base64')
+                .substring(0, 32),
+        );
     }
 
     render() {
@@ -63,16 +69,16 @@ export default class GeneratedSetting extends React.Component {
         let regenerateHelpText = null;
         if (this.props.regenerateHelpText) {
             regenerateHelpText = (
-                <div className='help-text'>
-                    {this.props.regenerateHelpText}
-                </div>
+                <div className='help-text'>{this.props.regenerateHelpText}</div>
             );
         }
 
         let text = this.props.value;
         if (!text) {
             text = (
-                <span className='placeholder-text'>{this.props.placeholder}</span>
+                <span className='placeholder-text'>
+                    {this.props.placeholder}
+                </span>
             );
         }
 
@@ -85,27 +91,24 @@ export default class GeneratedSetting extends React.Component {
                     {this.props.label}
                 </label>
                 <div className='col-sm-8'>
-                    <div
-                        className='form-control disabled'
-                        id={this.props.id}
-                    >
+                    <div className='form-control disabled' id={this.props.id}>
                         {text}
                     </div>
                     {disabledText}
-                    <div className='help-text'>
-                        {this.props.helpText}
-                    </div>
+                    <div className='help-text'>{this.props.helpText}</div>
                     <div className='help-text'>
                         <button
                             className='btn btn-default'
                             onClick={this.regenerate}
-                            disabled={this.props.disabled || this.props.setByEnv}
+                            disabled={
+                                this.props.disabled || this.props.setByEnv
+                            }
                         >
                             {this.props.regenerateText}
                         </button>
                     </div>
                     {regenerateHelpText}
-                    {this.props.setByEnv ? <SetByEnv/> : null}
+                    {this.props.setByEnv ? <SetByEnv /> : null}
                 </div>
             </div>
         );

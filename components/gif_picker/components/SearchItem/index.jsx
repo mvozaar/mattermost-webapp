@@ -23,16 +23,10 @@ export class SearchItem extends PureComponent {
         itemWidth: PropTypes.number,
         itemClickHandler: PropTypes.func,
         hasImageProxy: PropTypes.string,
-    }
+    };
 
     render() {
-        const {
-            gfyItem,
-            top,
-            left,
-            itemWidth,
-            itemClickHandler,
-        } = this.props;
+        const {gfyItem, top, left, itemWidth, itemClickHandler} = this.props;
 
         const {width, height, max1mbGif, avgColor} = gfyItem;
         const {hasImageProxy} = this.props;
@@ -40,7 +34,9 @@ export class SearchItem extends PureComponent {
 
         const backgroundImage = {backgroundImage: `url(${url})`};
         const backgroundColor = {backgroundColor: avgColor};
-        const paddingBottom = {paddingBottom: ((itemWidth / width) * height) + 'px'};
+        const paddingBottom = {
+            paddingBottom: (itemWidth / width) * height + 'px',
+        };
 
         return (
             <div
@@ -49,7 +45,11 @@ export class SearchItem extends PureComponent {
             >
                 <div
                     className='search-item'
-                    style={{...backgroundImage, ...backgroundColor, ...paddingBottom}}
+                    style={{
+                        ...backgroundImage,
+                        ...backgroundColor,
+                        ...paddingBottom,
+                    }}
                     onClick={() => itemClickHandler(gfyItem)}
                 />
             </div>

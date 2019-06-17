@@ -39,9 +39,7 @@ describe('components/dot_menu/DotMenu on mobile view', () => {
             },
         };
 
-        const wrapper = shallowWithIntl(
-            <DotMenu {...baseProps}/>
-        );
+        const wrapper = shallowWithIntl(<DotMenu {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });

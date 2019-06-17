@@ -9,7 +9,8 @@ import InstalledOutgoingWebhooks from 'components/integrations/installed_outgoin
 describe('components/integrations/InstalledOutgoingWebhooks', () => {
     let outgoingWebhooks = {};
     let mockFunc;
-    const loadOutgoingHooksAndProfilesForTeam = () => new Promise((resolve) => resolve());
+    const loadOutgoingHooksAndProfilesForTeam = () =>
+        new Promise((resolve) => resolve());
     const teamId = 'testteamid';
     beforeEach(() => {
         mockFunc = jest.fn();
@@ -31,6 +32,7 @@ describe('components/integrations/InstalledOutgoingWebhooks', () => {
                 0: 'asdf',
                 update_at: 1508329149618,
             },
+
             {
                 callback_urls: ['http://adsfdasd.com'],
                 channel_id: 'mdpzfpfcxi85zkkqkzkch4b85h',
@@ -90,10 +92,15 @@ describe('components/integrations/InstalledOutgoingWebhooks', () => {
                     },
                 }}
                 enableOutgoingWebhooks={true}
-            />
+            />,
         );
-        expect(shallow(<div>{wrapper.instance().outgoingWebhooks('town')}</div>)).toMatchSnapshot();
-        expect(shallow(<div>{wrapper.instance().outgoingWebhooks('ZZZ')}</div>)).toMatchSnapshot();
+
+        expect(
+            shallow(<div>{wrapper.instance().outgoingWebhooks('town')}</div>),
+        ).toMatchSnapshot();
+        expect(
+            shallow(<div>{wrapper.instance().outgoingWebhooks('ZZZ')}</div>),
+        ).toMatchSnapshot();
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -137,8 +144,9 @@ describe('components/integrations/InstalledOutgoingWebhooks', () => {
                     },
                 }}
                 enableOutgoingWebhooks={true}
-            />
+            />,
         );
+
         wrapper.instance().regenOutgoingWebhookToken(outgoingWebhooks[0]);
         expect(mockFunc).toHaveBeenCalledTimes(1);
         expect(mockFunc).toHaveBeenCalledWith(outgoingWebhooks[0].id);
@@ -184,7 +192,7 @@ describe('components/integrations/InstalledOutgoingWebhooks', () => {
                     },
                 }}
                 enableOutgoingWebhooks={true}
-            />
+            />,
         );
 
         wrapper.instance().removeOutgoingHook(outgoingWebhooks[1]);

@@ -16,21 +16,34 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     };
 
     test('UNSAFE_componentWillMount() should have called getOAuthAppInfo', () => {
-        const props = {...requiredProps, location: {search: 'client_id=1234abcd'}};
+        const props = {
+            ...requiredProps,
+            location: {search: 'client_id=1234abcd'},
+        };
 
-        shallow(<Authorize {...props}/>);
+        shallow(<Authorize {...props} />);
 
         expect(requiredProps.actions.getOAuthAppInfo).toHaveBeenCalled();
-        expect(requiredProps.actions.getOAuthAppInfo).toHaveBeenCalledWith('1234abcd');
+        expect(requiredProps.actions.getOAuthAppInfo).toHaveBeenCalledWith(
+            '1234abcd',
+        );
     });
 
     test('UNSAFE_componentWillMount() should have updated state.app', async () => {
         const expected = {};
         const promise = Promise.resolve({data: expected});
-        const actions = {...requiredProps.actions, getOAuthAppInfo: () => promise};
-        const props = {...requiredProps, actions, location: {search: 'client_id=1234abcd'}};
+        const actions = {
+            ...requiredProps.actions,
+            getOAuthAppInfo: () => promise,
+        };
 
-        const wrapper = shallow(<Authorize {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions,
+            location: {search: 'client_id=1234abcd'},
+        };
+
+        const wrapper = shallow(<Authorize {...props} />);
 
         await promise;
 
@@ -38,9 +51,12 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     });
 
     test('handleAllow() should have called allowOAuth2', () => {
-        const props = {...requiredProps, location: {search: 'client_id=1234abcd'}};
+        const props = {
+            ...requiredProps,
+            location: {search: 'client_id=1234abcd'},
+        };
 
-        const wrapper = shallow(<Authorize {...props}/>);
+        const wrapper = shallow(<Authorize {...props} />);
 
         wrapper.instance().handleAllow();
 
@@ -51,17 +67,24 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
             state: null,
             scope: null,
         };
+
         expect(requiredProps.actions.allowOAuth2).toHaveBeenCalled();
-        expect(requiredProps.actions.allowOAuth2).toHaveBeenCalledWith(expected);
+        expect(requiredProps.actions.allowOAuth2).toHaveBeenCalledWith(
+            expected,
+        );
     });
 
     test('handleAllow() should updated state.error', async () => {
         const error = {message: 'error'};
         const promise = Promise.resolve({error});
         const actions = {...requiredProps.actions, allowOAuth2: () => promise};
-        const props = {...requiredProps, actions, location: {search: 'client_id=1234abcd'}};
+        const props = {
+            ...requiredProps,
+            actions,
+            location: {search: 'client_id=1234abcd'},
+        };
 
-        const wrapper = shallow(<Authorize {...props}/>);
+        const wrapper = shallow(<Authorize {...props} />);
 
         wrapper.instance().handleAllow();
         await promise;

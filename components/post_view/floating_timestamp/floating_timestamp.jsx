@@ -14,15 +14,15 @@ export default class FloatingTimestamp extends React.PureComponent {
             PropTypes.number,
         ]).isRequired,
         isRhsPost: PropTypes.bool,
-    }
+    };
 
     render() {
         if (!this.props.isMobile) {
-            return <noscript/>;
+            return <noscript />;
         }
 
         if (this.props.createAt === 0) {
-            return <noscript/>;
+            return <noscript />;
         }
 
         const dateString = (

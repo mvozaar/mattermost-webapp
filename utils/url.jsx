@@ -5,7 +5,12 @@ import {latinise} from 'utils/latinise.jsx';
 
 export function cleanUpUrlable(input) {
     var cleaned = latinise(input);
-    cleaned = cleaned.trim().replace(/-/g, ' ').replace(/[^\w\s]/gi, '').toLowerCase().replace(/\s/g, '-');
+    cleaned = cleaned
+        .trim()
+        .replace(/-/g, ' ')
+        .replace(/[^\w\s]/gi, '')
+        .toLowerCase()
+        .replace(/\s/g, '-');
     cleaned = cleaned.replace(/-{2,}/, '-');
     cleaned = cleaned.replace(/^-+/, '');
     cleaned = cleaned.replace(/-+$/, '');
@@ -15,7 +20,12 @@ export function cleanUpUrlable(input) {
 export function getShortenedURL(url = '', getLength = 27) {
     if (url.length > 35) {
         const subLength = getLength - 14;
-        return url.substring(0, 10) + '...' + url.substring(url.length - subLength, url.length) + '/';
+        return (
+            url.substring(0, 10) +
+            '...' +
+            url.substring(url.length - subLength, url.length) +
+            '/'
+        );
     }
     return url + '/';
 }
@@ -25,7 +35,11 @@ export function getSiteURLFromWindowObject(obj) {
     if (obj.location.origin) {
         siteURL = obj.location.origin;
     } else {
-        siteURL = obj.location.protocol + '//' + obj.location.hostname + (obj.location.port ? ':' + obj.location.port : '');
+        siteURL =
+            obj.location.protocol +
+            '//' +
+            obj.location.hostname +
+            (obj.location.port ? ':' + obj.location.port : '');
     }
 
     if (siteURL[siteURL.length - 1] === '/') {
@@ -62,9 +76,11 @@ export function isUrlSafe(url) {
 
     unescaped = unescaped.replace(/[^\w:]/g, '').toLowerCase();
 
-    return !unescaped.startsWith('javascript:') && // eslint-disable-line no-script-url
+    return (
+        !unescaped.startsWith('javascript:') && // eslint-disable-line no-script-url
         !unescaped.startsWith('vbscript:') &&
-        !unescaped.startsWith('data:');
+        !unescaped.startsWith('data:')
+    );
 }
 
 export function useSafeUrl(url, defaultUrl = '') {
@@ -76,7 +92,7 @@ export function useSafeUrl(url, defaultUrl = '') {
 }
 
 export function getScheme(url) {
-    const match = (/([a-z0-9+.-]+):/i).exec(url);
+    const match = /([a-z0-9+.-]+):/i.exec(url);
 
     return match && match[1];
 }

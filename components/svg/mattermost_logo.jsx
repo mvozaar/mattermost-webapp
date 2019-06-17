@@ -4,13 +4,13 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-export default class MattermostLogo extends React.PureComponent {
+export default class SecurComLogo extends React.PureComponent {
     render() {
         return (
             <span {...this.props}>
                 <FormattedMessage
                     id='generic_icons.mattermost'
-                    defaultMessage='Mattermost Logo'
+                    defaultMessage='securCom Logo'
                 >
                     {(ariaLabel) => (
                         <svg
@@ -49,6 +49,7 @@ const style = {
     background: {
         enableBackground: 'new 0 0 500 500',
     },
+
     st0: {
         fillRule: 'evenodd',
         clipRule: 'evenodd',

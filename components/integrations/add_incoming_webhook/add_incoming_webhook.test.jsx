@@ -13,17 +13,19 @@ describe('components/integrations/AddIncomingWebhook', () => {
             id: 'testteamid',
             name: 'test',
         },
+
         createIncomingHookRequest: {
             status: 'not_started',
             error: null,
         },
+
         enablePostUsernameOverride: true,
         enablePostIconOverride: true,
         actions: {createIncomingHook},
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<AddIncomingWebhook {...props}/>);
+        const wrapper = shallow(<AddIncomingWebhook {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -35,7 +37,8 @@ describe('components/integrations/AddIncomingWebhook', () => {
             username: 'username',
             icon_url: 'icon_url',
         };
-        const wrapper = shallow(<AddIncomingWebhook {...props}/>);
+
+        const wrapper = shallow(<AddIncomingWebhook {...props} />);
         wrapper.instance().addIncomingHook(hook);
         expect(createIncomingHook).toHaveBeenCalledTimes(1);
         expect(createIncomingHook).toBeCalledWith(hook);

@@ -22,6 +22,7 @@ const initialState = {
                     msg_count: 9,
                 },
             },
+
             channels: {
                 current_channel_id: {
                     id: 'current_channel_id',
@@ -33,10 +34,12 @@ const initialState = {
                     team_id: 'team_id',
                 },
             },
+
             channelsInTeam: {
                 'team-id': ['current_channel_id'],
             },
         },
+
         teams: {
             currentTeamId: 'team-id',
             teams: {
@@ -46,16 +49,19 @@ const initialState = {
                     displayName: 'Team 1',
                 },
             },
+
             myMembers: {
                 'team-id': {roles: 'team_role'},
             },
         },
+
         users: {
             currentUserId: 'current_user_id',
             profiles: {
                 current_user_id: {roles: 'system_role'},
             },
         },
+
         preferences: {
             myPreferences: {
                 'display_settings--name_format': {
@@ -66,19 +72,23 @@ const initialState = {
                 },
             },
         },
+
         roles: {
             roles: {
                 system_role: {
                     permissions: [],
                 },
+
                 team_role: {
                     permissions: [],
                 },
+
                 channel_role: {
                     permissions: [],
                 },
             },
         },
+
         general: {
             license: {IsLicensed: 'false'},
             serverVersion: '5.4.0',
@@ -88,17 +98,22 @@ const initialState = {
 };
 
 jest.mock('mattermost-redux/actions/channels', () => ({
-    fetchMyChannelsAndMembers: (...args) => ({type: 'MOCK_FETCH_CHANNELS_AND_MEMBERS', args}),
+    fetchMyChannelsAndMembers: (...args) => ({
+        type: 'MOCK_FETCH_CHANNELS_AND_MEMBERS',
+        args,
+    }),
     searchChannels: () => {
         return {
             type: 'MOCK_SEARCH_CHANNELS',
-            data: [{
-                id: 'channel-id',
-                name: 'channel-name',
-                display_name: 'Channel',
-                delete_at: 0,
-                type: 'O',
-            }],
+            data: [
+                {
+                    id: 'channel-id',
+                    name: 'channel-name',
+                    display_name: 'Channel',
+                    delete_at: 0,
+                    type: 'O',
+                },
+            ],
         };
     },
 }));
@@ -113,10 +128,12 @@ describe('Actions.Channel', () => {
     test('loadChannelsForCurrentUser', async () => {
         const testStore = await mockStore(initialState);
 
-        const expectedActions = [{
-            type: 'MOCK_FETCH_CHANNELS_AND_MEMBERS',
-            args: ['team-id'],
-        }];
+        const expectedActions = [
+            {
+                type: 'MOCK_FETCH_CHANNELS_AND_MEMBERS',
+                args: ['team-id'],
+            },
+        ];
 
         await testStore.dispatch(Actions.loadChannelsForCurrentUser());
         expect(testStore.getActions()).toEqual(expectedActions);
@@ -126,16 +143,20 @@ describe('Actions.Channel', () => {
     test('searchMoreChannels', async () => {
         const testStore = await mockStore(initialState);
 
-        const expectedActions = [{
-            type: 'MOCK_SEARCH_CHANNELS',
-            data: [{
-                id: 'channel-id',
-                name: 'channel-name',
-                display_name: 'Channel',
-                delete_at: 0,
-                type: 'O',
-            }],
-        }];
+        const expectedActions = [
+            {
+                type: 'MOCK_SEARCH_CHANNELS',
+                data: [
+                    {
+                        id: 'channel-id',
+                        name: 'channel-name',
+                        display_name: 'Channel',
+                        delete_at: 0,
+                        type: 'O',
+                    },
+                ],
+            },
+        ];
 
         await testStore.dispatch(Actions.searchMoreChannels());
         expect(testStore.getActions()).toEqual(expectedActions);

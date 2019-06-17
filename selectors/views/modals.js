@@ -2,5 +2,8 @@
 // See LICENSE.txt for license information.
 
 export function isModalOpen(state, modalId) {
-    return state.views.modals.modalState[modalId] && state.views.modals.modalState[modalId].open;
+    return (
+        state.views.modals.modalState[modalId] &&
+        state.views.modals.modalState[modalId].open
+    );
 }

@@ -22,61 +22,54 @@ export default class ChannelMore extends React.PureComponent {
         } = this.props;
 
         switch (sectionType) {
-        case 'public':
-            return (
-                <li
-                    key='public-channel-more'
-                    id='morePublicButton'
-                >
-                    <button
-                        id='sidebarChannelsMore'
-                        className='nav-more cursor--pointer style--none btn--block'
-                        onClick={moreChannels}
-                    >
-                        <FormattedMessage
-                            id='sidebar.moreElips'
-                            defaultMessage='More...'
-                        />
-                    </button>
-                </li>
-            );
-        case 'direct':
-            return (
-                <li
-                    key='dm-more'
-                    id='moreDMButton'
-                >
-                    <button
-                        id='moreDirectMessage'
-                        className='nav-more cursor--pointer style--none btn--block'
-                        onClick={moreDirectMessages}
-                    >
-                        <FormattedMessage
-                            id='sidebar.moreElips'
-                            defaultMessage='More...'
-                        />
-                    </button>
-                </li>
-            );
-        case 'recent':
-        case 'alpha':
-            return (
-                <li
-                    key='public-dm-more'
-                    id='moreRecentAlphaButton'
-                >
-                    <button
-                        id='morePublicDirectChannels'
-                        className='nav-more cursor--pointer style--none btn--block'
-                        onClick={browsePublicDirectChannels}
-                    >
-                        <FormattedMessage
-                            id='sidebar.moreElips'
-                            defaultMessage='More...'
-                        />
-                    </button>
-                </li>
-            );
+            case 'public':
+                return (
+                    <li key='public-channel-more' id='morePublicButton'>
+                        <button
+                            id='sidebarChannelsMore'
+                            className='nav-more cursor--pointer style--none btn--block'
+                            onClick={moreChannels}
+                        >
+                            <FormattedMessage
+                                id='sidebar.moreElips'
+                                defaultMessage='More...'
+                            />
+                        </button>
+                    </li>
+                );
+
+            case 'direct':
+                return (
+                    <li key='dm-more' id='moreDMButton'>
+                        <button
+                            id='moreDirectMessage'
+                            className='nav-more cursor--pointer style--none btn--block'
+                            onClick={moreDirectMessages}
+                        >
+                            <FormattedMessage
+                                id='sidebar.moreElips'
+                                defaultMessage='More...'
+                            />
+                        </button>
+                    </li>
+                );
+
+            case 'recent':
+            case 'alpha':
+                return (
+                    <li key='public-dm-more' id='moreRecentAlphaButton'>
+                        <button
+                            id='morePublicDirectChannels'
+                            className='nav-more cursor--pointer style--none btn--block'
+                            onClick={browsePublicDirectChannels}
+                        >
+                            <FormattedMessage
+                                id='sidebar.moreElips'
+                                defaultMessage='More...'
+                            />
+                        </button>
+                    </li>
+                );
         }
 
         return null;

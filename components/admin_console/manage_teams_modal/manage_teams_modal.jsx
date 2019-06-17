@@ -44,7 +44,8 @@ export default class ManageTeamsModal extends React.Component {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         const userId = this.props.user ? this.props.user.id : '';
         const nextUserId = nextProps.user ? nextProps.user.id : '';
 
@@ -66,13 +67,13 @@ export default class ManageTeamsModal extends React.Component {
         this.setState({
             teams: filterAndSortTeamsByDisplayName(data, this.props.locale),
         });
-    }
+    };
 
     handleError = (error) => {
         this.setState({
             error,
         });
-    }
+    };
 
     getTeamMembers = async (userId = this.props.user.id) => {
         const {data} = await this.props.actions.getTeamMembersForUser(userId);
@@ -81,14 +82,16 @@ export default class ManageTeamsModal extends React.Component {
                 teamMembers: data,
             });
         }
-    }
+    };
 
     handleMemberRemove = (teamId) => {
         this.setState({
             teams: this.state.teams.filter((team) => team.id !== teamId),
-            teamMembers: this.state.teamMembers.filter((teamMember) => teamMember.team_id !== teamId),
+            teamMembers: this.state.teamMembers.filter(
+                (teamMember) => teamMember.team_id !== teamId,
+            ),
         });
-    }
+    };
 
     handleRemoveUserFromTeam = async (teamId) => {
         const {actions, user} = this.props;
@@ -99,7 +102,7 @@ export default class ManageTeamsModal extends React.Component {
         } else if (error) {
             this.handleError(error.message);
         }
-    }
+    };
 
     handleMemberChange = () => {
         this.getTeamMembers(this.props.user.id);
@@ -110,7 +113,7 @@ export default class ManageTeamsModal extends React.Component {
         const {teams, teamMembers} = this.state;
 
         if (!user) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
 
         const isSystemAdmin = Utils.isAdmin(user.roles);
@@ -125,7 +128,10 @@ export default class ManageTeamsModal extends React.Component {
         let teamList;
         if (teams && teamMembers) {
             teamList = teams.map((team) => {
-                const teamMember = teamMembers.find((member) => member.team_id === team.id);
+                const teamMember = teamMembers.find(
+                    (member) => member.team_id === team.id,
+                );
+
                 if (!teamMember) {
                     return null;
                 }
@@ -135,7 +141,9 @@ export default class ManageTeamsModal extends React.Component {
                     action = (
                         <RemoveFromTeamButton
                             teamId={team.id}
-                            handleRemoveUserFromTeam={this.handleRemoveUserFromTeam}
+                            handleRemoveUserFromTeam={
+                                this.handleRemoveUserFromTeam
+                            }
                         />
                     );
                 } else {
@@ -146,17 +154,18 @@ export default class ManageTeamsModal extends React.Component {
                             teamMember={teamMember}
                             onError={this.handleError}
                             onMemberChange={this.handleMemberChange}
-                            updateTeamMemberSchemeRoles={this.props.actions.updateTeamMemberSchemeRoles}
-                            handleRemoveUserFromTeam={this.handleRemoveUserFromTeam}
+                            updateTeamMemberSchemeRoles={
+                                this.props.actions.updateTeamMemberSchemeRoles
+                            }
+                            handleRemoveUserFromTeam={
+                                this.handleRemoveUserFromTeam
+                            }
                         />
                     );
                 }
 
                 return (
-                    <div
-                        key={team.id}
-                        className='manage-teams__team'
-                    >
+                    <div key={team.id} className='manage-teams__team'>
                         <div className='manage-teams__team-name'>
                             {team.display_name}
                         </div>
@@ -167,7 +176,7 @@ export default class ManageTeamsModal extends React.Component {
                 );
             });
         } else {
-            teamList = <LoadingScreen/>;
+            teamList = <LoadingScreen />;
         }
 
         let systemAdminIndicator = null;
@@ -188,24 +197,22 @@ export default class ManageTeamsModal extends React.Component {
                     <img
                         alt={''}
                         className='manage-teams__profile-picture'
-                        src={Client4.getProfilePictureUrl(user.id, user.last_picture_update)}
+                        src={Client4.getProfilePictureUrl(
+                            user.id,
+                            user.last_picture_update,
+                        )}
                     />
+
                     <div className='manage-teams__info'>
-                        <div className='manage-teams__name'>
-                            {name}
-                        </div>
-                        <div className='manage-teams__email'>
-                            {user.email}
-                        </div>
+                        <div className='manage-teams__name'>{name}</div>
+                        <div className='manage-teams__email'>{user.email}</div>
                     </div>
                     {systemAdminIndicator}
                 </div>
-                <div className='manage-teams__teams'>
-                    {teamList}
-                </div>
+                <div className='manage-teams__teams'>{teamList}</div>
             </div>
         );
-    }
+    };
 
     render() {
         return (
@@ -217,19 +224,14 @@ export default class ManageTeamsModal extends React.Component {
                 aria-labelledby='manageTeamsModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='manageTeamsModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='manageTeamsModalLabel'>
                         <FormattedMessage
                             id='admin.user_item.manageTeams'
                             defaultMessage='Manage Teams'
                         />
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    {this.renderContents()}
-                </Modal.Body>
+                <Modal.Body>{this.renderContents()}</Modal.Body>
             </Modal>
         );
     }

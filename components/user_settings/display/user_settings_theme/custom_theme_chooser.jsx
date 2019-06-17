@@ -20,90 +20,112 @@ const messages = defineMessages({
         id: t('user.settings.custom_theme.sidebarBg'),
         defaultMessage: 'Sidebar BG',
     },
+
     sidebarText: {
         id: t('user.settings.custom_theme.sidebarText'),
         defaultMessage: 'Sidebar Text',
     },
+
     sidebarHeaderBg: {
         id: t('user.settings.custom_theme.sidebarHeaderBg'),
         defaultMessage: 'Sidebar Header BG',
     },
+
     sidebarHeaderTextColor: {
         id: t('user.settings.custom_theme.sidebarHeaderTextColor'),
         defaultMessage: 'Sidebar Header Text',
     },
+
     sidebarUnreadText: {
         id: t('user.settings.custom_theme.sidebarUnreadText'),
         defaultMessage: 'Sidebar Unread Text',
     },
+
     sidebarTextHoverBg: {
         id: t('user.settings.custom_theme.sidebarTextHoverBg'),
         defaultMessage: 'Sidebar Text Hover BG',
     },
+
     sidebarTextActiveBorder: {
         id: t('user.settings.custom_theme.sidebarTextActiveBorder'),
         defaultMessage: 'Sidebar Text Active Border',
     },
+
     sidebarTextActiveColor: {
         id: t('user.settings.custom_theme.sidebarTextActiveColor'),
         defaultMessage: 'Sidebar Text Active Color',
     },
+
     onlineIndicator: {
         id: t('user.settings.custom_theme.onlineIndicator'),
         defaultMessage: 'Online Indicator',
     },
+
     awayIndicator: {
         id: t('user.settings.custom_theme.awayIndicator'),
         defaultMessage: 'Away Indicator',
     },
+
     dndIndicator: {
         id: t('user.settings.custom_theme.dndIndicator'),
         defaultMessage: 'Do Not Disturb Indicator',
     },
+
     mentionBg: {
         id: t('user.settings.custom_theme.mentionBg'),
         defaultMessage: 'Mention Jewel BG',
     },
+
     mentionColor: {
         id: t('user.settings.custom_theme.mentionColor'),
         defaultMessage: 'Mention Jewel Text',
     },
+
     centerChannelBg: {
         id: t('user.settings.custom_theme.centerChannelBg'),
         defaultMessage: 'Center Channel BG',
     },
+
     centerChannelColor: {
         id: t('user.settings.custom_theme.centerChannelColor'),
         defaultMessage: 'Center Channel Text',
     },
+
     newMessageSeparator: {
         id: t('user.settings.custom_theme.newMessageSeparator'),
         defaultMessage: 'New Message Separator',
     },
+
     linkColor: {
         id: t('user.settings.custom_theme.linkColor'),
         defaultMessage: 'Link Color',
     },
+
     buttonBg: {
         id: t('user.settings.custom_theme.buttonBg'),
         defaultMessage: 'Button BG',
     },
+
     buttonColor: {
         id: t('user.settings.custom_theme.buttonColor'),
         defaultMessage: 'Button Text',
     },
+
     errorTextColor: {
         id: t('user.settings.custom_theme.errorTextColor'),
         defaultMessage: 'Error Text Color',
     },
+
     mentionHighlightBg: {
         id: t('user.settings.custom_theme.mentionHighlightBg'),
         defaultMessage: 'Mention Highlight BG',
     },
+
     mentionHighlightLink: {
         id: t('user.settings.custom_theme.mentionHighlightLink'),
         defaultMessage: 'Mention Highlight Link',
     },
+
     codeTheme: {
         id: t('user.settings.custom_theme.codeTheme'),
         defaultMessage: 'Code Theme',
@@ -159,7 +181,7 @@ export default class CustomThemeChooser extends React.Component {
                 copyTheme,
             });
         }
-    }
+    };
 
     setCopyTheme(theme) {
         const copyTheme = Object.assign({}, theme);
@@ -172,10 +194,11 @@ export default class CustomThemeChooser extends React.Component {
     pasteBoxChange = (e) => {
         let text = '';
 
-        if (window.clipboardData && window.clipboardData.getData) { // IE
+        if (window.clipboardData && window.clipboardData.getData) {
+            // IE
             text = window.clipboardData.getData('Text');
         } else {
-            text = e.clipboardData.getData('Text');//e.clipboardData.getData('text/plain');
+            text = e.clipboardData.getData('Text'); //e.clipboardData.getData('text/plain');
         }
 
         if (text.length === 0) {
@@ -195,38 +218,38 @@ export default class CustomThemeChooser extends React.Component {
 
         theme.type = 'custom';
         this.props.updateTheme(theme);
-    }
+    };
 
     onChangeHandle = (e) => {
         e.stopPropagation();
-    }
+    };
 
     selectTheme = () => {
         const textarea = this.refs.textarea;
         textarea.focus();
         textarea.setSelectionRange(0, this.state.copyTheme.length);
-    }
+    };
 
     toggleSidebarStyles = (e) => {
         e.preventDefault();
 
         $(this.refs.sidebarStylesHeader).toggleClass('open');
         this.toggleSection(this.refs.sidebarStyles);
-    }
+    };
 
     toggleCenterChannelStyles = (e) => {
         e.preventDefault();
 
         $(this.refs.centerChannelStylesHeader).toggleClass('open');
         this.toggleSection(this.refs.centerChannelStyles);
-    }
+    };
 
     toggleLinkAndButtonStyles = (e) => {
         e.preventDefault();
 
         $(this.refs.linkAndButtonStylesHeader).toggleClass('open');
         this.toggleSection(this.refs.linkAndButtonStyles);
-    }
+    };
 
     toggleSection(node) {
         if (UserAgent.isIos()) {
@@ -245,7 +268,7 @@ export default class CustomThemeChooser extends React.Component {
         };
 
         this.props.updateTheme(theme);
-    }
+    };
 
     render() {
         const {formatMessage} = this.context.intl;
@@ -269,7 +292,7 @@ export default class CustomThemeChooser extends React.Component {
                             value={codeTheme.id}
                         >
                             {codeTheme.uiName}
-                        </option>
+                        </option>,
                     );
                 });
 
@@ -292,7 +315,9 @@ export default class CustomThemeChooser extends React.Component {
                         className='col-sm-6 form-group'
                         key={'custom-theme-key' + index}
                     >
-                        <label className='custom-label'>{formatMessage(messages[element.id])}</label>
+                        <label className='custom-label'>
+                            {formatMessage(messages[element.id])}
+                        </label>
                         <div
                             className='input-group theme-group group--code dropdown'
                             id={element.id}
@@ -319,7 +344,7 @@ export default class CustomThemeChooser extends React.Component {
                                 </span>
                             </OverlayTrigger>
                         </div>
-                    </div>
+                    </div>,
                 );
             } else if (element.group === 'centerChannelElements') {
                 centerChannelElements.push(
@@ -333,7 +358,7 @@ export default class CustomThemeChooser extends React.Component {
                             color={theme[element.id]}
                             onChange={this.handleColorChange}
                         />
-                    </div>
+                    </div>,
                 );
             } else if (element.group === 'sidebarElements') {
                 // Need to support old typo mentionBj element for mentionBg
@@ -353,7 +378,7 @@ export default class CustomThemeChooser extends React.Component {
                             color={color}
                             onChange={this.handleColorChange}
                         />
-                    </div>
+                    </div>,
                 );
             } else {
                 linkAndButtonElements.push(
@@ -367,7 +392,7 @@ export default class CustomThemeChooser extends React.Component {
                             color={theme[element.id]}
                             onChange={this.handleColorChange}
                         />
-                    </div>
+                    </div>,
                 );
             }
         });
@@ -404,28 +429,30 @@ export default class CustomThemeChooser extends React.Component {
                             id='user.settings.custom_theme.sidebarTitle'
                             defaultMessage='Sidebar Styles'
                         />
+
                         <div className='header__icon'>
                             <i
                                 className='fa fa-plus'
-                                title={formatMessage({id: 'generic_icons.expand', defaultMessage: 'Expand Icon'})}
+                                title={formatMessage({
+                                    id: 'generic_icons.expand',
+                                    defaultMessage: 'Expand Icon',
+                                })}
                             />
+
                             <i
                                 className='fa fa-minus'
-                                title={formatMessage({id: 'generic_icons.collapse', defaultMessage: 'Collapse Icon'})}
+                                title={formatMessage({
+                                    id: 'generic_icons.collapse',
+                                    defaultMessage: 'Collapse Icon',
+                                })}
                             />
                         </div>
                     </div>
-                    <div
-                        ref='sidebarStyles'
-                        className='theme-elements__body'
-                    >
+                    <div ref='sidebarStyles' className='theme-elements__body'>
                         {sidebarElements}
                     </div>
                 </div>
-                <div
-                    id='centerChannelStyles'
-                    className='theme-elements row'
-                >
+                <div id='centerChannelStyles' className='theme-elements row'>
                     <div
                         ref='centerChannelStylesHeader'
                         className='theme-elements__header'
@@ -435,14 +462,22 @@ export default class CustomThemeChooser extends React.Component {
                             id='user.settings.custom_theme.centerChannelTitle'
                             defaultMessage='Center Channel Styles'
                         />
+
                         <div className='header__icon'>
                             <i
                                 className='fa fa-plus'
-                                title={formatMessage({id: 'generic_icons.expand', defaultMessage: 'Expand Icon'})}
+                                title={formatMessage({
+                                    id: 'generic_icons.expand',
+                                    defaultMessage: 'Expand Icon',
+                                })}
                             />
+
                             <i
                                 className='fa fa-minus'
-                                title={formatMessage({id: 'generic_icons.collapse', defaultMessage: 'Collapse Icon'})}
+                                title={formatMessage({
+                                    id: 'generic_icons.collapse',
+                                    defaultMessage: 'Collapse Icon',
+                                })}
                             />
                         </div>
                     </div>
@@ -463,14 +498,22 @@ export default class CustomThemeChooser extends React.Component {
                             id='user.settings.custom_theme.linkButtonTitle'
                             defaultMessage='Link and Button Styles'
                         />
+
                         <div className='header__icon'>
                             <i
                                 className='fa fa-plus'
-                                title={formatMessage({id: 'generic_icons.expand', defaultMessage: 'Expand Icon'})}
+                                title={formatMessage({
+                                    id: 'generic_icons.expand',
+                                    defaultMessage: 'Expand Icon',
+                                })}
                             />
+
                             <i
                                 className='fa fa-minus'
-                                title={formatMessage({id: 'generic_icons.collapse', defaultMessage: 'Collapse Icon'})}
+                                title={formatMessage({
+                                    id: 'generic_icons.collapse',
+                                    defaultMessage: 'Collapse Icon',
+                                })}
                             />
                         </div>
                     </div>
@@ -481,9 +524,7 @@ export default class CustomThemeChooser extends React.Component {
                         {linkAndButtonElements}
                     </div>
                 </div>
-                <div className='row'>
-                    {pasteBox}
-                </div>
+                <div className='row'>{pasteBox}</div>
             </div>
         );
     }

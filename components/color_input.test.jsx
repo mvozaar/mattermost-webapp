@@ -8,17 +8,13 @@ import ColorInput from 'components/color_input.jsx';
 
 describe('components/ColorInput', () => {
     test('should match snapshot, init', () => {
-        const wrapper = shallow(
-            <ColorInput color='#ffffff'/>
-        );
+        const wrapper = shallow(<ColorInput color='#ffffff' />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, opened', () => {
-        const wrapper = shallow(
-            <ColorInput color='#ffffff'/>
-        );
+        const wrapper = shallow(<ColorInput color='#ffffff' />);
 
         wrapper.find('.input-group-addon').simulate('click');
 
@@ -26,9 +22,7 @@ describe('components/ColorInput', () => {
     });
 
     test('should match snapshot, toggle picker', () => {
-        const wrapper = shallow(
-            <ColorInput color='#ffffff'/>
-        );
+        const wrapper = shallow(<ColorInput color='#ffffff' />);
 
         wrapper.find('.input-group-addon').simulate('click');
         wrapper.find('.input-group-addon').simulate('click');
@@ -37,9 +31,7 @@ describe('components/ColorInput', () => {
     });
 
     test('should match snapshot, click on picker', () => {
-        const wrapper = shallow(
-            <ColorInput color='#ffffff'/>
-        );
+        const wrapper = shallow(<ColorInput color='#ffffff' />);
 
         wrapper.find('.input-group-addon').simulate('click');
         wrapper.find('.color-popover').simulate('click');
@@ -48,9 +40,7 @@ describe('components/ColorInput', () => {
     });
 
     test('should have match state on togglePicker', () => {
-        const wrapper = shallow(
-            <ColorInput color='#ffffff'/>
-        );
+        const wrapper = shallow(<ColorInput color='#ffffff' />);
 
         wrapper.setState({isOpened: true});
 
@@ -64,10 +54,7 @@ describe('components/ColorInput', () => {
     test('should have called onChange prop', () => {
         const onChange = jest.fn();
         const wrapper = shallow(
-            <ColorInput
-                color='#ffffff'
-                onChange={onChange}
-            />
+            <ColorInput color='#ffffff' onChange={onChange} />,
         );
 
         const newColorData = {hex: '#ccc'};

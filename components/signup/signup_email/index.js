@@ -35,13 +35,20 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            createUser,
-            loginById,
-            setGlobalItem,
-            getTeamInviteInfo,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                createUser,
+                loginById,
+                setGlobalItem,
+                getTeamInviteInfo,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupEmail);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SignupEmail);

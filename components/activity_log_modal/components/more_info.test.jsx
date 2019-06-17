@@ -17,23 +17,20 @@ describe('components/activity_log_modal/MoreInfo', () => {
             create_at: 1534917291042,
             last_activity_at: 1534917643890,
         },
+
         moreInfo: false,
         handleMoreInfo: jest.fn(),
     };
 
     test('should match snapshot extra info toggled off', () => {
-        const wrapper = shallow(
-            <MoreInfo {...baseProps}/>
-        );
+        const wrapper = shallow(<MoreInfo {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, extra info toggled on', () => {
         const props = {...baseProps, moreInfo: true};
-        const wrapper = shallow(
-            <MoreInfo {...props}/>
-        );
+        const wrapper = shallow(<MoreInfo {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

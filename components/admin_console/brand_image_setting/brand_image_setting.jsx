@@ -17,12 +17,11 @@ const HTTP_STATUS_OK = 200;
 
 export default class BrandImageSetting extends React.PureComponent {
     static propTypes = {
-
         /*
          * Set to disable the setting
          */
         disabled: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -39,7 +38,8 @@ export default class BrandImageSetting extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         fetch(Client4.getBrandImageUrl(this.state.brandImageTimestamp)).then(
             (resp) => {
                 if (resp.status === HTTP_STATUS_OK) {
@@ -47,7 +47,7 @@ export default class BrandImageSetting extends React.PureComponent {
                 } else {
                     this.setState({brandImageExists: false});
                 }
-            }
+            },
         );
     }
 
@@ -106,7 +106,7 @@ export default class BrandImageSetting extends React.PureComponent {
                     error: err.message,
                     status: UploadStatuses.DEFAULT,
                 });
-            }
+            },
         );
     }
 
@@ -136,7 +136,9 @@ export default class BrandImageSetting extends React.PureComponent {
                 <img
                     className='brand-img'
                     alt='brand image'
-                    src={Client4.getBrandImageUrl(this.state.brandImageTimestamp)}
+                    src={Client4.getBrandImageUrl(
+                        this.state.brandImageTimestamp,
+                    )}
                 />
             );
         } else {
@@ -158,10 +160,8 @@ export default class BrandImageSetting extends React.PureComponent {
                         defaultMessage='Custom Brand Image:'
                     />
                 </label>
-                <div className='col-sm-8'>
-                    {img}
-                </div>
-                <div className='col-sm-4'/>
+                <div className='col-sm-8'>{img}</div>
+                <div className='col-sm-4' />
                 <div className='col-sm-8'>
                     <div className='file__upload'>
                         <button
@@ -187,12 +187,13 @@ export default class BrandImageSetting extends React.PureComponent {
                         disabled={this.props.disabled || !this.state.brandImage}
                         onClick={this.handleImageSubmit}
                     />
-                    <br/>
-                    <FormError error={this.state.error}/>
+
+                    <br />
+                    <FormError error={this.state.error} />
                     <p className='help-text no-margin'>
                         <FormattedHTMLMessage
                             id='admin.team.uploadDesc'
-                            defaultMessage='Customize your user experience by adding a custom image to your login screen. See examples at <a href="http://docs.mattermost.com/administration/config-settings.html#custom-branding" target="_blank">docs.mattermost.com/administration/config-settings.html#custom-branding</a>.'
+                            defaultMessage="Customize your user experience by adding a custom image to your login screen. See examples at <a href='http://docs.securCom.me/administration/config-settings.html#custom-branding' target='_blank'>docs.securCom.me/administration/config-settings.html#custom-branding</a>."
                         />
                     </p>
                 </div>

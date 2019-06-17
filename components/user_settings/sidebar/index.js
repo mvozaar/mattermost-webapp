@@ -7,7 +7,10 @@ import {connect} from 'react-redux';
 import {savePreferences} from 'mattermost-redux/actions/preferences';
 import {Preferences} from 'mattermost-redux/constants';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
-import {get as getPreference, getSidebarPreferences} from 'mattermost-redux/selectors/entities/preferences';
+import {
+    get as getPreference,
+    getSidebarPreferences,
+} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 
 import UserSettingsSidebar from './user_settings_sidebar.jsx';
@@ -19,14 +22,14 @@ function mapStateToProps(state) {
         state,
         Preferences.CATEGORY_SIDEBAR_SETTINGS,
         'close_unused_direct_messages',
-        'after_seven_days'
+        'after_seven_days',
     );
 
     const channelSwitcherOption = getPreference(
         state,
         Preferences.CATEGORY_SIDEBAR_SETTINGS,
         'channel_switcher_section',
-        'true'
+        'true',
     );
 
     const sidebarPreference = getSidebarPreferences(state);
@@ -37,7 +40,8 @@ function mapStateToProps(state) {
         unreadsAtTop: sidebarPreference.unreads_at_top,
         favoriteAtTop: sidebarPreference.favorite_at_top,
         channelSwitcherOption,
-        showChannelOrganization: config.ExperimentalChannelOrganization === 'true',
+        showChannelOrganization:
+            config.ExperimentalChannelOrganization === 'true',
         showUnusedOption: config.CloseUnusedDirectMessages === 'true',
         user: getCurrentUser(state),
     };
@@ -45,10 +49,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            savePreferences,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                savePreferences,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSettingsSidebar);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UserSettingsSidebar);

@@ -20,7 +20,10 @@ describe('components/widgets/admin_console/AdminPanel', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<AdminPanel {...defaultProps}>{'Test'}</AdminPanel>);
+        const wrapper = shallow(
+            <AdminPanel {...defaultProps}>{'Test'}</AdminPanel>,
+        );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <div
   className="AdminPanel test-class-name"
@@ -53,18 +56,16 @@ describe('components/widgets/admin_console/AdminPanel', () => {
   </div>
   Test
 </div>
-`
-        );
+`);
     });
 
     test('should match snapshot with button', () => {
         const wrapper = shallow(
-            <AdminPanel
-                {...defaultProps}
-                button={<span>{'TestButton'}</span>}
-            >
+            <AdminPanel {...defaultProps} button={<span>{'TestButton'}</span>}>
                 {'Test'}
-            </AdminPanel>);
+            </AdminPanel>,
+        );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <div
   className="AdminPanel test-class-name"
@@ -104,18 +105,16 @@ describe('components/widgets/admin_console/AdminPanel', () => {
   </div>
   Test
 </div>
-`
-        );
+`);
     });
 
     test('should match snapshot with onHeaderClick', () => {
         const wrapper = shallow(
-            <AdminPanel
-                {...defaultProps}
-                onHeaderClick={jest.fn()}
-            >
+            <AdminPanel {...defaultProps} onHeaderClick={jest.fn()}>
                 {'Test'}
-            </AdminPanel>);
+            </AdminPanel>,
+        );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <div
   className="AdminPanel test-class-name"
@@ -148,7 +147,6 @@ describe('components/widgets/admin_console/AdminPanel', () => {
   </div>
   Test
 </div>
-`
-        );
+`);
     });
 });

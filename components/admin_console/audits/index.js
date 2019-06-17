@@ -21,10 +21,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getAudits,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getAudits,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Audits);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(Audits);

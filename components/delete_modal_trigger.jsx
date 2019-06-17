@@ -12,7 +12,7 @@ import ConfirmModal from './confirm_modal.jsx';
 export default class DeleteModalTrigger extends React.PureComponent {
     static propTypes = {
         onDelete: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -31,23 +31,23 @@ export default class DeleteModalTrigger extends React.PureComponent {
         this.setState({
             showDeleteModal: true,
         });
-    }
+    };
 
     handleConfirm = () => {
         this.props.onDelete();
-    }
+    };
 
     handleCancel = () => {
         this.setState({
             showDeleteModal: false,
         });
-    }
+    };
 
     handleKeyDown = (e) => {
         if (Utils.isKeyPressed(e, Constants.KeyCodes.ENTER)) {
             this.handleConfirm(e);
         }
-    }
+    };
 
     render() {
         return (
@@ -56,7 +56,7 @@ export default class DeleteModalTrigger extends React.PureComponent {
                     className='color--link style--none'
                     onClick={this.handleOpenModal}
                 >
-                    { this.triggerTitle }
+                    {this.triggerTitle}
                 </button>
                 <ConfirmModal
                     show={this.state.showDeleteModal}

@@ -21,9 +21,11 @@ function mapStateToProps(state) {
     const sendEmailNotifications = config.SendEmailNotifications === 'true';
     const requireEmailVerification = config.RequireEmailVerification === 'true';
     const maxFileSize = parseInt(config.MaxFileSize, 10);
-    const ldapFirstNameAttributeSet = config.LdapFirstNameAttributeSet === 'true';
+    const ldapFirstNameAttributeSet =
+        config.LdapFirstNameAttributeSet === 'true';
     const ldapLastNameAttributeSet = config.LdapLastNameAttributeSet === 'true';
-    const samlFirstNameAttributeSet = config.SamlFirstNameAttributeSet === 'true';
+    const samlFirstNameAttributeSet =
+        config.SamlFirstNameAttributeSet === 'true';
     const samlLastNameAttributeSet = config.SamlLastNameAttributeSet === 'true';
     const ldapNicknameAttributeSet = config.LdapNicknameAttributeSet === 'true';
     const samlNicknameAttributeSet = config.SamlNicknameAttributeSet === 'true';
@@ -45,16 +47,23 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            logError,
-            clearErrors,
-            getMe,
-            updateMe,
-            sendVerificationEmail,
-            setDefaultProfileImage,
-            uploadProfileImage,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                logError,
+                clearErrors,
+                getMe,
+                updateMe,
+                sendVerificationEmail,
+                setDefaultProfileImage,
+                uploadProfileImage,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSettingsGeneralTab);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(UserSettingsGeneralTab);

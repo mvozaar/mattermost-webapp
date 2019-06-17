@@ -21,7 +21,8 @@ function mapStateToProps(state, ownProps) {
     if (emoji) {
         imageUrl = getEmojiImageUrl(emoji);
     } else {
-        displayTextOnly = state.entities.emojis.nonExistentEmoji.has(ownProps.name) ||
+        displayTextOnly =
+            state.entities.emojis.nonExistentEmoji.has(ownProps.name) ||
             config.EnableCustomEmoji !== 'true' ||
             getCurrentUserId(state) === '';
     }

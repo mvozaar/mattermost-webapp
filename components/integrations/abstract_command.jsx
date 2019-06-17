@@ -20,25 +20,24 @@ const REQUEST_GET = 'G';
 
 export default class AbstractCommand extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The current team
-        */
+         * The current team
+         */
         team: PropTypes.object.isRequired,
 
         /**
-        * The header text to render, has id and defaultMessage
-        */
+         * The header text to render, has id and defaultMessage
+         */
         header: PropTypes.object.isRequired,
 
         /**
-        * The footer text to render, has id and defaultMessage
-        */
+         * The footer text to render, has id and defaultMessage
+         */
         footer: PropTypes.object.isRequired,
 
         /**
-        * The spinner loading text to render, has id and defaultMessage
-        */
+         * The spinner loading text to render, has id and defaultMessage
+         */
         loading: PropTypes.object.isRequired,
 
         /**
@@ -47,20 +46,20 @@ export default class AbstractCommand extends React.PureComponent {
         renderExtra: PropTypes.node.isRequired,
 
         /**
-        * The server error text after a failed action
-        */
+         * The server error text after a failed action
+         */
         serverError: PropTypes.string.isRequired,
 
         /**
-        * The Command used to set the initial state
-        */
+         * The Command used to set the initial state
+         */
         initialCommand: PropTypes.object,
 
         /**
-        * The async function to run when the action button is pressed
-        */
+         * The async function to run when the action button is pressed
+         */
         action: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -83,7 +82,7 @@ export default class AbstractCommand extends React.PureComponent {
             saving: false,
             clientError: null,
         };
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -157,11 +156,14 @@ export default class AbstractCommand extends React.PureComponent {
                     />
                 ),
             });
+
             return;
         }
 
-        if (command.trigger.length < Constants.MIN_TRIGGER_LENGTH ||
-            command.trigger.length > Constants.MAX_TRIGGER_LENGTH) {
+        if (
+            command.trigger.length < Constants.MIN_TRIGGER_LENGTH ||
+            command.trigger.length > Constants.MAX_TRIGGER_LENGTH
+        ) {
             this.setState({
                 saving: false,
                 clientError: (
@@ -194,67 +196,67 @@ export default class AbstractCommand extends React.PureComponent {
         }
 
         this.props.action(command).then(() => this.setState({saving: false}));
-    }
+    };
 
     updateDisplayName = (e) => {
         this.setState({
             displayName: e.target.value,
         });
-    }
+    };
 
     updateDescription = (e) => {
         this.setState({
             description: e.target.value,
         });
-    }
+    };
 
     updateTrigger = (e) => {
         this.setState({
             trigger: e.target.value,
         });
-    }
+    };
 
     updateUrl = (e) => {
         this.setState({
             url: e.target.value,
         });
-    }
+    };
 
     updateMethod = (e) => {
         this.setState({
             method: e.target.value,
         });
-    }
+    };
 
     updateUsername = (e) => {
         this.setState({
             username: e.target.value,
         });
-    }
+    };
 
     updateIconUrl = (e) => {
         this.setState({
             iconUrl: e.target.value,
         });
-    }
+    };
 
     updateAutocomplete = (e) => {
         this.setState({
             autocomplete: e.target.checked,
         });
-    }
+    };
 
     updateAutocompleteHint = (e) => {
         this.setState({
             autocompleteHint: e.target.value,
         });
-    }
+    };
 
     updateAutocompleteDescription = (e) => {
         this.setState({
             autocompleteDescription: e.target.value,
         });
-    }
+    };
 
     render() {
         let autocompleteHint = null;
@@ -280,8 +282,15 @@ export default class AbstractCommand extends React.PureComponent {
                             className='form-control'
                             value={this.state.autocompleteHint}
                             onChange={this.updateAutocompleteHint}
-                            placeholder={{id: t('add_command.autocompleteHint.placeholder'), defaultMessage: 'Example: [Patient Name]'}}
+                            placeholder={{
+                                id: t(
+                                    'add_command.autocompleteHint.placeholder',
+                                ),
+
+                                defaultMessage: 'Example: [Patient Name]',
+                            }}
                         />
+
                         <div className='form__help'>
                             <FormattedMessage
                                 id='add_command.autocompleteHint.help'
@@ -311,8 +320,16 @@ export default class AbstractCommand extends React.PureComponent {
                             className='form-control'
                             value={this.state.autocompleteDescription}
                             onChange={this.updateAutocompleteDescription}
-                            placeholder={{id: t('add_command.autocompleteDescription.placeholder'), defaultMessage: 'Example: "Returns search results for patient records"'}}
+                            placeholder={{
+                                id: t(
+                                    'add_command.autocompleteDescription.placeholder',
+                                ),
+
+                                defaultMessage:
+                                    "Example: 'Returns search results for patient records'",
+                            }}
                         />
+
                         <div className='form__help'>
                             <FormattedMessage
                                 id='add_command.autocompleteDescription.help'
@@ -327,7 +344,13 @@ export default class AbstractCommand extends React.PureComponent {
         return (
             <div className='backstage-content row'>
                 <BackstageHeader>
-                    <Link to={'/' + this.props.team.name + '/integrations/commands'}>
+                    <Link
+                        to={
+                            '/' +
+                            this.props.team.name +
+                            '/integrations/commands'
+                        }
+                    >
                         <FormattedMessage
                             id='installed_command.header'
                             defaultMessage='Slash Commands'
@@ -362,6 +385,7 @@ export default class AbstractCommand extends React.PureComponent {
                                     value={this.state.displayName}
                                     onChange={this.updateDisplayName}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_command.displayName.help'
@@ -389,6 +413,7 @@ export default class AbstractCommand extends React.PureComponent {
                                     value={this.state.description}
                                     onChange={this.updateDescription}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_command.description.help'
@@ -415,8 +440,16 @@ export default class AbstractCommand extends React.PureComponent {
                                     className='form-control'
                                     value={this.state.trigger}
                                     onChange={this.updateTrigger}
-                                    placeholder={{id: t('add_command.trigger.placeholder'), defaultMessage: 'Command trigger e.g. "hello" not including the slash'}}
+                                    placeholder={{
+                                        id: t(
+                                            'add_command.trigger.placeholder',
+                                        ),
+
+                                        defaultMessage:
+                                            "Command trigger e.g. 'hello' not including the slash",
+                                    }}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_command.trigger.help'
@@ -436,7 +469,7 @@ export default class AbstractCommand extends React.PureComponent {
                                         values={{
                                             link: (
                                                 <a
-                                                    href='https://docs.mattermost.com/help/messaging/executing-commands.html#built-in-commands'
+                                                    href='https://docs.securCom.me/help/messaging/executing-commands.html#built-in-commands'
                                                     target='_blank'
                                                     rel='noopener noreferrer'
                                                 >
@@ -469,8 +502,13 @@ export default class AbstractCommand extends React.PureComponent {
                                     className='form-control'
                                     value={this.state.url}
                                     onChange={this.updateUrl}
-                                    placeholder={{id: t('add_command.url.placeholder'), defaultMessage: 'Must start with http:// or https://'}}
+                                    placeholder={{
+                                        id: t('add_command.url.placeholder'),
+                                        defaultMessage:
+                                            'Must start with http:// or https://',
+                                    }}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_command.url.help'
@@ -497,10 +535,16 @@ export default class AbstractCommand extends React.PureComponent {
                                     onChange={this.updateMethod}
                                 >
                                     <option value={REQUEST_POST}>
-                                        {Utils.localizeMessage('add_command.method.post', 'POST')}
+                                        {Utils.localizeMessage(
+                                            'add_command.method.post',
+                                            'POST',
+                                        )}
                                     </option>
                                     <option value={REQUEST_GET}>
-                                        {Utils.localizeMessage('add_command.method.get', 'GET')}
+                                        {Utils.localizeMessage(
+                                            'add_command.method.get',
+                                            'GET',
+                                        )}
                                     </option>
                                 </select>
                                 <div className='form__help'>
@@ -529,12 +573,19 @@ export default class AbstractCommand extends React.PureComponent {
                                     className='form-control'
                                     value={this.state.username}
                                     onChange={this.updateUsername}
-                                    placeholder={{id: t('add_command.username.placeholder'), defaultMessage: 'Username'}}
+                                    placeholder={{
+                                        id: t(
+                                            'add_command.username.placeholder',
+                                        ),
+
+                                        defaultMessage: 'Username',
+                                    }}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_command.username.help'
-                                        defaultMessage='(Optional) Choose a username override for responses for this slash command. Usernames can consist of up to 22 characters consisting of lowercase letters, numbers and they symbols "-", "_", and "." .'
+                                        defaultMessage="(Optional) Choose a username override for responses for this slash command. Usernames can consist of up to 22 characters consisting of lowercase letters, numbers and they symbols '-', '_', and '.' ."
                                     />
                                 </div>
                             </div>
@@ -557,8 +608,16 @@ export default class AbstractCommand extends React.PureComponent {
                                     className='form-control'
                                     value={this.state.iconUrl}
                                     onChange={this.updateIconUrl}
-                                    placeholder={{id: t('add_command.iconUrl.placeholder'), defaultMessage: 'https://www.example.com/myicon.png'}}
+                                    placeholder={{
+                                        id: t(
+                                            'add_command.iconUrl.placeholder',
+                                        ),
+
+                                        defaultMessage:
+                                            'https://www.example.com/myicon.png',
+                                    }}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_command.iconUrl.help'
@@ -584,6 +643,7 @@ export default class AbstractCommand extends React.PureComponent {
                                     checked={this.state.autocomplete}
                                     onChange={this.updateAutocomplete}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_command.autocomplete.help'
@@ -597,11 +657,19 @@ export default class AbstractCommand extends React.PureComponent {
                         <div className='backstage-form__footer'>
                             <FormError
                                 type='backstage'
-                                errors={[this.props.serverError, this.state.clientError]}
+                                errors={[
+                                    this.props.serverError,
+                                    this.state.clientError,
+                                ]}
                             />
+
                             <Link
                                 className='btn btn-link btn-sm'
-                                to={'/' + this.props.team.name + '/integrations/commands'}
+                                to={
+                                    '/' +
+                                    this.props.team.name +
+                                    '/integrations/commands'
+                                }
                             >
                                 <FormattedMessage
                                     id='add_command.cancel'
@@ -612,13 +680,18 @@ export default class AbstractCommand extends React.PureComponent {
                                 className='btn btn-primary'
                                 type='submit'
                                 spinning={this.state.saving}
-                                spinningText={Utils.localizeMessage(this.props.loading.id, this.props.loading.defaultMessage)}
+                                spinningText={Utils.localizeMessage(
+                                    this.props.loading.id,
+                                    this.props.loading.defaultMessage,
+                                )}
                                 onClick={this.handleSubmit}
                                 id='saveCommand'
                             >
                                 <FormattedMessage
                                     id={this.props.footer.id}
-                                    defaultMessage={this.props.footer.defaultMessage}
+                                    defaultMessage={
+                                        this.props.footer.defaultMessage
+                                    }
                                 />
                             </SpinnerButton>
                             {this.props.renderExtra}

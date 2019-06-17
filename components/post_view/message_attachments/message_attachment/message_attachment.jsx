@@ -20,7 +20,6 @@ const MAX_ATTACHMENT_TEXT_HEIGHT = 200;
 
 export default class MessageAttachment extends React.PureComponent {
     static propTypes = {
-
         /**
          * The post id
          */
@@ -49,7 +48,7 @@ export default class MessageAttachment extends React.PureComponent {
         actions: PropTypes.shape({
             doPostActionWithCookie: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -73,17 +72,25 @@ export default class MessageAttachment extends React.PureComponent {
 
     handleHeightReceivedForThumbUrl = ({height}) => {
         const {attachment} = this.props;
-        if (!this.props.imagesMetadata || (this.props.imagesMetadata && !this.props.imagesMetadata[attachment.thumb_url])) {
+        if (
+            !this.props.imagesMetadata ||
+            (this.props.imagesMetadata &&
+                !this.props.imagesMetadata[attachment.thumb_url])
+        ) {
             this.handleHeightReceived(height);
         }
-    }
+    };
 
     handleHeightReceivedForImageUrl = ({height}) => {
         const {attachment} = this.props;
-        if (!this.props.imagesMetadata || (this.props.imagesMetadata && !this.props.imagesMetadata[attachment.image_url])) {
+        if (
+            !this.props.imagesMetadata ||
+            (this.props.imagesMetadata &&
+                !this.props.imagesMetadata[attachment.image_url])
+        ) {
             this.handleHeightReceived(height);
         }
-    }
+    };
 
     handleHeightReceived = (height) => {
         if (!this.mounted) {
@@ -114,35 +121,31 @@ export default class MessageAttachment extends React.PureComponent {
             }
 
             switch (action.type) {
-            case 'select':
-                content.push(
-                    <ActionMenu
-                        key={action.id}
-                        postId={this.props.postId}
-                        action={action}
-                    />
-                );
-                break;
-            case 'button':
-            default:
-                content.push(
-                    <ActionButton
-                        key={action.id}
-                        action={action}
-                        handleAction={this.handleAction}
-                    />
-                );
-                break;
+                case 'select':
+                    content.push(
+                        <ActionMenu
+                            key={action.id}
+                            postId={this.props.postId}
+                            action={action}
+                        />,
+                    );
+
+                    break;
+                case 'button':
+                default:
+                    content.push(
+                        <ActionButton
+                            key={action.id}
+                            action={action}
+                            handleAction={this.handleAction}
+                        />,
+                    );
+
+                    break;
             }
         });
 
-        return (
-            <div
-                className='attachment-actions'
-            >
-                {content}
-            </div>
-        );
+        return <div className='attachment-actions'>{content}</div>;
     };
 
     handleAction = (e) => {
@@ -150,7 +153,11 @@ export default class MessageAttachment extends React.PureComponent {
         const actionId = e.currentTarget.getAttribute('data-action-id');
         const actionCookie = e.currentTarget.getAttribute('data-action-cookie');
 
-        this.props.actions.doPostActionWithCookie(this.props.postId, actionId, actionCookie);
+        this.props.actions.doPostActionWithCookie(
+            this.props.postId,
+            actionId,
+            actionCookie,
+        );
     };
 
     getFieldsTable = () => {
@@ -175,17 +182,14 @@ export default class MessageAttachment extends React.PureComponent {
                         key={'attachment__table__' + nrTables}
                     >
                         <thead>
-                            <tr>
-                                {headerCols}
-                            </tr>
+                            <tr>{headerCols}</tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                {bodyCols}
-                            </tr>
+                            <tr>{bodyCols}</tr>
                         </tbody>
-                    </table>
+                    </table>,
                 );
+
                 headerCols = [];
                 bodyCols = [];
                 rowPos = 0;
@@ -199,7 +203,7 @@ export default class MessageAttachment extends React.PureComponent {
                     width='50%'
                 >
                     {field.title}
-                </th>
+                </th>,
             );
 
             bodyCols.push(
@@ -207,36 +211,30 @@ export default class MessageAttachment extends React.PureComponent {
                     className='attachment-field'
                     key={'attachment__field-' + i + '__' + nrTables}
                 >
-                    <Markdown message={field.value}/>
-                </td>
+                    <Markdown message={field.value} />
+                </td>,
             );
+
             rowPos += 1;
             lastWasLong = !(field.short === true);
         });
-        if (headerCols.length > 0) { // Flush last fields
+        if (headerCols.length > 0) {
+            // Flush last fields
             fieldTables.push(
                 <table
                     className='attachment-fields'
                     key={'attachment__table__' + nrTables}
                 >
                     <thead>
-                        <tr>
-                            {headerCols}
-                        </tr>
+                        <tr>{headerCols}</tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            {bodyCols}
-                        </tr>
+                        <tr>{bodyCols}</tr>
                     </tbody>
-                </table>
+                </table>,
             );
         }
-        return (
-            <div>
-                {fieldTables}
-            </div>
-        );
+        return <div>{fieldTables}</div>;
     };
 
     render() {
@@ -248,7 +246,7 @@ export default class MessageAttachment extends React.PureComponent {
             preTextClass = 'attachment--pretext';
             preText = (
                 <div className='attachment__thumb-pretext'>
-                    <Markdown message={attachment.pretext}/>
+                    <Markdown message={attachment.pretext} />
                 </div>
             );
         }
@@ -260,11 +258,14 @@ export default class MessageAttachment extends React.PureComponent {
                     <img
                         alt={'attachment author icon'}
                         className='attachment__author-icon'
-                        src={getImageSrc(attachment.author_icon, this.props.hasImageProxy)}
+                        src={getImageSrc(
+                            attachment.author_icon,
+                            this.props.hasImageProxy,
+                        )}
                         key={'attachment__author-icon'}
                         height='14'
                         width='14'
-                    />
+                    />,
                 );
             }
             if (attachment.author_name) {
@@ -274,7 +275,7 @@ export default class MessageAttachment extends React.PureComponent {
                         key={'attachment__author-name'}
                     >
                         {attachment.author_name}
-                    </span>
+                    </span>,
                 );
             }
         }
@@ -346,8 +347,13 @@ export default class MessageAttachment extends React.PureComponent {
                     <SizeAwareImage
                         className='attachment__image'
                         onImageLoaded={this.handleHeightReceivedForImageUrl}
-                        src={getImageSrc(attachment.image_url, this.props.hasImageProxy)}
-                        dimensions={this.props.imagesMetadata[attachment.image_url]}
+                        src={getImageSrc(
+                            attachment.image_url,
+                            this.props.hasImageProxy,
+                        )}
+                        dimensions={
+                            this.props.imagesMetadata[attachment.image_url]
+                        }
                     />
                 </div>
             );
@@ -359,8 +365,13 @@ export default class MessageAttachment extends React.PureComponent {
                 <div className='attachment__thumb-container'>
                     <SizeAwareImage
                         onImageLoaded={this.handleHeightReceivedForThumbUrl}
-                        src={getImageSrc(attachment.thumb_url, this.props.hasImageProxy)}
-                        dimensions={this.props.imagesMetadata[attachment.thumb_url]}
+                        src={getImageSrc(
+                            attachment.thumb_url,
+                            this.props.hasImageProxy,
+                        )}
+                        dimensions={
+                            this.props.imagesMetadata[attachment.thumb_url]
+                        }
                     />
                 </div>
             );
@@ -375,21 +386,27 @@ export default class MessageAttachment extends React.PureComponent {
         }
 
         return (
-            <div
-                className={'attachment ' + preTextClass}
-                ref='attachment'
-            >
+            <div className={'attachment ' + preTextClass} ref='attachment'>
                 {preText}
                 <div className='attachment__content'>
                     <div
-                        className={useBorderStyle ? 'clearfix attachment__container' : 'clearfix attachment__container attachment__container--' + attachment.color}
+                        className={
+                            useBorderStyle
+                                ? 'clearfix attachment__container'
+                                : 'clearfix attachment__container attachment__container--' +
+                                  attachment.color
+                        }
                         style={useBorderStyle}
                     >
                         {author}
                         {title}
                         <div>
                             <div
-                                className={thumb ? 'attachment__body' : 'attachment__body attachment__body--no_thumb'}
+                                className={
+                                    thumb
+                                        ? 'attachment__body'
+                                        : 'attachment__body attachment__body--no_thumb'
+                                }
                                 onClick={handleFormattedTextClick}
                             >
                                 {attachmentText}
@@ -398,7 +415,7 @@ export default class MessageAttachment extends React.PureComponent {
                                 {actions}
                             </div>
                             {thumb}
-                            <div style={style.footer}/>
+                            <div style={style.footer} />
                         </div>
                     </div>
                 </div>

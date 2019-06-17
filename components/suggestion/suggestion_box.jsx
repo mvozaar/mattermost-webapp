@@ -15,7 +15,6 @@ const KeyCodes = Constants.KeyCodes;
 
 export default class SuggestionBox extends React.Component {
     static propTypes = {
-
         /**
          * The list component to render, usually SuggestionList
          */
@@ -127,7 +126,7 @@ export default class SuggestionBox extends React.Component {
          * If true, listen for clicks on a mention and populate the input with said mention, defaults to false
          */
         listenForMentionKeyClick: PropTypes.bool,
-    }
+    };
 
     static defaultProps = {
         listStyle: 'top',
@@ -141,7 +140,7 @@ export default class SuggestionBox extends React.Component {
         openWhenEmpty: false,
         replaceAllInputOnSelect: false,
         listenForMentionKeyClick: false,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -175,18 +174,26 @@ export default class SuggestionBox extends React.Component {
 
     componentDidMount() {
         if (this.props.listenForMentionKeyClick) {
-            EventEmitter.addListener('mention_key_click', this.handleMentionKeyClick);
+            EventEmitter.addListener(
+                'mention_key_click',
+                this.handleMentionKeyClick,
+            );
         }
     }
 
     componentWillUnmount() {
-        EventEmitter.removeListener('mention_key_click', this.handleMentionKeyClick);
+        EventEmitter.removeListener(
+            'mention_key_click',
+            this.handleMentionKeyClick,
+        );
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.contextId !== this.props.contextId) {
             const textbox = this.getTextbox();
-            const pretext = textbox.value.substring(0, textbox.selectionEnd).toLowerCase();
+            const pretext = textbox.value
+                .substring(0, textbox.selectionEnd)
+                .toLowerCase();
 
             this.handlePretextChanged(pretext);
         }
@@ -200,12 +207,12 @@ export default class SuggestionBox extends React.Component {
         let insertText = '@' + mentionKey;
 
         // if the current text does not end with a whitespace, then insert a space
-        if (this.props.value && (/[^\s]$/).test(this.props.value)) {
+        if (this.props.value && /[^\s]$/.test(this.props.value)) {
             insertText = ' ' + insertText;
         }
 
         this.addTextAtCaret(insertText, '');
-    }
+    };
 
     getTextbox = () => {
         if (!this.refs.input) {
@@ -219,7 +226,7 @@ export default class SuggestionBox extends React.Component {
         }
 
         return input;
-    }
+    };
 
     recalculateSize = () => {
         // Pretty hacky way to force an AutosizeTextarea to recalculate its height if that's what
@@ -229,13 +236,13 @@ export default class SuggestionBox extends React.Component {
         if (input.recalculateSize) {
             input.recalculateSize();
         }
-    }
+    };
 
     handleEmitClearSuggestions = (delay = 0) => {
         setTimeout(() => {
             this.clear();
         }, delay);
-    }
+    };
 
     handleFocusOut = (e) => {
         // Focus is switching TO e.relatedTarget, so only treat this as a blur event if we're not switching
@@ -272,8 +279,15 @@ export default class SuggestionBox extends React.Component {
             setTimeout(() => {
                 const textbox = this.getTextbox();
                 if (textbox) {
-                    const pretext = textbox.value.substring(0, textbox.selectionEnd);
-                    if (this.props.openWhenEmpty || pretext.length >= this.props.requiredCharacters) {
+                    const pretext = textbox.value.substring(
+                        0,
+                        textbox.selectionEnd,
+                    );
+
+                    if (
+                        this.props.openWhenEmpty ||
+                        pretext.length >= this.props.requiredCharacters
+                    ) {
                         this.handlePretextChanged(pretext);
                     }
                 }
@@ -287,7 +301,9 @@ export default class SuggestionBox extends React.Component {
 
     handleChange = (e) => {
         const textbox = this.getTextbox();
-        const pretext = textbox.value.substring(0, textbox.selectionEnd).toLowerCase();
+        const pretext = textbox.value
+            .substring(0, textbox.selectionEnd)
+            .toLowerCase();
 
         if (!this.composing && this.pretext !== pretext) {
             this.handlePretextChanged(pretext);
@@ -296,14 +312,14 @@ export default class SuggestionBox extends React.Component {
         if (this.props.onChange) {
             this.props.onChange(e);
         }
-    }
+    };
 
     handleCompositionStart = () => {
         this.composing = true;
         if (this.props.onComposition) {
             this.props.onComposition();
         }
-    }
+    };
 
     handleCompositionUpdate = (e) => {
         if (!e.data) {
@@ -312,20 +328,21 @@ export default class SuggestionBox extends React.Component {
 
         // The caret appears before the CJK character currently being composed, so re-add it to the pretext
         const textbox = this.getTextbox();
-        const pretext = textbox.value.substring(0, textbox.selectionStart) + e.data;
+        const pretext =
+            textbox.value.substring(0, textbox.selectionStart) + e.data;
 
         this.handlePretextChanged(pretext);
         if (this.props.onComposition) {
             this.props.onComposition();
         }
-    }
+    };
 
     handleCompositionEnd = () => {
         this.composing = false;
         if (this.props.onComposition) {
             this.props.onComposition();
         }
-    }
+    };
 
     addTextAtCaret = (term, matchedPretext) => {
         const textbox = this.getTextbox();
@@ -336,14 +353,23 @@ export default class SuggestionBox extends React.Component {
         let prefix;
         let keepPretext = false;
         if (pretext.toLowerCase().endsWith(matchedPretext.toLowerCase())) {
-            prefix = pretext.substring(0, pretext.length - matchedPretext.length);
+            prefix = pretext.substring(
+                0,
+                pretext.length - matchedPretext.length,
+            );
         } else {
             // the pretext has changed since we got a term to complete so see if the term still fits the pretext
             const termWithoutMatched = term.substring(matchedPretext.length);
-            const overlap = SuggestionBox.findOverlap(pretext, termWithoutMatched);
+            const overlap = SuggestionBox.findOverlap(
+                pretext,
+                termWithoutMatched,
+            );
 
             keepPretext = overlap.length === 0;
-            prefix = pretext.substring(0, pretext.length - overlap.length - matchedPretext.length);
+            prefix = pretext.substring(
+                0,
+                pretext.length - overlap.length - matchedPretext.length,
+            );
         }
 
         const suffix = text.substring(caret);
@@ -370,10 +396,13 @@ export default class SuggestionBox extends React.Component {
         // set the caret position after the next rendering
         window.requestAnimationFrame(() => {
             if (textbox.value === newValue) {
-                Utils.setCaretPosition(textbox, prefix.length + term.length + 1);
+                Utils.setCaretPosition(
+                    textbox,
+                    prefix.length + term.length + 1,
+                );
             }
         });
-    }
+    };
 
     replaceText = (term) => {
         const textbox = this.getTextbox();
@@ -388,7 +417,7 @@ export default class SuggestionBox extends React.Component {
             // don't call handleChange or we'll get into an event loop
             this.props.onChange(e);
         }
-    }
+    };
 
     handleCompleteWord = (term, matchedPretext) => {
         if (this.props.replaceAllInputOnSelect) {
@@ -417,15 +446,15 @@ export default class SuggestionBox extends React.Component {
                 provider.handleCompleteWord(term, matchedPretext);
             }
         }
-    }
+    };
 
     selectNext = () => {
         this.setSelectionByDelta(1);
-    }
+    };
 
     selectPrevious = () => {
         this.setSelectionByDelta(-1);
-    }
+    };
 
     setSelectionByDelta = (delta) => {
         let selectionIndex = this.state.terms.indexOf(this.state.selection);
@@ -434,6 +463,7 @@ export default class SuggestionBox extends React.Component {
             this.setState({
                 selection: '',
             });
+
             return;
         }
 
@@ -448,7 +478,7 @@ export default class SuggestionBox extends React.Component {
         this.setState({
             selection: this.state.terms[selectionIndex],
         });
-    }
+    };
 
     clear = () => {
         this.setState({
@@ -458,21 +488,28 @@ export default class SuggestionBox extends React.Component {
             items: [],
             components: [],
         });
-    }
+    };
 
     hasSuggestions = () => {
         return this.state.items.some((item) => !item.loading);
-    }
+    };
 
     handleKeyDown = (e) => {
-        if ((this.props.openWhenEmpty || this.props.value) && this.hasSuggestions()) {
+        if (
+            (this.props.openWhenEmpty || this.props.value) &&
+            this.hasSuggestions()
+        ) {
             if (Utils.isKeyPressed(e, KeyCodes.UP)) {
                 this.selectPrevious();
                 e.preventDefault();
             } else if (Utils.isKeyPressed(e, KeyCodes.DOWN)) {
                 this.selectNext();
                 e.preventDefault();
-            } else if (Utils.isKeyPressed(e, KeyCodes.ENTER) || (this.props.completeOnTab && Utils.isKeyPressed(e, KeyCodes.TAB))) {
+            } else if (
+                Utils.isKeyPressed(e, KeyCodes.ENTER) ||
+                (this.props.completeOnTab &&
+                    Utils.isKeyPressed(e, KeyCodes.TAB))
+            ) {
                 let matchedPretext = '';
                 for (let i = 0; i < this.state.terms.length; i++) {
                     if (this.state.terms[i] === this.state.selection) {
@@ -483,7 +520,10 @@ export default class SuggestionBox extends React.Component {
                 // If these don't match, the user typed quickly and pressed enter before we could
                 // update the pretext, so update the pretext before completing
                 if (this.pretext.endsWith(matchedPretext)) {
-                    this.handleCompleteWord(this.state.selection, matchedPretext);
+                    this.handleCompleteWord(
+                        this.state.selection,
+                        matchedPretext,
+                    );
                 } else {
                     clearTimeout(this.timeoutId);
                     this.nonDebouncedPretextChanged(this.pretext, true);
@@ -504,7 +544,7 @@ export default class SuggestionBox extends React.Component {
         } else if (this.props.onKeyDown) {
             this.props.onKeyDown(e);
         }
-    }
+    };
 
     handleReceivedSuggestions = (suggestions) => {
         const newComponents = [];
@@ -518,7 +558,10 @@ export default class SuggestionBox extends React.Component {
         let selection = this.state.selection;
         if (terms.length > 0) {
             // if the current selection is no longer in the map, select the first term in the list
-            if (!this.state.selection || terms.indexOf(this.state.selection) === -1) {
+            if (
+                !this.state.selection ||
+                terms.indexOf(this.state.selection) === -1
+            ) {
                 selection = terms[0];
             }
         } else if (this.state.selection) {
@@ -535,14 +578,17 @@ export default class SuggestionBox extends React.Component {
         });
 
         return {selection, matchedPretext: suggestions.matchedPretext};
-    }
+    };
 
     handleReceivedSuggestionsAndComplete = (suggestions) => {
-        const {selection, matchedPretext} = this.handleReceivedSuggestions(suggestions);
+        const {selection, matchedPretext} = this.handleReceivedSuggestions(
+            suggestions,
+        );
+
         if (selection) {
             this.handleCompleteWord(selection, matchedPretext);
         }
-    }
+    };
 
     nonDebouncedPretextChanged = (pretext, complete = false) => {
         this.pretext = pretext;
@@ -552,7 +598,8 @@ export default class SuggestionBox extends React.Component {
             callback = this.handleReceivedSuggestionsAndComplete;
         }
         for (const provider of this.props.providers) {
-            handled = provider.handlePretextChanged(pretext, callback) || handled;
+            handled =
+                provider.handlePretextChanged(pretext, callback) || handled;
 
             if (handled) {
                 this.setState({
@@ -566,21 +613,24 @@ export default class SuggestionBox extends React.Component {
         if (!handled) {
             this.clear();
         }
-    }
+    };
 
     debouncedPretextChanged = (pretext) => {
         clearTimeout(this.timeoutId);
-        this.timeoutId = setTimeout(() => this.nonDebouncedPretextChanged(pretext), Constants.SEARCH_TIMEOUT_MILLISECONDS);
+        this.timeoutId = setTimeout(
+            () => this.nonDebouncedPretextChanged(pretext),
+            Constants.SEARCH_TIMEOUT_MILLISECONDS,
+        );
     };
 
     handlePretextChanged = (pretext) => {
         this.pretext = pretext;
         this.debouncedPretextChanged(pretext);
-    }
+    };
 
     blur = () => {
         this.refs.input.blur();
-    }
+    };
 
     setContainerRef = (container) => {
         // Attach/detach event listeners that aren't supported by React
@@ -607,7 +657,8 @@ export default class SuggestionBox extends React.Component {
             ...props
         } = this.props;
 
-        const renderDividers = this.props.renderDividers && this.state.allowDividers;
+        const renderDividers =
+            this.props.renderDividers && this.state.allowDividers;
 
         // Don't pass props used by SuggestionBox
         Reflect.deleteProperty(props, 'providers');
@@ -646,33 +697,39 @@ export default class SuggestionBox extends React.Component {
                     onCompositionEnd={this.handleCompositionEnd}
                     onKeyDown={this.handleKeyDown}
                 />
-                {(this.props.openWhenEmpty || this.props.value.length >= this.props.requiredCharacters) && this.state.presentationType === 'text' &&
-                    <SuggestionListComponent
-                        ref='list'
-                        open={this.state.focused}
-                        pretext={this.pretext}
-                        location={listStyle}
-                        renderDividers={renderDividers}
-                        renderNoResults={renderNoResults}
-                        onCompleteWord={this.handleCompleteWord}
-                        cleared={this.state.cleared}
-                        matchedPretext={this.state.matchedPretext}
-                        items={this.state.items}
-                        terms={this.state.terms}
-                        selection={this.state.selection}
-                        components={this.state.components}
-                    />
-                }
-                {(this.props.openWhenEmpty || this.props.value.length >= this.props.requiredCharacters) && this.state.presentationType === 'date' &&
-                    <SuggestionDateComponent
-                        ref='date'
-                        items={this.state.items}
-                        terms={this.state.terms}
-                        components={this.state.components}
-                        matchedPretext={this.state.matchedPretext}
-                        onCompleteWord={this.handleCompleteWord}
-                    />
-                }
+
+                {(this.props.openWhenEmpty ||
+                    this.props.value.length >= this.props.requiredCharacters) &&
+                    this.state.presentationType === 'text' && (
+                        <SuggestionListComponent
+                            ref='list'
+                            open={this.state.focused}
+                            pretext={this.pretext}
+                            location={listStyle}
+                            renderDividers={renderDividers}
+                            renderNoResults={renderNoResults}
+                            onCompleteWord={this.handleCompleteWord}
+                            cleared={this.state.cleared}
+                            matchedPretext={this.state.matchedPretext}
+                            items={this.state.items}
+                            terms={this.state.terms}
+                            selection={this.state.selection}
+                            components={this.state.components}
+                        />
+                    )}
+
+                {(this.props.openWhenEmpty ||
+                    this.props.value.length >= this.props.requiredCharacters) &&
+                    this.state.presentationType === 'date' && (
+                        <SuggestionDateComponent
+                            ref='date'
+                            items={this.state.items}
+                            terms={this.state.terms}
+                            components={this.state.components}
+                            matchedPretext={this.state.matchedPretext}
+                            onCompleteWord={this.handleCompleteWord}
+                        />
+                    )}
             </div>
         );
     }

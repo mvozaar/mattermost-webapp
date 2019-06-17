@@ -41,7 +41,7 @@ export default class AutocompleteSelector extends React.PureComponent {
         }
 
         this.setState({input: e.target.value});
-    }
+    };
 
     handleSelected = (selected) => {
         this.setState({input: ''});
@@ -55,19 +55,19 @@ export default class AutocompleteSelector extends React.PureComponent {
                 this.suggestionRef.blur();
             }
         });
-    }
+    };
 
     setSuggestionRef = (ref) => {
         this.suggestionRef = ref;
-    }
+    };
 
     onFocus = () => {
         this.setState({focused: true});
-    }
+    };
 
     onBlur = () => {
         this.setState({focused: false});
-    }
+    };
 
     render() {
         const {
@@ -91,9 +91,7 @@ export default class AutocompleteSelector extends React.PureComponent {
         let labelContent;
         if (label) {
             labelContent = (
-                <label
-                    className={'control-label ' + labelClassName}
-                >
+                <label className={'control-label ' + labelClassName}>
                     {label}
                 </label>
             );
@@ -101,11 +99,7 @@ export default class AutocompleteSelector extends React.PureComponent {
 
         let helpTextContent;
         if (helpText) {
-            helpTextContent = (
-                <div className='help-text'>
-                    {helpText}
-                </div>
-            );
+            helpTextContent = <div className='help-text'>{helpText}</div>;
         }
 
         return (
@@ -131,6 +125,7 @@ export default class AutocompleteSelector extends React.PureComponent {
                         openWhenEmpty={true}
                         replaceAllInputOnSelect={true}
                     />
+
                     {helpTextContent}
                     {footer}
                 </div>

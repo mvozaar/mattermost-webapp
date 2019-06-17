@@ -11,7 +11,9 @@ import FloatingTimestamp from './floating_timestamp';
 function mapStateToProps(state, ownProps) {
     let postId = ownProps.postId;
     if (PostListUtils.isCombinedUserActivityPost(postId)) {
-        const combinedIds = PostListUtils.getPostIdsForCombinedUserActivityPost(postId);
+        const combinedIds = PostListUtils.getPostIdsForCombinedUserActivityPost(
+            postId,
+        );
 
         postId = combinedIds[combinedIds.length - 1];
     }

@@ -19,6 +19,7 @@ describe('components/SingleImageView', () => {
             width: 350,
             height: 200,
         },
+
         isRhsOpen: false,
         isEmbedVisible: true,
         actions: {
@@ -27,9 +28,7 @@ describe('components/SingleImageView', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <SingleImageView {...baseProps}/>
-        );
+        const wrapper = shallow(<SingleImageView {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
 
@@ -44,10 +43,9 @@ describe('components/SingleImageView', () => {
             name: 'name_svg',
             extension: 'svg',
         };
+
         const props = {...baseProps, fileInfo};
-        const wrapper = shallow(
-            <SingleImageView {...props}/>
-        );
+        const wrapper = shallow(<SingleImageView {...props} />);
 
         wrapper.setState({viewPortWidth: 300});
         expect(wrapper).toMatchSnapshot();
@@ -57,9 +55,7 @@ describe('components/SingleImageView', () => {
     });
 
     test('should match state on handleImageClick', () => {
-        const wrapper = shallow(
-            <SingleImageView {...baseProps}/>
-        );
+        const wrapper = shallow(<SingleImageView {...baseProps} />);
 
         wrapper.setState({showPreviewModal: false});
         wrapper.instance().handleImageClick({preventDefault: jest.fn()});
@@ -67,9 +63,7 @@ describe('components/SingleImageView', () => {
     });
 
     test('should match state on showPreviewModal', () => {
-        const wrapper = shallow(
-            <SingleImageView {...baseProps}/>
-        );
+        const wrapper = shallow(<SingleImageView {...baseProps} />);
 
         wrapper.setState({showPreviewModal: true});
         wrapper.instance().showPreviewModal();
@@ -85,19 +79,18 @@ describe('components/SingleImageView', () => {
             },
         };
 
-        const wrapper = shallow(
-            <SingleImageView {...props}/>
-        );
+        const wrapper = shallow(<SingleImageView {...props} />);
 
         wrapper.instance().toggleEmbedVisibility();
         expect(props.actions.toggleEmbedVisibility).toHaveBeenCalledTimes(1);
-        expect(props.actions.toggleEmbedVisibility).toBeCalledWith('original_post_id');
+        expect(props.actions.toggleEmbedVisibility).toBeCalledWith(
+            'original_post_id',
+        );
     });
 
     test('should set loaded state on callback of onImageLoaded on SizeAwareImage component', () => {
-        const wrapper = shallow(
-            <SingleImageView {...baseProps}/>
-        );
+        const wrapper = shallow(<SingleImageView {...baseProps} />);
+
         expect(wrapper.state('loaded')).toEqual(false);
         wrapper.find(SizeAwareImage).prop('onImageLoaded')();
         expect(wrapper.state('loaded')).toEqual(true);

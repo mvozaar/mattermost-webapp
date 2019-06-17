@@ -10,22 +10,23 @@ import FormattedMarkdownMessage from 'components/formatted_markdown_message.jsx'
 export default class SearchHint extends PureComponent {
     static propTypes = {
         withTitle: PropTypes.bool,
-    }
+    };
 
     render() {
         return (
             <React.Fragment>
-                {this.props.withTitle &&
-                <h4>
-                    <FormattedMessage
-                        id='search_bar.usage.title'
-                        defaultMessage='Search Options'
-                    />
-                </h4>
-                }
+                {this.props.withTitle && (
+                    <h4>
+                        <FormattedMessage
+                            id='search_bar.usage.title'
+                            defaultMessage='Search Options'
+                        />
+                    </h4>
+                )}
+
                 <FormattedMarkdownMessage
                     id='search_bar.usage.tips'
-                    defaultMessage='* Use **"quotation marks"** to search for phrases\n* Use **from:** to find posts from specific users and **in:** to find posts in specific channels\n* Use **on:** to find posts on a specific date\n* Use **before:** to find posts before a specific date\n* Use **after:** to find posts after a specific date'
+                    defaultMessage="* Use **'quotation marks'** to search for phrases\\n* Use **from:** to find posts from specific users and **in:** to find posts in specific channels\\n* Use **on:** to find posts on a specific date\\n* Use **before:** to find posts before a specific date\\n* Use **after:** to find posts after a specific date"
                 />
             </React.Fragment>
         );

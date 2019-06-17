@@ -20,16 +20,23 @@ describe('Login page', () => {
         cy.get('#login_section').should('be.visible');
 
         // * Check the title
-        cy.title().should('include', 'Mattermost');
+        cy.title().should('include', 'securCom');
     });
 
     it('should match elements, body', () => {
         // * Check elements in the body
         cy.get('#login_section').should('be.visible');
-        cy.get('#site_name').should('contain', 'Mattermost');
-        cy.get('#site_description').should('contain', 'All team communication in one place, searchable and accessible anywhere');
+        cy.get('#site_name').should('contain', 'securCom');
+        cy.get('#site_description').should(
+            'contain',
+            'All team communication in one place, searchable and accessible anywhere',
+        );
         cy.get('#loginId').should('be.visible');
-        cy.get('#loginId').should('have.attr', 'placeholder', 'Email or Username');
+        cy.get('#loginId').should(
+            'have.attr',
+            'placeholder',
+            'Email or Username',
+        );
         cy.get('#loginPassword').should('be.visible');
         cy.get('#loginPassword').should('have.attr', 'placeholder', 'Password');
         cy.get('#loginButton').should('be.visible');
@@ -40,28 +47,50 @@ describe('Login page', () => {
     it('should match elements, footer', () => {
         // * Check elements in the footer
         cy.get('#footer_section').should('be.visible');
-        cy.get('#company_name').should('contain', 'Mattermost');
+        cy.get('#company_name').should('contain', 'securCom');
         cy.get('#copyright').should('contain', '© 2015-');
-        cy.get('#copyright').should('contain', 'Mattermost, Inc.');
+        cy.get('#copyright').should('contain', 'securCom, Ltd.');
         cy.get('#about_link').should('contain', 'About');
-        cy.get('#about_link').should('have.attr', 'href', 'https://about.mattermost.com/default-about/');
+        cy.get('#about_link').should(
+            'have.attr',
+            'href',
+            'https://about.securCom.me/default-about/',
+        );
         cy.get('#privacy_link').should('contain', 'Privacy');
-        cy.get('#privacy_link').should('have.attr', 'href', 'https://about.mattermost.com/default-privacy-policy/');
+        cy.get('#privacy_link').should(
+            'have.attr',
+            'href',
+            'https://about.securCom.me/default-privacy-policy/',
+        );
         cy.get('#terms_link').should('contain', 'Terms');
-        cy.get('#terms_link').should('have.attr', 'href', 'https://about.mattermost.com/default-terms/');
+        cy.get('#terms_link').should(
+            'have.attr',
+            'href',
+            'https://about.securCom.me/default-terms/',
+        );
         cy.get('#help_link').should('contain', 'Help');
-        cy.get('#help_link').should('have.attr', 'href', 'https://about.mattermost.com/default-help/');
+        cy.get('#help_link').should(
+            'have.attr',
+            'href',
+            'https://about.securCom.me/default-help/',
+        );
     });
 
     it('should login then logout by user-1', () => {
         // 2. Enter "user-1" on Email or Username input box
-        cy.get('#loginId').should('be.visible').type('user-1');
+        cy.get('#loginId')
+            .should('be.visible')
+            .type('user-1');
 
         // 3. Enter "user-1" on "Password" input box
-        cy.get('#loginPassword').should('be.visible').type('user-1');
+        cy.get('#loginPassword')
+            .should('be.visible')
+            .type('user-1');
 
         // 4. Click "Sign in" button
-        cy.get('#loginButton').should('be.visible').click();
+        cy.get('#loginButton')
+            .should('be.visible')
+            .click();
 
         // * Check that the Signin button change with rotating icon and "Signing in..." text
         cy.get('#loadingSpinner').should('be.visible');
@@ -72,7 +101,9 @@ describe('Login page', () => {
 
         // 5. Click hamburger main menu button
         cy.get('#sidebarHeaderDropdownButton').click();
-        cy.get('#logout').should('be.visible').click();
+        cy.get('#logout')
+            .should('be.visible')
+            .click();
 
         // * Check that it logout successfully and it redirects into the login page
         cy.get('#login_section').should('be.visible');

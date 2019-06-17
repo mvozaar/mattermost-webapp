@@ -14,7 +14,10 @@ import {
 import {getUser, updateUserActive} from 'mattermost-redux/actions/users';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {getCurrentChannelId} from 'mattermost-redux/selectors/entities/channels';
-import {getCurrentRelativeTeamUrl, getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
+import {
+    getCurrentRelativeTeamUrl,
+    getCurrentTeam,
+} from 'mattermost-redux/selectors/entities/teams';
 
 import {removeUserFromTeamAndGetStats} from 'actions/team_actions.jsx';
 
@@ -31,17 +34,24 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getMyTeamMembers,
-            getMyTeamUnreads,
-            getUser,
-            getTeamStats,
-            getChannelStats,
-            updateUserActive,
-            updateTeamMemberSchemeRoles,
-            removeUserFromTeamAndGetStats,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getMyTeamMembers,
+                getMyTeamUnreads,
+                getUser,
+                getTeamStats,
+                getChannelStats,
+                updateUserActive,
+                updateTeamMemberSchemeRoles,
+                removeUserFromTeamAndGetStats,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamMembersDropdown);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TeamMembersDropdown);

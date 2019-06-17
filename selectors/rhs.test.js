@@ -9,9 +9,13 @@ describe('Selectors.Rhs', () => {
     describe('should return the open state of the sidebar', () => {
         [true, false].forEach((expected) => {
             it(`when open is ${expected}`, () => {
-                const state = {views: {rhs: {
-                    isSidebarOpen: expected,
-                }}};
+                const state = {
+                    views: {
+                        rhs: {
+                            isSidebarOpen: expected,
+                        },
+                    },
+                };
 
                 assert.deepEqual(expected, Selectors.getIsRhsOpen(state));
             });
@@ -21,9 +25,13 @@ describe('Selectors.Rhs', () => {
     describe('should return the open state of the sidebar menu', () => {
         [true, false].forEach((expected) => {
             it(`when open is ${expected}`, () => {
-                const state = {views: {rhs: {
-                    isMenuOpen: expected,
-                }}};
+                const state = {
+                    views: {
+                        rhs: {
+                            isMenuOpen: expected,
+                        },
+                    },
+                };
 
                 assert.deepEqual(expected, Selectors.getIsRhsMenuOpen(state));
             });

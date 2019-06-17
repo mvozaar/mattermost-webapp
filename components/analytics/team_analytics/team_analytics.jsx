@@ -21,13 +21,15 @@ import FormattedAdminHeader from 'components/widgets/admin_console/formatted_adm
 
 import {getMonthLong} from 'utils/i18n';
 
-import {formatPostsPerDayData, formatUsersWithPostsPerDayData} from '../format.jsx';
+import {
+    formatPostsPerDayData,
+    formatUsersWithPostsPerDayData,
+} from '../format.jsx';
 
 const LAST_ANALYTICS_TEAM = 'last_analytics_team';
 
 export default class TeamAnalytics extends React.Component {
     static propTypes = {
-
         /*
          * Array of team objects
          */
@@ -40,12 +42,11 @@ export default class TeamAnalytics extends React.Component {
 
         /**
          * The locale of the current user
-          */
+         */
         locale: PropTypes.string.isRequired,
         stats: PropTypes.object.isRequired,
 
         actions: PropTypes.shape({
-
             /*
              * Function to get teams
              */
@@ -56,7 +57,7 @@ export default class TeamAnalytics extends React.Component {
              */
             getProfilesInTeam: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -76,7 +77,8 @@ export default class TeamAnalytics extends React.Component {
         this.props.actions.getTeams(0, 1000);
     }
 
-    UNSAFE_componentWillUpdate(nextProps, nextState) { // eslint-disable-line camelcase
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
+        // eslint-disable-line camelcase
         if (nextState.team && nextState.team !== this.state.team) {
             this.getData(nextState.team.id);
         }
@@ -86,14 +88,27 @@ export default class TeamAnalytics extends React.Component {
         AdminActions.getStandardAnalytics(id);
         AdminActions.getPostsPerDayAnalytics(id);
         AdminActions.getUsersPerDayAnalytics(id);
-        const {data: recentlyActiveUsers} = await this.props.actions.getProfilesInTeam(id, 0, General.PROFILE_CHUNK_SIZE, 'last_activity_at');
-        const {data: newUsers} = await this.props.actions.getProfilesInTeam(id, 0, General.PROFILE_CHUNK_SIZE, 'create_at');
+        const {
+            data: recentlyActiveUsers,
+        } = await this.props.actions.getProfilesInTeam(
+            id,
+            0,
+            General.PROFILE_CHUNK_SIZE,
+            'last_activity_at',
+        );
+
+        const {data: newUsers} = await this.props.actions.getProfilesInTeam(
+            id,
+            0,
+            General.PROFILE_CHUNK_SIZE,
+            'create_at',
+        );
 
         this.setState({
             recentlyActiveUsers,
             newUsers,
         });
-    }
+    };
 
     handleTeamChange = (e) => {
         const teamId = e.target.value;
@@ -110,11 +125,15 @@ export default class TeamAnalytics extends React.Component {
         });
 
         BrowserStore.setGlobalItem(LAST_ANALYTICS_TEAM, teamId);
-    }
+    };
 
     render() {
-        if (this.props.teams.length === 0 || !this.state.team || !this.props.stats[this.state.team.id]) {
-            return <LoadingScreen/>;
+        if (
+            this.props.teams.length === 0 ||
+            !this.state.team ||
+            !this.props.stats[this.state.team.id]
+        ) {
+            return <LoadingScreen />;
         }
 
         if (this.state.team == null) {
@@ -131,8 +150,13 @@ export default class TeamAnalytics extends React.Component {
         }
 
         const stats = this.props.stats[this.state.team.id];
-        const postCountsDay = formatPostsPerDayData(stats[StatTypes.POST_PER_DAY]);
-        const userCountsWithPostsDay = formatUsersWithPostsPerDayData(stats[StatTypes.USERS_WITH_POSTS_PER_DAY]);
+        const postCountsDay = formatPostsPerDayData(
+            stats[StatTypes.POST_PER_DAY],
+        );
+
+        const userCountsWithPostsDay = formatUsersWithPostsPerDayData(
+            stats[StatTypes.USERS_WITH_POSTS_PER_DAY],
+        );
 
         let banner = (
             <div className='banner'>
@@ -154,7 +178,7 @@ export default class TeamAnalytics extends React.Component {
                     <div className='banner__content'>
                         <FormattedMarkdownMessage
                             id='analytics.system.infoAndSkippedIntensiveQueries'
-                            defaultMessage='Only data for the chosen team is calculated. Excludes posts made in direct message channels, which are not tied to a team. \n \n Some statistics have been omitted because they put too much load on the system to calculate. See [https://docs.mattermost.com/administration/statistics.html](!https://docs.mattermost.com/administration/statistics.html) for more details.'
+                            defaultMessage='Only data for the chosen team is calculated. Excludes posts made in direct message channels, which are not tied to a team. \\n \\n Some statistics have been omitted because they put too much load on the system to calculate. See [https://docs.securCom.me/administration/statistics.html](!https://docs.securCom.me/administration/statistics.html) for more details.'
                         />
                     </div>
                 </div>
@@ -208,29 +232,35 @@ export default class TeamAnalytics extends React.Component {
             );
         }
 
-        const recentActiveUsers = formatRecentUsersData(this.state.recentlyActiveUsers, this.props.locale);
-        const newlyCreatedUsers = formatNewUsersData(this.state.newUsers, this.props.locale);
+        const recentActiveUsers = formatRecentUsersData(
+            this.state.recentlyActiveUsers,
+            this.props.locale,
+        );
 
-        const teams = this.props.teams.sort((a, b) => {
-            const aName = a.display_name.toUpperCase();
-            const bName = b.display_name.toUpperCase();
-            if (aName === bName) {
-                return 0;
-            }
-            if (aName > bName) {
-                return 1;
-            }
-            return -1;
-        }).map((team) => {
-            return (
-                <option
-                    key={team.id}
-                    value={team.id}
-                >
-                    {team.display_name}
-                </option>
-            );
-        });
+        const newlyCreatedUsers = formatNewUsersData(
+            this.state.newUsers,
+            this.props.locale,
+        );
+
+        const teams = this.props.teams
+            .sort((a, b) => {
+                const aName = a.display_name.toUpperCase();
+                const bName = b.display_name.toUpperCase();
+                if (aName === bName) {
+                    return 0;
+                }
+                if (aName > bName) {
+                    return 1;
+                }
+                return -1;
+            })
+            .map((team) => {
+                return (
+                    <option key={team.id} value={team.id}>
+                        {team.display_name}
+                    </option>
+                );
+            });
 
         return (
             <div className='wrapper--fixed team_statistics'>
@@ -266,6 +296,7 @@ export default class TeamAnalytics extends React.Component {
                         icon='fa-users'
                         count={stats[StatTypes.TOTAL_USERS]}
                     />
+
                     <StatisticCount
                         title={
                             <FormattedMessage
@@ -276,6 +307,7 @@ export default class TeamAnalytics extends React.Component {
                         icon='fa-globe'
                         count={stats[StatTypes.TOTAL_PUBLIC_CHANNELS]}
                     />
+
                     <StatisticCount
                         title={
                             <FormattedMessage
@@ -286,6 +318,7 @@ export default class TeamAnalytics extends React.Component {
                         icon='fa-lock'
                         count={stats[StatTypes.TOTAL_PRIVATE_GROUPS]}
                     />
+
                     {totalPostsCount}
                 </div>
                 {postTotalGraph}
@@ -300,6 +333,7 @@ export default class TeamAnalytics extends React.Component {
                         }
                         data={recentActiveUsers}
                     />
+
                     <TableChart
                         title={
                             <FormattedMessage
@@ -334,6 +368,7 @@ export function formatRecentUsersData(data, locale) {
                 minute='2-digit'
             />
         );
+
         item.tip = user.email;
 
         return item;
@@ -361,6 +396,7 @@ export function formatNewUsersData(data, locale) {
                 minute='2-digit'
             />
         );
+
         item.tip = user.email;
 
         return item;

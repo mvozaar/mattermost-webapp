@@ -7,7 +7,12 @@ import {shallow} from 'enzyme';
 import GroupTeamsAndChannelsRow from 'components/admin_console/group_settings/group_details/group_teams_and_channels_row.jsx';
 
 describe('components/admin_console/group_settings/group_details/GroupTeamsAndChannelsRow', () => {
-    for (const type of ['public-team', 'private-team', 'public-channel', 'private-channel']) {
+    for (const type of [
+        'public-team',
+        'private-team',
+        'public-channel',
+        'private-channel',
+    ]) {
         test('should match snapshot, for ' + type, () => {
             const wrapper = shallow(
                 <GroupTeamsAndChannelsRow
@@ -18,8 +23,9 @@ describe('components/admin_console/group_settings/group_details/GroupTeamsAndCha
                     collapsed={false}
                     onRemoveItem={jest.fn()}
                     onToggleCollapse={jest.fn()}
-                />
+                />,
             );
+
             expect(wrapper).toMatchSnapshot();
         });
     }
@@ -33,8 +39,9 @@ describe('components/admin_console/group_settings/group_details/GroupTeamsAndCha
                 collapsed={false}
                 onRemoveItem={jest.fn()}
                 onToggleCollapse={jest.fn()}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -48,8 +55,9 @@ describe('components/admin_console/group_settings/group_details/GroupTeamsAndCha
                 collapsed={true}
                 onRemoveItem={jest.fn()}
                 onToggleCollapse={jest.fn()}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -64,8 +72,9 @@ describe('components/admin_console/group_settings/group_details/GroupTeamsAndCha
                 collapsed={true}
                 onRemoveItem={jest.fn()}
                 onToggleCollapse={onToggleCollapse}
-            />
+            />,
         );
+
         wrapper.find('.fa-caret-right').simulate('click');
         expect(onToggleCollapse).toBeCalledWith('xxxxxxxxxxxxxxxxxxxxxxxxxx');
     });
@@ -81,12 +90,17 @@ describe('components/admin_console/group_settings/group_details/GroupTeamsAndCha
                 collapsed={true}
                 onRemoveItem={onRemoveItem}
                 onToggleCollapse={jest.fn()}
-            />
+            />,
         );
+
         wrapper.find('.btn-link').simulate('click');
         expect(wrapper.instance().state.showConfirmationModal).toEqual(true);
         wrapper.instance().removeItem();
-        expect(onRemoveItem).toBeCalledWith('xxxxxxxxxxxxxxxxxxxxxxxxxx', 'public-team');
+        expect(onRemoveItem).toBeCalledWith(
+            'xxxxxxxxxxxxxxxxxxxxxxxxxx',
+            'public-team',
+        );
+
         expect(wrapper.instance().state.showConfirmationModal).toEqual(false);
     });
 });

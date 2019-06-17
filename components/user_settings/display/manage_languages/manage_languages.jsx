@@ -30,7 +30,7 @@ export default class ManageLanguage extends React.Component {
 
     setLanguage = (e) => {
         this.setState({locale: e.target.value});
-    }
+    };
 
     changeLanguage = () => {
         if (this.props.user.locale === this.state.locale) {
@@ -41,58 +41,58 @@ export default class ManageLanguage extends React.Component {
                 locale: this.state.locale,
             });
         }
-    }
+    };
 
     submitUser = (user) => {
         this.setState({isSaving: true});
 
-        this.props.actions.updateMe(user).
-            then(({data, error: err}) => {
-                if (data) {
-                    // Do nothing since changing the locale essentially refreshes the page
-                } else if (err) {
-                    let serverError;
-                    if (err.message) {
-                        serverError = err.message;
-                    } else {
-                        serverError = err;
-                    }
-                    this.setState({serverError, isSaving: false});
+        this.props.actions.updateMe(user).then(({data, error: err}) => {
+            if (data) {
+                // Do nothing since changing the locale essentially refreshes the page
+            } else if (err) {
+                let serverError;
+                if (err.message) {
+                    serverError = err.message;
+                } else {
+                    serverError = err;
                 }
-            });
-    }
+                this.setState({serverError, isSaving: false});
+            }
+        });
+    };
 
     render() {
         let serverError;
         if (this.state.serverError) {
-            serverError = <label className='has-error'>{this.state.serverError}</label>;
+            serverError = (
+                <label className='has-error'>{this.state.serverError}</label>
+            );
         }
 
         const options = [];
         const locales = I18n.getLanguages();
 
-        const languages = Object.keys(locales).map((l) => {
-            return {
-                value: locales[l].value,
-                name: locales[l].name,
-                order: locales[l].order,
-            };
-        }).sort((a, b) => a.order - b.order);
+        const languages = Object.keys(locales)
+            .map((l) => {
+                return {
+                    value: locales[l].value,
+                    name: locales[l].name,
+                    order: locales[l].order,
+                };
+            })
+            .sort((a, b) => a.order - b.order);
 
         languages.forEach((lang) => {
             options.push(
-                <option
-                    key={lang.value}
-                    value={lang.value}
-                >
+                <option key={lang.value} value={lang.value}>
                     {lang.name}
-                </option>
+                </option>,
             );
         });
 
         const input = (
             <div key='changeLanguage'>
-                <br/>
+                <br />
                 <label className='control-label'>
                     <FormattedMessage
                         id='user.settings.languages.change'
@@ -112,10 +112,10 @@ export default class ManageLanguage extends React.Component {
                     {serverError}
                 </div>
                 <div>
-                    <br/>
+                    <br />
                     <FormattedMarkdownMessage
                         id='user.settings.languages.promote'
-                        defaultMessage='Select which language Mattermost displays in the user interface.\n \nWould you like to help with translations? Join the [Mattermost Translation Server](!http://translate.mattermost.com/) to contribute.'
+                        defaultMessage='Select which language SCC displays in the user interface.\\n \\nWould you like to help with translations? Join the [securCom Translation Server](!http://translate.securCom.me/) to contribute.'
                     />
                 </div>
             </div>

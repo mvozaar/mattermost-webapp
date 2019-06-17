@@ -15,6 +15,7 @@ describe('components/AnnouncementBar', () => {
         license: {
             id: '',
         },
+
         siteURL: '',
         sendEmailNotifications: true,
         enablePreviewMode: false,
@@ -32,40 +33,37 @@ describe('components/AnnouncementBar', () => {
 
     test('should match snapshot, bar showing', () => {
         const props = baseProps;
-        const wrapper = shallow(
-            <AnnouncementBar {...props}/>
-        );
+        const wrapper = shallow(<AnnouncementBar {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, bar not showing', () => {
         const props = {...baseProps, enableBanner: false};
-        const wrapper = shallow(
-            <AnnouncementBar {...props}/>
-        );
+        const wrapper = shallow(<AnnouncementBar {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, bar showing, no dismissal', () => {
         const props = {...baseProps, allowBannerDismissal: false};
-        const wrapper = shallow(
-            <AnnouncementBar {...props}/>
-        );
+        const wrapper = shallow(<AnnouncementBar {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, props change', () => {
         const props = baseProps;
-        const wrapper = shallow(
-            <AnnouncementBar {...props}/>
-        );
+        const wrapper = shallow(<AnnouncementBar {...props} />);
 
         expect(wrapper).toMatchSnapshot();
 
-        const newProps = {...baseProps, bannerColor: 'yellow', bannerTextColor: 'red'};
+        const newProps = {
+            ...baseProps,
+            bannerColor: 'yellow',
+            bannerTextColor: 'red',
+        };
+
         wrapper.setProps(newProps);
         expect(wrapper).toMatchSnapshot();
 
@@ -80,15 +78,18 @@ describe('components/AnnouncementBar', () => {
 
     test('should match snapshot, dismissal', () => {
         const props = baseProps;
-        const wrapper = shallow(
-            <AnnouncementBar {...props}/>
-        );
+        const wrapper = shallow(<AnnouncementBar {...props} />);
 
         // Banner should show
         expect(wrapper).toMatchSnapshot();
 
         // Banner should remain hidden
-        const newProps = {...baseProps, bannerColor: 'yellow', bannerTextColor: 'red'};
+        const newProps = {
+            ...baseProps,
+            bannerColor: 'yellow',
+            bannerTextColor: 'red',
+        };
+
         wrapper.setProps(newProps);
         expect(wrapper).toMatchSnapshot();
 

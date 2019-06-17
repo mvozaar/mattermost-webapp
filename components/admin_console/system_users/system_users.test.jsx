@@ -26,9 +26,13 @@ describe('components/admin_console/system_users', () => {
             getTeams: jest.fn().mockImplementation(() => Promise.resolve()),
             getTeamStats: jest.fn().mockImplementation(() => Promise.resolve()),
             getUser: jest.fn().mockImplementation(() => Promise.resolve()),
-            getUserAccessToken: jest.fn().mockImplementation(() => Promise.resolve()),
+            getUserAccessToken: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve()),
             loadProfilesAndTeamMembers: jest.fn(),
-            setSystemUsersSearch: jest.fn().mockImplementation(() => Promise.resolve()),
+            setSystemUsersSearch: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve()),
             loadProfilesWithoutTeam: jest.fn().mockResolvedValue(),
             getProfiles: jest.fn().mockResolvedValue(),
         },
@@ -36,35 +40,56 @@ describe('components/admin_console/system_users', () => {
 
     test('should match default snapshot', () => {
         const props = defaultProps;
-        const wrapper = shallow(<SystemUsers {...props}/>);
+        const wrapper = shallow(<SystemUsers {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('loadDataForTeam() should have called getProfiles', async () => {
         const getProfiles = jest.fn().mockResolvedValue();
-        const props = {...defaultProps, actions: {...defaultProps.actions, getProfiles}};
-        const wrapper = shallow(<SystemUsers {...props}/>);
+        const props = {
+            ...defaultProps,
+            actions: {...defaultProps.actions, getProfiles},
+        };
+
+        const wrapper = shallow(<SystemUsers {...props} />);
 
         wrapper.setState({loading: true});
 
-        await wrapper.instance().loadDataForTeam(SearchUserTeamFilter.ALL_USERS, '');
+        await wrapper
+            .instance()
+            .loadDataForTeam(SearchUserTeamFilter.ALL_USERS, '');
 
         expect(getProfiles).toHaveBeenCalled();
-        expect(getProfiles).toHaveBeenCalledWith(0, Constants.PROFILE_CHUNK_SIZE, {});
+        expect(getProfiles).toHaveBeenCalledWith(
+            0,
+            Constants.PROFILE_CHUNK_SIZE,
+            {},
+        );
+
         expect(wrapper.state().loading).toEqual(false);
     });
 
     test('loadDataForTeam() should have called loadProfilesWithoutTeam', async () => {
         const loadProfilesWithoutTeam = jest.fn().mockResolvedValue();
-        const props = {...defaultProps, actions: {...defaultProps.actions, loadProfilesWithoutTeam}};
-        const wrapper = shallow(<SystemUsers {...props}/>);
+        const props = {
+            ...defaultProps,
+            actions: {...defaultProps.actions, loadProfilesWithoutTeam},
+        };
+
+        const wrapper = shallow(<SystemUsers {...props} />);
 
         wrapper.setState({loading: true});
 
-        await wrapper.instance().loadDataForTeam(SearchUserTeamFilter.NO_TEAM, '');
+        await wrapper
+            .instance()
+            .loadDataForTeam(SearchUserTeamFilter.NO_TEAM, '');
 
         expect(loadProfilesWithoutTeam).toHaveBeenCalled();
-        expect(loadProfilesWithoutTeam).toHaveBeenCalledWith(0, Constants.PROFILE_CHUNK_SIZE);
+        expect(loadProfilesWithoutTeam).toHaveBeenCalledWith(
+            0,
+            Constants.PROFILE_CHUNK_SIZE,
+        );
+
         expect(wrapper.state().loading).toEqual(false);
     });
 
@@ -75,7 +100,8 @@ describe('components/admin_console/system_users', () => {
             teamId: SearchUserTeamFilter.ALL_USERS,
             actions: {...defaultProps.actions, getProfiles},
         };
-        const wrapper = shallow(<SystemUsers {...props}/>);
+
+        const wrapper = shallow(<SystemUsers {...props} />);
 
         wrapper.setState({loading: true});
 
@@ -93,7 +119,8 @@ describe('components/admin_console/system_users', () => {
             teamId: SearchUserTeamFilter.NO_TEAM,
             actions: {...defaultProps.actions, loadProfilesWithoutTeam},
         };
-        const wrapper = shallow(<SystemUsers {...props}/>);
+
+        const wrapper = shallow(<SystemUsers {...props} />);
 
         wrapper.setState({loading: true});
 

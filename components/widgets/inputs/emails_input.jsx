@@ -26,7 +26,7 @@ export default class EmailsInput extends React.Component {
         noOptionsMessageDefault: PropTypes.string,
         validAddressMessageId: PropTypes.string,
         validAddressMessageDefault: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         noOptionsMessageId: t('widgets.emails_input.invalid_email'),
@@ -37,7 +37,7 @@ export default class EmailsInput extends React.Component {
 
     getCreateLabel = (value) => (
         <React.Fragment>
-            <MailPlusIcon className='mail-plus-icon'/>
+            <MailPlusIcon className='mail-plus-icon' />
             <FormattedMarkdownMessage
                 key='widgets.emails_input.valid_email'
                 id={this.props.validAddressMessageId}
@@ -56,12 +56,12 @@ export default class EmailsInput extends React.Component {
                 />
             </components.NoOptionsMessage>
         );
-    }
+    };
 
     MultiValueLabel = (props) => (
         <React.Fragment>
-            <MailIcon className='mail-icon'/>
-            <components.MultiValueLabel {...props}/>
+            <MailIcon className='mail-icon' />
+            <components.MultiValueLabel {...props} />
         </React.Fragment>
     );
 
@@ -75,7 +75,7 @@ export default class EmailsInput extends React.Component {
         if (this.props.onChange) {
             this.props.onChange(value.map((v) => v.value));
         }
-    }
+    };
 
     render() {
         const values = this.props.value.map((v) => ({label: v, value: v}));

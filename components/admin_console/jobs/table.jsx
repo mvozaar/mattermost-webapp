@@ -3,14 +3,19 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import {FormattedDate, FormattedMessage, FormattedTime, injectIntl, intlShape} from 'react-intl';
+import {
+    FormattedDate,
+    FormattedMessage,
+    FormattedTime,
+    injectIntl,
+    intlShape,
+} from 'react-intl';
 
 import {JobStatuses} from 'utils/constants.jsx';
 import * as Utils from 'utils/utils.jsx';
 
 class JobTable extends React.PureComponent {
     static propTypes = {
-
         /**
          * Used for formatting dates
          */
@@ -62,14 +67,15 @@ class JobTable extends React.PureComponent {
         };
     }
 
-    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
+    UNSAFE_componentWillMount() {
+        // eslint-disable-line camelcase
         this.interval = setInterval(this.reload, 15000);
     }
 
     componentDidMount() {
-        this.props.actions.getJobsByType(this.props.jobType).then(
-            () => this.setState({loading: false})
-        );
+        this.props.actions
+            .getJobsByType(this.props.jobType)
+            .then(() => this.setState({loading: false}));
     }
 
     componentWillUnmount() {
@@ -84,7 +90,12 @@ class JobTable extends React.PureComponent {
             return (
                 <span
                     className='status-icon-warning'
-                    title={formatMessage({id: 'admin.jobTable.jobId', defaultMessage: 'Job ID: '}) + job.id}
+                    title={
+                        formatMessage({
+                            id: 'admin.jobTable.jobId',
+                            defaultMessage: 'Job ID: ',
+                        }) + job.id
+                    }
                 >
                     <FormattedMessage
                         id='admin.jobTable.statusPending'
@@ -96,7 +107,12 @@ class JobTable extends React.PureComponent {
             return (
                 <span
                     className='status-icon-warning'
-                    title={formatMessage({id: 'admin.jobTable.jobId', defaultMessage: 'Job ID: '}) + job.id}
+                    title={
+                        formatMessage({
+                            id: 'admin.jobTable.jobId',
+                            defaultMessage: 'Job ID: ',
+                        }) + job.id
+                    }
                 >
                     <FormattedMessage
                         id='admin.jobTable.statusInProgress'
@@ -108,7 +124,12 @@ class JobTable extends React.PureComponent {
             return (
                 <span
                     className='status-icon-success'
-                    title={formatMessage({id: 'admin.jobTable.jobId', defaultMessage: 'Job ID: '}) + job.id}
+                    title={
+                        formatMessage({
+                            id: 'admin.jobTable.jobId',
+                            defaultMessage: 'Job ID: ',
+                        }) + job.id
+                    }
                 >
                     <FormattedMessage
                         id='admin.jobTable.statusSuccess'
@@ -120,7 +141,12 @@ class JobTable extends React.PureComponent {
             return (
                 <span
                     className='status-icon-error'
-                    title={formatMessage({id: 'admin.jobTable.jobId', defaultMessage: 'Job ID: '}) + job.id}
+                    title={
+                        formatMessage({
+                            id: 'admin.jobTable.jobId',
+                            defaultMessage: 'Job ID: ',
+                        }) + job.id
+                    }
                 >
                     <FormattedMessage
                         id='admin.jobTable.statusError'
@@ -132,7 +158,12 @@ class JobTable extends React.PureComponent {
             return (
                 <span
                     className='status-icon-warning'
-                    title={formatMessage({id: 'admin.jobTable.jobId', defaultMessage: 'Job ID: '}) + job.id}
+                    title={
+                        formatMessage({
+                            id: 'admin.jobTable.jobId',
+                            defaultMessage: 'Job ID: ',
+                        }) + job.id
+                    }
                 >
                     <FormattedMessage
                         id='admin.jobTable.statusCanceling'
@@ -144,7 +175,12 @@ class JobTable extends React.PureComponent {
             return (
                 <span
                     className='status-icon-error'
-                    title={formatMessage({id: 'admin.jobTable.jobId', defaultMessage: 'Job ID: '}) + job.id}
+                    title={
+                        formatMessage({
+                            id: 'admin.jobTable.jobId',
+                            defaultMessage: 'Job ID: ',
+                        }) + job.id
+                    }
                 >
                     <FormattedMessage
                         id='admin.jobTable.statusCanceled'
@@ -155,9 +191,18 @@ class JobTable extends React.PureComponent {
         }
 
         return (
-            <span title={formatMessage({id: 'admin.jobTable.jobId', defaultMessage: 'Job ID: '}) + job.id}>{job.status}</span>
+            <span
+                title={
+                    formatMessage({
+                        id: 'admin.jobTable.jobId',
+                        defaultMessage: 'Job ID: ',
+                    }) + job.id
+                }
+            >
+                {job.status}
+            </span>
         );
-    }
+    };
 
     getExtraInfoText = (job) => {
         if (job.data && job.data.error && job.data.error.length > 0) {
@@ -168,8 +213,8 @@ class JobTable extends React.PureComponent {
             return this.props.getExtraInfoText(job);
         }
 
-        return <span/>;
-    }
+        return <span />;
+    };
 
     getRunLength = (job) => {
         let millis = job.last_activity_at - job.start_at;
@@ -180,15 +225,24 @@ class JobTable extends React.PureComponent {
             }
         }
 
-        let lastActivity = Utils.localizeMessage('admin.jobTable.lastActivityAt', 'Last Activity: ') + '--';
+        let lastActivity =
+            Utils.localizeMessage(
+                'admin.jobTable.lastActivityAt',
+                'Last Activity: ',
+            ) + '--';
 
         if (job.last_activity_at > 0) {
-            lastActivity = Utils.localizeMessage('admin.jobTable.lastActivityAt', 'Last Activity: ') +
+            lastActivity =
+                Utils.localizeMessage(
+                    'admin.jobTable.lastActivityAt',
+                    'Last Activity: ',
+                ) +
                 this.props.intl.formatDate(new Date(job.last_activity_at), {
                     year: 'numeric',
                     month: 'short',
                     day: '2-digit',
-                }) + ' - ' +
+                }) +
+                ' - ' +
                 this.props.intl.formatTime(new Date(job.last_activity_at), {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -200,37 +254,40 @@ class JobTable extends React.PureComponent {
         var minutes = Math.round(millis / (1000 * 60));
 
         if (millis <= 0 || job.status === JobStatuses.CANCELED) {
-            return (
-                <span className='whitespace--nowrap'>{'--'}</span>
-            );
+            return <span className='whitespace--nowrap'>{'--'}</span>;
         }
 
         if (seconds <= 120) {
             return (
-                <span
-                    className='whitespace--nowrap'
-                    title={lastActivity}
-                >
-                    {seconds + Utils.localizeMessage('admin.jobTable.runLengthSeconds', ' seconds')}
+                <span className='whitespace--nowrap' title={lastActivity}>
+                    {seconds +
+                        Utils.localizeMessage(
+                            'admin.jobTable.runLengthSeconds',
+                            ' seconds',
+                        )}
                 </span>
             );
         }
 
         return (
-            <span
-                className='whitespace--nowrap'
-                title={lastActivity}
-            >
-                {minutes + Utils.localizeMessage('admin.jobTable.runLengthMinutes', ' minutes')}
+            <span className='whitespace--nowrap' title={lastActivity}>
+                {minutes +
+                    Utils.localizeMessage(
+                        'admin.jobTable.runLengthMinutes',
+                        ' minutes',
+                    )}
             </span>
         );
-    }
+    };
 
     getFinishAt = (status, millis) => {
-        if (millis === 0 || status === JobStatuses.PENDING || status === JobStatuses.IN_PROGRESS || status === JobStatuses.CANCEL_REQUESTED) {
-            return (
-                <span className='whitespace--nowrap'>{'--'}</span>
-            );
+        if (
+            millis === 0 ||
+            status === JobStatuses.PENDING ||
+            status === JobStatuses.IN_PROGRESS ||
+            status === JobStatuses.CANCEL_REQUESTED
+        ) {
+            return <span className='whitespace--nowrap'>{'--'}</span>;
         }
 
         const date = new Date(millis);
@@ -243,26 +300,21 @@ class JobTable extends React.PureComponent {
                     month='short'
                     year='numeric'
                 />
+
                 {' - '}
-                <FormattedTime
-                    value={date}
-                    hour='2-digit'
-                    minute='2-digit'
-                />
+                <FormattedTime value={date} hour='2-digit' minute='2-digit' />
             </span>
         );
-    }
+    };
 
     reload = () => {
         this.setState({loading: true});
 
-        this.props.actions.getJobsByType(this.props.jobType).then(
-            () => {
-                this.setState({
-                    loading: false,
-                });
-            }
-        );
+        this.props.actions.getJobsByType(this.props.jobType).then(() => {
+            this.setState({
+                loading: false,
+            });
+        });
     };
 
     handleCancelJob = async (e) => {
@@ -286,13 +338,20 @@ class JobTable extends React.PureComponent {
         const formatMessage = this.props.intl.formatMessage;
         let cancelButton = null;
 
-        if (!this.props.disabled && (job.status === JobStatuses.PENDING || job.status === JobStatuses.IN_PROGRESS)) {
+        if (
+            !this.props.disabled &&
+            (job.status === JobStatuses.PENDING ||
+                job.status === JobStatuses.IN_PROGRESS)
+        ) {
             cancelButton = (
                 <span
                     data-job-id={job.id}
                     onClick={this.handleCancelJob}
                     className='job-table__cancel-button'
-                    title={formatMessage({id: 'admin.jobTable.cancelButton', defaultMessage: 'Cancel'})}
+                    title={formatMessage({
+                        id: 'admin.jobTable.cancelButton',
+                        defaultMessage: 'Cancel',
+                    })}
                 >
                     {'×'}
                 </span>
@@ -300,21 +359,24 @@ class JobTable extends React.PureComponent {
         }
 
         return cancelButton;
-    }
+    };
 
     render() {
         var items = this.props.jobs.map((job) => {
             return (
                 <tr key={job.id}>
-                    <td
-                        width='30px'
-                        className='whitespace--nowrap text-center'
-                    >
+                    <td width='30px' className='whitespace--nowrap text-center'>
                         {this.getCancelButton(job)}
                     </td>
-                    <td className='whitespace--nowrap'>{this.getStatus(job)}</td>
-                    <td className='whitespace--nowrap'>{this.getFinishAt(job.status, job.last_activity_at)}</td>
-                    <td className='whitespace--nowrap'>{this.getRunLength(job)}</td>
+                    <td className='whitespace--nowrap'>
+                        {this.getStatus(job)}
+                    </td>
+                    <td className='whitespace--nowrap'>
+                        {this.getFinishAt(job.status, job.last_activity_at)}
+                    </td>
+                    <td className='whitespace--nowrap'>
+                        {this.getRunLength(job)}
+                    </td>
                     <td>{this.getExtraInfoText(job)}</td>
                 </tr>
             );
@@ -340,7 +402,7 @@ class JobTable extends React.PureComponent {
                     <table className='table'>
                         <thead>
                             <tr>
-                                <th width='30px'/>
+                                <th width='30px' />
                                 <th>
                                     <FormattedMessage
                                         id='admin.jobTable.headerStatus'
@@ -367,9 +429,7 @@ class JobTable extends React.PureComponent {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {items}
-                        </tbody>
+                        <tbody>{items}</tbody>
                     </table>
                 </div>
             </div>

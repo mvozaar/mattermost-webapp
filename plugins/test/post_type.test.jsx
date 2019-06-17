@@ -13,7 +13,11 @@ class PostTypePlugin extends React.PureComponent {
 }
 
 describe('plugins/PostMessageView', () => {
-    const post = {type: 'testtype', message: 'this is some text', id: 'post_id'};
+    const post = {
+        type: 'testtype',
+        message: 'this is some text',
+        id: 'post_id',
+    };
     const pluginPostTypes = {
         testtype: {component: PostTypePlugin},
     };
@@ -29,9 +33,7 @@ describe('plugins/PostMessageView', () => {
     };
 
     test('should match snapshot with extended post type', () => {
-        const wrapper = mount(
-            <PostMessageView {...requiredProps}/>
-        );
+        const wrapper = mount(<PostMessageView {...requiredProps} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(wrapper.find('#pluginId').text()).toBe('PostTypePlugin');
@@ -39,9 +41,7 @@ describe('plugins/PostMessageView', () => {
 
     test('should match snapshot with no extended post type', () => {
         const props = {...requiredProps, pluginPostTypes: {}};
-        const wrapper = shallow(
-            <PostMessageView {...props}/>
-        );
+        const wrapper = shallow(<PostMessageView {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

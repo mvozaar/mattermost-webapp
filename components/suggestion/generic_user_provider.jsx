@@ -41,12 +41,19 @@ class UserSuggestion extends Suggestion {
                 <img
                     alt={''}
                     className='admin-setting-user__image'
-                    src={Client4.getUsersRoute() + '/' + item.id + '/image?_=' + (item.last_picture_update || 0)}
+                    src={
+                        Client4.getUsersRoute() +
+                        '/' +
+                        item.id +
+                        '/image?_=' +
+                        (item.last_picture_update || 0)
+                    }
                 />
+
                 <span className='admin-setting-user--align'>
                     {'@' + username}
                 </span>
-                <BotBadge show={Boolean(item.is_bot)}/>
+                <BotBadge show={Boolean(item.is_bot)} />
                 <span className='admin-setting-user__fullname'>
                     {' '}
                     {description}
@@ -61,23 +68,20 @@ export default class UserProvider extends Provider {
         const normalizedPretext = pretext.toLowerCase();
         this.startNewRequest(normalizedPretext);
 
-        autocompleteUsers(
-            normalizedPretext,
-            (data) => {
-                if (this.shouldCancelDispatch(normalizedPretext)) {
-                    return;
-                }
-
-                const users = Object.assign([], data.users);
-
-                resultsCallback({
-                    matchedPretext: normalizedPretext,
-                    terms: users.map((user) => user.username),
-                    items: users,
-                    component: UserSuggestion,
-                });
+        autocompleteUsers(normalizedPretext, (data) => {
+            if (this.shouldCancelDispatch(normalizedPretext)) {
+                return;
             }
-        );
+
+            const users = Object.assign([], data.users);
+
+            resultsCallback({
+                matchedPretext: normalizedPretext,
+                terms: users.map((user) => user.username),
+                items: users,
+                component: UserSuggestion,
+            });
+        });
 
         return true;
     }

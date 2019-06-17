@@ -4,7 +4,10 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getSchemeTeams as loadSchemeTeams, getSchemes as loadSchemes} from 'mattermost-redux/actions/schemes';
+import {
+    getSchemeTeams as loadSchemeTeams,
+    getSchemes as loadSchemes,
+} from 'mattermost-redux/actions/schemes';
 import {getSchemes} from 'mattermost-redux/selectors/entities/schemes';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
@@ -23,11 +26,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadSchemes,
-            loadSchemeTeams,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadSchemes,
+                loadSchemeTeams,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PermissionSchemesSettings);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PermissionSchemesSettings);

@@ -12,7 +12,6 @@ import MenuItemAction from 'components/widgets/menu/menu_items/menu_item_action'
 
 export default class LeaveChannel extends React.PureComponent {
     static propTypes = {
-
         /**
          * Object with info about user
          */
@@ -32,7 +31,6 @@ export default class LeaveChannel extends React.PureComponent {
          * Object with action creators
          */
         actions: PropTypes.shape({
-
             /**
              * Action creator to leave channel
              */
@@ -45,9 +43,7 @@ export default class LeaveChannel extends React.PureComponent {
 
         const {
             channel,
-            actions: {
-                leaveChannel,
-            },
+            actions: {leaveChannel},
         } = this.props;
 
         if (channel.type === Constants.PRIVATE_CHANNEL) {
@@ -55,7 +51,7 @@ export default class LeaveChannel extends React.PureComponent {
         } else {
             leaveChannel(channel.id);
         }
-    }
+    };
 
     render() {
         const {channel, isDefault, id} = this.props;
@@ -63,7 +59,11 @@ export default class LeaveChannel extends React.PureComponent {
         return (
             <MenuItemAction
                 id={id}
-                show={!isDefault && channel.type !== Constants.DM_CHANNEL && channel.type !== Constants.GM_CHANNEL}
+                show={
+                    !isDefault &&
+                    channel.type !== Constants.DM_CHANNEL &&
+                    channel.type !== Constants.GM_CHANNEL
+                }
                 onClick={this.handleLeave}
                 text={localizeMessage('channel_header.leave', 'Leave Channel')}
             />

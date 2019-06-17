@@ -12,4 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({leaveChannel}, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(LeaveChannel);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(LeaveChannel);

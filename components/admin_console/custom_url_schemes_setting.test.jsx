@@ -22,9 +22,8 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 value: [],
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
+
             expect(wrapper).toMatchSnapshot();
 
             expect(wrapper.state('value')).toEqual('');
@@ -36,9 +35,8 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 value: ['git'],
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
+
             expect(wrapper).toMatchSnapshot();
 
             expect(wrapper.state('value')).toEqual('git');
@@ -50,9 +48,8 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 value: ['git', 'smtp', 'steam'],
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
+
             expect(wrapper).toMatchSnapshot();
 
             expect(wrapper.state('value')).toEqual('git,smtp,steam');
@@ -66,11 +63,11 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 onChange: jest.fn(),
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
 
-            wrapper.find('LocalizedInput').simulate('change', {target: {value: ''}});
+            wrapper
+                .find('LocalizedInput')
+                .simulate('change', {target: {value: ''}});
 
             expect(props.onChange).toBeCalledWith(baseProps.id, []);
         });
@@ -81,11 +78,11 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 onChange: jest.fn(),
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
 
-            wrapper.find('LocalizedInput').simulate('change', {target: {value: '  steam  '}});
+            wrapper
+                .find('LocalizedInput')
+                .simulate('change', {target: {value: '  steam  '}});
 
             expect(props.onChange).toBeCalledWith(baseProps.id, ['steam']);
         });
@@ -96,13 +93,16 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 onChange: jest.fn(),
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
 
-            wrapper.find('LocalizedInput').simulate('change', {target: {value: 'steam, git'}});
+            wrapper
+                .find('LocalizedInput')
+                .simulate('change', {target: {value: 'steam, git'}});
 
-            expect(props.onChange).toBeCalledWith(baseProps.id, ['steam', 'git']);
+            expect(props.onChange).toBeCalledWith(baseProps.id, [
+                'steam',
+                'git',
+            ]);
         });
 
         test('called on change to more items', () => {
@@ -111,13 +111,17 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 onChange: jest.fn(),
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
 
-            wrapper.find('LocalizedInput').simulate('change', {target: {value: 'ts3server, smtp, ms-excel'}});
+            wrapper.find('LocalizedInput').simulate('change', {
+                target: {value: 'ts3server, smtp, ms-excel'},
+            });
 
-            expect(props.onChange).toBeCalledWith(baseProps.id, ['ts3server', 'smtp', 'ms-excel']);
+            expect(props.onChange).toBeCalledWith(baseProps.id, [
+                'ts3server',
+                'smtp',
+                'ms-excel',
+            ]);
         });
 
         test('called on change with extra commas', () => {
@@ -126,13 +130,16 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
                 onChange: jest.fn(),
             };
 
-            const wrapper = shallow(
-                <CustomUrlSchemesSetting {...props}/>
-            );
+            const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
 
-            wrapper.find('LocalizedInput').simulate('change', {target: {value: ',,,,,chrome,,,,ms-excel,,'}});
+            wrapper.find('LocalizedInput').simulate('change', {
+                target: {value: ',,,,,chrome,,,,ms-excel,,'},
+            });
 
-            expect(props.onChange).toBeCalledWith(baseProps.id, ['chrome', 'ms-excel']);
+            expect(props.onChange).toBeCalledWith(baseProps.id, [
+                'chrome',
+                'ms-excel',
+            ]);
         });
     });
 
@@ -142,9 +149,8 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
             disabled: true,
         };
 
-        const wrapper = shallow(
-            <CustomUrlSchemesSetting {...props}/>
-        );
+        const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -154,9 +160,8 @@ describe('components/AdminConsole/CustomUrlSchemeSetting', () => {
             setByEnv: true,
         };
 
-        const wrapper = shallow(
-            <CustomUrlSchemesSetting {...props}/>
-        );
+        const wrapper = shallow(<CustomUrlSchemesSetting {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 });

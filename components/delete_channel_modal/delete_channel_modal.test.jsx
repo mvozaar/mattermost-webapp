@@ -39,21 +39,19 @@ describe('components/delete_channel_modal', () => {
         actions: {
             deleteChannel: emptyFunction,
         },
+
         onHide: emptyFunction,
         penultimateViewedChannelName: 'my-prev-channel',
     };
 
     test('should match snapshot for delete_channel_modal', () => {
-        const wrapper = shallow(
-            <DeleteChannelModal {...baseProps}/>
-        );
+        const wrapper = shallow(<DeleteChannelModal {...baseProps} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match state when onHide is called', () => {
-        const wrapper = shallow(
-            <DeleteChannelModal {...baseProps}/>
-        );
+        const wrapper = shallow(<DeleteChannelModal {...baseProps} />);
 
         wrapper.setState({show: true});
         wrapper.instance().onHide();
@@ -64,27 +62,29 @@ describe('components/delete_channel_modal', () => {
         browserHistory.push = jest.fn();
         const actions = {deleteChannel: jest.fn()};
         const props = {...baseProps, actions};
-        const wrapper = shallow(
-            <DeleteChannelModal {...props}/>
-        );
+        const wrapper = shallow(<DeleteChannelModal {...props} />);
 
         wrapper.setState({show: true});
         wrapper.instance().handleDelete();
 
         expect(actions.deleteChannel).toHaveBeenCalledTimes(1);
         expect(actions.deleteChannel).toHaveBeenCalledWith(props.channel.id);
-        expect(browserHistory.push).toHaveBeenCalledWith('/mattermostDev/channels/my-prev-channel');
+        expect(browserHistory.push).toHaveBeenCalledWith(
+            '/mattermostDev/channels/my-prev-channel',
+        );
+
         expect(wrapper.state('show')).toEqual(false);
     });
 
     test('should have called props.onHide when Modal.onExited is called', () => {
         const onHide = jest.fn();
         const props = {...baseProps, onHide};
-        const wrapper = shallow(
-            <DeleteChannelModal {...props}/>
-        );
+        const wrapper = shallow(<DeleteChannelModal {...props} />);
 
-        wrapper.find(Modal).props().onExited();
+        wrapper
+            .find(Modal)
+            .props()
+            .onExited();
         expect(onHide).toHaveBeenCalledTimes(1);
     });
 });

@@ -8,7 +8,7 @@ import LoadingBars from './loading_bars.jsx';
 
 describe('components/widgets/loading/LoadingBars', () => {
     test('showing bars with text', () => {
-        const wrapper = shallow(<LoadingBars text='test'/>);
+        const wrapper = shallow(<LoadingBars text='test' />);
         expect(wrapper).toMatchInlineSnapshot(`
 <span
   className="LoadingBars with-text"
@@ -23,7 +23,7 @@ describe('components/widgets/loading/LoadingBars', () => {
 `);
     });
     test('showing bars without text', () => {
-        const wrapper = shallow(<LoadingBars/>);
+        const wrapper = shallow(<LoadingBars />);
         expect(wrapper).toMatchInlineSnapshot(`
 <span
   className="LoadingBars"

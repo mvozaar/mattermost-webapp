@@ -8,7 +8,6 @@ import React from 'react';
 // environments (ie. IE11) where typing quickly would sometimes miss inputs
 export default class QuickInput extends React.PureComponent {
     static propTypes = {
-
         /**
          * Whether to delay updating the value of the textbox from props. Should only be used
          * on textboxes that to properly compose CJK characters as the user types.
@@ -47,7 +46,7 @@ export default class QuickInput extends React.PureComponent {
         }
 
         this.input.value = this.props.value;
-    }
+    };
 
     get value() {
         return this.input.value;
@@ -71,20 +70,17 @@ export default class QuickInput extends React.PureComponent {
 
     setInput = (input) => {
         this.input = input;
-    }
+    };
 
     render() {
         const {value, inputComponent, ...props} = this.props;
 
         Reflect.deleteProperty(props, 'delayInputUpdate');
 
-        return React.createElement(
-            inputComponent || 'input',
-            {
-                ...props,
-                ref: this.setInput,
-                defaultValue: value, // Only set the defaultValue since the real one will be updated using componentDidUpdate
-            }
-        );
+        return React.createElement(inputComponent || 'input', {
+            ...props,
+            ref: this.setInput,
+            defaultValue: value, // Only set the defaultValue since the real one will be updated using componentDidUpdate
+        });
     }
 }

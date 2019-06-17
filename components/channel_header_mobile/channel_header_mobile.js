@@ -17,7 +17,6 @@ import UnmuteChannelButton from './unmute_channel_button';
 
 export default class ChannelHeaderMobile extends React.PureComponent {
     static propTypes = {
-
         /**
          *
          */
@@ -49,23 +48,30 @@ export default class ChannelHeaderMobile extends React.PureComponent {
     };
 
     componentDidMount() {
-        document.querySelector('.inner-wrap').addEventListener('click', this.hideSidebars);
+        document
+            .querySelector('.inner-wrap')
+            .addEventListener('click', this.hideSidebars);
     }
 
     componentWillUnmount() {
-        document.querySelector('.inner-wrap').removeEventListener('click', this.hideSidebars);
+        document
+            .querySelector('.inner-wrap')
+            .removeEventListener('click', this.hideSidebars);
     }
 
     hideSidebars = (e) => {
         if (Utils.isMobile()) {
             this.props.actions.closeRhs();
 
-            if (e.target.className !== 'navbar-toggle' && e.target.className !== 'icon-bar') {
+            if (
+                e.target.className !== 'navbar-toggle' &&
+                e.target.className !== 'icon-bar'
+            ) {
                 this.props.actions.closeLhs();
                 this.props.actions.closeRhsMenu();
             }
         }
-    }
+    };
 
     render() {
         const {user, channel, isMuted} = this.props;
@@ -78,11 +84,11 @@ export default class ChannelHeaderMobile extends React.PureComponent {
             >
                 <div className='container-fluid theme'>
                     <div className='navbar-header'>
-                        <CollapseLhsButton/>
+                        <CollapseLhsButton />
                         {channel && (
                             <React.Fragment>
                                 <div className='navbar-brand'>
-                                    <MobileChannelHeaderDropdown/>
+                                    <MobileChannelHeaderDropdown />
                                     {isMuted && (
                                         <UnmuteChannelButton
                                             user={user}
@@ -95,14 +101,16 @@ export default class ChannelHeaderMobile extends React.PureComponent {
                                     channel={channel}
                                     isReadOnly={this.props.isReadOnly}
                                 />
-                                <ShowSearchButton/>
+
+                                <ShowSearchButton />
                                 <MobileChannelHeaderPlug
                                     channel={channel}
                                     isDropdown={false}
                                 />
                             </React.Fragment>
                         )}
-                        <CollapseRhsButton/>
+
+                        <CollapseRhsButton />
                     </div>
                 </div>
             </nav>

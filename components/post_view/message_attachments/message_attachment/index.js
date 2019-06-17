@@ -17,10 +17,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            doPostActionWithCookie,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                doPostActionWithCookie,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageAttachment);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MessageAttachment);

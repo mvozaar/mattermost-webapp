@@ -13,7 +13,6 @@ import LogList from './log_list.jsx';
 
 export default class Logs extends React.Component {
     static propTypes = {
-
         /*
          * Array of logs to render
          */
@@ -21,13 +20,12 @@ export default class Logs extends React.Component {
         nextPage: PropTypes.func,
 
         actions: PropTypes.shape({
-
             /*
              * Function to fetch logs
              */
             getLogs: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -39,39 +37,40 @@ export default class Logs extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.getLogs(this.state.page, this.state.perPage).then(
-            () => this.setState({loadingLogs: false})
-        );
+        this.props.actions
+            .getLogs(this.state.page, this.state.perPage)
+            .then(() => this.setState({loadingLogs: false}));
     }
 
-    UNSAFE_componentWillUpdate(nextProps, nextState) { // eslint-disable-line camelcase
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
+        // eslint-disable-line camelcase
         if (this.state.page !== nextState.page) {
-            this.props.actions.getLogs(nextState.page, nextState.perPage).then(
-                () => this.setState({loadingLogs: false})
-            );
+            this.props.actions
+                .getLogs(nextState.page, nextState.perPage)
+                .then(() => this.setState({loadingLogs: false}));
         }
     }
 
     nextPage = () => {
         this.setState({page: this.state.page + 1});
-    }
+    };
 
     previousPage = () => {
         this.setState({page: this.state.page - 1});
-    }
+    };
 
     reload = () => {
         this.setState({loadingLogs: true});
-        this.props.actions.getLogs(this.state.page, this.state.perPage).then(
-            () => this.setState({loadingLogs: false})
-        );
-    }
+        this.props.actions
+            .getLogs(this.state.page, this.state.perPage)
+            .then(() => this.setState({loadingLogs: false}));
+    };
 
     render() {
         let content = null;
 
         if (this.state.loadingLogs) {
-            content = <LoadingScreen/>;
+            content = <LoadingScreen />;
         } else {
             content = (
                 <LogList
@@ -90,6 +89,7 @@ export default class Logs extends React.Component {
                     id='admin.logs.title'
                     defaultMessage='Server Logs'
                 />
+
                 <div className='banner'>
                     <div className='banner__content'>
                         <FormattedMessage

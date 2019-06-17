@@ -3,7 +3,10 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import {getFileThumbnailUrl, getFileUrl} from 'mattermost-redux/utils/file_utils';
+import {
+    getFileThumbnailUrl,
+    getFileUrl,
+} from 'mattermost-redux/utils/file_utils';
 
 import FilenameOverlay from 'components/file_attachment/filename_overlay.jsx';
 import RemoveIcon from 'components/icon/remove_icon';
@@ -28,7 +31,7 @@ export default class FilePreview extends React.PureComponent {
 
     handleRemove = (id) => {
         this.props.onRemove(id);
-    }
+    };
 
     render() {
         const previews = [];
@@ -49,14 +52,20 @@ export default class FilePreview extends React.PureComponent {
             } else if (type === FileTypes.IMAGE) {
                 let imageClassName = 'post-image';
 
-                if (info.width < Constants.THUMBNAIL_WIDTH && info.height < Constants.THUMBNAIL_HEIGHT) {
+                if (
+                    info.width < Constants.THUMBNAIL_WIDTH &&
+                    info.height < Constants.THUMBNAIL_HEIGHT
+                ) {
                     imageClassName += ' small';
                 } else {
                     imageClassName += ' normal';
                 }
 
                 let thumbnailUrl = getFileThumbnailUrl(info.id);
-                if (Utils.isGIFImage(info.extension) && !info.has_preview_image) {
+                if (
+                    Utils.isGIFImage(info.extension) &&
+                    !info.has_preview_image
+                ) {
                     thumbnailUrl = getFileUrl(info.id);
                 }
 
@@ -71,17 +80,16 @@ export default class FilePreview extends React.PureComponent {
                 );
             } else {
                 className += ' custom-file';
-                previewImage = <div className={'file-icon ' + Utils.getIconClassName(type)}/>;
+                previewImage = (
+                    <div
+                        className={'file-icon ' + Utils.getIconClassName(type)}
+                    />
+                );
             }
 
             previews.push(
-                <div
-                    key={info.id}
-                    className={className}
-                >
-                    <div className='post-image__thumbnail'>
-                        {previewImage}
-                    </div>
+                <div key={info.id} className={className}>
+                    <div className='post-image__thumbnail'>{previewImage}</div>
                     <div className='post-image__details'>
                         <div className='post-image__detail_wrapper'>
                             <div className='post-image__detail'>
@@ -92,8 +100,13 @@ export default class FilePreview extends React.PureComponent {
                                     compactDisplay={false}
                                     canDownload={false}
                                 />
-                                <span className='post-image__type'>{info.extension.toUpperCase()}</span>
-                                <span className='post-image__size'>{Utils.fileSizeToString(info.size)}</span>
+
+                                <span className='post-image__type'>
+                                    {info.extension.toUpperCase()}
+                                </span>
+                                <span className='post-image__size'>
+                                    {Utils.fileSizeToString(info.size)}
+                                </span>
                             </div>
                         </div>
                         <div>
@@ -101,11 +114,11 @@ export default class FilePreview extends React.PureComponent {
                                 className='file-preview__remove'
                                 onClick={this.handleRemove.bind(this, info.id)}
                             >
-                                <RemoveIcon/>
+                                <RemoveIcon />
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>,
             );
         });
 
@@ -116,15 +129,12 @@ export default class FilePreview extends React.PureComponent {
                     clientId={clientId}
                     fileInfo={this.props.uploadsProgressPercent[clientId]}
                     handleRemove={this.handleRemove}
-                />
+                />,
             );
         });
 
         return (
-            <div
-                className='file-preview__container'
-                ref='container'
-            >
+            <div className='file-preview__container' ref='container'>
                 {previews}
             </div>
         );

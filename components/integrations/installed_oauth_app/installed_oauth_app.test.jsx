@@ -21,8 +21,12 @@ describe('components/integrations/InstalledOAuthApp', () => {
         icon_url: 'https://test.com/icon',
         is_trusted: true,
         update_at: 1501365458934,
-        callback_urls: ['https://test.com/callback', 'https://test.com/callback2'],
+        callback_urls: [
+            'https://test.com/callback',
+            'https://test.com/callback2',
+        ],
     };
+
     const regenOAuthAppSecretRequest = {
         status: 'not_started',
         error: null,
@@ -40,9 +44,8 @@ describe('components/integrations/InstalledOAuthApp', () => {
 
     test('should match snapshot', () => {
         const props = {...baseProps, team};
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -50,34 +53,37 @@ describe('components/integrations/InstalledOAuthApp', () => {
         const props = {...baseProps, team};
         props.oauthApp.name = '';
         props.oauthApp.is_trusted = false;
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on error', () => {
         const props = {...baseProps, team};
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
+
         wrapper.setState({error: 'error'});
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should call onRegenerateSecret function', () => {
-        const newOnRegenerateSecret = jest.fn().mockImplementation(
-            () => {
-                return new Promise((resolve) => {
-                    process.nextTick(() => resolve());
-                });
-            }
-        );
-        const props = {...baseProps, onRegenerateSecret: newOnRegenerateSecret, team};
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
-        wrapper.find('#regenerateSecretButton').simulate('click', {preventDefault: jest.fn()});
+        const newOnRegenerateSecret = jest.fn().mockImplementation(() => {
+            return new Promise((resolve) => {
+                process.nextTick(() => resolve());
+            });
+        });
+
+        const props = {
+            ...baseProps,
+            onRegenerateSecret: newOnRegenerateSecret,
+            team,
+        };
+
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
+
+        wrapper
+            .find('#regenerateSecretButton')
+            .simulate('click', {preventDefault: jest.fn()});
 
         expect(newOnRegenerateSecret).toBeCalled();
         expect(newOnRegenerateSecret).toHaveBeenCalledWith(oauthApp.id);
@@ -86,46 +92,52 @@ describe('components/integrations/InstalledOAuthApp', () => {
     test('should filter out OAuthApp', () => {
         const filter = 'filter';
         const props = {...baseProps, filter};
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match state on button clicks, both showSecretButton and hideSecretButton', () => {
         const props = {...baseProps, team};
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
+
         expect(wrapper.find('#showSecretButton').exists()).toBe(true);
         expect(wrapper.find('#hideSecretButton').exists()).toBe(false);
 
-        wrapper.find('#showSecretButton').simulate('click', {preventDefault: jest.fn()});
+        wrapper
+            .find('#showSecretButton')
+            .simulate('click', {preventDefault: jest.fn()});
         expect(wrapper.state('clientSecret')).toEqual(oauthApp.client_secret);
         expect(wrapper.find('#showSecretButton').exists()).toBe(false);
         expect(wrapper.find('#hideSecretButton').exists()).toBe(true);
 
-        wrapper.find('#hideSecretButton').simulate('click', {preventDefault: jest.fn()});
+        wrapper
+            .find('#hideSecretButton')
+            .simulate('click', {preventDefault: jest.fn()});
         expect(wrapper.state('clientSecret')).toEqual(FAKE_SECRET);
         expect(wrapper.find('#showSecretButton').exists()).toBe(true);
         expect(wrapper.find('#hideSecretButton').exists()).toBe(false);
     });
 
     test('should match on handleRegenerate', () => {
-        const newOnRegenerateSecret = jest.fn().mockImplementation(
-            () => {
-                return new Promise((resolve) => {
-                    process.nextTick(() => resolve());
-                });
-            }
-        );
-        const props = {...baseProps, onRegenerateSecret: newOnRegenerateSecret, team};
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
+        const newOnRegenerateSecret = jest.fn().mockImplementation(() => {
+            return new Promise((resolve) => {
+                process.nextTick(() => resolve());
+            });
+        });
+
+        const props = {
+            ...baseProps,
+            onRegenerateSecret: newOnRegenerateSecret,
+            team,
+        };
+
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
 
         expect(wrapper.find('#regenerateSecretButton').exists()).toBe(true);
-        wrapper.find('#regenerateSecretButton').simulate('click', {preventDefault: jest.fn()});
+        wrapper
+            .find('#regenerateSecretButton')
+            .simulate('click', {preventDefault: jest.fn()});
         expect(newOnRegenerateSecret).toBeCalled();
         expect(newOnRegenerateSecret).toHaveBeenCalledWith(oauthApp.id);
     });
@@ -133,12 +145,13 @@ describe('components/integrations/InstalledOAuthApp', () => {
     test('should have called props.onDelete on handleDelete ', () => {
         const newOnDelete = jest.fn();
         const props = {...baseProps, team, onDelete: newOnDelete};
-        const wrapper = shallow(
-            <InstalledOAuthApp {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApp {...props} />);
 
         expect(wrapper.find(DeleteIntegration).exists()).toBe(true);
-        wrapper.find(DeleteIntegration).props().onDelete();
+        wrapper
+            .find(DeleteIntegration)
+            .props()
+            .onDelete();
         expect(newOnDelete).toBeCalled();
         expect(newOnDelete).toHaveBeenCalledWith(oauthApp);
     });

@@ -41,26 +41,22 @@ export default class BackstageCategory extends React.Component {
                     className='category-title'
                     activeClassName='category-title--active'
                 >
-                    <i className={'fa ' + icon}/>
-                    <span className='category-title__text'>
-                        {title}
-                    </span>
+                    <i className={'fa ' + icon} />
+                    <span className='category-title__text'>{title}</span>
                 </NavLink>
                 <Route
                     path={link}
                     render={() => (
                         <ul className='sections'>
-                            {
-                                React.Children.map(children, (child) => {
-                                    if (!child) {
-                                        return child;
-                                    }
+                            {React.Children.map(children, (child) => {
+                                if (!child) {
+                                    return child;
+                                }
 
-                                    return React.cloneElement(child, {
-                                        parentLink: link,
-                                    });
-                                })
-                            }
+                                return React.cloneElement(child, {
+                                    parentLink: link,
+                                });
+                            })}
                         </ul>
                     )}
                 />

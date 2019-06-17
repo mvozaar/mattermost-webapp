@@ -13,34 +13,40 @@ describe('components/GetPostLinkModal', () => {
     };
 
     test('should match snapshot with currentTeamUrl passed in', () => {
-        const wrapper = shallow(
-            <GetPostLinkModal {...requiredProps}/>
-        );
+        const wrapper = shallow(<GetPostLinkModal {...requiredProps} />);
 
         expect(wrapper).toMatchSnapshot();
-        const helpText = 'The link below allows authorized users to see your post.';
+        const helpText =
+            'The link below allows authorized users to see your post.';
         expect(wrapper.find(GetLinkModal).prop('helpText')).toEqual(helpText);
         expect(wrapper.find(GetLinkModal).prop('show')).toEqual(false);
-        expect(wrapper.find(GetLinkModal).prop('title')).toEqual('Copy Permalink');
-        expect(wrapper.find(GetLinkModal).prop('link')).toEqual(requiredProps.currentTeamUrl + '/pl/undefined');
-
-        wrapper.setState({post: {id: 'post_id'}});
-        expect(wrapper.find(GetLinkModal).prop('link')).toEqual(requiredProps.currentTeamUrl + '/pl/post_id');
-    });
-
-    test('should call hide on GetLinkModal\'s onHide', () => {
-        const wrapper = shallow(
-            <GetPostLinkModal {...requiredProps}/>
+        expect(wrapper.find(GetLinkModal).prop('title')).toEqual(
+            'Copy Permalink',
         );
 
-        wrapper.find(GetLinkModal).first().props().onHide();
+        expect(wrapper.find(GetLinkModal).prop('link')).toEqual(
+            requiredProps.currentTeamUrl + '/pl/undefined',
+        );
+
+        wrapper.setState({post: {id: 'post_id'}});
+        expect(wrapper.find(GetLinkModal).prop('link')).toEqual(
+            requiredProps.currentTeamUrl + '/pl/post_id',
+        );
+    });
+
+    test("should call hide on GetLinkModal's onHide", () => {
+        const wrapper = shallow(<GetPostLinkModal {...requiredProps} />);
+
+        wrapper
+            .find(GetLinkModal)
+            .first()
+            .props()
+            .onHide();
         expect(wrapper.state('show')).toBe(false);
     });
 
     test('should pass handleToggle', () => {
-        const wrapper = shallow(
-            <GetPostLinkModal {...requiredProps}/>
-        );
+        const wrapper = shallow(<GetPostLinkModal {...requiredProps} />);
 
         const args = {post: {id: 'post_id'}};
         wrapper.instance().handleToggle(true, args);

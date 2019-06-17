@@ -33,7 +33,7 @@ export default class MoreChannels extends React.Component {
             joinChannel: PropTypes.func.isRequired,
             searchMoreChannels: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -50,7 +50,11 @@ export default class MoreChannels extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actions.getChannels(this.props.teamId, 0, CHANNELS_CHUNK_SIZE * 2);
+        this.props.actions.getChannels(
+            this.props.teamId,
+            0,
+            CHANNELS_CHUNK_SIZE * 2,
+        );
     }
 
     handleHide = () => {
@@ -59,13 +63,13 @@ export default class MoreChannels extends React.Component {
         if (this.props.bodyOnly) {
             this.handleExit();
         }
-    }
+    };
 
     handleExit = () => {
         if (this.props.onModalDismissed) {
             this.props.onModalDismissed();
         }
-    }
+    };
 
     onChange = (force) => {
         if (this.state.search && !force) {
@@ -76,26 +80,35 @@ export default class MoreChannels extends React.Component {
             searchedChannels: [],
             serverError: null,
         });
-    }
+    };
 
     nextPage = (page) => {
-        this.props.actions.getChannels(this.props.teamId, page + 1, CHANNELS_PER_PAGE);
-    }
+        this.props.actions.getChannels(
+            this.props.teamId,
+            page + 1,
+            CHANNELS_PER_PAGE,
+        );
+    };
 
     handleJoin = (channel, done) => {
         const {actions, currentUserId, teamId, teamName} = this.props;
-        actions.joinChannel(currentUserId, teamId, channel.id).then((result) => {
-            if (result.error) {
-                this.setState({serverError: result.error.message});
-            } else {
-                browserHistory.push(getRelativeChannelURL(teamName, channel.name));
-                this.handleHide();
-            }
+        actions
+            .joinChannel(currentUserId, teamId, channel.id)
+            .then((result) => {
+                if (result.error) {
+                    this.setState({serverError: result.error.message});
+                } else {
+                    browserHistory.push(
+                        getRelativeChannelURL(teamName, channel.name),
+                    );
 
-            if (done) {
-                done();
-            }
-        });
+                    this.handleHide();
+                }
+
+                if (done) {
+                    done();
+                }
+            });
     };
 
     search = (term) => {
@@ -103,47 +116,48 @@ export default class MoreChannels extends React.Component {
 
         if (term === '') {
             this.onChange(true);
-            this.setState({search: false, searchedChannels: [], searching: false});
+            this.setState({
+                search: false,
+                searchedChannels: [],
+                searching: false,
+            });
+
             this.searchTimeoutId = '';
             return;
         }
         this.setState({search: true, searching: true});
 
-        const searchTimeoutId = setTimeout(
-            () => {
-                this.props.actions.searchMoreChannels(term).
-                    then((result) => {
-                        if (searchTimeoutId !== this.searchTimeoutId) {
-                            return;
-                        }
+        const searchTimeoutId = setTimeout(() => {
+            this.props.actions
+                .searchMoreChannels(term)
+                .then((result) => {
+                    if (searchTimeoutId !== this.searchTimeoutId) {
+                        return;
+                    }
 
-                        if (result.data) {
-                            this.setSearchResults(result.data);
-                        } else {
-                            this.setState({searchedChannels: [], searching: false});
-                        }
-                    }).
-                    catch(() => {
+                    if (result.data) {
+                        this.setSearchResults(result.data);
+                    } else {
                         this.setState({searchedChannels: [], searching: false});
-                    });
-            },
-            SEARCH_TIMEOUT_MILLISECONDS
-        );
+                    }
+                })
+                .catch(() => {
+                    this.setState({searchedChannels: [], searching: false});
+                });
+        }, SEARCH_TIMEOUT_MILLISECONDS);
 
         this.searchTimeoutId = searchTimeoutId;
     };
 
     setSearchResults = (channels) => {
-        this.setState({searchedChannels: channels.filter((c) => c.delete_at === 0), searching: false});
+        this.setState({
+            searchedChannels: channels.filter((c) => c.delete_at === 0),
+            searching: false,
+        });
     };
 
     render() {
-        const {
-            channels,
-            teamId,
-            channelsRequestStarted,
-            bodyOnly,
-        } = this.props;
+        const {channels, teamId, channelsRequestStarted, bodyOnly} = this.props;
 
         const {
             search,
@@ -155,13 +169,20 @@ export default class MoreChannels extends React.Component {
 
         let serverError;
         if (serverErrorState) {
-            serverError = <div className='form-group has-error'><label className='control-label'>{serverErrorState}</label></div>;
+            serverError = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>{serverErrorState}</label>
+                </div>
+            );
         }
 
         const createNewChannelButton = (
             <TeamPermissionGate
                 teamId={teamId}
-                permissions={[Permissions.CREATE_PUBLIC_CHANNEL, Permissions.CREATE_PRIVATE_CHANNEL]}
+                permissions={[
+                    Permissions.CREATE_PUBLIC_CHANNEL,
+                    Permissions.CREATE_PRIVATE_CHANNEL,
+                ]}
             >
                 <button
                     id='createNewChannel'
@@ -180,7 +201,10 @@ export default class MoreChannels extends React.Component {
         const createChannelHelpText = (
             <TeamPermissionGate
                 teamId={teamId}
-                permissions={[Permissions.CREATE_PUBLIC_CHANNEL, Permissions.CREATE_PRIVATE_CHANNEL]}
+                permissions={[
+                    Permissions.CREATE_PUBLIC_CHANNEL,
+                    Permissions.CREATE_PRIVATE_CHANNEL,
+                ]}
             >
                 <p className='secondary-message'>
                     <FormattedMessage
@@ -204,6 +228,7 @@ export default class MoreChannels extends React.Component {
                     loading={search ? searching : channelsRequestStarted}
                     createChannelButton={bodyOnly && createNewChannelButton}
                 />
+
                 {serverError}
             </React.Fragment>
         );
@@ -233,9 +258,7 @@ export default class MoreChannels extends React.Component {
                     </Modal.Title>
                     {createNewChannelButton}
                 </Modal.Header>
-                <Modal.Body>
-                    {body}
-                </Modal.Body>
+                <Modal.Body>{body}</Modal.Body>
             </Modal>
         );
     }

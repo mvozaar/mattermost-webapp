@@ -14,14 +14,19 @@ describe('components/permissions_gates', () => {
         entities: {
             channels: {
                 myMembers: {
-                    channel_id: {channel_id: 'channel_id', roles: 'channel_role'},
+                    channel_id: {
+                        channel_id: 'channel_id',
+                        roles: 'channel_role',
+                    },
                 },
             },
+
             teams: {
                 myMembers: {
                     team_id: {team_id: 'team_id', roles: 'team_role'},
                 },
             },
+
             users: {
                 currentUserId: 'user_id',
                 profiles: {
@@ -31,6 +36,7 @@ describe('components/permissions_gates', () => {
                     },
                 },
             },
+
             roles: {
                 roles: {
                     system_role: {permissions: ['test_system_permission']},
@@ -40,6 +46,7 @@ describe('components/permissions_gates', () => {
             },
         },
     };
+
     const store = mockStore(state);
 
     describe('TeamPermissionGate', () => {
@@ -52,7 +59,7 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Valid permission (shown)'}</p>
                     </TeamPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -62,11 +69,14 @@ describe('components/permissions_gates', () => {
                 <Provider store={store}>
                     <TeamPermissionGate
                         teamId={'team_id'}
-                        permissions={['test_team_permission', 'not_existing_permission']}
+                        permissions={[
+                            'test_team_permission',
+                            'not_existing_permission',
+                        ]}
                     >
                         <p>{'Valid permission (shown)'}</p>
                     </TeamPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -81,7 +91,7 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Valid permission but inverted (not shown)'}</p>
                     </TeamPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -96,12 +106,12 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Invalid permission but inverted (shown)'}</p>
                     </TeamPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
         });
-        test('should match snapshot when user haven\'t permission', () => {
+        test("should match snapshot when user haven't permission", () => {
             const wrapper = mount(
                 <Provider store={store}>
                     <TeamPermissionGate
@@ -110,12 +120,12 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Invalid permission (not shown)'}</p>
                     </TeamPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
         });
-        test('should match snapshot when the team doesn\'t exists', () => {
+        test("should match snapshot when the team doesn't exists", () => {
             const wrapper = mount(
                 <Provider store={store}>
                     <TeamPermissionGate
@@ -124,7 +134,7 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Valid permission invalid team (not shown)'}</p>
                     </TeamPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -138,7 +148,7 @@ describe('components/permissions_gates', () => {
                     >
                         <p>{'Valid permission (shown)'}</p>
                     </TeamPermissionGate>
-                </Provider>
+                </Provider>,
             );
 
             expect(wrapper).toMatchSnapshot();

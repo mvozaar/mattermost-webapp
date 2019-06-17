@@ -11,7 +11,6 @@ import {loadImage} from 'utils/image_utils';
 // ensuring that the page is laid out correctly.
 export default class SizeAwareImage extends React.PureComponent {
     static propTypes = {
-
         /*
          * The source URL of the image
          */
@@ -41,7 +40,7 @@ export default class SizeAwareImage extends React.PureComponent {
          * css classes that can added to the img as well as parent div on svg for placeholder
          */
         className: PropTypes.string,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -71,12 +70,15 @@ export default class SizeAwareImage extends React.PureComponent {
     loadImage = () => {
         const image = loadImage(this.props.src, this.handleLoad);
         image.onerror = this.handleError;
-    }
+    };
 
     handleLoad = (image) => {
         if (this.mounted) {
             if (this.props.onImageLoaded && image.height) {
-                this.props.onImageLoaded({height: image.height, width: image.width});
+                this.props.onImageLoaded({
+                    height: image.height,
+                    width: image.width,
+                });
             }
             this.setState({
                 loaded: true,
@@ -97,7 +99,14 @@ export default class SizeAwareImage extends React.PureComponent {
     renderImageLoaderIfNeeded = () => {
         if (!this.state.loaded && this.props.showLoader && !this.state.error) {
             return (
-                <div style={{position: 'absolute', top: '50%', transform: 'translate(-50%, -50%)', left: '50%'}}>
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        left: '50%',
+                    }}
+                >
                     <LoadingImagePreview
                         containerClass={'file__image-loading'}
                     />
@@ -105,22 +114,24 @@ export default class SizeAwareImage extends React.PureComponent {
             );
         }
         return null;
-    }
+    };
 
     renderImageOrPlaceholder = () => {
-        const {
-            dimensions,
-            src,
-            ...props
-        } = this.props;
+        const {dimensions, src, ...props} = this.props;
 
         if (dimensions && dimensions.width && !this.state.loaded) {
             return (
-                <div className={`image-loading__container ${this.props.className}`}>
+                <div
+                    className={`image-loading__container ${this.props.className}`}
+                >
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
-                        style={{verticalAlign: 'middle', maxHeight: `${dimensions.height}`, maxWidth: `${dimensions.width}`}}
+                        style={{
+                            verticalAlign: 'middle',
+                            maxHeight: `${dimensions.height}`,
+                            maxWidth: `${dimensions.width}`,
+                        }}
                     />
                 </div>
             );
@@ -129,14 +140,8 @@ export default class SizeAwareImage extends React.PureComponent {
         Reflect.deleteProperty(props, 'onImageLoaded');
         Reflect.deleteProperty(props, 'onImageLoadFail');
 
-        return (
-            <img
-                alt='image placeholder'
-                {...props}
-                src={src}
-            />
-        );
-    }
+        return <img alt='image placeholder' {...props} src={src} />;
+    };
 
     render() {
         return (

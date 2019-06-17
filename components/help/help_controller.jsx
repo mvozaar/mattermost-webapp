@@ -14,7 +14,8 @@ import Attaching from './components/attaching';
 import Commands from './components/commands';
 
 export default class HelpController extends React.Component {
-    UNSAFE_componentWillUpdate() { // eslint-disable-line camelcase
+    UNSAFE_componentWillUpdate() {
+        // eslint-disable-line camelcase
         ReactDOM.findDOMNode(this).scrollIntoView();
     }
 
@@ -27,22 +28,27 @@ export default class HelpController extends React.Component {
                             path={`${this.props.match.url}/messaging`}
                             component={Messaging}
                         />
+
                         <Route
                             path={`${this.props.match.url}/composing`}
                             component={Composing}
                         />
+
                         <Route
                             path={`${this.props.match.url}/mentioning`}
                             component={Mentioning}
                         />
+
                         <Route
                             path={`${this.props.match.url}/formatting`}
                             component={Formatting}
                         />
+
                         <Route
                             path={`${this.props.match.url}/attaching`}
                             component={Attaching}
                         />
+
                         <Route
                             path={`${this.props.match.url}/commands`}
                             component={Commands}
@@ -55,7 +61,6 @@ export default class HelpController extends React.Component {
 }
 
 HelpController.propTypes = {
-
     /*
      * Object from react-router
      */

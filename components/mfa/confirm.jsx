@@ -25,13 +25,13 @@ export default class Confirm extends React.Component {
     submit = (e) => {
         e.preventDefault();
         redirectUserToDefaultTeam();
-    }
+    };
 
     onKeyPress = (e) => {
         if (isKeyPressed(e, KeyCodes.ENTER)) {
             this.submit(e);
         }
-    }
+    };
 
     render() {
         return (
@@ -53,10 +53,7 @@ export default class Confirm extends React.Component {
                             defaultMessage='Your account is now secure. Next time you sign in, you will be asked to enter a code from the Google Authenticator app on your phone.'
                         />
                     </p>
-                    <button
-                        type='submit'
-                        className='btn btn-primary'
-                    >
+                    <button type='submit' className='btn btn-primary'>
                         <FormattedMessage
                             id='mfa.confirm.okay'
                             defaultMessage='Okay'

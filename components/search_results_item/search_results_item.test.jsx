@@ -17,8 +17,13 @@ jest.mock('utils/browser_history', () => ({
 jest.mock('utils/utils.jsx', () => ({
     getDisplayNameByUser: jest.fn().mockReturnValue('Other guy'),
     getDirectTeammate: jest.fn().mockReturnValue({}),
-    isMobile: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
-    getDateForUnixTicks: jest.fn().mockReturnValue(new Date('2017-12-14T18:15:28.290Z')),
+    isMobile: jest
+        .fn()
+        .mockReturnValueOnce(false)
+        .mockReturnValue(true),
+    getDateForUnixTicks: jest
+        .fn()
+        .mockReturnValue(new Date('2017-12-14T18:15:28.290Z')),
     localizeMessage: jest.fn(),
 }));
 
@@ -88,9 +93,7 @@ describe('components/SearchResultsItem', () => {
     });
 
     test('should match snapshot for channel', () => {
-        const wrapper = shallow(
-            <SearchResultsItem {...defaultProps}/>
-        );
+        const wrapper = shallow(<SearchResultsItem {...defaultProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -107,12 +110,12 @@ describe('components/SearchResultsItem', () => {
                     override_username: 'overridden_username',
                 },
             },
+
             enablePostUsernameOverride: true,
         };
 
-        const wrapper = shallow(
-            <SearchResultsItem {...props}/>
-        );
+        const wrapper = shallow(<SearchResultsItem {...props} />);
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -123,15 +126,14 @@ describe('components/SearchResultsItem', () => {
                 ...channel,
                 type: 'D',
             },
+
             post: {
                 ...post,
                 is_pinned: true,
             },
         };
 
-        const wrapper = shallow(
-            <SearchResultsItem {...props}/>
-        );
+        const wrapper = shallow(<SearchResultsItem {...props} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(getDirectTeammate).toHaveBeenCalledWith('channel_id');
@@ -139,9 +141,7 @@ describe('components/SearchResultsItem', () => {
     });
 
     test('Check for dotmenu dropdownOpened state', () => {
-        const wrapper = shallow(
-            <SearchResultsItem {...defaultProps}/>
-        );
+        const wrapper = shallow(<SearchResultsItem {...defaultProps} />);
 
         const instance = wrapper.instance();
         instance.handleDropdownOpened(false);
@@ -160,11 +160,12 @@ describe('components/SearchResultsItem', () => {
             },
         };
 
-        const wrapper = shallow(
-            <SearchResultsItem {...props}/>
-        );
+        const wrapper = shallow(<SearchResultsItem {...props} />);
 
-        wrapper.find('CommentIcon').prop('handleCommentClick')({preventDefault: jest.fn()});
+        wrapper.find('CommentIcon').prop('handleCommentClick')({
+            preventDefault: jest.fn(),
+        });
+
         expect(selectPost).toHaveBeenCalledTimes(1);
         expect(selectPost).toHaveBeenLastCalledWith(post);
     });
@@ -179,14 +180,14 @@ describe('components/SearchResultsItem', () => {
             },
         };
 
-        const wrapper = shallow(
-            <SearchResultsItem {...props}/>
-        );
+        const wrapper = shallow(<SearchResultsItem {...props} />);
 
         wrapper.find('.search-item__jump').simulate('click');
         expect(setRhsExpanded).toHaveBeenCalledTimes(1);
         expect(setRhsExpanded).toHaveBeenLastCalledWith(false);
-        expect(browserHistory.push).toHaveBeenLastCalledWith(`/${defaultProps.currentTeamName}/pl/${post.id}`);
+        expect(browserHistory.push).toHaveBeenLastCalledWith(
+            `/${defaultProps.currentTeamName}/pl/${post.id}`,
+        );
     });
 
     test('should match snapshot for archived channel', () => {
@@ -198,9 +199,7 @@ describe('components/SearchResultsItem', () => {
             },
         };
 
-        const wrapper = shallow(
-            <SearchResultsItem {...props}/>
-        );
+        const wrapper = shallow(<SearchResultsItem {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

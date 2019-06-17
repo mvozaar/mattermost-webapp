@@ -7,7 +7,7 @@ import {Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
 
 import FormattedMarkdownMessage from 'components/formatted_markdown_message';
-import MattermostLogo from 'components/svg/mattermost_logo';
+import SecurComLogo from 'components/svg/securcom_logo';
 
 export default class AboutBuildModal extends React.PureComponent {
     static defaultProps = {
@@ -15,7 +15,6 @@ export default class AboutBuildModal extends React.PureComponent {
     };
 
     static propTypes = {
-
         /**
          * Determines whether modal is shown or not
          */
@@ -73,14 +72,15 @@ export default class AboutBuildModal extends React.PureComponent {
             <div>
                 <FormattedMessage
                     id='about.teamEditionLearn'
-                    defaultMessage='Join the Mattermost community at '
+                    defaultMessage='Join the securCom commuity at '
                 />
+
                 <a
                     target='_blank'
                     rel='noopener noreferrer'
-                    href='http://www.mattermost.org/'
+                    href='http://www.securCom.me/'
                 >
-                    {'mattermost.org'}
+                    {'securCom.me'}
                 </a>
             </div>
         );
@@ -107,12 +107,13 @@ export default class AboutBuildModal extends React.PureComponent {
                         id='about.enterpriseEditionLearn'
                         defaultMessage='Learn more about Enterprise Edition at '
                     />
+
                     <a
                         target='_blank'
                         rel='noopener noreferrer'
-                        href='http://about.mattermost.com/'
+                        href='http://about.securCom.me/'
                     >
-                        {'about.mattermost.com'}
+                        {'about.securCom.me'}
                     </a>
                 </div>
             );
@@ -124,6 +125,7 @@ export default class AboutBuildModal extends React.PureComponent {
                         defaultMessage='Enterprise Edition'
                     />
                 );
+
                 licensee = (
                     <div className='form-group'>
                         <FormattedMessage
@@ -170,11 +172,7 @@ export default class AboutBuildModal extends React.PureComponent {
 
         let tosPrivacyHyphen;
         if (config.TermsOfServiceLink && config.PrivacyPolicyLink) {
-            tosPrivacyHyphen = (
-                <span>
-                    {' - '}
-                </span>
-            );
+            tosPrivacyHyphen = <span>{' - '}</span>;
         }
 
         // Only show build number if it's a number (so only builds from Jenkins)
@@ -184,9 +182,13 @@ export default class AboutBuildModal extends React.PureComponent {
                     id='about.buildnumber'
                     defaultMessage='Build Number:'
                 />
-                <span id='buildnumberString'>{'\u00a0' + config.BuildNumber}</span>
+
+                <span id='buildnumberString'>
+                    {'\u00a0' + config.BuildNumber}
+                </span>
             </div>
         );
+
         if (isNaN(config.BuildNumber)) {
             buildnumber = null;
         }
@@ -205,38 +207,45 @@ export default class AboutBuildModal extends React.PureComponent {
                 aria-labelledby='aboutModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='aboutModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='aboutModalLabel'>
                         <FormattedMessage
                             id='about.title'
-                            defaultMessage='About Mattermost'
+                            defaultMessage='About securCom'
                         />
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className='about-modal__content'>
                         <div className='about-modal__logo'>
-                            <MattermostLogo/>
+                            <SecurComLogo />
                         </div>
                         <div>
-                            <h3 className='about-modal__title'>{'Mattermost'} {title}</h3>
-                            <p className='about-modal__subtitle padding-bottom'>{subTitle}</p>
+                            <h3 className='about-modal__title'>
+                                {'securCom'} {title}
+                            </h3>
+                            <p className='about-modal__subtitle padding-bottom'>
+                                {subTitle}
+                            </p>
                             <div className='form-group less'>
                                 <div>
                                     <FormattedMessage
                                         id='about.version'
-                                        defaultMessage='Mattermost Version:'
+                                        defaultMessage='securCom Version:'
                                     />
-                                    <span id='versionString'>{'\u00a0' + mmversion}</span>
+
+                                    <span id='versionString'>
+                                        {'\u00a0' + mmversion}
+                                    </span>
                                 </div>
                                 <div>
                                     <FormattedMessage
                                         id='about.dbversion'
                                         defaultMessage='Database Schema Version:'
                                     />
-                                    <span id='dbversionString'>{'\u00a0' + config.Version}</span>
+
+                                    <span id='dbversionString'>
+                                        {'\u00a0' + config.Version}
+                                    </span>
                                 </div>
                                 {buildnumber}
                                 <div>
@@ -244,6 +253,7 @@ export default class AboutBuildModal extends React.PureComponent {
                                         id='about.database'
                                         defaultMessage='Database:'
                                     />
+
                                     {'\u00a0' + config.SQLDriverName}
                                 </div>
                             </div>
@@ -256,7 +266,7 @@ export default class AboutBuildModal extends React.PureComponent {
                             <div className='about-modal__copyright'>
                                 <FormattedMessage
                                     id='about.copyright'
-                                    defaultMessage='Copyright 2015 - {currentYear} Mattermost, Inc. All rights reserved'
+                                    defaultMessage='Copyright 2015 - {currentYear} securCom, Ltd. All rights reserved'
                                     values={{
                                         currentYear: new Date().getFullYear(),
                                     }}
@@ -273,7 +283,7 @@ export default class AboutBuildModal extends React.PureComponent {
                         <p>
                             <FormattedMarkdownMessage
                                 id='about.notice'
-                                defaultMessage='Mattermost is made possible by the open source software used in our [server](!https://about.mattermost.com/platform-notice-txt/), [desktop](!https://about.mattermost.com/desktop-notice-txt/) and [mobile](!https://about.mattermost.com/mobile-notice-txt/) apps.'
+                                defaultMessage='securCom is made possible by the open source software used in our [server](!https://about.securCom.me/platform-notice-txt/), [desktop](!https://about.securCom.me/desktop-notice-txt/) and [mobile](!https://about.securCom.me/mobile-notice-txt/) apps.'
                             />
                         </p>
                     </div>
@@ -284,18 +294,23 @@ export default class AboutBuildModal extends React.PureComponent {
                                 defaultMessage='Build Hash:'
                             />
                             &nbsp;{config.BuildHash}
-                            <br/>
+                            <br />
                             <FormattedMessage
                                 id='about.hashee'
                                 defaultMessage='EE Build Hash:'
                             />
                             &nbsp;{config.BuildHashEnterprise}
-                            <br/>
+                            <br />
                             <FormattedMessage
                                 id='about.hashwebapp'
                                 defaultMessage='Webapp Build Hash:'
                             />
-                            &nbsp;{/* global COMMIT_HASH */ this.props.webappBuildHash || (typeof COMMIT_HASH === 'undefined' ? '' : COMMIT_HASH)}
+                            &nbsp;
+                            {/* global COMMIT_HASH */ this.props
+                                .webappBuildHash ||
+                                (typeof COMMIT_HASH === 'undefined'
+                                    ? ''
+                                    : COMMIT_HASH)}
                         </p>
                         <p>
                             <FormattedMessage

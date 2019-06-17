@@ -28,7 +28,6 @@ function getStateFromProps(props) {
 
 export default class ManageRolesModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * Set to render the modal
          */
@@ -50,7 +49,6 @@ export default class ManageRolesModal extends React.PureComponent {
         onModalDismissed: PropTypes.func.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * Function to update a user's roles
              */
@@ -63,7 +61,8 @@ export default class ManageRolesModal extends React.PureComponent {
         this.state = getStateFromProps(props);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         const user = this.props.user || {};
         const nextUser = nextProps.user || {};
         if (user.id !== nextUser.id) {
@@ -75,7 +74,7 @@ export default class ManageRolesModal extends React.PureComponent {
         this.setState({
             error,
         });
-    }
+    };
 
     handleSystemAdminChange = (e) => {
         if (e.target.name === 'systemadmin') {
@@ -104,24 +103,54 @@ export default class ManageRolesModal extends React.PureComponent {
     };
 
     trackRoleChanges = (roles, oldRoles) => {
-        if (UserUtils.hasUserAccessTokenRole(roles) && !UserUtils.hasUserAccessTokenRole(oldRoles)) {
-            trackEvent('actions', 'add_roles', {role: General.SYSTEM_USER_ACCESS_TOKEN_ROLE});
-        } else if (!UserUtils.hasUserAccessTokenRole(roles) && UserUtils.hasUserAccessTokenRole(oldRoles)) {
-            trackEvent('actions', 'remove_roles', {role: General.SYSTEM_USER_ACCESS_TOKEN_ROLE});
+        if (
+            UserUtils.hasUserAccessTokenRole(roles) &&
+            !UserUtils.hasUserAccessTokenRole(oldRoles)
+        ) {
+            trackEvent('actions', 'add_roles', {
+                role: General.SYSTEM_USER_ACCESS_TOKEN_ROLE,
+            });
+        } else if (
+            !UserUtils.hasUserAccessTokenRole(roles) &&
+            UserUtils.hasUserAccessTokenRole(oldRoles)
+        ) {
+            trackEvent('actions', 'remove_roles', {
+                role: General.SYSTEM_USER_ACCESS_TOKEN_ROLE,
+            });
         }
 
-        if (UserUtils.hasPostAllRole(roles) && !UserUtils.hasPostAllRole(oldRoles)) {
-            trackEvent('actions', 'add_roles', {role: General.SYSTEM_POST_ALL_ROLE});
-        } else if (!UserUtils.hasPostAllRole(roles) && UserUtils.hasPostAllRole(oldRoles)) {
-            trackEvent('actions', 'remove_roles', {role: General.SYSTEM_POST_ALL_ROLE});
+        if (
+            UserUtils.hasPostAllRole(roles) &&
+            !UserUtils.hasPostAllRole(oldRoles)
+        ) {
+            trackEvent('actions', 'add_roles', {
+                role: General.SYSTEM_POST_ALL_ROLE,
+            });
+        } else if (
+            !UserUtils.hasPostAllRole(roles) &&
+            UserUtils.hasPostAllRole(oldRoles)
+        ) {
+            trackEvent('actions', 'remove_roles', {
+                role: General.SYSTEM_POST_ALL_ROLE,
+            });
         }
 
-        if (UserUtils.hasPostAllPublicRole(roles) && !UserUtils.hasPostAllPublicRole(oldRoles)) {
-            trackEvent('actions', 'add_roles', {role: General.SYSTEM_POST_ALL_PUBLIC_ROLE});
-        } else if (!UserUtils.hasPostAllPublicRole(roles) && UserUtils.hasPostAllPublicRole(oldRoles)) {
-            trackEvent('actions', 'remove_roles', {role: General.SYSTEM_POST_ALL_PUBLIC_ROLE});
+        if (
+            UserUtils.hasPostAllPublicRole(roles) &&
+            !UserUtils.hasPostAllPublicRole(oldRoles)
+        ) {
+            trackEvent('actions', 'add_roles', {
+                role: General.SYSTEM_POST_ALL_PUBLIC_ROLE,
+            });
+        } else if (
+            !UserUtils.hasPostAllPublicRole(roles) &&
+            UserUtils.hasPostAllPublicRole(oldRoles)
+        ) {
+            trackEvent('actions', 'remove_roles', {
+                role: General.SYSTEM_POST_ALL_PUBLIC_ROLE,
+            });
         }
-    }
+    };
 
     handleSave = async () => {
         this.setState({error: null});
@@ -139,7 +168,10 @@ export default class ManageRolesModal extends React.PureComponent {
             }
         }
 
-        const {data} = await this.props.actions.updateUserRoles(this.props.user.id, roles);
+        const {data} = await this.props.actions.updateUserRoles(
+            this.props.user.id,
+            roles,
+        );
 
         this.trackRoleChanges(roles, this.props.user.roles);
 
@@ -150,16 +182,16 @@ export default class ManageRolesModal extends React.PureComponent {
                 <FormattedMessage
                     id='admin.manage_roles.saveError'
                     defaultMessage='Unable to save roles.'
-                />
+                />,
             );
         }
-    }
+    };
 
     renderContents = () => {
         const {user} = this.props;
 
         if (user == null) {
-            return <div/>;
+            return <div />;
         }
 
         let name = UserUtils.getFullName(user);
@@ -170,13 +202,17 @@ export default class ManageRolesModal extends React.PureComponent {
         }
 
         let additionalRoles;
-        if (this.state.hasUserAccessTokenRole || this.state.isSystemAdmin || user.is_bot) {
+        if (
+            this.state.hasUserAccessTokenRole ||
+            this.state.isSystemAdmin ||
+            user.is_bot
+        ) {
             additionalRoles = (
                 <div>
                     <p>
                         <FormattedMarkdownMessage
                             id='admin.manage_roles.additionalRoles'
-                            defaultMessage='Select additional permissions for the account. [Read more about roles and permissions](!https://about.mattermost.com/default-permissions).'
+                            defaultMessage='Select additional permissions for the account. [Read more about roles and permissions](!https://about.securCom.me/default-permissions).'
                         />
                     </p>
                     <div className='checkbox'>
@@ -184,10 +220,14 @@ export default class ManageRolesModal extends React.PureComponent {
                             <input
                                 type='checkbox'
                                 ref='postall'
-                                checked={this.state.hasPostAllRole || this.state.isSystemAdmin}
+                                checked={
+                                    this.state.hasPostAllRole ||
+                                    this.state.isSystemAdmin
+                                }
                                 disabled={this.state.isSystemAdmin}
                                 onChange={this.handlePostAllChange}
                             />
+
                             <strong>
                                 <FormattedMessage
                                     id='admin.manage_roles.postAllRoleTitle'
@@ -196,7 +236,7 @@ export default class ManageRolesModal extends React.PureComponent {
                             </strong>
                             <FormattedMessage
                                 id='admin.manage_roles.postAllRole'
-                                defaultMessage='Access to post to all Mattermost channels including direct messages.'
+                                defaultMessage='Access to post to all SCC channels including direct messages.'
                             />
                         </label>
                     </div>
@@ -205,10 +245,18 @@ export default class ManageRolesModal extends React.PureComponent {
                             <input
                                 type='checkbox'
                                 ref='postallpublic'
-                                checked={this.state.hasPostAllPublicRole || this.state.hasPostAllRole || this.state.isSystemAdmin}
-                                disabled={this.state.hasPostAllRole || this.state.isSystemAdmin}
+                                checked={
+                                    this.state.hasPostAllPublicRole ||
+                                    this.state.hasPostAllRole ||
+                                    this.state.isSystemAdmin
+                                }
+                                disabled={
+                                    this.state.hasPostAllRole ||
+                                    this.state.isSystemAdmin
+                                }
                                 onChange={this.handlePostAllPublicChange}
                             />
+
                             <strong>
                                 <FormattedMessage
                                     id='admin.manage_roles.postAllPublicRoleTitle'
@@ -217,7 +265,7 @@ export default class ManageRolesModal extends React.PureComponent {
                             </strong>
                             <FormattedMessage
                                 id='admin.manage_roles.postAllPublicRole'
-                                defaultMessage='Access to post to all Mattermost public channels.'
+                                defaultMessage='Access to post to all SCC public channels.'
                             />
                         </label>
                     </div>
@@ -243,14 +291,19 @@ export default class ManageRolesModal extends React.PureComponent {
                                 <input
                                     type='checkbox'
                                     ref='postall'
-                                    checked={this.state.hasUserAccessTokenRole || this.state.isSystemAdmin}
+                                    checked={
+                                        this.state.hasUserAccessTokenRole ||
+                                        this.state.isSystemAdmin
+                                    }
                                     disabled={this.state.isSystemAdmin}
                                     onChange={this.handleUserAccessTokenChange}
                                 />
+
                                 <FormattedMarkdownMessage
                                     id='admin.manage_roles.allowUserAccessTokens'
-                                    defaultMessage='Allow this account to generate [personal access tokens](!https://about.mattermost.com/default-user-access-tokens).'
+                                    defaultMessage='Allow this account to generate [personal access tokens](!https://about.securCom.me/default-user-access-tokens).'
                                 />
+
                                 <span className='d-block padding-top padding-bottom light'>
                                     <FormattedHTMLMessage
                                         id='admin.manage_roles.allowUserAccessTokensDesc'
@@ -278,8 +331,12 @@ export default class ManageRolesModal extends React.PureComponent {
                     <img
                         alt={''}
                         className='manage-teams__profile-picture'
-                        src={Client4.getProfilePictureUrl(user.id, user.last_picture_update)}
+                        src={Client4.getProfilePictureUrl(
+                            user.id,
+                            user.last_picture_update,
+                        )}
                     />
+
                     <div className='manage-teams__info'>
                         <div className='manage-teams__name'>
                             {name}
@@ -288,9 +345,7 @@ export default class ManageRolesModal extends React.PureComponent {
                                 className='badge-admin'
                             />
                         </div>
-                        <div className='manage-teams__email'>
-                            {email}
-                        </div>
+                        <div className='manage-teams__email'>{email}</div>
                     </div>
                 </div>
                 <div>
@@ -303,6 +358,7 @@ export default class ManageRolesModal extends React.PureComponent {
                                     checked={this.state.isSystemAdmin}
                                     onChange={this.handleSystemAdminChange}
                                 />
+
                                 <FormattedMessage
                                     id='admin.manage_roles.systemAdmin'
                                     defaultMessage='System Admin'
@@ -317,6 +373,7 @@ export default class ManageRolesModal extends React.PureComponent {
                                     checked={!this.state.isSystemAdmin}
                                     onChange={this.handleSystemAdminChange}
                                 />
+
                                 <FormattedMessage
                                     id='admin.manage_roles.systemMember'
                                     defaultMessage='Member'
@@ -328,7 +385,7 @@ export default class ManageRolesModal extends React.PureComponent {
                 </div>
             </div>
         );
-    }
+    };
 
     render() {
         return (
@@ -340,10 +397,7 @@ export default class ManageRolesModal extends React.PureComponent {
                 aria-labelledby='manageRolesModalLabel'
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title
-                        componentClass='h1'
-                        id='manageRolesModalLabel'
-                    >
+                    <Modal.Title componentClass='h1' id='manageRolesModalLabel'>
                         <FormattedMessage
                             id='admin.manage_roles.manageRolesTitle'
                             defaultMessage='Manage Roles'

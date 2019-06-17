@@ -17,6 +17,7 @@ describe('components/TeamSettings', () => {
         removeTeamIcon,
         setTeamIcon,
     };
+
     const defaultProps = {
         team: {id: 'team_id'},
         maxFileSize: 50,
@@ -29,46 +30,56 @@ describe('components/TeamSettings', () => {
     };
 
     test('should handle bad updateTeamIcon function call', () => {
-        const wrapper = shallow(<GeneralTab {...defaultProps}/>);
+        const wrapper = shallow(<GeneralTab {...defaultProps} />);
 
         wrapper.instance().updateTeamIcon(null);
 
-        expect(wrapper.state('clientError')).toEqual('An error occurred while selecting the image.');
+        expect(wrapper.state('clientError')).toEqual(
+            'An error occurred while selecting the image.',
+        );
     });
 
     test('should handle invalid file selection', () => {
-        const wrapper = shallow(<GeneralTab {...defaultProps}/>);
+        const wrapper = shallow(<GeneralTab {...defaultProps} />);
 
         wrapper.instance().updateTeamIcon({
             target: {
-                files: [{
-                    type: 'text/plain',
-                }],
+                files: [
+                    {
+                        type: 'text/plain',
+                    },
+                ],
             },
         });
 
-        expect(wrapper.state('clientError')).toEqual('Only BMP, JPG or PNG images may be used for team icons');
+        expect(wrapper.state('clientError')).toEqual(
+            'Only BMP, JPG or PNG images may be used for team icons',
+        );
     });
 
     test('should handle too large files', () => {
-        const wrapper = shallow(<GeneralTab {...defaultProps}/>);
+        const wrapper = shallow(<GeneralTab {...defaultProps} />);
 
         wrapper.instance().updateTeamIcon({
             target: {
-                files: [{
-                    type: 'image/jpeg',
-                    size: defaultProps.maxFileSize + 1,
-                }],
+                files: [
+                    {
+                        type: 'image/jpeg',
+                        size: defaultProps.maxFileSize + 1,
+                    },
+                ],
             },
         });
 
-        expect(wrapper.state('clientError')).toEqual('Unable to upload team icon. File is too large.');
+        expect(wrapper.state('clientError')).toEqual(
+            'Unable to upload team icon. File is too large.',
+        );
     });
 
     test('should call actions.setTeamIcon on handleTeamIconSubmit', () => {
         const actions = {...baseActions};
         const props = {...defaultProps, actions};
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
         let teamIconFile = null;
         wrapper.setState({teamIconFile, submitActive: true});
@@ -84,13 +95,16 @@ describe('components/TeamSettings', () => {
         wrapper.instance().handleTeamIconSubmit({preventDefault: jest.fn()});
 
         expect(actions.setTeamIcon).toHaveBeenCalledTimes(1);
-        expect(actions.setTeamIcon).toHaveBeenCalledWith(props.team.id, teamIconFile);
+        expect(actions.setTeamIcon).toHaveBeenCalledWith(
+            props.team.id,
+            teamIconFile,
+        );
     });
 
     test('should call actions.removeTeamIcon on handleTeamIconRemove', () => {
         const actions = {...baseActions};
         const props = {...defaultProps, actions};
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
         wrapper.instance().handleTeamIconRemove({preventDefault: jest.fn()});
 
@@ -101,8 +115,8 @@ describe('components/TeamSettings', () => {
     test('hide invite code if no permissions for team inviting', () => {
         const props = {...defaultProps, canInviteTeamMembers: false};
 
-        const wrapper1 = shallow(<GeneralTab {...defaultProps}/>);
-        const wrapper2 = shallow(<GeneralTab {...props}/>);
+        const wrapper1 = shallow(<GeneralTab {...defaultProps} />);
+        const wrapper2 = shallow(<GeneralTab {...props} />);
 
         expect(wrapper1).toMatchSnapshot();
         expect(wrapper2).toMatchSnapshot();
@@ -111,9 +125,11 @@ describe('components/TeamSettings', () => {
     test('should call actions.patchTeam on handleAllowedDomainsSubmit', () => {
         const actions = {...baseActions};
         const props = {...defaultProps, actions};
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
-        wrapper.instance().handleAllowedDomainsSubmit({preventDefault: jest.fn()});
+        wrapper
+            .instance()
+            .handleAllowedDomainsSubmit({preventDefault: jest.fn()});
 
         expect(actions.patchTeam).toHaveBeenCalledTimes(1);
         expect(actions.patchTeam).toHaveBeenCalledWith(props.team);
@@ -122,7 +138,7 @@ describe('components/TeamSettings', () => {
     test('should call actions.patchTeam on handleOpenInviteSubmit', () => {
         const actions = {...baseActions};
         const props = {...defaultProps, actions};
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
         wrapper.instance().handleOpenInviteSubmit({preventDefault: jest.fn()});
 
@@ -135,7 +151,7 @@ describe('components/TeamSettings', () => {
         const props = {...defaultProps, actions};
         props.team.display_name = 'TestTeam';
 
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
         wrapper.instance().handleNameSubmit({preventDefault: jest.fn()});
 
@@ -148,19 +164,21 @@ describe('components/TeamSettings', () => {
         const props = {...defaultProps, actions};
         props.team.invite_id = '12345';
 
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
         wrapper.instance().handleInviteIdSubmit({preventDefault: jest.fn()});
 
         expect(actions.regenerateTeamInviteId).toHaveBeenCalledTimes(1);
-        expect(actions.regenerateTeamInviteId).toHaveBeenCalledWith(props.team.id);
+        expect(actions.regenerateTeamInviteId).toHaveBeenCalledWith(
+            props.team.id,
+        );
     });
 
     test('should call actions.patchTeam on handleDescriptionSubmit', () => {
         const actions = {...baseActions};
         const props = {...defaultProps, actions};
 
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
         const newDescription = 'The Test Team';
         wrapper.setState({description: newDescription});
@@ -175,7 +193,7 @@ describe('components/TeamSettings', () => {
         const props = {...defaultProps};
         props.team.group_constrained = true;
 
-        const wrapper = shallow(<GeneralTab {...props}/>);
+        const wrapper = shallow(<GeneralTab {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });

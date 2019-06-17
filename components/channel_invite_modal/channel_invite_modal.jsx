@@ -57,9 +57,16 @@ export default class ChannelInviteModal extends React.Component {
     };
 
     componentDidMount() {
-        this.props.actions.getProfilesNotInChannel(this.props.channel.team_id, this.props.channel.id, this.props.channel.group_constrained, 0).then(() => {
-            this.setUsersLoadingState(false);
-        });
+        this.props.actions
+            .getProfilesNotInChannel(
+                this.props.channel.team_id,
+                this.props.channel.id,
+                this.props.channel.group_constrained,
+                0,
+            )
+            .then(() => {
+                this.setUsersLoadingState(false);
+            });
         this.props.actions.getTeamStats(this.props.channel.team_id);
     }
 
@@ -89,9 +96,17 @@ export default class ChannelInviteModal extends React.Component {
     handlePageChange = (page, prevPage) => {
         if (page > prevPage) {
             this.setUsersLoadingState(true);
-            this.props.actions.getProfilesNotInChannel(this.props.channel.team_id, this.props.channel.id, this.props.channel.group_constrained, page + 1, USERS_PER_PAGE).then(() => {
-                this.setUsersLoadingState(false);
-            });
+            this.props.actions
+                .getProfilesNotInChannel(
+                    this.props.channel.team_id,
+                    this.props.channel.id,
+                    this.props.channel.group_constrained,
+                    page + 1,
+                    USERS_PER_PAGE,
+                )
+                .then(() => {
+                    this.setUsersLoadingState(false);
+                });
         }
     };
 
@@ -116,6 +131,7 @@ export default class ChannelInviteModal extends React.Component {
                     saving: false,
                     inviteError: null,
                 });
+
                 this.onHide();
             }
         });
@@ -127,15 +143,15 @@ export default class ChannelInviteModal extends React.Component {
             term,
         });
 
-        this.searchTimeoutId = setTimeout(
-            () => {
-                this.setUsersLoadingState(true);
-                searchUsers(term, this.props.channel.team_id, {not_in_channel_id: this.props.channel.id, group_constrained: this.props.channel.group_constrained}).then(() => {
-                    this.setUsersLoadingState(false);
-                });
-            },
-            Constants.SEARCH_TIMEOUT_MILLISECONDS
-        );
+        this.searchTimeoutId = setTimeout(() => {
+            this.setUsersLoadingState(true);
+            searchUsers(term, this.props.channel.team_id, {
+                not_in_channel_id: this.props.channel.id,
+                group_constrained: this.props.channel.group_constrained,
+            }).then(() => {
+                this.setUsersLoadingState(false);
+            });
+        }, Constants.SEARCH_TIMEOUT_MILLISECONDS);
     };
 
     renderOption = (option, isSelected, onAdd) => {
@@ -152,10 +168,14 @@ export default class ChannelInviteModal extends React.Component {
                 onClick={() => onAdd(option)}
             >
                 <ProfilePicture
-                    src={Client4.getProfilePictureUrl(option.id, option.last_picture_update)}
+                    src={Client4.getProfilePictureUrl(
+                        option.id,
+                        option.last_picture_update,
+                    )}
                     width='32'
                     height='32'
                 />
+
                 <div className='more-modal__details'>
                     <div className='more-modal__name'>
                         {displayEntireNameForUser(option)}
@@ -167,7 +187,7 @@ export default class ChannelInviteModal extends React.Component {
                 </div>
                 <div className='more-modal__actions'>
                     <div className='more-modal__actions--round'>
-                        <AddIcon/>
+                        <AddIcon />
                     </div>
                 </div>
             </div>
@@ -181,7 +201,11 @@ export default class ChannelInviteModal extends React.Component {
     render() {
         let inviteError = null;
         if (this.state.inviteError) {
-            inviteError = (<label className='has-error control-label'>{this.state.inviteError}</label>);
+            inviteError = (
+                <label className='has-error control-label'>
+                    {this.state.inviteError}
+                </label>
+            );
         }
 
         const numRemainingText = (
@@ -195,9 +219,16 @@ export default class ChannelInviteModal extends React.Component {
         );
 
         const buttonSubmitText = localizeMessage('multiselect.add', 'Add');
-        const buttonSubmitLoadingText = localizeMessage('multiselect.adding', 'Adding...');
+        const buttonSubmitLoadingText = localizeMessage(
+            'multiselect.adding',
+            'Adding...',
+        );
 
-        let users = filterProfilesMatchingTerm(this.props.profilesNotInCurrentChannel, this.state.term);
+        let users = filterProfilesMatchingTerm(
+            this.props.profilesNotInCurrentChannel,
+            this.state.term,
+        );
+
         users = users.filter((user) => user.delete_at === 0);
 
         const content = (
@@ -219,7 +250,10 @@ export default class ChannelInviteModal extends React.Component {
                 buttonSubmitLoadingText={buttonSubmitLoadingText}
                 saving={this.state.saving}
                 loading={this.state.loadingUsers}
-                placeholderText={localizeMessage('multiselect.placeholder', 'Search and add members')}
+                placeholderText={localizeMessage(
+                    'multiselect.placeholder',
+                    'Search and add members',
+                )}
             />
         );
 
@@ -241,7 +275,10 @@ export default class ChannelInviteModal extends React.Component {
                             id='channel_invite.addNewMembers'
                             defaultMessage='Add New Members to '
                         />
-                        <span className='name'>{this.props.channel.display_name}</span>
+
+                        <span className='name'>
+                            {this.props.channel.display_name}
+                        </span>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

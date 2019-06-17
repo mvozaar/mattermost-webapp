@@ -7,12 +7,19 @@ import {testEmail} from 'mattermost-redux/actions/admin';
 
 import EmailConnectionTestButton from './email_connection_test.jsx';
 
-export default connect(null, mapDispatchToProps)(EmailConnectionTestButton);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(EmailConnectionTestButton);
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            testEmail,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                testEmail,
+            },
+
+            dispatch,
+        ),
     };
 }

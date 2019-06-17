@@ -17,7 +17,7 @@ import MoreChannels from './more_channels.jsx';
 
 const getNotArchivedOtherChannels = createSelector(
     getOtherChannels,
-    (channels) => channels && channels.filter((c) => c.delete_at === 0)
+    (channels) => channels && channels.filter((c) => c.delete_at === 0),
 );
 
 function mapStateToProps(state) {
@@ -28,18 +28,27 @@ function mapStateToProps(state) {
         currentUserId: getCurrentUserId(state),
         teamId: team.id,
         teamName: team.name,
-        channelsRequestStarted: state.requests.channels.getChannels.status === RequestStatus.STARTED,
+        channelsRequestStarted:
+            state.requests.channels.getChannels.status ===
+            RequestStatus.STARTED,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getChannels,
-            joinChannel,
-            searchMoreChannels,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getChannels,
+                joinChannel,
+                searchMoreChannels,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoreChannels);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MoreChannels);

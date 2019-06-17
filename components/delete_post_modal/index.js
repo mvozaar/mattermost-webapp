@@ -28,10 +28,17 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            deleteAndRemovePost,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                deleteAndRemovePost,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeletePostModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DeletePostModal);

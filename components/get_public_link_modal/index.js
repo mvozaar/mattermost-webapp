@@ -15,10 +15,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getFilePublicLink,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getFilePublicLink,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GetPublicLinkModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(GetPublicLinkModal);

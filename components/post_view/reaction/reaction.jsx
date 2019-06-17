@@ -10,7 +10,6 @@ import * as Utils from 'utils/utils.jsx';
 
 export default class Reaction extends React.PureComponent {
     static propTypes = {
-
         /*
          * The post to render the reaction for
          */
@@ -62,7 +61,6 @@ export default class Reaction extends React.PureComponent {
         emojiImageUrl: PropTypes.string.isRequired,
 
         actions: PropTypes.shape({
-
             /*
              * Function to add a reaction to a post
              */
@@ -78,23 +76,26 @@ export default class Reaction extends React.PureComponent {
              */
             removeReaction: PropTypes.func.isRequired,
         }),
-    }
+    };
 
     handleAddReaction = (e) => {
         e.preventDefault();
         const {actions, post, emojiName} = this.props;
         actions.addReaction(post.id, emojiName);
-    }
+    };
 
     handleRemoveReaction = (e) => {
         e.preventDefault();
-        this.props.actions.removeReaction(this.props.post.id, this.props.emojiName);
-    }
+        this.props.actions.removeReaction(
+            this.props.post.id,
+            this.props.emojiName,
+        );
+    };
 
     loadMissingProfiles = () => {
         const ids = this.props.reactions.map((reaction) => reaction.user_id);
         this.props.actions.getMissingProfilesByIds(ids);
-    }
+    };
 
     render() {
         if (!this.props.emojiImageUrl) {
@@ -238,9 +239,11 @@ export default class Reaction extends React.PureComponent {
                 placement='top'
                 shouldUpdatePosition={true}
                 overlay={
-                    <Tooltip id={`${this.props.post.id}-${this.props.emojiName}-reaction`}>
+                    <Tooltip
+                        id={`${this.props.post.id}-${this.props.emojiName}-reaction`}
+                    >
                         {tooltip}
-                        <br/>
+                        <br />
                         {clickTooltip}
                     </Tooltip>
                 }
@@ -253,11 +256,13 @@ export default class Reaction extends React.PureComponent {
                 >
                     <span
                         className='post-reaction__emoji emoticon'
-                        style={{backgroundImage: 'url(' + this.props.emojiImageUrl + ')'}}
+                        style={{
+                            backgroundImage:
+                                'url(' + this.props.emojiImageUrl + ')',
+                        }}
                     />
-                    <span
-                        className='post-reaction__count'
-                    >
+
+                    <span className='post-reaction__count'>
                         {this.props.reactionCount}
                     </span>
                 </div>

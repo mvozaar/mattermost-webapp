@@ -12,7 +12,7 @@ class MessageSubmitError extends React.PureComponent {
         error: PropTypes.object.isRequired,
         handleSubmit: PropTypes.func.isRequired,
         submittedMessage: PropTypes.string,
-    }
+    };
 
     renderSlashCommandError = () => {
         if (!this.props.submittedMessage) {
@@ -24,15 +24,15 @@ class MessageSubmitError extends React.PureComponent {
             <React.Fragment>
                 <FormattedMessage
                     id='message_submit_error.invalidCommand'
-                    defaultMessage={'Command with a trigger of \'{command}\' not found. '}
+                    defaultMessage={
+                        "Command with a trigger of '{command}' not found. "
+                    }
                     values={{
                         command,
                     }}
                 />
-                <a
-                    href='#'
-                    onClick={this.props.handleSubmit}
-                >
+
+                <a href='#' onClick={this.props.handleSubmit}>
                     <FormattedMessage
                         id='message_submit_error.sendAsMessageLink'
                         defaultMessage='Click here to send as a message.'
@@ -40,7 +40,7 @@ class MessageSubmitError extends React.PureComponent {
                 </a>
             </React.Fragment>
         );
-    }
+    };
 
     render() {
         const error = this.props.error;
@@ -56,9 +56,7 @@ class MessageSubmitError extends React.PureComponent {
 
         return (
             <div className='has-error'>
-                <label className='control-label'>
-                    {errorContent}
-                </label>
+                <label className='control-label'>{errorContent}</label>
             </div>
         );
     }

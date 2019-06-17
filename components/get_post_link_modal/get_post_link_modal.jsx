@@ -11,7 +11,6 @@ import GetLinkModal from 'components/get_link_modal.jsx';
 
 export default class GetPostLinkModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * URL of current team
          */
@@ -31,11 +30,17 @@ export default class GetPostLinkModal extends React.PureComponent {
     }
 
     componentDidMount() {
-        ModalStore.addModalListener(Constants.ActionTypes.TOGGLE_GET_POST_LINK_MODAL, this.handleToggle);
+        ModalStore.addModalListener(
+            Constants.ActionTypes.TOGGLE_GET_POST_LINK_MODAL,
+            this.handleToggle,
+        );
     }
 
     componentWillUnmount() {
-        ModalStore.removeModalListener(Constants.ActionTypes.TOGGLE_GET_POST_LINK_MODAL, this.handleToggle);
+        ModalStore.removeModalListener(
+            Constants.ActionTypes.TOGGLE_GET_POST_LINK_MODAL,
+            this.handleToggle,
+        );
     }
 
     handleToggle(value, args) {
@@ -57,8 +62,14 @@ export default class GetPostLinkModal extends React.PureComponent {
             <GetLinkModal
                 show={this.state.show}
                 onHide={this.hide}
-                title={Utils.localizeMessage('get_post_link_modal.title', 'Copy Permalink')}
-                helpText={Utils.localizeMessage('get_post_link_modal.help', 'The link below allows authorized users to see your post.')}
+                title={Utils.localizeMessage(
+                    'get_post_link_modal.title',
+                    'Copy Permalink',
+                )}
+                helpText={Utils.localizeMessage(
+                    'get_post_link_modal.help',
+                    'The link below allows authorized users to see your post.',
+                )}
                 link={postUrl}
             />
         );

@@ -23,7 +23,10 @@ export default class UsersEmailsInput extends React.Component {
         placeholder: PropTypes.string,
         usersLoader: PropTypes.func,
         onChange: PropTypes.func,
-        value: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object, PropTypes.string])),
+        value: PropTypes.arrayOf(
+            PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+        ),
+
         noOptionsMessageId: PropTypes.string,
         noOptionsMessageDefault: PropTypes.string,
         noMatchMessageId: PropTypes.string,
@@ -32,7 +35,7 @@ export default class UsersEmailsInput extends React.Component {
         validAddressMessageDefault: PropTypes.string,
         loadingMessageId: PropTypes.string,
         loadingMessageDefault: PropTypes.string,
-    }
+    };
 
     static contextTypes = {
         intl: intlShape.isRequired,
@@ -41,8 +44,12 @@ export default class UsersEmailsInput extends React.Component {
     static defaultProps = {
         noOptionsMessageId: t('widgets.users_emails_input.empty'),
         noOptionsMessageDefault: 'Add users or email addresses',
-        noMatchMessageId: t('widgets.users_emails_input.no_user_found_matching'),
-        noMatchMessageDefault: 'No one found matching **{text}**, type email address',
+        noMatchMessageId: t(
+            'widgets.users_emails_input.no_user_found_matching',
+        ),
+
+        noMatchMessageDefault:
+            'No one found matching **{text}**, type email address',
         validAddressMessageId: t('widgets.users_emails_input.valid_email'),
         validAddressMessageDefault: 'Add **{email}**',
         loadingMessageId: t('widgets.users_emails_input.loading'),
@@ -58,26 +65,32 @@ export default class UsersEmailsInput extends React.Component {
             id: this.props.loadingMessageId,
             defaultMessage: this.props.loadingMessageDefault,
         });
-    }
+    };
 
     getOptionValue = (user) => {
         return user.id || user.value;
-    }
+    };
 
     formatUserName = (user) => {
-        let displayName = '@' + user.username + ' - ' + user.first_name + ' ' + user.last_name;
+        let displayName =
+            '@' +
+            user.username +
+            ' - ' +
+            user.first_name +
+            ' ' +
+            user.last_name;
         if (user.nickname) {
             displayName = displayName + ' (' + user.nickname + ')';
         }
         return displayName;
-    }
+    };
 
     formatShortUserName = (user) => {
         if (user.first_name || user.last_name) {
             return user.first_name + ' ' + user.last_name;
         }
         return user.username;
-    }
+    };
 
     formatOptionLabel = (user, options) => {
         const profileImg = imageURLForUser(user);
@@ -104,7 +117,7 @@ export default class UsersEmailsInput extends React.Component {
         if (user.value && isEmail(user.value)) {
             return (
                 <React.Fragment>
-                    <MailIcon className='mail-icon'/>
+                    <MailIcon className='mail-icon' />
                     <span>{user.value}</span>
                 </React.Fragment>
             );
@@ -116,22 +129,24 @@ export default class UsersEmailsInput extends React.Component {
                 {this.formatShortUserName(user)}
             </React.Fragment>
         );
-    }
+    };
 
     onChange = (value) => {
         if (this.props.onChange) {
-            this.props.onChange(value.map((v) => {
-                if (v.id) {
-                    return v;
-                }
-                return v.value;
-            }));
+            this.props.onChange(
+                value.map((v) => {
+                    if (v.id) {
+                        return v;
+                    }
+                    return v.value;
+                }),
+            );
         }
-    }
+    };
 
     getCreateLabel = (value) => (
         <React.Fragment>
-            <MailPlusIcon className='mail-plus-icon'/>
+            <MailPlusIcon className='mail-plus-icon' />
             <FormattedMarkdownMessage
                 key='widgets.users_emails_input.valid_email'
                 id={this.props.validAddressMessageId}

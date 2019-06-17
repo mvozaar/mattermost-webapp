@@ -23,11 +23,17 @@ export default class ImportThemeModal extends React.Component {
     }
 
     componentDidMount() {
-        ModalStore.addModalListener(ActionTypes.TOGGLE_IMPORT_THEME_MODAL, this.updateShow);
+        ModalStore.addModalListener(
+            ActionTypes.TOGGLE_IMPORT_THEME_MODAL,
+            this.updateShow,
+        );
     }
 
     componentWillUnmount() {
-        ModalStore.removeModalListener(ActionTypes.TOGGLE_IMPORT_THEME_MODAL, this.updateShow);
+        ModalStore.removeModalListener(
+            ActionTypes.TOGGLE_IMPORT_THEME_MODAL,
+            this.updateShow,
+        );
     }
 
     updateShow = (show, args) => {
@@ -35,7 +41,7 @@ export default class ImportThemeModal extends React.Component {
             show,
             callback: args.callback,
         });
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -51,6 +57,7 @@ export default class ImportThemeModal extends React.Component {
                     />
                 ),
             });
+
             return;
         }
 
@@ -84,7 +91,7 @@ export default class ImportThemeModal extends React.Component {
             show: false,
             callback: null,
         });
-    }
+    };
 
     isInputValid(text) {
         if (text.length === 0) {
@@ -136,11 +143,11 @@ export default class ImportThemeModal extends React.Component {
                 ),
             });
         }
-    }
+    };
 
     handleOnHide = () => {
         this.setState({show: false});
-    }
+    };
 
     render() {
         return (
@@ -162,15 +169,12 @@ export default class ImportThemeModal extends React.Component {
                             />
                         </Modal.Title>
                     </Modal.Header>
-                    <form
-                        role='form'
-                        className='form-horizontal'
-                    >
+                    <form role='form' className='form-horizontal'>
                         <Modal.Body>
                             <p>
                                 <FormattedMessage
                                     id='user.settings.import_theme.importBody'
-                                    defaultMessage='To import a theme, go to a Slack team and look for "Preferences -> Sidebar Theme". Open the custom theme option, copy the theme color values and paste them here:'
+                                    defaultMessage="To import a theme, go to a Slack team and look for 'Preferences -> Sidebar Theme'. Open the custom theme option, copy the theme color values and paste them here:"
                                 />
                             </p>
                             <div className='form-group less'>
@@ -182,6 +186,7 @@ export default class ImportThemeModal extends React.Component {
                                         value={this.state.value}
                                         onChange={this.handleChange}
                                     />
+
                                     <div className='input__help'>
                                         {this.state.inputError}
                                     </div>

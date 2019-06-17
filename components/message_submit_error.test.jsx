@@ -16,6 +16,7 @@ describe('components/MessageSubmitError', () => {
             message: 'No command found',
             server_error_id: 'api.command.execute_command.not_found.app_error',
         };
+
         const submittedMessage = 'fakecommand some text';
 
         const props = {
@@ -24,11 +25,11 @@ describe('components/MessageSubmitError', () => {
             submittedMessage,
         };
 
-        const wrapper = shallow(
-            <MessageSubmitError {...props}/>
-        );
+        const wrapper = shallow(<MessageSubmitError {...props} />);
 
-        expect(wrapper.find('[id="message_submit_error.invalidCommand"]').exists()).toBe(true);
+        expect(
+            wrapper.find("[id='message_submit_error.invalidCommand']").exists(),
+        ).toBe(true);
         expect(wrapper.text()).not.toEqual('No command found');
     });
 
@@ -37,6 +38,7 @@ describe('components/MessageSubmitError', () => {
             message: 'Some server error',
             server_error_id: 'api.other_error',
         };
+
         const submittedMessage = '/fakecommand some text';
 
         const props = {
@@ -45,11 +47,11 @@ describe('components/MessageSubmitError', () => {
             submittedMessage,
         };
 
-        const wrapper = shallow(
-            <MessageSubmitError {...props}/>
-        );
+        const wrapper = shallow(<MessageSubmitError {...props} />);
 
-        expect(wrapper.find('[id="message_submit_error.invalidCommand"]').exists()).toBe(false);
+        expect(
+            wrapper.find("[id='message_submit_error.invalidCommand']").exists(),
+        ).toBe(false);
         expect(wrapper.text()).toEqual('Some server error');
     });
 });

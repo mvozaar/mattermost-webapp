@@ -31,7 +31,10 @@ export default class PushSettings extends AdminSettings {
     }
 
     canSave() {
-        return this.state.pushNotificationServerType !== PUSH_NOTIFICATIONS_MHPNS || this.state.agree;
+        return (
+            this.state.pushNotificationServerType !==
+                PUSH_NOTIFICATIONS_MHPNS || this.state.agree
+        );
     }
 
     handleAgreeChange(e) {
@@ -54,9 +57,13 @@ export default class PushSettings extends AdminSettings {
                 this.setState({
                     pushNotificationServer: Constants.MTPNS,
                 });
-            } else if (value === PUSH_NOTIFICATIONS_CUSTOM &&
-                (this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MTPNS ||
-                this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MHPNS)) {
+            } else if (
+                value === PUSH_NOTIFICATIONS_CUSTOM &&
+                (this.state.pushNotificationServerType ===
+                    PUSH_NOTIFICATIONS_MTPNS ||
+                    this.state.pushNotificationServerType ===
+                        PUSH_NOTIFICATIONS_MHPNS)
+            ) {
                 this.setState({
                     pushNotificationServer: '',
                 });
@@ -67,7 +74,8 @@ export default class PushSettings extends AdminSettings {
     }
 
     getConfigFromState(config) {
-        config.EmailSettings.SendPushNotifications = this.state.pushNotificationServerType !== PUSH_NOTIFICATIONS_OFF;
+        config.EmailSettings.SendPushNotifications =
+            this.state.pushNotificationServerType !== PUSH_NOTIFICATIONS_OFF;
         config.EmailSettings.PushNotificationServer = this.state.pushNotificationServer.trim();
         config.TeamSettings.MaxNotificationsPerChannel = this.state.maxNotificationsPerChannel;
 
@@ -79,22 +87,29 @@ export default class PushSettings extends AdminSettings {
         let agree = false;
         if (!config.EmailSettings.SendPushNotifications) {
             pushNotificationServerType = PUSH_NOTIFICATIONS_OFF;
-        } else if (config.EmailSettings.PushNotificationServer === Constants.MHPNS &&
-            this.props.license.IsLicensed === 'true' && this.props.license.MHPNS === 'true') {
+        } else if (
+            config.EmailSettings.PushNotificationServer === Constants.MHPNS &&
+            this.props.license.IsLicensed === 'true' &&
+            this.props.license.MHPNS === 'true'
+        ) {
             pushNotificationServerType = PUSH_NOTIFICATIONS_MHPNS;
             agree = true;
-        } else if (config.EmailSettings.PushNotificationServer === Constants.MTPNS) {
+        } else if (
+            config.EmailSettings.PushNotificationServer === Constants.MTPNS
+        ) {
             pushNotificationServerType = PUSH_NOTIFICATIONS_MTPNS;
         }
 
-        let pushNotificationServer = config.EmailSettings.PushNotificationServer;
+        let pushNotificationServer =
+            config.EmailSettings.PushNotificationServer;
         if (pushNotificationServerType === PUSH_NOTIFICATIONS_MTPNS) {
             pushNotificationServer = Constants.MTPNS;
         } else if (pushNotificationServerType === PUSH_NOTIFICATIONS_MHPNS) {
             pushNotificationServer = Constants.MHPNS;
         }
 
-        const maxNotificationsPerChannel = config.TeamSettings.MaxNotificationsPerChannel;
+        const maxNotificationsPerChannel =
+            config.TeamSettings.MaxNotificationsPerChannel;
 
         return {
             pushNotificationServerType,
@@ -107,8 +122,10 @@ export default class PushSettings extends AdminSettings {
     isPushNotificationServerSetByEnv = () => {
         // Assume that if one of these has been set using an environment variable,
         // all of them have been set that way
-        return this.isSetByEnv('EmailSettings.SendPushNotifications') ||
-            this.isSetByEnv('EmailSettings.PushNotificationServer');
+        return (
+            this.isSetByEnv('EmailSettings.SendPushNotifications') ||
+            this.isSetByEnv('EmailSettings.PushNotificationServer')
+        );
     };
 
     renderTitle() {
@@ -122,12 +139,41 @@ export default class PushSettings extends AdminSettings {
 
     renderSettings() {
         const pushNotificationServerTypes = [];
-        pushNotificationServerTypes.push({value: PUSH_NOTIFICATIONS_OFF, text: Utils.localizeMessage('admin.email.pushOff', 'Do not send push notifications')});
-        if (this.props.license.IsLicensed === 'true' && this.props.license.MHPNS === 'true') {
-            pushNotificationServerTypes.push({value: PUSH_NOTIFICATIONS_MHPNS, text: Utils.localizeMessage('admin.email.mhpns', 'Use HPNS connection with uptime SLA to send notifications to iOS and Android apps')});
+        pushNotificationServerTypes.push({
+            value: PUSH_NOTIFICATIONS_OFF,
+            text: Utils.localizeMessage(
+                'admin.email.pushOff',
+                'Do not send push notifications',
+            ),
+        });
+
+        if (
+            this.props.license.IsLicensed === 'true' &&
+            this.props.license.MHPNS === 'true'
+        ) {
+            pushNotificationServerTypes.push({
+                value: PUSH_NOTIFICATIONS_MHPNS,
+                text: Utils.localizeMessage(
+                    'admin.email.mhpns',
+                    'Use HPNS connection with uptime SLA to send notifications to iOS and Android apps',
+                ),
+            });
         }
-        pushNotificationServerTypes.push({value: PUSH_NOTIFICATIONS_MTPNS, text: Utils.localizeMessage('admin.email.mtpns', 'Use TPNS connection to send notifications to iOS and Android apps')});
-        pushNotificationServerTypes.push({value: PUSH_NOTIFICATIONS_CUSTOM, text: Utils.localizeMessage('admin.email.selfPush', 'Manually enter Push Notification Service location')});
+        pushNotificationServerTypes.push({
+            value: PUSH_NOTIFICATIONS_MTPNS,
+            text: Utils.localizeMessage(
+                'admin.email.mtpns',
+                'Use TPNS connection to send notifications to iOS and Android apps',
+            ),
+        });
+
+        pushNotificationServerTypes.push({
+            value: PUSH_NOTIFICATIONS_CUSTOM,
+            text: Utils.localizeMessage(
+                'admin.email.selfPush',
+                'Manually enter Push Notification Service location',
+            ),
+        });
 
         let sendHelpText = null;
         let pushServerHelpText = null;
@@ -135,37 +181,43 @@ export default class PushSettings extends AdminSettings {
             sendHelpText = (
                 <FormattedMarkdownMessage
                     id='admin.email.pushOffHelp'
-                    defaultMessage='Please see [documentation on push notifications](!https://about.mattermost.com/default-mobile-push-notifications/) to learn more about setup options.'
+                    defaultMessage='Please see [documentation on push notifications](!https://about.securCom.me/default-mobile-push-notifications/) to learn more about setup options.'
                 />
             );
-        } else if (this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MHPNS) {
+        } else if (
+            this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MHPNS
+        ) {
             pushServerHelpText = (
                 <FormattedMarkdownMessage
                     id='admin.email.mhpnsHelp'
-                    defaultMessage='Download [Mattermost iOS app](!https://about.mattermost.com/mattermost-ios-app/) from iTunes. Download [Mattermost Android app](!https://about.mattermost.com/mattermost-android-app/) from Google Play. Learn more about the [Mattermost Hosted Push Notification Service](!https://about.mattermost.com/default-hpns/).'
+                    defaultMessage='Download [securCom iOS app](!https://about.securCom.me/scc-ios-app/) from iTunes. Download [securCom Android app](!https://about.securCom.me/scc-android-app/) from Google Play. Learn more about the [securCom Hosted Push Notification Service](!https://about.securCom.me/default-hpns/).'
                 />
             );
-        } else if (this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MTPNS) {
+        } else if (
+            this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MTPNS
+        ) {
             pushServerHelpText = (
                 <FormattedMarkdownMessage
                     id='admin.email.mtpnsHelp'
-                    defaultMessage='Download [Mattermost iOS app](!https://about.mattermost.com/mattermost-ios-app/) from iTunes. Download [Mattermost Android app](!https://about.mattermost.com/mattermost-android-app/) from Google Play. Learn more about the [Mattermost Test Push Notification Service](!https://about.mattermost.com/default-tpns/).'
+                    defaultMessage='Download [securCom iOS app](!https://about.securCom.me/scc-ios-app/) from iTunes. Download [securCom Android app](!https://about.securCom.me/scc-android-app/) from Google Play. Learn more about the [securCom Test Push Notification Service](!https://about.securCom.me/default-tpns/).'
                 />
             );
         } else {
             pushServerHelpText = (
                 <FormattedMarkdownMessage
                     id='admin.email.easHelp'
-                    defaultMessage='Learn more about compiling and deploying your own mobile apps from an [Enterprise App Store](!https://about.mattermost.com/default-enterprise-app-store).'
+                    defaultMessage='Learn more about compiling and deploying your own mobile apps from an [Enterprise App Store](!https://about.securCom.me/default-enterprise-app-store).'
                 />
             );
         }
 
         let tosCheckbox;
-        if (this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MHPNS) {
+        if (
+            this.state.pushNotificationServerType === PUSH_NOTIFICATIONS_MHPNS
+        ) {
             tosCheckbox = (
                 <div className='form-group'>
-                    <div className='col-sm-4'/>
+                    <div className='col-sm-4' />
                     <div className='col-sm-8'>
                         <input
                             type='checkbox'
@@ -173,9 +225,10 @@ export default class PushSettings extends AdminSettings {
                             checked={this.state.agree}
                             onChange={this.handleAgreeChange}
                         />
+
                         <FormattedMarkdownMessage
                             id='admin.email.agreeHPNS'
-                            defaultMessage=' I understand and accept the Mattermost Hosted Push Notification Service [Terms of Service](!https://about.mattermost.com/hpns-terms/) and [Privacy Policy](!https://about.mattermost.com/hpns-privacy/).'
+                            defaultMessage=' I understand and accept the SCC Hosted Push Notification Service [Terms of Service](!https://about.securCom.me/hpns-terms/) and [Privacy Policy](!https://about.securCom.me/hpns-privacy/).'
                         />
                     </div>
                 </div>
@@ -198,6 +251,7 @@ export default class PushSettings extends AdminSettings {
                     helpText={sendHelpText}
                     setByEnv={this.isPushNotificationServerSetByEnv()}
                 />
+
                 {tosCheckbox}
                 <TextSetting
                     id='pushNotificationServer'
@@ -207,13 +261,22 @@ export default class PushSettings extends AdminSettings {
                             defaultMessage='Push Notification Server:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.email.pushServerEx', 'E.g.: "https://push-test.mattermost.com"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.email.pushServerEx',
+                        "E.g.: 'https://push-test.securCom.me'",
+                    )}
                     helpText={pushServerHelpText}
                     value={this.state.pushNotificationServer}
                     onChange={this.handleChange}
-                    disabled={this.state.pushNotificationServerType !== PUSH_NOTIFICATIONS_CUSTOM}
-                    setByEnv={this.isSetByEnv('EmailSettings.PushNotificationServer')}
+                    disabled={
+                        this.state.pushNotificationServerType !==
+                        PUSH_NOTIFICATIONS_CUSTOM
+                    }
+                    setByEnv={this.isSetByEnv(
+                        'EmailSettings.PushNotificationServer',
+                    )}
                 />
+
                 <TextSetting
                     id='maxNotificationsPerChannel'
                     type='number'
@@ -223,7 +286,10 @@ export default class PushSettings extends AdminSettings {
                             defaultMessage='Max Notifications Per Channel:'
                         />
                     }
-                    placeholder={Utils.localizeMessage('admin.team.maxNotificationsPerChannelExample', 'E.g.: "1000"')}
+                    placeholder={Utils.localizeMessage(
+                        'admin.team.maxNotificationsPerChannelExample',
+                        "E.g.: '1000'",
+                    )}
                     helpText={
                         <FormattedMarkdownMessage
                             id='admin.team.maxNotificationsPerChannelDescription'
@@ -232,7 +298,9 @@ export default class PushSettings extends AdminSettings {
                     }
                     value={this.state.maxNotificationsPerChannel}
                     onChange={this.handleChange}
-                    setByEnv={this.isSetByEnv('TeamSettings.MaxNotificationsPerChannel')}
+                    setByEnv={this.isSetByEnv(
+                        'TeamSettings.MaxNotificationsPerChannel',
+                    )}
                 />
             </SettingsGroup>
         );

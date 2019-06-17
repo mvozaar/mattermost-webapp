@@ -12,8 +12,9 @@ describe('components/widgets/settings/TextSetting', () => {
                 id='string.id'
                 label='some label'
                 value='some value'
-            />
+            />,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <Setting
   inputClassName=""
@@ -40,8 +41,9 @@ describe('components/widgets/settings/TextSetting', () => {
                 label='some label'
                 value='some value'
                 type='textarea'
-            />
+            />,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <Setting
   inputClassName=""
@@ -72,7 +74,7 @@ describe('components/widgets/settings/TextSetting', () => {
                 label='some label'
                 value='some value'
                 type='junk'
-            />
+            />,
         );
 
         expect(console.error).toBeCalledTimes(1);
@@ -106,10 +108,12 @@ describe('components/widgets/settings/TextSetting', () => {
                 label='some label'
                 value='some value'
                 onChange={onChange}
-            />
+            />,
         );
 
-        wrapper.find('input').simulate('change', {target: {value: 'somenewvalue'}});
+        wrapper
+            .find('input')
+            .simulate('change', {target: {value: 'somenewvalue'}});
 
         expect(onChange).toHaveBeenCalledTimes(1);
         expect(onChange).toHaveBeenCalledWith('string.id', 'somenewvalue');

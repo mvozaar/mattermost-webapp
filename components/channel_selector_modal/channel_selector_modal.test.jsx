@@ -20,6 +20,7 @@ describe('components/ChannelSelectorModal', () => {
                 display_name: 'Channel 1',
                 team_display_name: 'Team 1',
             },
+
             {
                 id: 'id2',
                 delete_at: 123,
@@ -27,6 +28,7 @@ describe('components/ChannelSelectorModal', () => {
                 display_name: 'Channel 2',
                 team_display_name: 'Team 2',
             },
+
             {
                 id: 'id3',
                 delete_at: 0,
@@ -34,6 +36,7 @@ describe('components/ChannelSelectorModal', () => {
                 display_name: 'Channel 3',
                 team_display_name: 'Team 3',
             },
+
             {
                 id: 'id4',
                 delete_at: 0,
@@ -42,6 +45,7 @@ describe('components/ChannelSelectorModal', () => {
                 team_display_name: 'Team 4',
             },
         ],
+
         onModalDismissed: jest.fn(),
         onChannelsSelected: jest.fn(),
         actions: {
@@ -52,7 +56,7 @@ describe('components/ChannelSelectorModal', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<ChannelSelectorModal {...defaultProps}/>);
+        const wrapper = shallow(<ChannelSelectorModal {...defaultProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });

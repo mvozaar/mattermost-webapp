@@ -7,11 +7,7 @@ export default class AccordionToggleIcon extends React.PureComponent {
     render() {
         return (
             <span {...this.props}>
-                <svg
-                    width='30px'
-                    height='30px'
-                    viewBox='0 0 30 30'
-                >
+                <svg width='30px' height='30px' viewBox='0 0 30 30'>
                     <g
                         id='Developer-Export'
                         stroke='none'
@@ -38,6 +34,7 @@ export default class AccordionToggleIcon extends React.PureComponent {
                                                 id=''
                                                 fill='#979797'
                                             />
+
                                             <circle
                                                 id='Oval-2'
                                                 stroke='#989898'

@@ -10,9 +10,8 @@ import Constants, {RHSStates} from 'utils/constants.jsx';
 
 export default class RhsHeaderPost extends React.Component {
     static propTypes = {
-        previousRhsState: PropTypes.oneOf(
-            Object.values(RHSStates)
-        ),
+        previousRhsState: PropTypes.oneOf(Object.values(RHSStates)),
+
         actions: PropTypes.shape({
             showMentions: PropTypes.func,
             showSearchResults: PropTypes.func,
@@ -27,22 +26,22 @@ export default class RhsHeaderPost extends React.Component {
         e.preventDefault();
 
         switch (this.props.previousRhsState) {
-        case RHSStates.SEARCH:
-            this.props.actions.showSearchResults();
-            break;
-        case RHSStates.MENTION:
-            this.props.actions.showMentions();
-            break;
-        case RHSStates.FLAG:
-            this.props.actions.showFlaggedPosts();
-            break;
-        case RHSStates.PIN:
-            this.props.actions.showPinnedPosts();
-            break;
-        default:
-            break;
+            case RHSStates.SEARCH:
+                this.props.actions.showSearchResults();
+                break;
+            case RHSStates.MENTION:
+                this.props.actions.showMentions();
+                break;
+            case RHSStates.FLAG:
+                this.props.actions.showFlaggedPosts();
+                break;
+            case RHSStates.PIN:
+                this.props.actions.showPinnedPosts();
+                break;
+            default:
+                break;
         }
-    }
+    };
 
     render() {
         let back;
@@ -58,37 +57,40 @@ export default class RhsHeaderPost extends React.Component {
         let backToResultsTooltip;
 
         switch (this.props.previousRhsState) {
-        case RHSStates.SEARCH:
-        case RHSStates.MENTION:
-            backToResultsTooltip = (
-                <Tooltip id='backToResultsTooltip'>
-                    <FormattedMessage
-                        id='rhs_header.backToResultsTooltip'
-                        defaultMessage='Back to Search Results'
-                    />
-                </Tooltip>
-            );
-            break;
-        case RHSStates.FLAG:
-            backToResultsTooltip = (
-                <Tooltip id='backToResultsTooltip'>
-                    <FormattedMessage
-                        id='rhs_header.backToFlaggedTooltip'
-                        defaultMessage='Back to Flagged Posts'
-                    />
-                </Tooltip>
-            );
-            break;
-        case RHSStates.PIN:
-            backToResultsTooltip = (
-                <Tooltip id='backToResultsTooltip'>
-                    <FormattedMessage
-                        id='rhs_header.backToPinnedTooltip'
-                        defaultMessage='Back to Pinned Posts'
-                    />
-                </Tooltip>
-            );
-            break;
+            case RHSStates.SEARCH:
+            case RHSStates.MENTION:
+                backToResultsTooltip = (
+                    <Tooltip id='backToResultsTooltip'>
+                        <FormattedMessage
+                            id='rhs_header.backToResultsTooltip'
+                            defaultMessage='Back to Search Results'
+                        />
+                    </Tooltip>
+                );
+
+                break;
+            case RHSStates.FLAG:
+                backToResultsTooltip = (
+                    <Tooltip id='backToResultsTooltip'>
+                        <FormattedMessage
+                            id='rhs_header.backToFlaggedTooltip'
+                            defaultMessage='Back to Flagged Posts'
+                        />
+                    </Tooltip>
+                );
+
+                break;
+            case RHSStates.PIN:
+                backToResultsTooltip = (
+                    <Tooltip id='backToResultsTooltip'>
+                        <FormattedMessage
+                            id='rhs_header.backToPinnedTooltip'
+                            defaultMessage='Back to Pinned Posts'
+                        />
+                    </Tooltip>
+                );
+
+                break;
         }
 
         const expandSidebarTooltip = (
@@ -198,7 +200,6 @@ export default class RhsHeaderPost extends React.Component {
                         aria-label='Close'
                         onClick={this.props.actions.closeRightHandSide}
                     >
-
                         <OverlayTrigger
                             trigger={['hover', 'focus']}
                             delayShow={Constants.OVERLAY_TIME_DELAY}

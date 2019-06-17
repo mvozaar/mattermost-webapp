@@ -42,10 +42,11 @@ export default class TextDismissableBar extends React.PureComponent {
         this.setState({
             dismissed: true,
         });
+
         if (this.props.onDismissal) {
             this.props.onDismissal();
         }
-    }
+    };
 
     render() {
         if (this.state.dismissed) {
@@ -59,11 +60,15 @@ export default class TextDismissableBar extends React.PureComponent {
                 handleClose={this.handleDismiss}
                 message={
                     <span
-                        dangerouslySetInnerHTML={{__html: TextFormatting.formatText(text, {singleline: true, mentionHighlight: false})}}
+                        dangerouslySetInnerHTML={{
+                            __html: TextFormatting.formatText(text, {
+                                singleline: true,
+                                mentionHighlight: false,
+                            }),
+                        }}
                     />
                 }
             />
         );
     }
 }
-

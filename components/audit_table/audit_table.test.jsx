@@ -18,9 +18,7 @@ describe('components/audit_table/AuditTable', () => {
     };
 
     test('should match snapshot with no audits', () => {
-        const wrapper = shallowWithIntl(
-            <AuditTable {...baseProps}/>
-        ).dive();
+        const wrapper = shallowWithIntl(<AuditTable {...baseProps} />).dive();
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -36,6 +34,7 @@ describe('components/audit_table/AuditTable', () => {
                 session_id: 'hb8febm9ytdiz8zqaxj18efqhy',
                 user_id: 'user_id_1',
             },
+
             {
                 action: '/api/v4/users/login',
                 create_at: 51053522355,
@@ -48,9 +47,7 @@ describe('components/audit_table/AuditTable', () => {
         ];
 
         const props = {...baseProps, audits};
-        const wrapper = shallowWithIntl(
-            <AuditTable {...props}/>
-        ).dive();
+        const wrapper = shallowWithIntl(<AuditTable {...props} />).dive();
 
         expect(wrapper).toMatchSnapshot();
     });

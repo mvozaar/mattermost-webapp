@@ -9,9 +9,16 @@ import {updateRhsState} from 'actions/views/rhs';
 import ShowSearchButton from './show_search_button';
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        updateRhsState,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            updateRhsState,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(null, mapDispatchToProps)(ShowSearchButton);
+export default connect(
+    null,
+    mapDispatchToProps,
+)(ShowSearchButton);

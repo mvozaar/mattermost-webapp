@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getTeams as loadTeams, searchTeams} from 'mattermost-redux/actions/teams';
+import {
+    getTeams as loadTeams,
+    searchTeams,
+} from 'mattermost-redux/actions/teams';
 import {getTeams} from 'mattermost-redux/selectors/entities/teams';
 
 import {setModalSearchTerm} from 'actions/views/search';
@@ -14,8 +17,12 @@ function mapStateToProps(state) {
     const searchTerm = state.views.search.modalSearch;
 
     const teams = Object.values(getTeams(state) || {}).filter((team) => {
-        return team.display_name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
-               team.description.toLowerCase().startsWith(searchTerm.toLowerCase());
+        return (
+            team.display_name
+                .toLowerCase()
+                .startsWith(searchTerm.toLowerCase()) ||
+            team.description.toLowerCase().startsWith(searchTerm.toLowerCase())
+        );
     });
 
     return {
@@ -26,12 +33,19 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            loadTeams,
-            setModalSearchTerm,
-            searchTeams,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                loadTeams,
+                setModalSearchTerm,
+                searchTeams,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeamSelectorModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(TeamSelectorModal);

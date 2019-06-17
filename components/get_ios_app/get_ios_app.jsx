@@ -13,7 +13,10 @@ export default function GetIosApp({iosAppDownloadLink, history, location}) {
     const onContinue = (e) => {
         e.preventDefault();
 
-        const redirectTo = (new URLSearchParams(location.search)).get('redirect_to');
+        const redirectTo = new URLSearchParams(location.search).get(
+            'redirect_to',
+        );
+
         if (redirectTo) {
             history.push(redirectTo);
         } else {
@@ -26,25 +29,23 @@ export default function GetIosApp({iosAppDownloadLink, history, location}) {
             <h1 className='get-app__header'>
                 <FormattedMessage
                     id='get_app.iosHeader'
-                    defaultMessage='Mattermost works best if you switch to our iPhone app'
+                    defaultMessage='SCC works best if you switch to our iPhone app'
                 />
             </h1>
-            <hr/>
+            <hr />
             <a
                 className='get-ios-app__app-store-link'
                 href={useSafeUrl(iosAppDownloadLink)}
                 rel='noopener noreferrer'
             >
-                <img
-                    alt={'app store button'}
-                    src={AppStoreButton}
-                />
+                <img alt={'app store button'} src={AppStoreButton} />
             </a>
             <img
                 alt={'get app screenshot'}
                 className='get-app__screenshot'
                 src={IPhone6Mockup}
             />
+
             <h2 className='get-ios-app__already-have-it'>
                 <FormattedMessage
                     id='get_app.alreadyHaveIt'
@@ -57,7 +58,7 @@ export default function GetIosApp({iosAppDownloadLink, history, location}) {
             >
                 <FormattedMessage
                     id='get_app.openMattermost'
-                    defaultMessage='Open Mattermost'
+                    defaultMessage='Open SCC'
                 />
             </a>
             <span className='get-app__continue-with-browser'>
@@ -70,7 +71,6 @@ export default function GetIosApp({iosAppDownloadLink, history, location}) {
                                 onClick={onContinue}
                                 className='get-ios-app__continue'
                             >
-
                                 <FormattedMessage
                                     id='get_app.continueWithBrowserLink'
                                     defaultMessage='continue with browser'

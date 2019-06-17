@@ -9,11 +9,18 @@ import {useSafeUrl} from 'utils/url';
 import MattermostIcon from 'images/favicon/android-chrome-192x192.png';
 import Nexus6Mockup from 'images/nexus-6p-mockup.png';
 
-export default function GetAndroidApp({androidAppDownloadLink, history, location}) {
+export default function GetAndroidApp({
+    androidAppDownloadLink,
+    history,
+    location,
+}) {
     const onContinue = (e) => {
         e.preventDefault();
 
-        const redirectTo = (new URLSearchParams(location.search)).get('redirect_to');
+        const redirectTo = new URLSearchParams(location.search).get(
+            'redirect_to',
+        );
+
         if (redirectTo) {
             history.push(redirectTo);
         } else {
@@ -26,27 +33,28 @@ export default function GetAndroidApp({androidAppDownloadLink, history, location
             <h1 className='get-app__header'>
                 <FormattedMessage
                     id='get_app.androidHeader'
-                    defaultMessage='Mattermost works best if you switch to our Android app'
+                    defaultMessage='SCC works best if you switch to our Android app'
                 />
             </h1>
-            <hr/>
+            <hr />
             <div>
                 <img
                     alt={'android app icon'}
                     className='get-android-app__icon'
                     src={MattermostIcon}
                 />
+
                 <div className='get-android-app__app-info'>
                     <span className='get-android-app__app-name'>
                         <FormattedMessage
                             id='get_app.androidAppName'
-                            defaultMessage='Mattermost for Android'
+                            defaultMessage='securCom for Android'
                         />
                     </span>
                     <span className='get-android-app__app-creator'>
                         <FormattedMessage
                             id='get_app.mattermostInc'
-                            defaultMessage='Mattermost, Inc'
+                            defaultMessage='securCom, Ltd'
                         />
                     </span>
                 </div>
@@ -65,6 +73,7 @@ export default function GetAndroidApp({androidAppDownloadLink, history, location
                 className='get-app__screenshot'
                 src={Nexus6Mockup}
             />
+
             <span className='get-app__continue-with-browser'>
                 <FormattedMessage
                     id='get_app.continueWithBrowser'
@@ -75,7 +84,6 @@ export default function GetAndroidApp({androidAppDownloadLink, history, location
                                 onClick={onContinue}
                                 className='get-android-app__continue'
                             >
-
                                 <FormattedMessage
                                     id='get_app.continueWithBrowserLink'
                                     defaultMessage='continue with browser'

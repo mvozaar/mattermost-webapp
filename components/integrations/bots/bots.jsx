@@ -14,65 +14,63 @@ import Bot, {matchesFilter} from './bot.jsx';
 
 export default class Bots extends React.PureComponent {
     static propTypes = {
-
         /**
-        *  Map from botUserId to bot.
-        */
+         *  Map from botUserId to bot.
+         */
         bots: PropTypes.object.isRequired,
 
         /**
-        *  Map from botUserId to accessTokens.
-        */
+         *  Map from botUserId to accessTokens.
+         */
         accessTokens: PropTypes.object.isRequired,
 
         /**
-        *  Map from botUserId to owner.
-        */
+         *  Map from botUserId to owner.
+         */
         owners: PropTypes.object.isRequired,
 
         createBots: PropTypes.bool,
 
         actions: PropTypes.shape({
-
             /**
-            * Ensure we have bot accounts
-            */
+             * Ensure we have bot accounts
+             */
             loadBots: PropTypes.func.isRequired,
 
             /**
-            * Load access tokens for bot accounts
-            */
+             * Load access tokens for bot accounts
+             */
             getUserAccessTokensForUser: PropTypes.func.isRequired,
 
             /**
-            * Access token managment
-            */
+             * Access token managment
+             */
             createUserAccessToken: PropTypes.func.isRequired,
             revokeUserAccessToken: PropTypes.func.isRequired,
             enableUserAccessToken: PropTypes.func.isRequired,
             disableUserAccessToken: PropTypes.func.isRequired,
 
             /**
-            * Load owner of bot account
-            */
+             * Load owner of bot account
+             */
             getUser: PropTypes.func.isRequired,
 
             /**
-            * Disable a bot
-            */
+             * Disable a bot
+             */
             disableBot: PropTypes.func.isRequired,
 
             /**
-            * Enable a bot
-            */
+             * Enable a bot
+             */
             enableBot: PropTypes.func.isRequired,
         }),
 
         /**
-        *  Only used for routing since backstage is team based.
-        */
+         *  Only used for routing since backstage is team based.
+         */
         team: PropTypes.object.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -83,11 +81,12 @@ export default class Bots extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.props.actions.loadBots(
-            Constants.Integrations.START_PAGE_NUM,
-            Constants.Integrations.PAGE_SIZE
-        ).then(
-            (result) => {
+        this.props.actions
+            .loadBots(
+                Constants.Integrations.START_PAGE_NUM,
+                Constants.Integrations.PAGE_SIZE,
+            )
+            .then((result) => {
                 if (result.data) {
                     const promises = [];
 
@@ -97,24 +96,31 @@ export default class Bots extends React.PureComponent {
 
                         // We want to wait for these.
                         promises.push(this.props.actions.getUser(bot.user_id));
-                        promises.push(this.props.actions.getUserAccessTokensForUser(bot.user_id));
+                        promises.push(
+                            this.props.actions.getUserAccessTokensForUser(
+                                bot.user_id,
+                            ),
+                        );
                     }
 
                     Promise.all(promises).then(() => {
                         this.setState({loading: false});
                     });
                 }
-            }
-        );
+            });
     }
 
     DisabledSection(props) {
         if (!props.hasDisabled) {
             return null;
         }
-        const botsToDisplay = React.Children.map(props.disabledBots, (child) => {
-            return React.cloneElement(child, {filter: props.filter});
-        });
+        const botsToDisplay = React.Children.map(
+            props.disabledBots,
+            (child) => {
+                return React.cloneElement(child, {filter: props.filter});
+            },
+        );
+
         return (
             <React.Fragment>
                 <div className='bot-disabled'>
@@ -123,9 +129,7 @@ export default class Bots extends React.PureComponent {
                         defaultMessage='Disabled'
                     />
                 </div>
-                <div className='bot-list__disabled'>
-                    {botsToDisplay}
-                </div>
+                <div className='bot-list__disabled'>{botsToDisplay}</div>
             </React.Fragment>
         );
     }
@@ -134,11 +138,7 @@ export default class Bots extends React.PureComponent {
         const botsToDisplay = React.Children.map(props.enabledBots, (child) => {
             return React.cloneElement(child, {filter: props.filter});
         });
-        return (
-            <div>
-                {botsToDisplay}
-            </div>
-        );
+        return <div>{botsToDisplay}</div>;
     }
 
     botToJSX = (bot) => {
@@ -155,15 +155,24 @@ export default class Bots extends React.PureComponent {
     };
 
     bots = (filter) => {
-        const bots = Object.values(this.props.bots).sort((a, b) => a.username.localeCompare(b.username));
-        const match = (bot) => matchesFilter(bot, filter, this.props.owners[bot.user_id]);
-        const enabledBots = bots.filter((bot) => bot.delete_at === 0).filter(match).map(this.botToJSX);
-        const disabledBots = bots.filter((bot) => bot.delete_at > 0).filter(match).map(this.botToJSX);
+        const bots = Object.values(this.props.bots).sort((a, b) =>
+            a.username.localeCompare(b.username),
+        );
+
+        const match = (bot) =>
+            matchesFilter(bot, filter, this.props.owners[bot.user_id]);
+        const enabledBots = bots
+            .filter((bot) => bot.delete_at === 0)
+            .filter(match)
+            .map(this.botToJSX);
+        const disabledBots = bots
+            .filter((bot) => bot.delete_at > 0)
+            .filter(match)
+            .map(this.botToJSX);
         const sections = (
             <div key='sections'>
-                <this.EnabledSection
-                    enabledBots={enabledBots}
-                />
+                <this.EnabledSection enabledBots={enabledBots} />
+
                 <this.DisabledSection
                     hasDisabled={disabledBots.length > 0}
                     disabledBots={disabledBots}
@@ -172,7 +181,7 @@ export default class Bots extends React.PureComponent {
         );
 
         return [sections, enabledBots.length > 0 || disabledBots.length > 0];
-    }
+    };
 
     render() {
         return (
@@ -183,11 +192,13 @@ export default class Bots extends React.PureComponent {
                         defaultMessage='Bot Accounts'
                     />
                 }
-                addText={this.props.createBots &&
-                    <FormattedMessage
-                        id='bots.manage.add'
-                        defaultMessage='Add Bot Account'
-                    />
+                addText={
+                    this.props.createBots && (
+                        <FormattedMessage
+                            id='bots.manage.add'
+                            defaultMessage='Add Bot Account'
+                        />
+                    )
                 }
                 addLink={'/' + this.props.team.name + '/integrations/bots/add'}
                 addButtonId='addBotAccount'
@@ -206,13 +217,13 @@ export default class Bots extends React.PureComponent {
                 helpText={
                     <FormattedMessage
                         id='bots.manage.help'
-                        defaultMessage='Use {botAccounts} to integrate with Mattermost through plugins or the API. Bot accounts are available to everyone on your server.'
+                        defaultMessage='Use {botAccounts} to integrate with SCC through plugins or the API. Bot accounts are available to everyone on your server.'
                         values={{
                             botAccounts: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='https://mattermost.com/pl/default-bot-accounts'
+                                    href='https://securCom.me/pl/default-bot-accounts'
                                 >
                                     <FormattedMessage
                                         id='bots.manage.bot_accounts'
@@ -223,7 +234,10 @@ export default class Bots extends React.PureComponent {
                         }}
                     />
                 }
-                searchPlaceholder={Utils.localizeMessage('bots.manage.search', 'Search Bot Accounts')}
+                searchPlaceholder={Utils.localizeMessage(
+                    'bots.manage.search',
+                    'Search Bot Accounts',
+                )}
                 loading={this.state.loading}
             >
                 {this.bots}

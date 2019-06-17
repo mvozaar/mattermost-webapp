@@ -22,28 +22,29 @@ describe('components/RemoveFromChannelModal', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <RemovedFromChannelModal {...baseProps}/>
-        );
+        const wrapper = shallow(<RemovedFromChannelModal {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('should have state "show" equals true on mount', () => {
-        const wrapper = shallow(
-            <RemovedFromChannelModal {...baseProps}/>
-        );
+    test("should have state 'show' equals true on mount", () => {
+        const wrapper = shallow(<RemovedFromChannelModal {...baseProps} />);
 
         expect(wrapper.state('show')).toBe(true);
     });
 
     test('should display correct props on Modal.Title and Modal.Body', () => {
         const wrapper = mountWithIntl(
-            <RemovedFromChannelModal {...baseProps}/>
+            <RemovedFromChannelModal {...baseProps} />,
         );
 
-        expect(wrapper.find('.modal-title').text()).toBe('Removed from test-channel');
-        expect(wrapper.find('.modal-body').text()).toBe('Administrator removed you from test-channel');
+        expect(wrapper.find('.modal-title').text()).toBe(
+            'Removed from test-channel',
+        );
+
+        expect(wrapper.find('.modal-body').text()).toBe(
+            'Administrator removed you from test-channel',
+        );
     });
 
     test('should fallback to default text on Modal.Body', () => {
@@ -51,19 +52,28 @@ describe('components/RemoveFromChannelModal', () => {
         baseProps.remover = null;
 
         const wrapper = mountWithIntl(
-            <RemovedFromChannelModal {...baseProps}/>
+            <RemovedFromChannelModal {...baseProps} />,
         );
 
-        expect(wrapper.find('.modal-title').text()).toBe('Removed from the channel');
-        expect(wrapper.find('.modal-body').text()).toBe('Someone removed you from the channel');
+        expect(wrapper.find('.modal-title').text()).toBe(
+            'Removed from the channel',
+        );
+
+        expect(wrapper.find('.modal-body').text()).toBe(
+            'Someone removed you from the channel',
+        );
     });
 
     test('should run goToLastViewedChannel after modal exited', () => {
-        const wrapper = shallow(
-            <RemovedFromChannelModal {...baseProps}/>
-        );
+        const wrapper = shallow(<RemovedFromChannelModal {...baseProps} />);
 
-        wrapper.find(Modal).first().props().onHide();
-        expect(baseProps.actions.goToLastViewedChannel).toHaveBeenCalledTimes(1);
+        wrapper
+            .find(Modal)
+            .first()
+            .props()
+            .onHide();
+        expect(baseProps.actions.goToLastViewedChannel).toHaveBeenCalledTimes(
+            1,
+        );
     });
 });

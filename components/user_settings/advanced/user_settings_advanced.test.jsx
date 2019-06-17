@@ -31,6 +31,7 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
             updateUserActive: jest.fn().mockResolvedValue({data: true}),
             revokeAllSessions: jest.fn().mockResolvedValue({data: true}),
         },
+
         advancedSettingsCategory: [],
         sendOnCtrlEnter: '',
         formatting: '',
@@ -41,7 +42,7 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
         const updateSection = jest.fn();
 
         const props = {...requiredProps, updateSection};
-        const wrapper = shallow(<AdvancedSettingsDisplay {...props}/>);
+        const wrapper = shallow(<AdvancedSettingsDisplay {...props} />);
 
         await wrapper.instance().handleSubmit();
         expect(updateSection).toHaveBeenCalledWith('');
@@ -50,7 +51,7 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     test('should have called updateSection', () => {
         const updateSection = jest.fn();
         const props = {...requiredProps, updateSection};
-        const wrapper = shallow(<AdvancedSettingsDisplay {...props}/>);
+        const wrapper = shallow(<AdvancedSettingsDisplay {...props} />);
 
         wrapper.instance().handleUpdateSection('');
         expect(updateSection).toHaveBeenCalledWith('');
@@ -61,27 +62,40 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
 
     test('should have called updateUserActive', () => {
         const updateUserActive = jest.fn(() => Promise.resolve({}));
-        const props = {...requiredProps, actions: {...requiredProps.actions, updateUserActive}};
-        const wrapper = shallow(<AdvancedSettingsDisplay {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {...requiredProps.actions, updateUserActive},
+        };
+
+        const wrapper = shallow(<AdvancedSettingsDisplay {...props} />);
 
         wrapper.instance().handleDeactivateAccountSubmit();
         expect(updateUserActive).toHaveBeenCalled();
-        expect(updateUserActive).toHaveBeenCalledWith(requiredProps.currentUser.id, false);
+        expect(updateUserActive).toHaveBeenCalledWith(
+            requiredProps.currentUser.id,
+            false,
+        );
     });
 
     test('handleDeactivateAccountSubmit() should have called revokeAllSessions', () => {
-        const wrapper = shallow(<AdvancedSettingsDisplay {...requiredProps}/>);
+        const wrapper = shallow(<AdvancedSettingsDisplay {...requiredProps} />);
 
         wrapper.instance().handleDeactivateAccountSubmit();
         expect(requiredProps.actions.revokeAllSessions).toHaveBeenCalled();
-        expect(requiredProps.actions.revokeAllSessions).toHaveBeenCalledWith(requiredProps.currentUser.id);
+        expect(requiredProps.actions.revokeAllSessions).toHaveBeenCalledWith(
+            requiredProps.currentUser.id,
+        );
     });
 
     test('handleDeactivateAccountSubmit() should have updated state.serverError', async () => {
         const error = {message: 'error'};
         const revokeAllSessions = () => Promise.resolve({error});
-        const props = {...requiredProps, actions: {...requiredProps.actions, revokeAllSessions}};
-        const wrapper = shallow(<AdvancedSettingsDisplay {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {...requiredProps.actions, revokeAllSessions},
+        };
+
+        const wrapper = shallow(<AdvancedSettingsDisplay {...props} />);
 
         await wrapper.instance().handleDeactivateAccountSubmit();
 

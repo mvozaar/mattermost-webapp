@@ -8,9 +8,7 @@ import {getFilePreviewUrl, getFileUrl} from 'mattermost-redux/utils/file_utils';
 
 import SizeAwareImage from 'components/size_aware_image';
 import {FileTypes} from 'utils/constants.jsx';
-import {
-    getFileType,
-} from 'utils/utils';
+import {getFileType} from 'utils/utils';
 
 import ViewImageModal from 'components/view_image';
 
@@ -48,7 +46,10 @@ export default class SingleImageView extends React.PureComponent {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if ((props.fileInfo.width !== state.dimensions.width) || props.fileInfo.height !== state.dimensions.height) {
+        if (
+            props.fileInfo.width !== state.dimensions.width ||
+            props.fileInfo.height !== state.dimensions.height
+        ) {
             return {
                 dimensions: {
                     width: props.fileInfo.width,
@@ -67,26 +68,24 @@ export default class SingleImageView extends React.PureComponent {
         if (this.mounted) {
             this.setState({loaded: true});
         }
-    }
+    };
 
     handleImageClick = (e) => {
         e.preventDefault();
         this.setState({showPreviewModal: true});
-    }
+    };
 
     showPreviewModal = () => {
         this.setState({showPreviewModal: false});
-    }
+    };
 
     toggleEmbedVisibility = () => {
         this.props.actions.toggleEmbedVisibility(this.props.postId);
-    }
+    };
 
     render() {
         const {fileInfo} = this.props;
-        const {
-            loaded,
-        } = this.state;
+        const {loaded} = this.state;
 
         const {has_preview_image: hasPreviewImage, id} = fileInfo;
         const fileURL = getFileUrl(id);
@@ -120,9 +119,7 @@ export default class SingleImageView extends React.PureComponent {
         const fileHeader = (
             <div className='image-name'>
                 {toggle}
-                <div onClick={this.handleImageClick}>
-                    {fileInfo.name}
-                </div>
+                <div onClick={this.handleImageClick}>{fileInfo.name}</div>
             </div>
         );
 
@@ -161,33 +158,30 @@ export default class SingleImageView extends React.PureComponent {
         }
 
         return (
-            <div
-                className={`${'file-view--single'}`}
-            >
-                <div
-                    className='file__image'
-                >
+            <div className={`${'file-view--single'}`}>
+                <div className='file__image'>
                     {fileHeader}
-                    {this.props.isEmbedVisible &&
-                    <div
-                        className='image-container'
-                        style={imageContainerStyle}
-                    >
+                    {this.props.isEmbedVisible && (
                         <div
-                            className={`image-loaded ${fadeInClass} ${svgClass}`}
-                            style={styleIfSvgWithDimentions}
+                            className='image-container'
+                            style={imageContainerStyle}
                         >
-                            <SizeAwareImage
-                                onClick={this.handleImageClick}
-                                className={minPreviewClass}
-                                src={previewURL}
-                                dimensions={this.state.dimensions}
-                                onImageLoaded={this.imageLoaded}
-                                showLoader={this.props.isEmbedVisible}
-                            />
+                            <div
+                                className={`image-loaded ${fadeInClass} ${svgClass}`}
+                                style={styleIfSvgWithDimentions}
+                            >
+                                <SizeAwareImage
+                                    onClick={this.handleImageClick}
+                                    className={minPreviewClass}
+                                    src={previewURL}
+                                    dimensions={this.state.dimensions}
+                                    onImageLoaded={this.imageLoaded}
+                                    showLoader={this.props.isEmbedVisible}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    }
+                    )}
+
                     {viewImageModal}
                 </div>
             </div>

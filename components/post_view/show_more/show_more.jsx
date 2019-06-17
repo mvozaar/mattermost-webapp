@@ -15,7 +15,7 @@ export default class ShowMore extends React.PureComponent {
         isRHSOpen: PropTypes.bool.isRequired,
         maxHeight: PropTypes.number.isRequired,
         text: PropTypes.string,
-    }
+    };
 
     state = {
         isCollapsed: true,
@@ -63,7 +63,10 @@ export default class ShowMore extends React.PureComponent {
             const textContainer = this.refs.textContainer;
             let isOverflow = false;
 
-            if (textContainer && textContainer.scrollHeight > this.props.maxHeight) {
+            if (
+                textContainer &&
+                textContainer.scrollHeight > this.props.maxHeight
+            ) {
                 isOverflow = true;
             }
 
@@ -80,16 +83,9 @@ export default class ShowMore extends React.PureComponent {
     };
 
     render() {
-        const {
-            isCollapsed,
-            isOverflow,
-        } = this.state;
+        const {isCollapsed, isOverflow} = this.state;
 
-        const {
-            children,
-            isAttachmentText,
-            maxHeight,
-        } = this.props;
+        const {children, isAttachmentText, maxHeight} = this.props;
 
         let className = 'post-message';
         let collapsedMaxHeightStyle;
@@ -110,10 +106,17 @@ export default class ShowMore extends React.PureComponent {
         let attachmentTextOverflow = null;
         if (isOverflow) {
             let showIcon = 'fa fa-angle-up';
-            let showText = localizeMessage('post_info.message.show_less', 'Show Less');
+            let showText = localizeMessage(
+                'post_info.message.show_less',
+                'Show Less',
+            );
+
             if (isCollapsed) {
                 showIcon = 'fa fa-angle-down';
-                showText = localizeMessage('post_info.message.show_more', 'Show More');
+                showText = localizeMessage(
+                    'post_info.message.show_more',
+                    'Show More',
+                );
             }
 
             attachmentTextOverflow = (
@@ -122,17 +125,18 @@ export default class ShowMore extends React.PureComponent {
                         id='collapseGradient'
                         className={collapseGradientClass}
                     />
+
                     <div className={collapseShowMoreClass}>
-                        <div className='post-collapse__show-more-line'/>
+                        <div className='post-collapse__show-more-line' />
                         <button
                             id='showMoreButton'
                             className='post-collapse__show-more-button'
                             onClick={this.toggleCollapse}
                         >
-                            <span className={showIcon}/>
+                            <span className={showIcon} />
                             {showText}
                         </button>
-                        <div className='post-collapse__show-more-line'/>
+                        <div className='post-collapse__show-more-line' />
                     </div>
                 </div>
             );

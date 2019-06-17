@@ -11,6 +11,7 @@ describe('components/post_view/FailedPostOptions', () => {
         post: {
             id: 'post_id',
         },
+
         actions: {
             createPost: jest.fn(),
             removePost: jest.fn(),
@@ -18,7 +19,7 @@ describe('components/post_view/FailedPostOptions', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<FailedPostOptions {...baseProps}/>);
+        const wrapper = shallow(<FailedPostOptions {...baseProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -31,7 +32,7 @@ describe('components/post_view/FailedPostOptions', () => {
             },
         };
 
-        const wrapper = shallow(<FailedPostOptions {...props}/>);
+        const wrapper = shallow(<FailedPostOptions {...props} />);
         const e = {preventDefault: jest.fn()};
 
         wrapper.find('.post-retry').simulate('click', e);
@@ -50,7 +51,7 @@ describe('components/post_view/FailedPostOptions', () => {
             },
         };
 
-        const wrapper = shallow(<FailedPostOptions {...props}/>);
+        const wrapper = shallow(<FailedPostOptions {...props} />);
         const e = {preventDefault: jest.fn()};
 
         wrapper.find('.post-cancel').simulate('click', e);

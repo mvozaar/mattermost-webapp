@@ -3,7 +3,11 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getGroupsNotAssociatedToTeam, linkGroupSyncable, getAllGroupsAssociatedToTeam} from 'mattermost-redux/actions/groups';
+import {
+    getGroupsNotAssociatedToTeam,
+    linkGroupSyncable,
+    getAllGroupsAssociatedToTeam,
+} from 'mattermost-redux/actions/groups';
 import {getGroupsNotAssociatedToTeam as selectGroupsNotAssociatedToTeam} from 'mattermost-redux/selectors/entities/groups';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 
@@ -19,7 +23,9 @@ function mapStateToProps(state) {
     let groups = selectGroupsNotAssociatedToTeam(state, team.id);
     if (searchTerm) {
         var regex = RegExp(searchTerm, 'i');
-        groups = groups.filter((group) => regex.test(group.display_name) || regex.test(group.name));
+        groups = groups.filter(
+            (group) => regex.test(group.display_name) || regex.test(group.name),
+        );
     }
 
     return {
@@ -32,13 +38,20 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getGroupsNotAssociatedToTeam,
-            setModalSearchTerm,
-            linkGroupSyncable,
-            getAllGroupsAssociatedToTeam,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getGroupsNotAssociatedToTeam,
+                setModalSearchTerm,
+                linkGroupSyncable,
+                getAllGroupsAssociatedToTeam,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddGroupsToTeamModal);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddGroupsToTeamModal);

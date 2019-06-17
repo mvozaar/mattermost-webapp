@@ -20,7 +20,7 @@ describe('components/view_image/popover_bar/PopoverBar', () => {
             enablePublicLink: false,
         };
 
-        const wrapper = shallow(<PopoverBar {...props}/>);
+        const wrapper = shallow(<PopoverBar {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -30,7 +30,7 @@ describe('components/view_image/popover_bar/PopoverBar', () => {
             enablePublicLink: true,
         };
 
-        const wrapper = shallow(<PopoverBar {...props}/>);
+        const wrapper = shallow(<PopoverBar {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -42,8 +42,11 @@ describe('components/view_image/popover_bar/PopoverBar', () => {
             onGetPublicLink: mockOnClick,
         };
 
-        const wrapper = shallow(<PopoverBar {...props}/>);
-        wrapper.find('a.public-link').first().simulate('click');
+        const wrapper = shallow(<PopoverBar {...props} />);
+        wrapper
+            .find('a.public-link')
+            .first()
+            .simulate('click');
         expect(mockOnClick).toHaveBeenCalled();
     });
 
@@ -63,7 +66,7 @@ describe('components/view_image/popover_bar/PopoverBar', () => {
                     {...props}
                     isExternalFile={true}
                     isDesktopApp={false}
-                />
+                />,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -75,7 +78,7 @@ describe('components/view_image/popover_bar/PopoverBar', () => {
                     {...props}
                     isExternalFile={true}
                     isDesktopApp={true}
-                />
+                />,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -87,7 +90,7 @@ describe('components/view_image/popover_bar/PopoverBar', () => {
                     {...props}
                     isExternalFile={false}
                     isDesktopApp={false}
-                />
+                />,
             );
 
             expect(wrapper).toMatchSnapshot();
@@ -99,7 +102,7 @@ describe('components/view_image/popover_bar/PopoverBar', () => {
                     {...props}
                     isExternalFile={false}
                     isDesktopApp={true}
-                />
+                />,
             );
 
             expect(wrapper).toMatchSnapshot();

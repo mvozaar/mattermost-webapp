@@ -17,16 +17,15 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
         channel_id: '88cxd9wpzpbpfp8pad78xj75pr',
         description: 'testing',
     };
+
     const enablePostUsernameOverride = true;
     const enablePostIconOverride = true;
 
-    const action = jest.fn().mockImplementation(
-        () => {
-            return new Promise((resolve) => {
-                process.nextTick(() => resolve());
-            });
-        }
-    );
+    const action = jest.fn().mockImplementation(() => {
+        return new Promise((resolve) => {
+            process.nextTick(() => resolve());
+        });
+    });
 
     const requiredProps = {
         team,
@@ -41,25 +40,27 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, on serverError', () => {
         const newServerError = 'serverError';
         const props = {...requiredProps, serverError: newServerError};
-        const wrapper = shallow(<AbstractIncomingWebhook {...props}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should match snapshot, displays client error when no initial hook', () => {
         const newInitialHook = {};
         const props = {...requiredProps, initialHook: newInitialHook};
-        const wrapper = shallow(<AbstractIncomingWebhook {...props}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...props} />);
 
-        wrapper.find('.btn-primary').simulate('click', {preventDefault() {
-            return jest.fn();
-        }});
+        wrapper.find('.btn-primary').simulate('click', {
+            preventDefault() {
+                return jest.fn();
+            },
+        });
 
         expect(action).not.toBeCalled();
         expect(wrapper).toMatchSnapshot();
@@ -70,7 +71,8 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
             ...requiredProps,
             enablePostUsernameOverride: false,
         };
-        const wrapper = shallow(<AbstractIncomingWebhook {...props}/>);
+
+        const wrapper = shallow(<AbstractIncomingWebhook {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -79,18 +81,23 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
             ...requiredProps,
             enablePostIconOverride: false,
         };
-        const wrapper = shallow(<AbstractIncomingWebhook {...props}/>);
+
+        const wrapper = shallow(<AbstractIncomingWebhook {...props} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should call action function', () => {
-        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps} />);
         expect(wrapper).toMatchSnapshot();
 
-        wrapper.find('#displayName').simulate('change', {target: {value: 'name'}});
-        wrapper.find('.btn-primary').simulate('click', {preventDefault() {
-            return jest.fn();
-        }});
+        wrapper
+            .find('#displayName')
+            .simulate('change', {target: {value: 'name'}});
+        wrapper.find('.btn-primary').simulate('click', {
+            preventDefault() {
+                return jest.fn();
+            },
+        });
 
         expect(action).toBeCalled();
         expect(action).toHaveBeenCalledTimes(1);
@@ -103,7 +110,7 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
             target: {value: newChannelId},
         };
 
-        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps} />);
         wrapper.find('#channelId').simulate('change', evt);
 
         expect(wrapper.state('channelId')).toBe(newChannelId);
@@ -116,7 +123,7 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
             target: {value: newDescription},
         };
 
-        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps} />);
         wrapper.find('#description').simulate('change', evt);
 
         expect(wrapper.state('description')).toBe(newDescription);
@@ -129,7 +136,7 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
             target: {value: newUsername},
         };
 
-        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps} />);
         wrapper.find('#username').simulate('change', evt);
 
         expect(wrapper.state('username')).toBe(newUsername);
@@ -142,7 +149,7 @@ describe('components/integrations/AbstractIncomingWebhook', () => {
             target: {value: newIconURL},
         };
 
-        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps}/>);
+        const wrapper = shallow(<AbstractIncomingWebhook {...requiredProps} />);
         wrapper.find('#iconURL').simulate('change', evt);
 
         expect(wrapper.state('iconURL')).toBe(newIconURL);

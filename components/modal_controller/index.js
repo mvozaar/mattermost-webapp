@@ -16,10 +16,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            closeModal,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                closeModal,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalController);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ModalController);

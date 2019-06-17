@@ -21,4 +21,7 @@ function mapDispatchToProps() {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchGrid);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SearchGrid);

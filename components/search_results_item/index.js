@@ -25,7 +25,8 @@ function mapStateToProps() {
     return (state, ownProps) => {
         const config = getConfig(state);
         const preferences = getMyPreferences(state);
-        const enablePostUsernameOverride = config.EnablePostUsernameOverride === 'true';
+        const enablePostUsernameOverride =
+            config.EnablePostUsernameOverride === 'true';
         const {post} = ownProps;
         const user = getUser(state, post.user_id);
 
@@ -42,12 +43,19 @@ function mapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            closeRightHandSide,
-            selectPost: selectPostFromRightHandSideSearch,
-            setRhsExpanded,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                closeRightHandSide,
+                selectPost: selectPostFromRightHandSideSearch,
+                setRhsExpanded,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsItem);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SearchResultsItem);

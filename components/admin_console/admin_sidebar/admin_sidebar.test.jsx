@@ -16,7 +16,11 @@ jest.mock('utils/utils', () => {
 });
 
 describe('components/AdminSidebar', () => {
-    const intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en'}, {});
+    const intlProvider = new IntlProvider(
+        {locale: 'en', defaultLocale: 'en'},
+        {},
+    );
+
     const {intl} = intlProvider.getChildContext();
     const defaultProps = {
         license: {},
@@ -24,11 +28,13 @@ describe('components/AdminSidebar', () => {
             ExperimentalSettings: {
                 RestrictSystemAdmin: false,
             },
+
             PluginSettings: {
                 Enable: true,
                 EnableUploads: true,
             },
         },
+
         buildEnterpriseReady: false,
         navigationBlocked: false,
         siteName: 'test snap',
@@ -44,9 +50,11 @@ describe('components/AdminSidebar', () => {
                     header: 'This is a header',
                     settings: [],
                 },
+
                 webapp: {},
             },
         },
+
         onFilterChange: jest.fn(),
         actions: {
             getPlugins: jest.fn(),
@@ -56,7 +64,7 @@ describe('components/AdminSidebar', () => {
     test('should match snapshot', () => {
         const props = {...defaultProps};
         const context = {router: {}, intl};
-        const wrapper = shallow(<AdminSidebar {...props}/>, {context});
+        const wrapper = shallow(<AdminSidebar {...props} />, {context});
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -67,11 +75,13 @@ describe('components/AdminSidebar', () => {
                 ExperimentalSettings: {
                     RestrictSystemAdmin: false,
                 },
+
                 PluginSettings: {
                     Enable: true,
                     EnableUploads: true,
                 },
             },
+
             buildEnterpriseReady: false,
             siteName: 'test snap',
             navigationBlocked: false,
@@ -87,9 +97,11 @@ describe('components/AdminSidebar', () => {
                         header: '',
                         settings: [],
                     },
+
                     webapp: {},
                 },
             },
+
             onFilterChange: jest.fn(),
             actions: {
                 getPlugins: jest.fn(),
@@ -97,7 +109,7 @@ describe('components/AdminSidebar', () => {
         };
 
         const context = {router: {}, intl};
-        const wrapper = shallow(<AdminSidebar {...props}/>, {context});
+        const wrapper = shallow(<AdminSidebar {...props} />, {context});
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -108,11 +120,13 @@ describe('components/AdminSidebar', () => {
                 ExperimentalSettings: {
                     RestrictSystemAdmin: false,
                 },
+
                 PluginSettings: {
                     Enable: true,
                     EnableUploads: true,
                 },
             },
+
             buildEnterpriseReady: false,
             siteName: 'test snap',
             navigationBlocked: false,
@@ -127,6 +141,7 @@ describe('components/AdminSidebar', () => {
                     webapp: {},
                 },
             },
+
             onFilterChange: jest.fn(),
             actions: {
                 getPlugins: jest.fn(),
@@ -134,7 +149,7 @@ describe('components/AdminSidebar', () => {
         };
 
         const context = {router: {}, intl};
-        const wrapper = shallow(<AdminSidebar {...props}/>, {context});
+        const wrapper = shallow(<AdminSidebar {...props} />, {context});
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -143,15 +158,18 @@ describe('components/AdminSidebar', () => {
             license: {
                 IsLicensed: 'true',
             },
+
             config: {
                 ExperimentalSettings: {
                     RestrictSystemAdmin: false,
                 },
+
                 PluginSettings: {
                     Enable: true,
                     EnableUploads: true,
                 },
             },
+
             buildEnterpriseReady: true,
             navigationBlocked: false,
             siteName: 'test snap',
@@ -167,9 +185,11 @@ describe('components/AdminSidebar', () => {
                         header: '',
                         settings: [],
                     },
+
                     webapp: {},
                 },
             },
+
             onFilterChange: jest.fn(),
             actions: {
                 getPlugins: jest.fn(),
@@ -177,7 +197,7 @@ describe('components/AdminSidebar', () => {
         };
 
         const context = {router: {}, intl};
-        const wrapper = shallow(<AdminSidebar {...props}/>, {context});
+        const wrapper = shallow(<AdminSidebar {...props} />, {context});
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -197,18 +217,22 @@ describe('components/AdminSidebar', () => {
                 Elasticsearch: 'true',
                 CustomPermissionsSchemes: 'true',
             },
+
             config: {
                 ServiceSettings: {
                     ExperimentalLdapGroupSync: true,
                 },
+
                 ExperimentalSettings: {
                     RestrictSystemAdmin: false,
                 },
+
                 PluginSettings: {
                     Enable: true,
                     EnableUploads: true,
                 },
             },
+
             buildEnterpriseReady: true,
             navigationBlocked: false,
             siteName: 'test snap',
@@ -224,9 +248,11 @@ describe('components/AdminSidebar', () => {
                         header: '',
                         settings: [],
                     },
+
                     webapp: {},
                 },
             },
+
             onFilterChange: jest.fn(),
             actions: {
                 getPlugins: jest.fn(),
@@ -234,7 +260,7 @@ describe('components/AdminSidebar', () => {
         };
 
         const context = {router: {}, intl};
-        const wrapper = shallow(<AdminSidebar {...props}/>, {context});
+        const wrapper = shallow(<AdminSidebar {...props} />, {context});
         expect(wrapper).toMatchSnapshot();
     });
 });

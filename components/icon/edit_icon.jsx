@@ -12,12 +12,7 @@ export default class EditIcon extends React.PureComponent {
                 id='generic_icons.edit'
                 defaultMessage='Edit Icon'
             >
-                {(title) => (
-                    <i
-                        className='fa fa-pencil'
-                        title={title}
-                    />
-                )}
+                {(title) => <i className='fa fa-pencil' title={title} />}
             </FormattedMessage>
         );
     }

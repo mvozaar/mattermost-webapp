@@ -16,28 +16,17 @@ export default class Settings extends PureComponent {
     };
 
     render() {
-        const {
-            children,
-            setByEnv,
-            helpText,
-            inputId,
-            label,
-        } = this.props;
+        const {children, setByEnv, helpText, inputId, label} = this.props;
 
         return (
             <div className='form-group'>
-                <label
-                    className='control-label col-sm-4'
-                    htmlFor={inputId}
-                >
+                <label className='control-label col-sm-4' htmlFor={inputId}>
                     {label}
                 </label>
                 <div className='col-sm-8'>
                     {children}
-                    <div className='help-text'>
-                        {helpText}
-                    </div>
-                    {setByEnv ? <SetByEnv/> : null}
+                    <div className='help-text'>{helpText}</div>
+                    {setByEnv ? <SetByEnv /> : null}
                 </div>
             </div>
         );

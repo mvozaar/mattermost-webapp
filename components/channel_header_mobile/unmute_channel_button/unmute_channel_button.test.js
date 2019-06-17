@@ -13,16 +13,18 @@ describe('components/ChannelHeaderMobile/UnmuteChannelButton', () => {
         user: {
             id: 'user_id',
         },
+
         channel: {
             id: 'channel_id',
         },
+
         actions: {
             updateChannelNotifyProps: jest.fn(),
         },
     };
 
     it('should match snapshot', () => {
-        const wrapper = shallow(<UnmuteChannelButton {...baseProps}/>);
+        const wrapper = shallow(<UnmuteChannelButton {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -31,7 +33,7 @@ describe('components/ChannelHeaderMobile/UnmuteChannelButton', () => {
         const props = baseProps;
         props.actions.updateChannelNotifyProps = jest.fn();
 
-        const wrapper = shallow(<UnmuteChannelButton {...props}/>);
+        const wrapper = shallow(<UnmuteChannelButton {...props} />);
         wrapper.simulate('click');
 
         expect(props.actions.updateChannelNotifyProps).toBeCalledWith(

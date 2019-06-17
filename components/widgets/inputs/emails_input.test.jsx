@@ -14,8 +14,9 @@ describe('components/widgets/inputs/EmailsInput', () => {
                 placeholder='test'
                 onChange={jest.fn()}
                 value={['test@email.com', 'other-email@email.com']}
-            />
+            />,
         );
+
         expect(wrapper).toMatchInlineSnapshot(`
 <StateManager
   className="EmailsInput"

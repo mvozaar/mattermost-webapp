@@ -8,70 +8,70 @@ import {FormattedMessage} from 'react-intl';
 import * as Utils from 'utils/utils.jsx';
 import Constants from 'utils/constants.jsx';
 import BackstageList from 'components/backstage/components/backstage_list.jsx';
-import InstalledOutgoingWebhook, {matchesFilter} from 'components/integrations/installed_outgoing_webhook.jsx';
+import InstalledOutgoingWebhook, {
+    matchesFilter,
+} from 'components/integrations/installed_outgoing_webhook.jsx';
 import FormattedMarkdownMessage from 'components/formatted_markdown_message';
 
 export default class InstalledOutgoingWebhooks extends React.PureComponent {
     static propTypes = {
-
         /**
-        *  Data used in passing down as props for webhook modifications
-        */
+         *  Data used in passing down as props for webhook modifications
+         */
         team: PropTypes.object,
 
         /**
-        * Data used for checking if webhook is created by current user
-        */
+         * Data used for checking if webhook is created by current user
+         */
         user: PropTypes.object,
 
         /**
-        *  Data used for checking modification privileges
-        */
+         *  Data used for checking modification privileges
+         */
         canManageOthersWebhooks: PropTypes.bool,
 
         /**
-        * Data used in passing down as props for showing webhook details
-        */
+         * Data used in passing down as props for showing webhook details
+         */
         outgoingWebhooks: PropTypes.array,
 
         /**
-        * Data used in sorting for displaying list and as props channel details
-        */
+         * Data used in sorting for displaying list and as props channel details
+         */
         channels: PropTypes.object,
 
         /**
-        *  Data used in passing down as props for webhook -created by label
-        */
+         *  Data used in passing down as props for webhook -created by label
+         */
         users: PropTypes.object,
 
         /**
-        *  Data used in passing as argument for loading webhooks
-        */
+         *  Data used in passing as argument for loading webhooks
+         */
         teamId: PropTypes.string,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call for removing outgoingWebhook
-            */
+             * The function to call for removing outgoingWebhook
+             */
             removeOutgoingHook: PropTypes.func,
 
             /**
-            * The function to call for outgoingWebhook List and for the status of api
-            */
+             * The function to call for outgoingWebhook List and for the status of api
+             */
             loadOutgoingHooksAndProfilesForTeam: PropTypes.func,
 
             /**
-            * The function to call for regeneration of webhook token
-            */
+             * The function to call for regeneration of webhook token
+             */
             regenOutgoingHookToken: PropTypes.func,
         }),
 
         /**
-        * Whether or not outgoing webhooks are enabled.
-        */
+         * Whether or not outgoing webhooks are enabled.
+         */
         enableOutgoingWebhooks: PropTypes.bool,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -85,23 +85,23 @@ export default class InstalledOutgoingWebhooks extends React.PureComponent {
 
     componentDidMount() {
         if (this.props.enableOutgoingWebhooks) {
-            this.props.actions.loadOutgoingHooksAndProfilesForTeam(
-                this.props.teamId,
-                Constants.Integrations.START_PAGE_NUM,
-                Constants.Integrations.PAGE_SIZE
-            ).then(
-                () => this.setState({loading: false})
-            );
+            this.props.actions
+                .loadOutgoingHooksAndProfilesForTeam(
+                    this.props.teamId,
+                    Constants.Integrations.START_PAGE_NUM,
+                    Constants.Integrations.PAGE_SIZE,
+                )
+                .then(() => this.setState({loading: false}));
         }
     }
 
     regenOutgoingWebhookToken = (outgoingWebhook) => {
         this.props.actions.regenOutgoingHookToken(outgoingWebhook.id);
-    }
+    };
 
     removeOutgoingHook = (outgoingWebhook) => {
         this.props.actions.removeOutgoingHook(outgoingWebhook.id);
-    }
+    };
 
     outgoingWebhookCompare(a, b) {
         let displayNameA = a.display_name;
@@ -110,7 +110,10 @@ export default class InstalledOutgoingWebhooks extends React.PureComponent {
             if (channelA) {
                 displayNameA = channelA.display_name;
             } else {
-                displayNameA = Utils.localizeMessage('installed_outgoing_webhooks.unknown_channel', 'A Private Webhook');
+                displayNameA = Utils.localizeMessage(
+                    'installed_outgoing_webhooks.unknown_channel',
+                    'A Private Webhook',
+                );
             }
         }
 
@@ -120,31 +123,45 @@ export default class InstalledOutgoingWebhooks extends React.PureComponent {
             if (channelB) {
                 displayNameB = channelB.display_name;
             } else {
-                displayNameB = Utils.localizeMessage('installed_outgoing_webhooks.unknown_channel', 'A Private Webhook');
+                displayNameB = Utils.localizeMessage(
+                    'installed_outgoing_webhooks.unknown_channel',
+                    'A Private Webhook',
+                );
             }
         }
         return displayNameA.localeCompare(displayNameB);
     }
 
-    outgoingWebhooks = (filter) => this.props.outgoingWebhooks.
-        sort(this.outgoingWebhookCompare).
-        filter((outgoingWebhook) => matchesFilter(outgoingWebhook, this.props.channels[outgoingWebhook.channel_id], filter)).
-        map((outgoingWebhook) => {
-            const canChange = this.props.canManageOthersWebhooks || this.props.user.id === outgoingWebhook.creator_id;
-            const channel = this.props.channels[outgoingWebhook.channel_id];
-            return (
-                <InstalledOutgoingWebhook
-                    key={outgoingWebhook.id}
-                    outgoingWebhook={outgoingWebhook}
-                    onRegenToken={this.regenOutgoingWebhookToken}
-                    onDelete={this.removeOutgoingHook}
-                    creator={this.props.users[outgoingWebhook.creator_id] || {}}
-                    canChange={canChange}
-                    team={this.props.team}
-                    channel={channel}
-                />
-            );
-        });
+    outgoingWebhooks = (filter) =>
+        this.props.outgoingWebhooks
+            .sort(this.outgoingWebhookCompare)
+            .filter((outgoingWebhook) =>
+                matchesFilter(
+                    outgoingWebhook,
+                    this.props.channels[outgoingWebhook.channel_id],
+                    filter,
+                ),
+            )
+            .map((outgoingWebhook) => {
+                const canChange =
+                    this.props.canManageOthersWebhooks ||
+                    this.props.user.id === outgoingWebhook.creator_id;
+                const channel = this.props.channels[outgoingWebhook.channel_id];
+                return (
+                    <InstalledOutgoingWebhook
+                        key={outgoingWebhook.id}
+                        outgoingWebhook={outgoingWebhook}
+                        onRegenToken={this.regenOutgoingWebhookToken}
+                        onDelete={this.removeOutgoingHook}
+                        creator={
+                            this.props.users[outgoingWebhook.creator_id] || {}
+                        }
+                        canChange={canChange}
+                        team={this.props.team}
+                        channel={channel}
+                    />
+                );
+            });
 
     render() {
         return (
@@ -161,7 +178,11 @@ export default class InstalledOutgoingWebhooks extends React.PureComponent {
                         defaultMessage='Add Outgoing Webhook'
                     />
                 }
-                addLink={'/' + this.props.team.name + '/integrations/outgoing_webhooks/add'}
+                addLink={
+                    '/' +
+                    this.props.team.name +
+                    '/integrations/outgoing_webhooks/add'
+                }
                 addButtonId='addOutgoingWebhook'
                 emptyText={
                     <FormattedMessage
@@ -178,13 +199,13 @@ export default class InstalledOutgoingWebhooks extends React.PureComponent {
                 helpText={
                     <FormattedMessage
                         id='installed_outgoing_webhooks.help'
-                        defaultMessage='Use outgoing webhooks to connect external tools to Mattermost. {buildYourOwn} or visit the {appDirectory} to find self-hosted, third-party apps and integrations.'
+                        defaultMessage='Use outgoing webhooks to connect external tools to SCC. {buildYourOwn} or visit the {appDirectory} to find self-hosted, third-party apps and integrations.'
                         values={{
                             buildYourOwn: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='http://docs.mattermost.com/developer/webhooks-outgoing.html'
+                                    href='http://docs.securCom.me/developer/webhooks-outgoing.html'
                                 >
                                     <FormattedMessage
                                         id='installed_outgoing_webhooks.help.buildYourOwn'
@@ -192,11 +213,12 @@ export default class InstalledOutgoingWebhooks extends React.PureComponent {
                                     />
                                 </a>
                             ),
+
                             appDirectory: (
                                 <a
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    href='https://about.mattermost.com/default-app-directory/'
+                                    href='https://about.securCom.me/default-app-directory/'
                                 >
                                     <FormattedMessage
                                         id='installed_outgoing_webhooks.help.appDirectory'
@@ -207,7 +229,10 @@ export default class InstalledOutgoingWebhooks extends React.PureComponent {
                         }}
                     />
                 }
-                searchPlaceholder={Utils.localizeMessage('installed_outgoing_webhooks.search', 'Search Outgoing Webhooks')}
+                searchPlaceholder={Utils.localizeMessage(
+                    'installed_outgoing_webhooks.search',
+                    'Search Outgoing Webhooks',
+                )}
                 loading={this.state.loading}
             >
                 {(filter) => {

@@ -3,7 +3,10 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {editCommand, getCustomTeamCommands} from 'mattermost-redux/actions/integrations';
+import {
+    editCommand,
+    getCustomTeamCommands,
+} from 'mattermost-redux/actions/integrations';
 import {getCommands} from 'mattermost-redux/selectors/entities/integrations';
 import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
@@ -11,7 +14,7 @@ import EditCommand from './edit_command.jsx';
 
 function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
-    const commandId = (new URLSearchParams(ownProps.location.search)).get('id');
+    const commandId = new URLSearchParams(ownProps.location.search).get('id');
     const enableCommands = config.EnableCommands === 'true';
 
     return {
@@ -23,11 +26,18 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getCustomTeamCommands,
-            editCommand,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getCustomTeamCommands,
+                editCommand,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditCommand);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(EditCommand);

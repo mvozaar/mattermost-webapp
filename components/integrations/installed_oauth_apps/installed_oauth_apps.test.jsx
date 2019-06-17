@@ -22,6 +22,7 @@ describe('components/integrations/InstalledOAuthApps', () => {
             update_at: 1501365458934,
             callback_urls: ['https://test.com/callback'],
         },
+
         fzcxd9wpzpbpfp8pad78xj75pr: {
             id: 'fzcxd9wpzpbpfp8pad78xj75pr',
             name: 'secondApp',
@@ -33,7 +34,10 @@ describe('components/integrations/InstalledOAuthApps', () => {
             icon_url: 'https://test2.com/icon',
             is_trusted: true,
             update_at: 1501365479988,
-            callback_urls: ['https://test2.com/callback', 'https://test2.com/callback2'],
+            callback_urls: [
+                'https://test2.com/callback',
+                'https://test2.com/callback2',
+            ],
         },
     };
 
@@ -45,35 +49,46 @@ describe('components/integrations/InstalledOAuthApps', () => {
             status: 'not_started',
             error: null,
         },
+
         actions: {
             loadOAuthAppsAndProfiles: jest.fn(),
             regenOAuthAppSecret: jest.fn(),
             deleteOAuthApp: jest.fn(),
         },
+
         enableOAuthServiceProvider: true,
     };
 
     test('should match snapshot', () => {
-        const newGetOAuthApps = jest.fn().mockImplementation(
-            () => {
-                return new Promise((resolve) => {
-                    process.nextTick(() => resolve());
-                });
-            }
-        );
+        const newGetOAuthApps = jest.fn().mockImplementation(() => {
+            return new Promise((resolve) => {
+                process.nextTick(() => resolve());
+            });
+        });
 
         const props = {...baseProps};
         props.actions.loadOAuthAppsAndProfiles = newGetOAuthApps;
-        const wrapper = shallow(
-            <InstalledOAuthApps {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApps {...props} />);
 
         expect(wrapper).toMatchSnapshot();
-        expect(shallow(<div>{wrapper.instance().oauthApps('first')}</div>)).toMatchSnapshot(); // successful filter
-        expect(shallow(<div>{wrapper.instance().oauthApps('ZZZ')}</div>)).toMatchSnapshot(); // unsuccessful filter
-        expect(shallow(<div>{wrapper.instance().oauthApps()}</div>).find('Connect(InstalledOAuthApp)').length).toBe(2); // no filter, should return all
-        expect(wrapper.find(BackstageList).props().addLink).toEqual('/test/integrations/oauth2-apps/add');
-        expect(wrapper.find(BackstageList).props().addText).toEqual('Add OAuth 2.0 Application');
+        expect(
+            shallow(<div>{wrapper.instance().oauthApps('first')}</div>),
+        ).toMatchSnapshot(); // successful filter
+        expect(
+            shallow(<div>{wrapper.instance().oauthApps('ZZZ')}</div>),
+        ).toMatchSnapshot(); // unsuccessful filter
+        expect(
+            shallow(<div>{wrapper.instance().oauthApps()}</div>).find(
+                'Connect(InstalledOAuthApp)',
+            ).length,
+        ).toBe(2); // no filter, should return all
+        expect(wrapper.find(BackstageList).props().addLink).toEqual(
+            '/test/integrations/oauth2-apps/add',
+        );
+
+        expect(wrapper.find(BackstageList).props().addText).toEqual(
+            'Add OAuth 2.0 Application',
+        );
 
         wrapper.setProps({canManageOauth: false});
         expect(wrapper.find(BackstageList).props().addLink).toBeFalsy();
@@ -84,12 +99,12 @@ describe('components/integrations/InstalledOAuthApps', () => {
         const newDeleteOAuthApp = jest.fn();
         const props = {...baseProps};
         props.actions.deleteOAuthApp = newDeleteOAuthApp;
-        const wrapper = shallow(
-            <InstalledOAuthApps {...props}/>
-        );
+        const wrapper = shallow(<InstalledOAuthApps {...props} />);
 
         wrapper.instance().deleteOAuthApp(oauthApps.facxd9wpzpbpfp8pad78xj75pr);
         expect(newDeleteOAuthApp).toHaveBeenCalled();
-        expect(newDeleteOAuthApp).toHaveBeenCalledWith(oauthApps.facxd9wpzpbpfp8pad78xj75pr.id);
+        expect(newDeleteOAuthApp).toHaveBeenCalledWith(
+            oauthApps.facxd9wpzpbpfp8pad78xj75pr.id,
+        );
     });
 });

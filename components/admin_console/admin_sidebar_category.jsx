@@ -28,10 +28,8 @@ export default class AdminSidebarCategory extends React.Component {
         let link = this.props.parentLink;
         let title = (
             <div className='category-title category-title--active'>
-                <i className={'category-icon fa ' + this.props.icon}/>
-                <span className='category-title__text'>
-                    {this.props.title}
-                </span>
+                <i className={'category-icon fa ' + this.props.icon} />
+                <span className='category-title__text'>{this.props.title}</span>
                 {this.props.action}
             </div>
         );
@@ -56,8 +54,9 @@ export default class AdminSidebarCategory extends React.Component {
                     path={link}
                     render={() => (
                         <ul className={'sections ' + this.props.sectionClass}>
-                            {
-                                React.Children.map(this.props.children, (child) => {
+                            {React.Children.map(
+                                this.props.children,
+                                (child) => {
                                     if (child === null) {
                                         return null;
                                     }
@@ -65,8 +64,8 @@ export default class AdminSidebarCategory extends React.Component {
                                     return React.cloneElement(child, {
                                         parentLink: link,
                                     });
-                                })
-                            }
+                                },
+                            )}
                         </ul>
                     )}
                 />

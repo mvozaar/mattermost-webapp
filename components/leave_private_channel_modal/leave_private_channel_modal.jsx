@@ -27,11 +27,17 @@ class LeavePrivateChannelModal extends React.Component {
     }
 
     componentDidMount() {
-        ModalStore.addModalListener(Constants.ActionTypes.TOGGLE_LEAVE_PRIVATE_CHANNEL_MODAL, this.handleToggle);
+        ModalStore.addModalListener(
+            Constants.ActionTypes.TOGGLE_LEAVE_PRIVATE_CHANNEL_MODAL,
+            this.handleToggle,
+        );
     }
 
     componentWillUnmount() {
-        ModalStore.removeModalListener(Constants.ActionTypes.TOGGLE_LEAVE_PRIVATE_CHANNEL_MODAL, this.handleToggle);
+        ModalStore.removeModalListener(
+            Constants.ActionTypes.TOGGLE_LEAVE_PRIVATE_CHANNEL_MODAL,
+            this.handleToggle,
+        );
     }
 
     handleKeyPress = (e) => {

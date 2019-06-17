@@ -22,10 +22,17 @@ function makeMapStateToProps() {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            deleteScheme,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                deleteScheme,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(PermissionsSchemeSummary);
+export default connect(
+    makeMapStateToProps,
+    mapDispatchToProps,
+)(PermissionsSchemeSummary);

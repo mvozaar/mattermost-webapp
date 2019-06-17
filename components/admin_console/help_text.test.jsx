@@ -14,7 +14,7 @@ describe('HelpText', () => {
     };
 
     test('should render plain text correctly', () => {
-        const wrapper = shallow(<HelpText {...baseProps}/>);
+        const wrapper = shallow(<HelpText {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -26,7 +26,7 @@ describe('HelpText', () => {
             text: 'This is **HELP TEXT**',
         };
 
-        const wrapper = shallow(<HelpText {...props}/>);
+        const wrapper = shallow(<HelpText {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -42,7 +42,7 @@ describe('HelpText', () => {
             },
         };
 
-        const wrapper = shallow(<HelpText {...props}/>);
+        const wrapper = shallow(<HelpText {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -59,7 +59,7 @@ describe('HelpText', () => {
             },
         };
 
-        const wrapper = shallow(<HelpText {...props}/>);
+        const wrapper = shallow(<HelpText {...props} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -71,10 +71,10 @@ describe('HelpText', () => {
             text: 'This is [a link](https://example.com)',
         };
 
-        const wrapper = shallow(<HelpText {...props}/>);
+        const wrapper = shallow(<HelpText {...props} />);
 
         expect(wrapper.find('span').prop('dangerouslySetInnerHTML')).toEqual({
-            __html: 'This is <a href="https://example.com">a link</a>',
+            __html: "This is <a href='https://example.com'>a link</a>",
         });
     });
 
@@ -85,10 +85,11 @@ describe('HelpText', () => {
             text: 'This is [a link](!https://example.com)',
         };
 
-        const wrapper = shallow(<HelpText {...props}/>);
+        const wrapper = shallow(<HelpText {...props} />);
 
         expect(wrapper.find('span').prop('dangerouslySetInnerHTML')).toEqual({
-            __html: 'This is <a href="https://example.com" rel="noreferrer" target="_blank">a link</a>',
+            __html:
+                "This is <a href='https://example.com' rel='noreferrer' target='_blank'>a link</a>",
         });
     });
 });

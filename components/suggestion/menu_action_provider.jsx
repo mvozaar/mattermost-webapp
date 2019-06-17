@@ -59,7 +59,10 @@ export default class MenuActionProvider extends Provider {
     }
 
     async filterOptions(prefix, resultsCallback) {
-        const filteredOptions = this.options.filter((option) => option.text.toLowerCase().indexOf(prefix) >= 0);
+        const filteredOptions = this.options.filter(
+            (option) => option.text.toLowerCase().indexOf(prefix) >= 0,
+        );
+
         const terms = filteredOptions.map((option) => option.text);
 
         resultsCallback({

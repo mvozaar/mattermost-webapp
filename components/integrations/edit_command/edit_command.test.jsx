@@ -7,13 +7,11 @@ import {shallow} from 'enzyme';
 import EditCommand from 'components/integrations/edit_command/edit_command.jsx';
 
 describe('components/integrations/EditCommand', () => {
-    const getCustomTeamCommands = jest.fn(
-        () => {
-            return new Promise((resolve) => {
-                process.nextTick(() => resolve());
-            });
-        }
-    );
+    const getCustomTeamCommands = jest.fn(() => {
+        return new Promise((resolve) => {
+            process.nextTick(() => resolve());
+        });
+    });
 
     const commands = {
         r5tpgt4iepf45jt768jz84djic: {
@@ -36,10 +34,12 @@ describe('components/integrations/EditCommand', () => {
             username: 'username',
         },
     };
+
     const team = {
         name: 'test',
         id: 'm5gix3oye3du8ghk4ko6h9cq7y',
     };
+
     const editCommandRequest = {
         status: 'not_started',
         error: null,
@@ -54,25 +54,27 @@ describe('components/integrations/EditCommand', () => {
             getCustomTeamCommands,
             editCommand: jest.fn(),
         },
+
         enableCommands: true,
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <EditCommand {...baseProps}/>
-        );
+        const wrapper = shallow(<EditCommand {...baseProps} />);
 
-        wrapper.setState({originalCommand: commands.r5tpgt4iepf45jt768jz84djic});
+        wrapper.setState({
+            originalCommand: commands.r5tpgt4iepf45jt768jz84djic,
+        });
+
         expect(wrapper).toMatchSnapshot();
 
         expect(baseProps.actions.getCustomTeamCommands).toHaveBeenCalled();
-        expect(baseProps.actions.getCustomTeamCommands).toHaveBeenCalledWith(team.id);
+        expect(baseProps.actions.getCustomTeamCommands).toHaveBeenCalledWith(
+            team.id,
+        );
     });
 
     test('should match snapshot, loading', () => {
-        const wrapper = shallow(
-            <EditCommand {...baseProps}/>
-        );
+        const wrapper = shallow(<EditCommand {...baseProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
@@ -82,10 +84,9 @@ describe('components/integrations/EditCommand', () => {
             getCustomTeamCommands: jest.fn(),
             editCommand: jest.fn(),
         };
+
         const props = {...baseProps, actions, enableCommands: false};
-        const wrapper = shallow(
-            <EditCommand {...props}/>
-        );
+        const wrapper = shallow(<EditCommand {...props} />);
 
         expect(wrapper).toMatchSnapshot();
         expect(actions.getCustomTeamCommands).not.toHaveBeenCalled();
@@ -93,9 +94,7 @@ describe('components/integrations/EditCommand', () => {
 
     test('should have match state when handleConfirmModal is called', () => {
         const props = {...baseProps, getCustomTeamCommands};
-        const wrapper = shallow(
-            <EditCommand {...props}/>
-        );
+        const wrapper = shallow(<EditCommand {...props} />);
 
         wrapper.setState({showConfirmModal: false});
         wrapper.instance().handleConfirmModal();
@@ -104,9 +103,7 @@ describe('components/integrations/EditCommand', () => {
 
     test('should have match state when confirmModalDismissed is called', () => {
         const props = {...baseProps, getCustomTeamCommands};
-        const wrapper = shallow(
-            <EditCommand {...props}/>
-        );
+        const wrapper = shallow(<EditCommand {...props} />);
 
         wrapper.setState({showConfirmModal: true});
         wrapper.instance().confirmModalDismissed();
@@ -115,20 +112,19 @@ describe('components/integrations/EditCommand', () => {
 
     test('should have match renderExtra', () => {
         const props = {...baseProps, getCustomTeamCommands};
-        const wrapper = shallow(
-            <EditCommand {...props}/>
-        );
+        const wrapper = shallow(<EditCommand {...props} />);
 
         expect(wrapper.instance().renderExtra()).toMatchSnapshot();
     });
 
     test('should have match when editCommand is called', () => {
         const props = {...baseProps, getCustomTeamCommands};
-        const wrapper = shallow(
-            <EditCommand {...props}/>
-        );
+        const wrapper = shallow(<EditCommand {...props} />);
 
-        wrapper.setState({originalCommand: commands.r5tpgt4iepf45jt768jz84djic});
+        wrapper.setState({
+            originalCommand: commands.r5tpgt4iepf45jt768jz84djic,
+        });
+
         const instance = wrapper.instance();
         instance.handleConfirmModal = jest.fn();
         instance.submitCommand = jest.fn();

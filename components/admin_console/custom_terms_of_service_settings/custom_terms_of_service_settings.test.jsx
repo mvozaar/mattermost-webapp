@@ -10,26 +10,29 @@ describe('components/admin_console/CustomTermsOfServiceSettings', () => {
     const baseProps = {
         actions: {
             createTermsOfService: jest.fn(),
-            getTermsOfService: jest.fn().mockResolvedValue({data: {id: 'tos_id', text: 'tos_text'}}),
+            getTermsOfService: jest
+                .fn()
+                .mockResolvedValue({data: {id: 'tos_id', text: 'tos_text'}}),
         },
+
         config: {
             SupportSettings: {
                 CustomTermsOfServiceEnabled: true,
                 CustomTermsOfServiceReAcceptancePeriod: 365,
             },
         },
+
         license: {
             IsLicensed: 'true',
             CustomTermsOfService: 'true',
         },
+
         setNavigationBlocked: jest.fn(),
     };
 
     test('should match snapshot', () => {
         const wrapper = shallow(
-            <CustomTermsOfServiceSettings
-                {...baseProps}
-            />
+            <CustomTermsOfServiceSettings {...baseProps} />,
         );
 
         expect(wrapper).toMatchSnapshot();

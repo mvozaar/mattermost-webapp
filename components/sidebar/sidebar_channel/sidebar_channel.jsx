@@ -14,7 +14,6 @@ import SidebarTutorialTip from '../sidebar_tutorial_tip.jsx';
 
 export default class SidebarChannel extends React.PureComponent {
     static propTypes = {
-
         /**
          * Global config object
          */
@@ -149,19 +148,23 @@ export default class SidebarChannel extends React.PureComponent {
             leaveChannel: PropTypes.func.isRequired,
             openLhs: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     isLeaving = false;
 
     handleLeavePublicChannel = () => {
         this.props.actions.leaveChannel(this.props.channelId);
         trackEvent('ui', 'ui_public_channel_x_button_clicked');
-    }
+    };
 
     handleLeavePrivateChannel = () => {
-        GlobalActions.showLeavePrivateChannelModal({id: this.props.channelId, display_name: this.props.channelDisplayName});
+        GlobalActions.showLeavePrivateChannelModal({
+            id: this.props.channelId,
+            display_name: this.props.channelDisplayName,
+        });
+
         trackEvent('ui', 'ui_private_channel_x_button_clicked');
-    }
+    };
 
     handleLeaveDirectChannel = () => {
         if (!this.isLeaving) {
@@ -178,22 +181,34 @@ export default class SidebarChannel extends React.PureComponent {
             }
 
             const currentUserId = this.props.currentUserId;
-            this.props.actions.savePreferences(currentUserId, [{user_id: currentUserId, category, name: id, value: 'false'}]).then(
-                () => {
+            this.props.actions
+                .savePreferences(currentUserId, [
+                    {
+                        user_id: currentUserId,
+                        category,
+                        name: id,
+                        value: 'false',
+                    },
+                ])
+                .then(() => {
                     this.isLeaving = false;
-                }
-            );
+                });
 
             trackEvent('ui', 'ui_direct_channel_x_button_clicked');
         }
 
         if (this.props.active) {
-            browserHistory.push(`/${this.props.currentTeamName}/channels/${this.props.redirectChannel}`);
+            browserHistory.push(
+                `/${this.props.currentTeamName}/channels/${this.props.redirectChannel}`,
+            );
         }
-    }
+    };
 
     showChannelAsUnread = () => {
-        return this.props.unreadMentions > 0 || (this.props.unreadMsgs > 0 && this.props.showUnreadForMsgs);
+        return (
+            this.props.unreadMentions > 0 ||
+            (this.props.unreadMsgs > 0 && this.props.showUnreadForMsgs)
+        );
     };
 
     render = () => {
@@ -201,7 +216,7 @@ export default class SidebarChannel extends React.PureComponent {
             return null;
         }
         if (!this.props.channelDisplayName || !this.props.channelType) {
-            return (<div/>);
+            return <div />;
         }
 
         let closeHandler = null;
@@ -209,12 +224,22 @@ export default class SidebarChannel extends React.PureComponent {
             if (this.props.shouldHideChannel) {
                 return '';
             }
-            if (this.props.channelType === Constants.DM_CHANNEL || this.props.channelType === Constants.GM_CHANNEL) {
+            if (
+                this.props.channelType === Constants.DM_CHANNEL ||
+                this.props.channelType === Constants.GM_CHANNEL
+            ) {
                 closeHandler = this.handleLeaveDirectChannel;
-            } else if (this.props.config.EnableXToLeaveChannelsFromLHS === 'true') {
-                if (this.props.channelType === Constants.OPEN_CHANNEL && this.props.channelName !== Constants.DEFAULT_CHANNEL) {
+            } else if (
+                this.props.config.EnableXToLeaveChannelsFromLHS === 'true'
+            ) {
+                if (
+                    this.props.channelType === Constants.OPEN_CHANNEL &&
+                    this.props.channelName !== Constants.DEFAULT_CHANNEL
+                ) {
                     closeHandler = this.handleLeavePublicChannel;
-                } else if (this.props.channelType === Constants.PRIVATE_CHANNEL) {
+                } else if (
+                    this.props.channelType === Constants.PRIVATE_CHANNEL
+                ) {
                     closeHandler = this.handleLeavePrivateChannel;
                 }
             }
@@ -246,19 +271,25 @@ export default class SidebarChannel extends React.PureComponent {
         }
 
         let tutorialTip = null;
-        if (this.props.showTutorialTip && this.props.channelName === Constants.DEFAULT_CHANNEL) {
+        if (
+            this.props.showTutorialTip &&
+            this.props.channelName === Constants.DEFAULT_CHANNEL
+        ) {
             tutorialTip = (
                 <SidebarTutorialTip
                     townSquareDisplayName={this.props.townSquareDisplayName}
                     offTopicDisplayName={this.props.offTopicDisplayName}
                 />
             );
+
             this.props.actions.openLhs();
         }
 
         let link = '';
         if (this.props.channelFake) {
-            link = `/${this.props.currentTeamName}/channels/${this.props.channelName}?fakechannel=${encodeURIComponent(this.props.channelStringified)}`;
+            link = `/${this.props.currentTeamName}/channels/${
+                this.props.channelName
+            }?fakechannel=${encodeURIComponent(this.props.channelStringified)}`;
         } else if (this.props.channelType === Constants.DM_CHANNEL) {
             link = `/${this.props.currentTeamName}/messages/@${this.props.channelTeammateUsername}`;
         } else if (this.props.channelType === Constants.GM_CHANNEL) {
@@ -306,8 +337,9 @@ export default class SidebarChannel extends React.PureComponent {
                     teammateIsBot={this.props.channelTeammateIsBot}
                     channelIsArchived={this.props.channelIsArchived}
                 />
+
                 {tutorialTip}
             </li>
         );
-    }
+    };
 }

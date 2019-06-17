@@ -9,10 +9,7 @@ import {MenuItemLinkImpl} from './menu_item_link.jsx';
 describe('components/MenuItemLink', () => {
     test('should match snapshot', () => {
         const wrapper = shallow(
-            <MenuItemLinkImpl
-                to='/wherever'
-                text='Whatever'
-            />
+            <MenuItemLinkImpl to='/wherever' text='Whatever' />,
         );
 
         expect(wrapper).toMatchInlineSnapshot(`

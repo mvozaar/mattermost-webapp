@@ -20,7 +20,7 @@ export default class Setup extends React.Component {
             activateMfa: PropTypes.func.isRequired,
             generateMfaSecret: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -40,6 +40,7 @@ export default class Setup extends React.Component {
                 this.setState({
                     serverError: error.message,
                 });
+
                 return;
             }
 
@@ -54,7 +55,13 @@ export default class Setup extends React.Component {
         e.preventDefault();
         const code = this.refs.code.value.replace(/\s/g, '');
         if (!code || code.length === 0) {
-            this.setState({error: Utils.localizeMessage('mfa.setup.codeError', 'Please enter the code from Google Authenticator.')});
+            this.setState({
+                error: Utils.localizeMessage(
+                    'mfa.setup.codeError',
+                    'Please enter the code from Google Authenticator.',
+                ),
+            });
+
             return;
         }
 
@@ -62,9 +69,15 @@ export default class Setup extends React.Component {
 
         this.props.actions.activateMfa(code).then(({error}) => {
             if (error) {
-                if (error.server_error_id === 'ent.mfa.activate.authenticate.app_error') {
+                if (
+                    error.server_error_id ===
+                    'ent.mfa.activate.authenticate.app_error'
+                ) {
                     this.setState({
-                        error: Utils.localizeMessage('mfa.setup.badCode', 'Invalid code. If this issue persists, contact your System Administrator.'),
+                        error: Utils.localizeMessage(
+                            'mfa.setup.badCode',
+                            'Invalid code. If this issue persists, contact your System Administrator.',
+                        ),
                     });
                 } else {
                     this.setState({
@@ -77,13 +90,18 @@ export default class Setup extends React.Component {
 
             this.props.history.push('/mfa/confirm');
         });
-    }
+    };
 
     render() {
         let formClass = 'form-group';
         let errorContent;
         if (this.state.error) {
-            errorContent = <div className='form-group has-error'><label className='control-label'>{this.state.error}</label></div>;
+            errorContent = (
+                <div className='form-group has-error'>
+                    <label className='control-label'>{this.state.error}</label>
+                </div>
+            );
+
             formClass += ' has-error';
         }
 
@@ -104,10 +122,7 @@ export default class Setup extends React.Component {
 
         return (
             <div>
-                <form
-                    onSubmit={this.submit}
-                    className={formClass}
-                >
+                <form onSubmit={this.submit} className={formClass}>
                     {mfaRequired}
                     <p>
                         <FormattedMarkdownMessage
@@ -126,11 +141,13 @@ export default class Setup extends React.Component {
                             <img
                                 alt={'qr code image'}
                                 style={style.qrCode}
-                                src={'data:image/png;base64,' + this.state.qrCode}
+                                src={
+                                    'data:image/png;base64,' + this.state.qrCode
+                                }
                             />
                         </div>
                     </div>
-                    <br/>
+                    <br />
                     <div className='form-group'>
                         <p className='col-sm-12'>
                             <FormattedMessage
@@ -152,15 +169,15 @@ export default class Setup extends React.Component {
                         <LocalizedInput
                             ref='code'
                             className='form-control'
-                            placeholder={{id: t('mfa.setup.code'), defaultMessage: 'MFA Code'}}
+                            placeholder={{
+                                id: t('mfa.setup.code'),
+                                defaultMessage: 'MFA Code',
+                            }}
                             autoFocus={true}
                         />
                     </p>
                     {errorContent}
-                    <button
-                        type='submit'
-                        className='btn btn-primary'
-                    >
+                    <button type='submit' className='btn btn-primary'>
                         <FormattedMessage
                             id='mfa.setup.save'
                             defaultMessage='Save'

@@ -29,7 +29,7 @@ export default class SidebarRightMenu extends React.PureComponent {
 
     handleEmitUserLoggedOutEvent = () => {
         GlobalActions.emitUserLoggedOutEvent();
-    }
+    };
 
     render() {
         var siteName = '';
@@ -43,13 +43,15 @@ export default class SidebarRightMenu extends React.PureComponent {
 
         let tutorialTip = null;
         if (this.props.showTutorialTip) {
-            tutorialTip = <MenuTutorialTip onBottom={true}/>;
+            tutorialTip = <MenuTutorialTip onBottom={true} />;
             this.props.actions.openRhsMenu();
         }
 
         return (
             <div
-                className={classNames('sidebar--menu', {'move--left': this.props.isOpen && Utils.isMobile()})}
+                className={classNames('sidebar--menu', {
+                    'move--left': this.props.isOpen && Utils.isMobile(),
+                })}
                 id='sidebar-menu'
             >
                 <div className='team__header theme'>
@@ -75,7 +77,7 @@ export default class SidebarRightMenu extends React.PureComponent {
                             exit: ANIMATION_DURATION,
                         }}
                     >
-                        <MainMenu mobile={true}/>
+                        <MainMenu mobile={true} />
                     </CSSTransition>
                 </div>
             </div>

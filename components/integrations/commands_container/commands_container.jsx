@@ -10,61 +10,56 @@ import AddCommand from 'components/integrations/add_command';
 import EditCommand from 'components/integrations/edit_command';
 import ConfirmIntegration from 'components/integrations/confirm_integration';
 
-const CommandRoute = ({component: Component, extraProps, ...rest}) => ( //eslint-disable-line react/prop-types
+const CommandRoute = (
+    {component: Component, extraProps, ...rest}, //eslint-disable-line react/prop-types
+) => (
     <Route
         {...rest}
-        render={(props) => (
-            <Component
-                {...extraProps}
-                {...props}
-            />
-        )}
+        render={(props) => <Component {...extraProps} {...props} />}
     />
 );
 
 export default class CommandsContainer extends React.PureComponent {
     static propTypes = {
-
         /**
-        * The team data needed to pass into child components
-        */
+         * The team data needed to pass into child components
+         */
         team: PropTypes.object,
 
         /**
-        * The user data needed to pass into child components
-        */
+         * The user data needed to pass into child components
+         */
         user: PropTypes.object,
 
         /**
-        * The users collection
-        */
+         * The users collection
+         */
         users: PropTypes.object,
 
         /**
-        * Installed slash commands to display
-        */
+         * Installed slash commands to display
+         */
         commands: PropTypes.array,
 
         /**
-        * Object from react-router
-        */
+         * Object from react-router
+         */
         match: PropTypes.shape({
             url: PropTypes.string.isRequired,
         }).isRequired,
 
         actions: PropTypes.shape({
-
             /**
-            * The function to call to fetch team commands
-            */
+             * The function to call to fetch team commands
+             */
             loadCommandsAndProfilesForTeam: PropTypes.func.isRequired,
         }).isRequired,
 
         /**
-        * Whether or not commands are enabled.
-        */
+         * Whether or not commands are enabled.
+         */
         enableCommands: PropTypes.bool,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -75,9 +70,9 @@ export default class CommandsContainer extends React.PureComponent {
 
     componentDidMount() {
         if (this.props.enableCommands) {
-            this.props.actions.loadCommandsAndProfilesForTeam(this.props.team.id).then(
-                () => this.setState({loading: false})
-            );
+            this.props.actions
+                .loadCommandsAndProfilesForTeam(this.props.team.id)
+                .then(() => this.setState({loading: false}));
         }
     }
 
@@ -89,29 +84,38 @@ export default class CommandsContainer extends React.PureComponent {
             team: this.props.team,
             user: this.props.user,
         };
+
         return (
             <div>
                 <Switch>
                     <Route
                         exact={true}
                         path={`${this.props.match.url}/`}
-                        render={() => (<Redirect to={`${this.props.match.url}/installed`}/>)}
+                        render={() => (
+                            <Redirect
+                                to={`${this.props.match.url}/installed`}
+                            />
+                        )}
                     />
+
                     <CommandRoute
                         extraProps={extraProps}
                         path={`${this.props.match.url}/installed`}
                         component={InstalledCommands}
                     />
+
                     <CommandRoute
                         extraProps={extraProps}
                         path={`${this.props.match.url}/add`}
                         component={AddCommand}
                     />
+
                     <CommandRoute
                         extraProps={extraProps}
                         path={`${this.props.match.url}/edit`}
                         component={EditCommand}
                     />
+
                     <CommandRoute
                         extraProps={extraProps}
                         path={`${this.props.match.url}/confirm`}

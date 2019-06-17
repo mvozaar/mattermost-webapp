@@ -16,12 +16,16 @@ import EmailNotificationSetting from './email_notification_setting';
 
 function mapStateToProps(state) {
     const config = getConfig(state);
-    const emailInterval = parseInt(getPreference(
-        state,
-        Preferences.CATEGORY_NOTIFICATIONS,
-        Preferences.EMAIL_INTERVAL,
-        Preferences.INTERVAL_NOT_SET.toString(),
-    ), 10);
+    const emailInterval = parseInt(
+        getPreference(
+            state,
+            Preferences.CATEGORY_NOTIFICATIONS,
+            Preferences.EMAIL_INTERVAL,
+            Preferences.INTERVAL_NOT_SET.toString(),
+        ),
+
+        10,
+    );
 
     return {
         currentUserId: getCurrentUserId(state),
@@ -33,10 +37,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            savePreferences,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                savePreferences,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmailNotificationSetting);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(EmailNotificationSetting);

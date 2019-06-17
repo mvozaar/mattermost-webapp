@@ -10,8 +10,9 @@ import NewMessageSeparator from './new_message_separator.jsx';
 describe('components/post_view/new_message_separator', () => {
     test('should render new_message_separator', () => {
         const wrapper = shallowWithIntl(
-            <NewMessageSeparator separatorId='1234'/>
+            <NewMessageSeparator separatorId='1234' />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

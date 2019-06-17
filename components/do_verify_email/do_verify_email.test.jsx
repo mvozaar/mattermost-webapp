@@ -14,36 +14,32 @@ describe('components/DoVerifyEmail', () => {
                 email: 'test@example.com',
             },
         },
-        siteName: 'Mattermost',
+
+        siteName: 'securCom',
         actions: {
             verifyUserEmail: jest.fn().mockResolvedValue({data: true}),
             getMe: jest.fn().mockResolvedValue({data: true}),
             logError: jest.fn(),
             clearErrors: jest.fn(),
         },
+
         isLoggedIn: false,
     };
 
     test('should match snapshot', () => {
-        const wrapper = shallow(
-            <DoVerifyEmail {...requiredProps}/>
-        );
+        const wrapper = shallow(<DoVerifyEmail {...requiredProps} />);
 
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should show verifyStatus as pending', () => {
-        const wrapper = shallow(
-            <DoVerifyEmail {...requiredProps}/>
-        );
+        const wrapper = shallow(<DoVerifyEmail {...requiredProps} />);
 
         expect(wrapper.state('verifyStatus')).toEqual('pending');
     });
 
     test('should set serverError state on mount', () => {
-        const wrapper = shallow(
-            <DoVerifyEmail {...requiredProps}/>
-        );
+        const wrapper = shallow(<DoVerifyEmail {...requiredProps} />);
 
         expect(wrapper.state('serverError')).not.toBeNull();
     });

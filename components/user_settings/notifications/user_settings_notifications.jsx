@@ -26,7 +26,7 @@ function getNotificationsStateFromProps(props) {
     let autoResponderActive = false;
     let autoResponderMessage = Utils.localizeMessage(
         'user.settings.notifications.autoResponderDefault',
-        'Hello, I am out of office and unable to respond to messages.'
+        'Hello, I am out of office and unable to respond to messages.',
     );
 
     if (user.notify_props) {
@@ -50,7 +50,8 @@ function getNotificationsStateFromProps(props) {
         }
 
         if (user.notify_props.auto_responder_active) {
-            autoResponderActive = user.notify_props.auto_responder_active === 'true';
+            autoResponderActive =
+                user.notify_props.auto_responder_active === 'true';
         }
 
         if (user.notify_props.auto_responder_message) {
@@ -129,14 +130,14 @@ export default class NotificationsTab extends React.Component {
         actions: PropTypes.shape({
             updateMe: PropTypes.func.isRequired,
         }).isRequired,
-    }
+    };
 
     static defaultProps = {
         user: null,
         activeSection: '',
         prevActiveSection: '',
         activeTab: '',
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -155,10 +156,13 @@ export default class NotificationsTab extends React.Component {
         data.auto_responder_active = this.state.autoResponderActive.toString();
         data.auto_responder_message = this.state.autoResponderMessage;
 
-        if (!data.auto_responder_message || data.auto_responder_message === '') {
+        if (
+            !data.auto_responder_message ||
+            data.auto_responder_message === ''
+        ) {
             data.auto_responder_message = Utils.localizeMessage(
                 'user.settings.notifications.autoResponderDefault',
-                'Hello, I am out of office and unable to respond to messages.'
+                'Hello, I am out of office and unable to respond to messages.',
             );
         }
 
@@ -178,8 +182,9 @@ export default class NotificationsTab extends React.Component {
 
         this.setState({isSaving: true});
 
-        this.props.actions.updateMe({notify_props: data}).
-            then(({data: result, error: err}) => {
+        this.props.actions
+            .updateMe({notify_props: data})
+            .then(({data: result, error: err}) => {
                 if (result) {
                     this.updateSection('');
                     this.setState(getNotificationsStateFromProps(this.props));
@@ -187,14 +192,14 @@ export default class NotificationsTab extends React.Component {
                     this.setState({serverError: err.message, isSaving: false});
                 }
             });
-    }
+    };
 
     handleCancel = (e) => {
         if (e) {
             e.preventDefault();
         }
         this.setState(getNotificationsStateFromProps(this.props));
-    }
+    };
 
     handleUpdateSection = (section) => {
         if (section) {
@@ -209,12 +214,12 @@ export default class NotificationsTab extends React.Component {
         const data = {};
         data[key] = value;
         this.setState(data);
-    }
+    };
 
     updateSection = (section) => {
         this.setState({isSaving: false});
         this.props.updateSection(section);
-    }
+    };
 
     handleNotifyCommentsRadio(notifyCommentsLevel) {
         this.setState({notifyCommentsLevel});
@@ -230,19 +235,19 @@ export default class NotificationsTab extends React.Component {
 
     handleEmailRadio = (enableEmail) => {
         this.setState({enableEmail});
-    }
+    };
 
     updateUsernameKey = (val) => {
         this.setState({usernameKey: val});
-    }
+    };
 
     updateFirstNameKey = (val) => {
         this.setState({firstNameKey: val});
-    }
+    };
 
     updateChannelKey = (val) => {
         this.setState({channelKey: val});
-    }
+    };
 
     updateCustomMentionKeys = () => {
         const checked = this.refs.customcheck.checked;
@@ -251,16 +256,19 @@ export default class NotificationsTab extends React.Component {
             const text = this.refs.custommentions.value;
 
             // remove all spaces and split string into individual keys
-            this.setState({customKeys: text.replace(/ /g, ''), customKeysChecked: true});
+            this.setState({
+                customKeys: text.replace(/ /g, ''),
+                customKeysChecked: true,
+            });
         } else {
             this.setState({customKeys: '', customKeysChecked: false});
         }
-    }
+    };
 
     onCustomChange = () => {
         this.refs.customcheck.checked = true;
         this.updateCustomMentionKeys();
-    }
+    };
 
     createPushNotificationSection = () => {
         if (this.props.activeSection === 'push') {
@@ -272,7 +280,9 @@ export default class NotificationsTab extends React.Component {
                 const pushActivityRadio = [false, false, false];
                 if (this.state.pushActivity === NotificationLevels.ALL) {
                     pushActivityRadio[0] = true;
-                } else if (this.state.pushActivity === NotificationLevels.NONE) {
+                } else if (
+                    this.state.pushActivity === NotificationLevels.NONE
+                ) {
                     pushActivityRadio[2] = true;
                 } else {
                     pushActivityRadio[1] = true;
@@ -281,7 +291,9 @@ export default class NotificationsTab extends React.Component {
                 const pushStatusRadio = [false, false, false];
                 if (this.state.pushStatus === Constants.UserStatuses.ONLINE) {
                     pushStatusRadio[0] = true;
-                } else if (this.state.pushStatus === Constants.UserStatuses.AWAY) {
+                } else if (
+                    this.state.pushStatus === Constants.UserStatuses.AWAY
+                ) {
                     pushStatusRadio[1] = true;
                 } else {
                     pushStatusRadio[2] = true;
@@ -291,14 +303,14 @@ export default class NotificationsTab extends React.Component {
                 if (this.state.pushActivity !== NotificationLevels.NONE) {
                     pushStatusSettings = (
                         <div>
-                            <hr/>
+                            <hr />
                             <label>
                                 <FormattedMessage
                                     id='user.settings.notifications.push_notification.status'
                                     defaultMessage='Trigger push notifications when'
                                 />
                             </label>
-                            <br/>
+                            <br />
                             <div className='radio'>
                                 <label>
                                     <input
@@ -306,14 +318,18 @@ export default class NotificationsTab extends React.Component {
                                         type='radio'
                                         name='pushNotificationStatus'
                                         checked={pushStatusRadio[0]}
-                                        onChange={this.handlePushStatusRadio.bind(this, Constants.UserStatuses.ONLINE)}
+                                        onChange={this.handlePushStatusRadio.bind(
+                                            this,
+                                            Constants.UserStatuses.ONLINE,
+                                        )}
                                     />
+
                                     <FormattedMessage
                                         id='user.settings.push_notification.online'
                                         defaultMessage='Online, away or offline'
                                     />
                                 </label>
-                                <br/>
+                                <br />
                             </div>
                             <div className='radio'>
                                 <label>
@@ -322,14 +338,18 @@ export default class NotificationsTab extends React.Component {
                                         type='radio'
                                         name='pushNotificationStatus'
                                         checked={pushStatusRadio[1]}
-                                        onChange={this.handlePushStatusRadio.bind(this, Constants.UserStatuses.AWAY)}
+                                        onChange={this.handlePushStatusRadio.bind(
+                                            this,
+                                            Constants.UserStatuses.AWAY,
+                                        )}
                                     />
+
                                     <FormattedMessage
                                         id='user.settings.push_notification.away'
                                         defaultMessage='Away or offline'
                                     />
                                 </label>
-                                <br/>
+                                <br />
                             </div>
                             <div className='radio'>
                                 <label>
@@ -338,8 +358,12 @@ export default class NotificationsTab extends React.Component {
                                         type='radio'
                                         name='pushNotificationStatus'
                                         checked={pushStatusRadio[2]}
-                                        onChange={this.handlePushStatusRadio.bind(this, Constants.UserStatuses.OFFLINE)}
+                                        onChange={this.handlePushStatusRadio.bind(
+                                            this,
+                                            Constants.UserStatuses.OFFLINE,
+                                        )}
                                     />
+
                                     <FormattedMessage
                                         id='user.settings.push_notification.offline'
                                         defaultMessage='Offline'
@@ -367,7 +391,7 @@ export default class NotificationsTab extends React.Component {
                                 defaultMessage='Send mobile push notifications'
                             />
                         </label>
-                        <br/>
+                        <br />
                         <div className='radio'>
                             <label>
                                 <input
@@ -375,14 +399,18 @@ export default class NotificationsTab extends React.Component {
                                     type='radio'
                                     name='pushNotificationLevel'
                                     checked={pushActivityRadio[0]}
-                                    onChange={this.handlePushRadio.bind(this, NotificationLevels.ALL)}
+                                    onChange={this.handlePushRadio.bind(
+                                        this,
+                                        NotificationLevels.ALL,
+                                    )}
                                 />
+
                                 <FormattedMessage
                                     id='user.settings.push_notification.allActivity'
                                     defaultMessage='For all activity'
                                 />
                             </label>
-                            <br/>
+                            <br />
                         </div>
                         <div className='radio'>
                             <label>
@@ -391,14 +419,18 @@ export default class NotificationsTab extends React.Component {
                                     type='radio'
                                     name='pushNotificationLevel'
                                     checked={pushActivityRadio[1]}
-                                    onChange={this.handlePushRadio.bind(this, NotificationLevels.MENTION)}
+                                    onChange={this.handlePushRadio.bind(
+                                        this,
+                                        NotificationLevels.MENTION,
+                                    )}
                                 />
+
                                 <FormattedMessage
                                     id='user.settings.push_notification.onlyMentions'
                                     defaultMessage='For mentions and direct messages'
                                 />
                             </label>
-                            <br/>
+                            <br />
                         </div>
                         <div className='radio'>
                             <label>
@@ -407,43 +439,47 @@ export default class NotificationsTab extends React.Component {
                                     type='radio'
                                     name='pushNotificationLevel'
                                     checked={pushActivityRadio[2]}
-                                    onChange={this.handlePushRadio.bind(this, NotificationLevels.NONE)}
+                                    onChange={this.handlePushRadio.bind(
+                                        this,
+                                        NotificationLevels.NONE,
+                                    )}
                                 />
+
                                 <FormattedMessage
                                     id='user.settings.notifications.never'
                                     defaultMessage='Never'
                                 />
                             </label>
                         </div>
-                        <br/>
+                        <br />
                         <span>
                             <FormattedMessage
                                 id='user.settings.push_notification.info'
-                                defaultMessage='Notification alerts are pushed to your mobile device when there is activity in Mattermost.'
+                                defaultMessage='Notification alerts are pushed to your mobile device when there is activity in SCC.'
                             />
                         </span>
                         {pushStatusSettings}
-                    </div>
+                    </div>,
                 );
 
                 submit = this.handleSubmit;
             } else {
                 inputs.push(
-                    <div
-                        key='oauthEmailInfo'
-                        className='padding-top'
-                    >
+                    <div key='oauthEmailInfo' className='padding-top'>
                         <FormattedMessage
                             id='user.settings.push_notification.disabled_long'
                             defaultMessage='Push notifications have not been enabled by your System Administrator.'
                         />
-                    </div>
+                    </div>,
                 );
             }
 
             return (
                 <SettingItemMax
-                    title={Utils.localizeMessage('user.settings.notifications.push', 'Mobile push notifications')}
+                    title={Utils.localizeMessage(
+                        'user.settings.notifications.push',
+                        'Mobile push notifications',
+                    )}
                     extraInfo={extraInfo}
                     inputs={inputs}
                     submit={submit}
@@ -462,7 +498,9 @@ export default class NotificationsTab extends React.Component {
                         defaultMessage='For all activity when away or offline'
                     />
                 );
-            } else if (this.state.pushStatus === Constants.UserStatuses.OFFLINE) {
+            } else if (
+                this.state.pushStatus === Constants.UserStatuses.OFFLINE
+            ) {
                 describe = (
                     <FormattedMessage
                         id='user.settings.push_notification.allActivityOffline'
@@ -485,14 +523,17 @@ export default class NotificationsTab extends React.Component {
                 />
             );
         } else if (this.props.sendPushNotifications) {
-            if (this.state.pushStatus === Constants.UserStatuses.AWAY) { //eslint-disable-line no-lonely-if
+            if (this.state.pushStatus === Constants.UserStatuses.AWAY) {
+                //eslint-disable-line no-lonely-if
                 describe = (
                     <FormattedMessage
                         id='user.settings.push_notification.onlyMentionsAway'
                         defaultMessage='For mentions and direct messages when away or offline'
                     />
                 );
-            } else if (this.state.pushStatus === Constants.UserStatuses.OFFLINE) {
+            } else if (
+                this.state.pushStatus === Constants.UserStatuses.OFFLINE
+            ) {
                 describe = (
                     <FormattedMessage
                         id='user.settings.push_notification.onlyMentionsOffline'
@@ -518,14 +559,17 @@ export default class NotificationsTab extends React.Component {
 
         return (
             <SettingItemMin
-                title={Utils.localizeMessage('user.settings.notifications.push', 'Mobile push notifications')}
+                title={Utils.localizeMessage(
+                    'user.settings.notifications.push',
+                    'Mobile push notifications',
+                )}
                 describe={describe}
                 focused={this.props.prevActiveSection === prevSections.push}
                 section={'push'}
                 updateSection={this.handleUpdateSection}
             />
         );
-    }
+    };
 
     render() {
         const serverError = this.state.serverError;
@@ -549,16 +593,17 @@ export default class NotificationsTab extends React.Component {
                                     checked={this.state.firstNameKey}
                                     onChange={handleUpdateFirstNameKey}
                                 />
+
                                 <FormattedMessage
                                     id='user.settings.notifications.sensitiveName'
-                                    defaultMessage='Your case sensitive first name "{first_name}"'
+                                    defaultMessage="Your case sensitive first name '{first_name}'"
                                     values={{
                                         first_name: user.first_name,
                                     }}
                                 />
                             </label>
                         </div>
-                    </div>
+                    </div>,
                 );
             }
 
@@ -575,16 +620,17 @@ export default class NotificationsTab extends React.Component {
                                 checked={this.state.usernameKey}
                                 onChange={handleUpdateUsernameKey}
                             />
+
                             <FormattedMessage
                                 id='user.settings.notifications.sensitiveUsername'
-                                defaultMessage='Your non-case sensitive username "{username}"'
+                                defaultMessage="Your non-case sensitive username '{username}'"
                                 values={{
                                     username: user.username,
                                 }}
                             />
                         </label>
                     </div>
-                </div>
+                </div>,
             );
 
             const handleUpdateChannelKey = (e) => {
@@ -600,13 +646,14 @@ export default class NotificationsTab extends React.Component {
                                 checked={this.state.channelKey}
                                 onChange={handleUpdateChannelKey}
                             />
+
                             <FormattedMessage
                                 id='user.settings.notifications.channelWide'
-                                defaultMessage='Channel-wide mentions "@channel", "@all", "@here"'
+                                defaultMessage="Channel-wide mentions '@channel', '@all', '@here'"
                             />
                         </label>
                     </div>
-                </div>
+                </div>,
             );
 
             inputs.push(
@@ -620,6 +667,7 @@ export default class NotificationsTab extends React.Component {
                                 checked={this.state.customKeysChecked}
                                 onChange={this.updateCustomMentionKeys}
                             />
+
                             <FormattedMessage
                                 id='user.settings.notifications.sensitiveWords'
                                 defaultMessage='Other non-case sensitive words, separated by commas:'
@@ -636,7 +684,7 @@ export default class NotificationsTab extends React.Component {
                         onChange={this.onCustomChange}
                         onFocus={Utils.moveCursorToEnd}
                     />
-                </div>
+                </div>,
             );
 
             const extraInfo = (
@@ -653,7 +701,10 @@ export default class NotificationsTab extends React.Component {
 
             keysSection = (
                 <SettingItemMax
-                    title={Utils.localizeMessage('user.settings.notifications.wordsTrigger', 'Words that trigger mentions')}
+                    title={Utils.localizeMessage(
+                        'user.settings.notifications.wordsTrigger',
+                        'Words that trigger mentions',
+                    )}
                     inputs={inputs}
                     submit={this.handleSubmit}
                     saving={this.state.isSaving}
@@ -683,7 +734,7 @@ export default class NotificationsTab extends React.Component {
             let describe = '';
             for (let i = 0; i < keys.length; i++) {
                 if (keys[i] !== '') {
-                    describe += '"' + keys[i] + '", ';
+                    describe += "'" + keys[i] + "', ";
                 }
             }
 
@@ -700,7 +751,10 @@ export default class NotificationsTab extends React.Component {
 
             keysSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('user.settings.notifications.wordsTrigger', 'Words that trigger mentions')}
+                    title={Utils.localizeMessage(
+                        'user.settings.notifications.wordsTrigger',
+                        'Words that trigger mentions',
+                    )}
                     describe={describe}
                     focused={this.props.prevActiveSection === prevSections.keys}
                     section={'keys'}
@@ -731,14 +785,18 @@ export default class NotificationsTab extends React.Component {
                                 type='radio'
                                 name='commentsNotificationLevel'
                                 checked={commentsActive[0]}
-                                onChange={this.handleNotifyCommentsRadio.bind(this, 'any')}
+                                onChange={this.handleNotifyCommentsRadio.bind(
+                                    this,
+                                    'any',
+                                )}
                             />
+
                             <FormattedMessage
                                 id='user.settings.notifications.commentsAny'
                                 defaultMessage='Trigger notifications on messages in reply threads that I start or participate in'
                             />
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     <div className='radio'>
                         <label>
@@ -747,14 +805,18 @@ export default class NotificationsTab extends React.Component {
                                 type='radio'
                                 name='commentsNotificationLevel'
                                 checked={commentsActive[1]}
-                                onChange={this.handleNotifyCommentsRadio.bind(this, 'root')}
+                                onChange={this.handleNotifyCommentsRadio.bind(
+                                    this,
+                                    'root',
+                                )}
                             />
+
                             <FormattedMessage
                                 id='user.settings.notifications.commentsRoot'
                                 defaultMessage='Trigger notifications on messages in threads that I start'
                             />
                         </label>
-                        <br/>
+                        <br />
                     </div>
                     <div className='radio'>
                         <label>
@@ -763,15 +825,19 @@ export default class NotificationsTab extends React.Component {
                                 type='radio'
                                 name='commentsNotificationLevel'
                                 checked={commentsActive[2]}
-                                onChange={this.handleNotifyCommentsRadio.bind(this, 'never')}
+                                onChange={this.handleNotifyCommentsRadio.bind(
+                                    this,
+                                    'never',
+                                )}
                             />
+
                             <FormattedMessage
                                 id='user.settings.notifications.commentsNever'
                                 defaultMessage="Do not trigger notifications on messages in reply threads unless I'm mentioned"
                             />
                         </label>
                     </div>
-                </div>
+                </div>,
             );
 
             const extraInfo = (
@@ -785,7 +851,10 @@ export default class NotificationsTab extends React.Component {
 
             commentsSection = (
                 <SettingItemMax
-                    title={Utils.localizeMessage('user.settings.notifications.comments', 'Reply notifications')}
+                    title={Utils.localizeMessage(
+                        'user.settings.notifications.comments',
+                        'Reply notifications',
+                    )}
                     extraInfo={extraInfo}
                     inputs={inputs}
                     submit={this.handleSubmit}
@@ -821,9 +890,14 @@ export default class NotificationsTab extends React.Component {
 
             commentsSection = (
                 <SettingItemMin
-                    title={Utils.localizeMessage('user.settings.notifications.comments', 'Reply notifications')}
+                    title={Utils.localizeMessage(
+                        'user.settings.notifications.comments',
+                        'Reply notifications',
+                    )}
                     describe={describe}
-                    focused={this.props.prevActiveSection === prevSections.comments}
+                    focused={
+                        this.props.prevActiveSection === prevSections.comments
+                    }
                     section={'comments'}
                     updateSection={this.handleUpdateSection}
                 />
@@ -837,14 +911,17 @@ export default class NotificationsTab extends React.Component {
                     <div>
                         <ManageAutoResponder
                             autoResponderActive={this.state.autoResponderActive}
-                            autoResponderMessage={this.state.autoResponderMessage}
+                            autoResponderMessage={
+                                this.state.autoResponderMessage
+                            }
                             updateSection={this.updateSection}
                             setParentState={this.setStateValue}
                             submit={this.handleSubmit}
                             error={this.state.serverError}
                             saving={this.state.isSaving}
                         />
-                        <div className='divider-dark'/>
+
+                        <div className='divider-dark' />
                     </div>
                 );
             } else {
@@ -861,7 +938,6 @@ export default class NotificationsTab extends React.Component {
                 );
 
                 autoResponderSection = (
-
                     <SettingItemMin
                         title={
                             <FormattedMessage
@@ -892,10 +968,7 @@ export default class NotificationsTab extends React.Component {
                     >
                         <span aria-hidden='true'>{'×'}</span>
                     </button>
-                    <h4
-                        className='modal-title'
-                        ref='title'
-                    >
+                    <h4 className='modal-title' ref='title'>
                         <div className='modal-back'>
                             <FormattedMessage
                                 id='generic_icons.collapse'
@@ -916,20 +989,14 @@ export default class NotificationsTab extends React.Component {
                         />
                     </h4>
                 </div>
-                <div
-                    ref='wrapper'
-                    className='user-settings'
-                >
-                    <h3
-                        id='notificationSettingsTitle'
-                        className='tab-header'
-                    >
+                <div ref='wrapper' className='user-settings'>
+                    <h3 id='notificationSettingsTitle' className='tab-header'>
                         <FormattedMessage
                             id='user.settings.notifications.header'
                             defaultMessage='Notifications'
                         />
                     </h3>
-                    <div className='divider-dark first'/>
+                    <div className='divider-dark first' />
                     <DesktopNotificationSettings
                         activity={this.state.desktopActivity}
                         sound={this.state.desktopSound}
@@ -940,9 +1007,13 @@ export default class NotificationsTab extends React.Component {
                         cancel={this.handleCancel}
                         error={this.state.serverError}
                         active={this.props.activeSection === 'desktop'}
-                        focused={this.props.prevActiveSection === prevSections.desktop}
+                        focused={
+                            this.props.prevActiveSection ===
+                            prevSections.desktop
+                        }
                     />
-                    <div className='divider-light'/>
+
+                    <div className='divider-light' />
                     <EmailNotificationSetting
                         activeSection={this.props.activeSection}
                         updateSection={this.props.updateSection}
@@ -952,21 +1023,23 @@ export default class NotificationsTab extends React.Component {
                         onChange={this.handleEmailRadio}
                         saving={this.state.isSaving}
                         serverError={this.state.serverError}
-                        focused={this.props.prevActiveSection === prevSections.email}
+                        focused={
+                            this.props.prevActiveSection === prevSections.email
+                        }
                         siteName={this.props.siteName}
                     />
-                    <div className='divider-light'/>
+
+                    <div className='divider-light' />
                     {pushNotificationSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {keysSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {commentsSection}
-                    <div className='divider-light'/>
+                    <div className='divider-light' />
                     {autoResponderSection}
-                    <div className='divider-dark'/>
+                    <div className='divider-dark' />
                 </div>
             </div>
-
         );
     }
 }

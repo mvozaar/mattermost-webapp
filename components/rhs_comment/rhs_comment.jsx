@@ -89,7 +89,10 @@ export default class RhsComment extends React.Component {
             return true;
         }
 
-        if ((this.state.width !== nextState.width) || this.state.height !== nextState.height) {
+        if (
+            this.state.width !== nextState.width ||
+            this.state.height !== nextState.height
+        ) {
             return true;
         }
 
@@ -119,9 +122,11 @@ export default class RhsComment extends React.Component {
     renderPostTime = (isEphemeral) => {
         const post = this.props.post;
 
-        const isPermalink = !(isEphemeral ||
+        const isPermalink = !(
+            isEphemeral ||
             Posts.POST_DELETED === post.state ||
-            isPostPendingOrFailed(post));
+            isPostPendingOrFailed(post)
+        );
 
         return (
             <PostTime
@@ -183,14 +188,19 @@ export default class RhsComment extends React.Component {
 
     setHover = () => {
         this.setState({hover: true});
-    }
+    };
 
     unsetHover = () => {
         this.setState({hover: false});
-    }
+    };
 
     render() {
-        const {post, isConsecutivePost, isReadOnly, channelIsArchived} = this.props;
+        const {
+            post,
+            isConsecutivePost,
+            isReadOnly,
+            channelIsArchived,
+        } = this.props;
 
         const isEphemeral = isPostEphemeral(post);
         const isSystemMessage = PostUtils.isSystemMessage(post);
@@ -221,7 +231,10 @@ export default class RhsComment extends React.Component {
             );
 
             if (post.props && post.props.from_webhook) {
-                if (post.props.override_username && this.props.enablePostUsernameOverride) {
+                if (
+                    post.props.override_username &&
+                    this.props.enablePostUsernameOverride
+                ) {
                     userProfile = (
                         <UserProfile
                             userId={post.user_id}
@@ -240,7 +253,7 @@ export default class RhsComment extends React.Component {
                     );
                 }
 
-                botIndicator = (<BotBadge className='col col__name'/>);
+                botIndicator = <BotBadge className='col col__name' />;
             } else if (fromAutoResponder) {
                 userProfile = (
                     <span className='auto-responder'>
@@ -253,6 +266,7 @@ export default class RhsComment extends React.Component {
                         />
                     </span>
                 );
+
                 botIndicator = (
                     <Badge className='col col__name'>
                         <FormattedMessage
@@ -291,7 +305,7 @@ export default class RhsComment extends React.Component {
 
         if (post.failed) {
             postClass += ' post-failed';
-            failedPostOptions = <FailedPostOptions post={this.props.post}/>;
+            failedPostOptions = <FailedPostOptions post={this.props.post} />;
         }
 
         if (PostUtils.isEdited(this.props.post)) {
@@ -309,7 +323,14 @@ export default class RhsComment extends React.Component {
         }
 
         let postReaction;
-        if (!isReadOnly && !isEphemeral && !post.failed && !isSystemMessage && this.props.enableEmojiPicker && !channelIsArchived) {
+        if (
+            !isReadOnly &&
+            !isEphemeral &&
+            !post.failed &&
+            !isSystemMessage &&
+            this.props.enableEmojiPicker &&
+            !channelIsArchived
+        ) {
             postReaction = (
                 <PostReaction
                     channelId={post.channel_id}
@@ -344,10 +365,7 @@ export default class RhsComment extends React.Component {
             );
 
             options = (
-                <div
-                    ref='dotMenu'
-                    className='col col__reply'
-                >
+                <div ref='dotMenu' className='col col__reply'>
                     {dotMenu}
                     {postReaction}
                 </div>
@@ -383,9 +401,7 @@ export default class RhsComment extends React.Component {
                 onMouseLeave={this.unsetHover}
             >
                 <div className='post__content'>
-                    <div className='post__img'>
-                        {profilePicture}
-                    </div>
+                    <div className='post__img'>{profilePicture}</div>
                     <div>
                         <div className='post__header'>
                             <div className='col col__name'>
@@ -400,12 +416,14 @@ export default class RhsComment extends React.Component {
                             </div>
                             {options}
                         </div>
-                        <div className='post__body' >
+                        <div className='post__body'>
                             <div className={postClass}>
                                 {failedPostOptions}
                                 <MessageWithAdditionalContent
                                     post={post}
-                                    previewCollapsed={this.props.previewCollapsed}
+                                    previewCollapsed={
+                                        this.props.previewCollapsed
+                                    }
                                     previewEnabled={this.props.previewEnabled}
                                     isEmbedVisible={this.props.isEmbedVisible}
                                     pluginPostTypes={this.props.pluginPostTypes}

@@ -7,15 +7,22 @@ import {FormattedMessage} from 'react-intl';
 
 export default class LoadingScreen extends React.Component {
     static propTypes = {
-        position: PropTypes.oneOf(['absolute', 'fixed', 'relative', 'static', 'inherit']),
+        position: PropTypes.oneOf([
+            'absolute',
+            'fixed',
+            'relative',
+            'static',
+            'inherit',
+        ]),
+
         style: PropTypes.object,
         message: PropTypes.node,
-    }
+    };
 
     static defaultProps = {
         position: 'relative',
         style: {},
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -40,12 +47,10 @@ export default class LoadingScreen extends React.Component {
                 style={{position: this.props.position, ...this.props.style}}
             >
                 <div className='loading__content'>
-                    <h3>
-                        {message}
-                    </h3>
-                    <div className='round round-1'/>
-                    <div className='round round-2'/>
-                    <div className='round round-3'/>
+                    <h3>{message}</h3>
+                    <div className='round round-1' />
+                    <div className='round round-2' />
+                    <div className='round round-3' />
                 </div>
             </div>
         );

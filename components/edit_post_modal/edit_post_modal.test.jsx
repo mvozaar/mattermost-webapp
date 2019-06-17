@@ -12,17 +12,30 @@ jest.mock('actions/global_actions.jsx', () => ({
     emitClearSuggestions: jest.fn(),
 }));
 
-function createEditPost({canEditPost, canDeletePost, ctrlSend, config, license, editingPost, actions} = {canEditPost: true, canDeletePost: true}) {
+function createEditPost(
+    {
+        canEditPost,
+        canDeletePost,
+        ctrlSend,
+        config,
+        license,
+        editingPost,
+        actions,
+    } = {canEditPost: true, canDeletePost: true},
+) {
     const canEditPostProp = canEditPost === undefined ? true : canEditPost;
-    const canDeletePostProp = canDeletePost === undefined ? true : canDeletePost;
+    const canDeletePostProp =
+        canDeletePost === undefined ? true : canDeletePost;
     const ctrlSendProp = ctrlSend || false;
     const configProp = config || {
         PostEditTimeLimit: 300,
         EnableEmojiPicker: 'true',
     };
+
     const licenseProp = license || {
         IsLicensed: 'false',
     };
+
     const editingPostProp = editingPost || {
         postId: '123',
         post: {
@@ -30,17 +43,20 @@ function createEditPost({canEditPost, canDeletePost, ctrlSend, config, license, 
             message: 'test',
             channel_id: '5',
         },
+
         commentCount: 3,
         refocusId: 'test',
         show: true,
         title: 'test',
     };
+
     const actionsProp = actions || {
         editPost: jest.fn(),
         addMessageIntoHistory: jest.fn(),
         hideEditPostModal: jest.fn(),
         openModal: jest.fn(),
     };
+
     return (
         <EditPostModal
             canEditPost={canEditPostProp}
@@ -66,6 +82,7 @@ describe('components/EditPostModal', () => {
             PostEditTimeLimit: 300,
             EnableEmojiPicker: 'false',
         };
+
         const wrapper = shallow(createEditPost({config}));
         expect(wrapper).toMatchSnapshot();
     });
@@ -77,6 +94,7 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         const editingPost = {
             postId: '123',
             post: {
@@ -85,6 +103,7 @@ describe('components/EditPostModal', () => {
                 channel_id: '5',
                 file_ids: ['file_id_1'],
             },
+
             commentCount: 3,
             refocusId: 'test',
             show: true,
@@ -108,6 +127,7 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         const wrapper = shallow(createEditPost({actions}));
 
         expect(actions.addMessageIntoHistory).not.toBeCalled();
@@ -122,6 +142,7 @@ describe('components/EditPostModal', () => {
             id: '123',
             channel_id: '5',
         });
+
         expect(actions.hideEditPostModal).toBeCalled();
     });
 
@@ -225,6 +246,7 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         const wrapper = shallow(createEditPost({actions}));
         const instance = wrapper.instance();
 
@@ -244,6 +266,7 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         var wrapper = shallow(createEditPost({actions}));
         var instance = wrapper.instance();
 
@@ -262,9 +285,11 @@ describe('components/EditPostModal', () => {
                     message: 'test',
                     channel_id: '5',
                 },
+
                 commentCount: 3,
             },
         });
+
         expect(actions.addMessageIntoHistory).not.toBeCalled();
         expect(actions.editPost).not.toBeCalled();
 
@@ -293,6 +318,7 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         global.scrollTo = jest.fn();
         const wrapper = shallow(createEditPost({actions}));
         const instance = wrapper.instance();
@@ -320,13 +346,25 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         const wrapper = shallow(createEditPost({actions}));
         const instance = wrapper.instance();
 
-        wrapper.setState({editText: 'test', postError: 'test', errorClass: 'test', showEmojiPicker: true});
+        wrapper.setState({
+            editText: 'test',
+            postError: 'test',
+            errorClass: 'test',
+            showEmojiPicker: true,
+        });
+
         instance.handleExited();
 
-        expect(wrapper.state()).toEqual({editText: '', postError: '', errorClass: null, showEmojiPicker: false});
+        expect(wrapper.state()).toEqual({
+            editText: '',
+            postError: '',
+            errorClass: null,
+            showEmojiPicker: false,
+        });
     });
 
     it('should focus element on exit based on refocusId', () => {
@@ -336,6 +374,7 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         const wrapper = shallow(createEditPost({actions}));
         const instance = wrapper.instance();
 
@@ -353,14 +392,27 @@ describe('components/EditPostModal', () => {
 
     it('should handle edition on key down enter depending on the conditions', () => {
         const options = new ReactRouterEnzymeContext();
-        var wrapper = shallow(createEditPost({ctrlSend: true}), {context: options.get()});
+        var wrapper = shallow(createEditPost({ctrlSend: true}), {
+            context: options.get(),
+        });
+
         var instance = wrapper.instance();
         instance.handleEdit = jest.fn();
         instance.handleKeyDown({keyCode: 1, ctrlKey: true});
         expect(instance.handleEdit).not.toBeCalled();
-        instance.handleKeyDown({key: Constants.KeyCodes.ENTER[0], keyCode: Constants.KeyCodes.ENTER[1], ctrlKey: false});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.ENTER[0],
+            keyCode: Constants.KeyCodes.ENTER[1],
+            ctrlKey: false,
+        });
+
         expect(instance.handleEdit).not.toBeCalled();
-        instance.handleKeyDown({key: Constants.KeyCodes.ENTER[0], keyCode: Constants.KeyCodes.ENTER[1], ctrlKey: true});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.ENTER[0],
+            keyCode: Constants.KeyCodes.ENTER[1],
+            ctrlKey: true,
+        });
+
         expect(instance.handleEdit).toBeCalled();
 
         wrapper = shallow(createEditPost({ctrlSend: false}));
@@ -368,9 +420,19 @@ describe('components/EditPostModal', () => {
         instance.handleEdit = jest.fn();
         instance.handleKeyDown({keyCode: 1, ctrlKey: true});
         expect(instance.handleEdit).not.toBeCalled();
-        instance.handleKeyDown({key: Constants.KeyCodes.ENTER[0], keyCode: Constants.KeyCodes.ENTER[1], ctrlKey: false});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.ENTER[0],
+            keyCode: Constants.KeyCodes.ENTER[1],
+            ctrlKey: false,
+        });
+
         expect(instance.handleEdit).not.toBeCalled();
-        instance.handleKeyDown({key: Constants.KeyCodes.ENTER[0], keyCode: Constants.KeyCodes.ENTER[1], ctrlKey: true});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.ENTER[0],
+            keyCode: Constants.KeyCodes.ENTER[1],
+            ctrlKey: true,
+        });
+
         expect(instance.handleEdit).not.toBeCalled();
     });
 
@@ -383,13 +445,36 @@ describe('components/EditPostModal', () => {
 
             const preventDefault = jest.fn();
             instance.handleEdit = jest.fn();
-            instance.handleEditKeyPress({which: 1, ctrlKey: true, preventDefault, shiftKey: false, altKey: false});
+            instance.handleEditKeyPress({
+                which: 1,
+                ctrlKey: true,
+                preventDefault,
+                shiftKey: false,
+                altKey: false,
+            });
+
             expect(instance.handleEdit).not.toBeCalled();
             expect(preventDefault).not.toBeCalled();
-            instance.handleEditKeyPress({key: Constants.KeyCodes.ENTER[0], which: Constants.KeyCodes.ENTER[1], ctrlKey: false, preventDefault, shiftKey: false, altKey: false});
+            instance.handleEditKeyPress({
+                key: Constants.KeyCodes.ENTER[0],
+                which: Constants.KeyCodes.ENTER[1],
+                ctrlKey: false,
+                preventDefault,
+                shiftKey: false,
+                altKey: false,
+            });
+
             expect(instance.handleEdit).not.toBeCalled();
             expect(preventDefault).not.toBeCalled();
-            instance.handleEditKeyPress({key: Constants.KeyCodes.ENTER[0], which: Constants.KeyCodes.ENTER[1], ctrlKey: true, preventDefault, shiftKey: false, altKey: false});
+            instance.handleEditKeyPress({
+                key: Constants.KeyCodes.ENTER[0],
+                which: Constants.KeyCodes.ENTER[1],
+                ctrlKey: true,
+                preventDefault,
+                shiftKey: false,
+                altKey: false,
+            });
+
             expect(instance.handleEdit).toBeCalled();
             expect(preventDefault).toBeCalled();
         });
@@ -402,16 +487,46 @@ describe('components/EditPostModal', () => {
 
             const preventDefault = jest.fn();
             instance.handleEdit = jest.fn();
-            instance.handleEditKeyPress({which: 1, ctrlKey: true, preventDefault, shiftKey: false, altKey: false});
+            instance.handleEditKeyPress({
+                which: 1,
+                ctrlKey: true,
+                preventDefault,
+                shiftKey: false,
+                altKey: false,
+            });
+
             expect(instance.handleEdit).not.toBeCalled();
             expect(preventDefault).not.toBeCalled();
-            instance.handleEditKeyPress({key: Constants.KeyCodes.ENTER[0], which: Constants.KeyCodes.ENTER[1], ctrlKey: true, preventDefault, shiftKey: true, altKey: false});
+            instance.handleEditKeyPress({
+                key: Constants.KeyCodes.ENTER[0],
+                which: Constants.KeyCodes.ENTER[1],
+                ctrlKey: true,
+                preventDefault,
+                shiftKey: true,
+                altKey: false,
+            });
+
             expect(instance.handleEdit).not.toBeCalled();
             expect(preventDefault).not.toBeCalled();
-            instance.handleEditKeyPress({key: Constants.KeyCodes.ENTER[0], which: Constants.KeyCodes.ENTER[1], ctrlKey: true, preventDefault, shiftKey: false, altKey: true});
+            instance.handleEditKeyPress({
+                key: Constants.KeyCodes.ENTER[0],
+                which: Constants.KeyCodes.ENTER[1],
+                ctrlKey: true,
+                preventDefault,
+                shiftKey: false,
+                altKey: true,
+            });
+
             expect(instance.handleEdit).not.toBeCalled();
             expect(preventDefault).not.toBeCalled();
-            instance.handleEditKeyPress({key: Constants.KeyCodes.ENTER[0], ctrlKey: true, preventDefault, shiftKey: false, altKey: false});
+            instance.handleEditKeyPress({
+                key: Constants.KeyCodes.ENTER[0],
+                ctrlKey: true,
+                preventDefault,
+                shiftKey: false,
+                altKey: false,
+            });
+
             expect(instance.handleEdit).toBeCalled();
             expect(preventDefault).toBeCalled();
         });
@@ -426,7 +541,11 @@ describe('components/EditPostModal', () => {
         instance.handleKeyDown({keyCode: 1});
         expect(instance.handleHide).not.toBeCalled();
 
-        instance.handleKeyDown({key: Constants.KeyCodes.ESCAPE[0], keyCode: Constants.KeyCodes.ESCAPE[1]});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.ESCAPE[0],
+            keyCode: Constants.KeyCodes.ESCAPE[1],
+        });
+
         expect(instance.handleHide).toBeCalled();
     });
 
@@ -438,7 +557,11 @@ describe('components/EditPostModal', () => {
 
         instance.setState({showEmojiPicker: true});
 
-        instance.handleKeyDown({key: Constants.KeyCodes.ESCAPE[0], keyCode: Constants.KeyCodes.ESCAPE[1]});
+        instance.handleKeyDown({
+            key: Constants.KeyCodes.ESCAPE[0],
+            keyCode: Constants.KeyCodes.ESCAPE[1],
+        });
+
         expect(instance.handleHide).not.toBeCalled();
     });
 
@@ -449,6 +572,7 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
+
         const wrapper = shallow(createEditPost({actions, canEditPost: false}));
         wrapper.setState({editText: 'new message'});
         expect(wrapper).toMatchSnapshot();
@@ -474,7 +598,11 @@ describe('components/EditPostModal', () => {
             hideEditPostModal: jest.fn(),
             openModal: jest.fn(),
         };
-        const wrapper = shallow(createEditPost({actions, canDeletePost: false}));
+
+        const wrapper = shallow(
+            createEditPost({actions, canDeletePost: false}),
+        );
+
         wrapper.setState({editText: ''});
         expect(wrapper).toMatchSnapshot();
 
@@ -501,12 +629,17 @@ describe('components/EditPostModal', () => {
                 channel_id: '5',
                 file_ids: ['file_id_1'],
             },
+
             commentCount: 3,
             refocusId: 'test',
             show: true,
             title: 'test',
         };
-        var wrapper = shallow(createEditPost({canDeletePost: false, editingPost}));
+
+        var wrapper = shallow(
+            createEditPost({canDeletePost: false, editingPost}),
+        );
+
         wrapper.setState({editText: ''});
         expect(wrapper).toMatchSnapshot();
     });

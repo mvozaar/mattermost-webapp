@@ -9,10 +9,16 @@ import {toggle as toggleLhs} from 'actions/views/lhs';
 import CollapseLhsButton from './collapse_lhs_button';
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-        toggleLhs,
-    }, dispatch),
+    actions: bindActionCreators(
+        {
+            toggleLhs,
+        },
+
+        dispatch,
+    ),
 });
 
-export default connect(null, mapDispatchToProps)(CollapseLhsButton);
-
+export default connect(
+    null,
+    mapDispatchToProps,
+)(CollapseLhsButton);

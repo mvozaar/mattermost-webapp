@@ -75,7 +75,7 @@ export default class AddEmoji extends React.Component {
             });
 
             return;
-        } else if ((/[^a-z0-9_-]/).test(emoji.name)) {
+        } else if (/[^a-z0-9_-]/.test(emoji.name)) {
             this.setState({
                 saving: false,
                 error: (
@@ -121,6 +121,7 @@ export default class AddEmoji extends React.Component {
                 saving: false,
                 error: error.message,
             });
+
             return;
         }
 
@@ -169,10 +170,7 @@ export default class AddEmoji extends React.Component {
         if (this.state.imageUrl) {
             preview = (
                 <div className='form-group'>
-                    <label
-                        className='control-label col-sm-4'
-                        htmlFor='preview'
-                    >
+                    <label className='control-label col-sm-4' htmlFor='preview'>
                         <FormattedMessage
                             id='add_emoji.preview'
                             defaultMessage='Preview'
@@ -186,7 +184,12 @@ export default class AddEmoji extends React.Component {
                                 image: (
                                     <span
                                         className='emoticon'
-                                        style={{backgroundImage: 'url(' + this.state.imageUrl + ')'}}
+                                        style={{
+                                            backgroundImage:
+                                                'url(' +
+                                                this.state.imageUrl +
+                                                ')',
+                                        }}
                                     />
                                 ),
                             }}
@@ -234,6 +237,7 @@ export default class AddEmoji extends React.Component {
                                     value={this.state.name}
                                     onChange={this.updateName}
                                 />
+
                                 <div className='form__help'>
                                     <FormattedMessage
                                         id='add_emoji.name.help'
@@ -285,6 +289,7 @@ export default class AddEmoji extends React.Component {
                                 type='backstage'
                                 error={this.state.error}
                             />
+
                             <Link
                                 className='btn btn-link btn-sm'
                                 to={'/' + this.props.team.name + '/emoji'}
@@ -298,7 +303,10 @@ export default class AddEmoji extends React.Component {
                                 className='btn btn-primary'
                                 type='submit'
                                 spinning={this.state.saving}
-                                spinningText={localizeMessage('add_emoji.saving', 'Saving...')}
+                                spinningText={localizeMessage(
+                                    'add_emoji.saving',
+                                    'Saving...',
+                                )}
                                 onClick={this.handleSubmit}
                             >
                                 <FormattedMessage

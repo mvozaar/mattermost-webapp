@@ -10,7 +10,10 @@ function makeMapStateToProps() {
     const getUsersTypingByChannelAndPost = makeGetUsersTypingByChannelAndPost();
 
     return function mapStateToProps(state, ownProps) {
-        const typingUsers = getUsersTypingByChannelAndPost(state, {channelId: ownProps.channelId, postId: ownProps.postId});
+        const typingUsers = getUsersTypingByChannelAndPost(state, {
+            channelId: ownProps.channelId,
+            postId: ownProps.postId,
+        });
 
         return {
             typingUsers,

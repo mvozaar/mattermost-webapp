@@ -3,9 +3,15 @@
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {getProfilesNotInTeam, searchProfiles} from 'mattermost-redux/actions/users';
+import {
+    getProfilesNotInTeam,
+    searchProfiles,
+} from 'mattermost-redux/actions/users';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
-import {searchProfilesNotInCurrentTeam, getProfilesNotInCurrentTeam} from 'mattermost-redux/selectors/entities/users';
+import {
+    searchProfilesNotInCurrentTeam,
+    getProfilesNotInCurrentTeam,
+} from 'mattermost-redux/selectors/entities/users';
 
 import {loadStatusesForProfilesList} from 'actions/status_actions.jsx';
 import {addUsersToTeam} from 'actions/team_actions.jsx';
@@ -41,14 +47,21 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            getProfilesNotInTeam,
-            setModalSearchTerm,
-            searchProfiles,
-            addUsersToTeam,
-            loadStatusesForProfilesList,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                getProfilesNotInTeam,
+                setModalSearchTerm,
+                searchProfiles,
+                addUsersToTeam,
+                loadStatusesForProfilesList,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUsersToTeam);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AddUsersToTeam);

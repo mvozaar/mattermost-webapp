@@ -17,12 +17,19 @@ function mapStateToProps(state, ownProps) {
     const config = getConfig(state);
     const channel = state.entities.channels.channels[ownProps.post.channel_id];
     const channelIsArchived = channel ? channel.delete_at !== 0 : null;
-    const enableEmojiPicker = config.EnableEmojiPicker === 'true' && !channelIsArchived;
+    const enableEmojiPicker =
+        config.EnableEmojiPicker === 'true' && !channelIsArchived;
     const teamId = getCurrentTeamId(state);
 
     return {
         teamId,
-        isFlagged: get(state, Preferences.CATEGORY_FLAGGED_POST, ownProps.post.id, null) != null,
+        isFlagged:
+            get(
+                state,
+                Preferences.CATEGORY_FLAGGED_POST,
+                ownProps.post.id,
+                null,
+            ) != null,
         isMobile: state.views.channel.mobileView,
         enableEmojiPicker,
         isReadOnly: isCurrentChannelReadOnly(state) || channelIsArchived,
@@ -31,10 +38,17 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({
-            removePost,
-        }, dispatch),
+        actions: bindActionCreators(
+            {
+                removePost,
+            },
+
+            dispatch,
+        ),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostInfo);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PostInfo);

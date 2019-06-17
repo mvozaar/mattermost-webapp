@@ -25,7 +25,7 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
 
     test('should have called handleSubmit', async () => {
         const props = {...requiredProps, actions: {...requiredProps.actions}};
-        const wrapper = shallow(<UserSettingsNotifications {...props}/>);
+        const wrapper = shallow(<UserSettingsNotifications {...props} />);
 
         await wrapper.instance().handleSubmit();
         expect(requiredProps.actions.updateMe).toHaveBeenCalled();
@@ -34,8 +34,12 @@ describe('components/user_settings/display/UserSettingsDisplay', () => {
     test('should have called handleSubmit', async () => {
         const updateMe = jest.fn(() => Promise.resolve({data: true}));
 
-        const props = {...requiredProps, actions: {...requiredProps.actions, updateMe}};
-        const wrapper = shallow(<UserSettingsNotifications {...props}/>);
+        const props = {
+            ...requiredProps,
+            actions: {...requiredProps.actions, updateMe},
+        };
+
+        const wrapper = shallow(<UserSettingsNotifications {...props} />);
 
         await wrapper.instance().handleSubmit();
         expect(requiredProps.updateSection).toHaveBeenCalled();

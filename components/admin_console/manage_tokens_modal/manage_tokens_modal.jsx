@@ -15,7 +15,6 @@ import FormattedMarkdownMessage from 'components/formatted_markdown_message.jsx'
 
 export default class ManageTokensModal extends React.PureComponent {
     static propTypes = {
-
         /**
          * Set to render the modal
          */
@@ -37,7 +36,6 @@ export default class ManageTokensModal extends React.PureComponent {
         onModalDismissed: PropTypes.func.isRequired,
 
         actions: PropTypes.shape({
-
             /**
              * Function to get a user's access tokens
              */
@@ -50,7 +48,8 @@ export default class ManageTokensModal extends React.PureComponent {
         this.state = {error: null};
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         const userId = this.props.user ? this.props.user.id : null;
         const nextUserId = nextProps.user ? nextProps.user.id : null;
         if (nextUserId && nextUserId !== userId) {
@@ -62,13 +61,13 @@ export default class ManageTokensModal extends React.PureComponent {
         this.setState({
             error,
         });
-    }
+    };
 
     renderContents = () => {
         const {user, userAccessTokens} = this.props;
 
         if (!user) {
-            return <LoadingScreen/>;
+            return <LoadingScreen />;
         }
 
         let name = UserUtils.getFullName(user);
@@ -94,16 +93,14 @@ export default class ManageTokensModal extends React.PureComponent {
             } else {
                 tokenList = userAccessTokensList.map((token) => {
                     return (
-                        <div
-                            key={token.id}
-                            className='manage-teams__team'
-                        >
+                        <div key={token.id} className='manage-teams__team'>
                             <div className='manage-teams__team-name'>
                                 <div className='whitespace--nowrap overflow--ellipsis'>
                                     <FormattedMessage
                                         id='admin.manage_tokens.userAccessTokensNameLabel'
                                         defaultMessage='Token Description: '
                                     />
+
                                     {token.description}
                                 </div>
                                 <div className='whitespace--nowrap overflow--ellipsis'>
@@ -111,6 +108,7 @@ export default class ManageTokensModal extends React.PureComponent {
                                         id='admin.manage_tokens.userAccessTokensIdLabel'
                                         defaultMessage='Token ID: '
                                     />
+
                                     {token.id}
                                 </div>
                             </div>
@@ -125,7 +123,7 @@ export default class ManageTokensModal extends React.PureComponent {
                 });
             }
         } else {
-            tokenList = <LoadingScreen/>;
+            tokenList = <LoadingScreen />;
         }
 
         return (
@@ -134,29 +132,27 @@ export default class ManageTokensModal extends React.PureComponent {
                     <img
                         alt={''}
                         className='manage-teams__profile-picture'
-                        src={Client4.getProfilePictureUrl(user.id, user.last_picture_update)}
+                        src={Client4.getProfilePictureUrl(
+                            user.id,
+                            user.last_picture_update,
+                        )}
                     />
+
                     <div className='manage-teams__info'>
-                        <div className='manage-teams__name'>
-                            {name}
-                        </div>
-                        <div className='manage-teams__email'>
-                            {user.email}
-                        </div>
+                        <div className='manage-teams__name'>{name}</div>
+                        <div className='manage-teams__email'>{user.email}</div>
                     </div>
                 </div>
                 <div className='padding-top x2'>
                     <FormattedMarkdownMessage
                         id='admin.manage_tokens.userAccessTokensDescription'
-                        defaultMessage='Personal access tokens function similarly to session tokens and can be used by integrations to [interact with this Mattermost server](!https://about.mattermost.com/default-api-authentication). Tokens are disabled if the user is deactivated. Learn more about [personal access tokens](!https://about.mattermost.com/default-user-access-tokens).'
+                        defaultMessage='Personal access tokens function similarly to session tokens and can be used by integrations to [interact with this SCC server](!https://about.securCom.me/default-api-authentication). Tokens are disabled if the user is deactivated. Learn more about [personal access tokens](!https://about.securCom.me/default-user-access-tokens).'
                     />
                 </div>
-                <div className='manage-teams__teams'>
-                    {tokenList}
-                </div>
+                <div className='manage-teams__teams'>{tokenList}</div>
             </div>
         );
-    }
+    };
 
     render() {
         return (

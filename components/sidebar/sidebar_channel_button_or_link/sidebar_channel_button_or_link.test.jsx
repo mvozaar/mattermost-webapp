@@ -26,8 +26,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 teammateId={'test-teammate-id'}
                 teammateDeletedAt={1}
                 channelIsArchived={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -49,8 +50,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 teammateId={'test-teammate-id'}
                 teammateDeletedAt={1}
                 channelIsArchived={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -71,14 +73,18 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 teammateId={'test-teammate-id'}
                 teammateDeletedAt={1}
                 channelIsArchived={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
     test('should trackEvent, mark and add history entry on desktop on click', () => {
         const browserHistoryMock = require.requireMock('utils/browser_history');
-        const diagnosticsActionsMock = require.requireMock('actions/diagnostics_actions.jsx');
+        const diagnosticsActionsMock = require.requireMock(
+            'actions/diagnostics_actions.jsx',
+        );
+
         expect(diagnosticsActionsMock.trackEvent).not.toBeCalled();
         expect(diagnosticsActionsMock.mark).not.toBeCalled();
         expect(browserHistoryMock.browserHistory.push).not.toBeCalled();
@@ -105,8 +111,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 teammateId={'test-teammate-id'}
                 teammateDeletedAt={1}
                 channelIsArchived={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -130,8 +137,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 teammateId={'test-teammate-id'}
                 teammateDeletedAt={1}
                 channelIsArchived={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 
@@ -140,7 +148,10 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
         userAgentMock.isDesktopApp.mockImplementation(() => false);
 
         const browserHistoryMock = require.requireMock('utils/browser_history');
-        const diagnosticsActionsMock = require.requireMock('actions/diagnostics_actions.jsx');
+        const diagnosticsActionsMock = require.requireMock(
+            'actions/diagnostics_actions.jsx',
+        );
+
         expect(diagnosticsActionsMock.trackEvent).not.toBeCalled();
         expect(diagnosticsActionsMock.mark).not.toBeCalled();
         expect(browserHistoryMock.browserHistory.push).not.toBeCalled();
@@ -163,8 +174,9 @@ describe('component/sidebar/sidebar_channel_button_or_link/SidebarChannelButtonO
                 teammateId={'test-teammate-id'}
                 teammateDeletedAt={1}
                 channelIsArchived={false}
-            />
+            />,
         );
+
         expect(wrapper).toMatchSnapshot();
     });
 });

@@ -69,7 +69,9 @@ export default class AutosizeTextarea extends React.Component {
 
         if (height > 0 && height !== this.height) {
             const style = getComputedStyle(textarea);
-            const borderWidth = parseInt(style.borderTopWidth, 10) + parseInt(style.borderBottomWidth, 10);
+            const borderWidth =
+                parseInt(style.borderTopWidth, 10) +
+                parseInt(style.borderBottomWidth, 10);
 
             // Directly change the height to avoid circular rerenders
             textarea.style.height = String(height + borderWidth) + 'px';
@@ -77,7 +79,10 @@ export default class AutosizeTextarea extends React.Component {
             this.height = height;
 
             if (this.props.onHeightChange) {
-                this.props.onHeightChange(height, parseInt(style.maxHeight, 10));
+                this.props.onHeightChange(
+                    height,
+                    parseInt(style.maxHeight, 10),
+                );
             }
         }
     };
@@ -126,10 +131,7 @@ export default class AutosizeTextarea extends React.Component {
         let textareaPlaceholder = null;
         if (!this.props.value && !this.props.defaultValue) {
             textareaPlaceholder = (
-                <div
-                    {...otherProps}
-                    style={style.placeholder}
-                >
+                <div {...otherProps} style={style.placeholder}>
                     {placeholder}
                 </div>
             );
@@ -149,6 +151,7 @@ export default class AutosizeTextarea extends React.Component {
                     value={value}
                     defaultValue={defaultValue}
                 />
+
                 <div style={style.container}>
                     <textarea
                         ref='reference'
@@ -168,5 +171,12 @@ export default class AutosizeTextarea extends React.Component {
 const style = {
     container: {height: 0, overflow: 'hidden'},
     reference: {height: 'auto', width: '100%'},
-    placeholder: {overflow: 'hidden', textOverflow: 'ellipsis', opacity: 0.5, pointerEvents: 'none', position: 'absolute', whiteSpace: 'nowrap'},
+    placeholder: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        opacity: 0.5,
+        pointerEvents: 'none',
+        position: 'absolute',
+        whiteSpace: 'nowrap',
+    },
 };

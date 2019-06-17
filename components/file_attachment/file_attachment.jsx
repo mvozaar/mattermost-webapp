@@ -3,17 +3,14 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import {getFileThumbnailUrl, getFileUrl} from 'mattermost-redux/utils/file_utils';
+import {
+    getFileThumbnailUrl,
+    getFileUrl,
+} from 'mattermost-redux/utils/file_utils';
 
 import {FileTypes} from 'utils/constants.jsx';
-import {
-    trimFilename,
-} from 'utils/file_utils';
-import {
-    fileSizeToString,
-    getFileType,
-    loadImage,
-} from 'utils/utils.jsx';
+import {trimFilename} from 'utils/file_utils';
+import {fileSizeToString, getFileType, loadImage} from 'utils/utils.jsx';
 
 import DownloadIcon from 'components/svg/download_icon';
 
@@ -22,7 +19,6 @@ import FileThumbnail from './file_thumbnail.jsx';
 
 export default class FileAttachment extends React.PureComponent {
     static propTypes = {
-
         /*
          * File detailed information
          */
@@ -59,18 +55,24 @@ export default class FileAttachment extends React.PureComponent {
         this.loadFiles();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-line camelcase
         if (nextProps.fileInfo.id !== this.props.fileInfo.id) {
             const extension = nextProps.fileInfo.extension;
 
             this.setState({
-                loaded: getFileType(extension) !== FileTypes.IMAGE && extension !== FileTypes.SVG,
+                loaded:
+                    getFileType(extension) !== FileTypes.IMAGE &&
+                    extension !== FileTypes.SVG,
             });
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (!this.state.loaded && this.props.fileInfo.id !== prevProps.fileInfo.id) {
+        if (
+            !this.state.loaded &&
+            this.props.fileInfo.id !== prevProps.fileInfo.id
+        ) {
             this.loadFiles();
         }
     }
@@ -90,7 +92,7 @@ export default class FileAttachment extends React.PureComponent {
         } else if (fileInfo.extension === FileTypes.SVG) {
             loadImage(getFileUrl(fileInfo.id), this.handleImageLoaded);
         }
-    }
+    };
 
     handleImageLoaded = () => {
         if (this.mounted) {
@@ -98,20 +100,17 @@ export default class FileAttachment extends React.PureComponent {
                 loaded: true,
             });
         }
-    }
+    };
 
     onAttachmentClick = (e) => {
         e.preventDefault();
         if (this.props.handleImageClick) {
             this.props.handleImageClick(this.props.index);
         }
-    }
+    };
 
     render() {
-        const {
-            compactDisplay,
-            fileInfo,
-        } = this.props;
+        const {compactDisplay, fileInfo} = this.props;
 
         const trimmedFilename = trimFilename(fileInfo.name);
         let fileThumbnail;
@@ -124,9 +123,9 @@ export default class FileAttachment extends React.PureComponent {
                     onClick={this.onAttachmentClick}
                 >
                     {this.state.loaded ? (
-                        <FileThumbnail fileInfo={fileInfo}/>
+                        <FileThumbnail fileInfo={fileInfo} />
                     ) : (
-                        <div className='post-image__load'/>
+                        <div className='post-image__load' />
                     )}
                 </a>
             );
@@ -140,8 +139,12 @@ export default class FileAttachment extends React.PureComponent {
                         <span className={'post-image__name'}>
                             {trimmedFilename}
                         </span>
-                        <span className='post-image__type'>{fileInfo.extension.toUpperCase()}</span>
-                        <span className='post-image__size'>{fileSizeToString(fileInfo.size)}</span>
+                        <span className='post-image__type'>
+                            {fileInfo.extension.toUpperCase()}
+                        </span>
+                        <span className='post-image__size'>
+                            {fileSizeToString(fileInfo.size)}
+                        </span>
                     </div>
                 </div>
             );
@@ -157,7 +160,7 @@ export default class FileAttachment extends React.PureComponent {
                     handleImageClick={this.onAttachmentClick}
                     iconClass={'post-image__download'}
                 >
-                    <DownloadIcon/>
+                    <DownloadIcon />
                 </FilenameOverlay>
             );
         }
